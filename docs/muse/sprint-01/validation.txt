@@ -34,19 +34,27 @@ Sprint IC-2026-09-27-DAY-01 — validation results (2026-09-27, AI-027/AI-028)
    - Resolved: after a user-provided token, pushed via the GitHub Contents API to branch
      muse/sprint-01-content-audit (head cec6799); verified via API branch + contents listing.
 
-7. RERUNNABLE MANIFEST VALIDATOR (added AI-035)
-   - Script: docs/muse/sprint-01/validate_manifest.py
-   - Command: python3 docs/muse/sprint-01/validate_manifest.py
+7. RERUNNABLE MANIFEST VALIDATOR (AI-035; hardened AI-037)
+   - Validator: docs/muse/sprint-01/validate_manifest.py (stdlib only)
+   - Regression suite: docs/muse/sprint-01/test_validate_manifest.py (29 tests, temp fixtures)
+   - Checks: parse both representations; pinned snapshot row count (391, overridable);
+     unique IDs per representation; CSV/JSON id-set equality; exact 14 columns;
+     non-blank required fields (art_path exempt: legitimately blank); all fields
+     compared after explicit bool normalization (JSON true == CSV "TRUE";
+     case preserved otherwise); allowed source values + per-source counts;
+     exact source-to-pinned-commit provenance; exact 20 tutor ID set.
+   - The 391-row expectation is a snapshot of the pinned audit, NOT a universal
+     future card count (override: --expected-total / --expected-source-counts).
+   - Command: cd docs/muse/sprint-01 && python3 validate_manifest.py
    - Output (2026-09-27, exit 0):
-     rows: 391 (expected 391)
-     unique ids: 391 (expected 391)
-     json entries: 391; csv/json id sets match: True
-     required columns with blanks: none
-     counts by source: {'alpha-json': 143, 'alpha-generated': 20, 'original-json': 228} (expected {'alpha-json': 143, 'alpha-generated': 20, 'original-json': 228})
-     generated tutor rows: 20 (expected 20)
-     rows missing provenance: 0
-
-     ALL CHECKS PASSED
+     checked 391 CSV rows / 391 JSON rows (snapshot expectation: 391)
+     MANIFEST VALID: all checks passed
+   - Command: cd docs/muse/sprint-01 && python3 -m unittest test_validate_manifest
+   - Output (2026-09-27, exit 0): OK (29 tests; covers valid pass, malformed
+     CSV/JSON, duplicates in either representation, id-set/field mismatches,
+     case-sensitive IDs, bool normalization, missing/wrong provenance, unknown
+     source, wrong tutor set, absent files, snapshot enforcement, and the real
+     committed manifests read-only)
 
 6. UNRESOLVED ISSUES
    a. Gradle test suite (72 *Test.java) not executed — read-only time-boxed audit.
