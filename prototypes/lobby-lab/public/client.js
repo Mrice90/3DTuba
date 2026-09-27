@@ -106,7 +106,9 @@ export class LobbyClient {
         }
         this.baseUrl = url.toString().replace(/\/+$/, "");
         this.timeoutMs = timeoutMs;
-        this.fetchImpl = fetchImpl;
+        // Browser fetch requires the Window receiver; calling it as a client
+        // method otherwise throws "Illegal invocation" before any request.
+        this.fetchImpl = fetchImpl.bind(globalThis);
     }
 
     async #request(path, { method = "GET", body, signal } = {}) {
