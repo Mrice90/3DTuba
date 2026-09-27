@@ -16,18 +16,37 @@ Sprint IC-2026-09-27-DAY-01 — validation results (2026-09-27, AI-027/AI-028)
    - Desolate-Tuba: git rev-parse HEAD = dde98f8c71ec80ba9046271d1c84e160735c8fcb
      on main — matches pinned SHA.
 
-4. CHANGED-FILE LIST (source repos must be untouched)
+4. CHANGED-FILE LIST
+   Source repos (must remain untouched):
    - /tmp/tuba-alpha: git status --porcelain → 0 changed files — CLEAN.
    - /tmp/tuba-original: git status --porcelain → 0 changed files — CLEAN.
-   - No commits, pushes, merges, deletes, deploys, or releases performed in either repo.
-   - Deliverables created ONLY in ~/workspace/sprint-01/:
-     audit-report.md, manifest.csv, manifest.json, handoff.md, validation.txt
+   - No commits, pushes, merges, deletes, deploys, or releases performed in either source repo.
+   3DTuba (authorized deliverable target):
+   - Branch muse/sprint-01-content-audit, head cec6799 (2026-09-27): 5 files under docs/muse/sprint-01/
+     (audit-report.md, manifest.csv, manifest.json, handoff.md, validation.txt).
+   - No other refs exist remotely; main has no ref yet.
+   - No Unity Assets/Packages/ProjectSettings/root files touched.
 
-5. 3DTUBA BLOCKER
-   - git ls-remote https://github.com/Mrice90/3DTuba.git → empty output
-     (verified 2026-09-27): repository does not exist or is not public.
-   - No branch created, no write attempted. Deliverables staged at
-     ~/workspace/sprint-01/ for handover as chat artifacts.
+5. 3DTUBA STATUS — initial blocker resolved 2026-09-27
+   - Initial: repo existed but was empty (GitHub API id 1391108087, size 0, created 2026-09-27);
+     git ls-remote returned empty output. Fallback used: deliverables staged at ~/workspace/sprint-01/
+     and handed over as chat artifacts.
+   - Resolved: after a user-provided token, pushed via the GitHub Contents API to branch
+     muse/sprint-01-content-audit (head cec6799); verified via API branch + contents listing.
+
+7. RERUNNABLE MANIFEST VALIDATOR (added AI-035)
+   - Script: docs/muse/sprint-01/validate_manifest.py
+   - Command: python3 docs/muse/sprint-01/validate_manifest.py
+   - Output (2026-09-27, exit 0):
+     rows: 391 (expected 391)
+     unique ids: 391 (expected 391)
+     json entries: 391; csv/json id sets match: True
+     required columns with blanks: none
+     counts by source: {'alpha-json': 143, 'alpha-generated': 20, 'original-json': 228} (expected {'alpha-json': 143, 'alpha-generated': 20, 'original-json': 228})
+     generated tutor rows: 20 (expected 20)
+     rows missing provenance: 0
+
+     ALL CHECKS PASSED
 
 6. UNRESOLVED ISSUES
    a. Gradle test suite (72 *Test.java) not executed — read-only time-boxed audit.
