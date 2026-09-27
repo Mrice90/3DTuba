@@ -76,11 +76,14 @@
     caller-supplied IDs are <b>not</b> authentication.
   </div>
 
-<script>
+<script type="module">
+import { LobbyClient, LobbyError } from "./client.js";
 "use strict";
 // Ownership map: lobby code -> hostUuid, kept in this browser only.
 const mine = JSON.parse(localStorage.getItem("lobby-lab-mine") || "{}");
 const saveMine = () => localStorage.setItem("lobby-lab-mine", JSON.stringify(mine));
+
+const client = new LobbyClient({ baseUrl: window.location.origin });
 
 const $ = (id) => document.getElementById(id);
 const listEl = $("lobbyList"), bannerEl = $("banner");
@@ -94,14 +97,9 @@ function clearError() {
   bannerEl.textContent = "";
 }
 
-async function api(path, opts = {}) {
-  const res = await fetch(path, {
-    headers: { "content-type": "application/json" },
-    ...opts,
-  });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
-  return data;
+function friendlyError(e) {
+  if (e instanceof LobbyError) return e.message;
+  return String(e?.message || e);
 }
 
 function setState(state, lobbies = []) {
@@ -144,26 +142,23 @@ async function refresh() {
   clearError();
   setState("loading");
   try {
-    const lobbies = await api("/lobbies");
+    const lobbies = await client.listLobbies();
     setState(lobbies.length ? "list" : "empty", lobbies);
   } catch (e) {
     setState("error");
-    showError("List failed: " + e.message);
+    showError("List failed: " + friendlyError(e));
   }
 }
 
 async function removeLobby(code) {
   clearError();
   try {
-    await api(`/lobbies/${encodeURIComponent(code)}`, {
-      method: "DELETE",
-      body: JSON.stringify({ hostUuid: mine[code] }),
-    });
+    await client.deleteLobby(code, mine[code]);
     delete mine[code];
     saveMine();
     await refresh();
   } catch (e) {
-    showError("Remove failed: " + e.message);
+    showError("Remove failed: " + friendlyError(e));
   }
 }
 
@@ -173,25 +168,19 @@ $("createForm").addEventListener("submit", async (e) => {
   const btn = $("createBtn");
   btn.disabled = true;
   try {
-    const hostUuid = crypto.randomUUID();
-    const data = await api("/lobbies", {
-      method: "POST",
-      body: JSON.stringify({
-        code: undefined,
-        hostUuid,
-        hostName: $("hostName").value.trim(),
-        hostRating: Number($("hostRating").value) || 1000,
-        wssUrl: $("wssUrl").value.trim(),
-        dataVersion: "lab-1",
-      }),
+    const { code, hostUuid } = await client.createLobby({
+      hostName: $("hostName").value,
+      wssUrl: $("wssUrl").value,
+      hostRating: Number($("hostRating").value) || 1000,
+      dataVersion: "lab-1",
     });
-    mine[data.code] = hostUuid;
+    mine[code] = hostUuid;
     saveMine();
     $("hostName").value = "";
     $("wssUrl").value = "";
     await refresh();
   } catch (err) {
-    showError("Create failed: " + err.message);
+    showError("Create failed: " + friendlyError(err));
   } finally {
     btn.disabled = false;
   }
