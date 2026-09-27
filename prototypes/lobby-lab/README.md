@@ -23,6 +23,9 @@ npm test    # all suites: HTTP routes + two-client contract tests (node:test)
 node demo.js  # scripted two-client lifecycle demo (starts its own server)
 ```
 
+Zero npm dependencies — the entire slice is Node standard library, so there
+is no install step and no third-party supply-chain surface to audit.
+
 Clean shutdown: `Ctrl-C` (SIGINT/SIGTERM handled).
 
 ## What it is
