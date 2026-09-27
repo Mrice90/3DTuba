@@ -14,7 +14,9 @@ node server.js
 ```
 
 Then open http://127.0.0.1:8787 in a browser. `PORT` / `HOST` env vars
-override the bind (default is loopback-only).
+override the bind (default is loopback-only). `LAB_ALLOW_REPORTS=1` enables
+the unsafe match-reporting contract locally; `LAB_MAX_BODY` overrides the
+1 MB body cap.
 
 ```sh
 npm test    # all suites: HTTP routes + two-client contract tests (node:test)
@@ -45,8 +47,16 @@ Clean shutdown: `Ctrl-C` (SIGINT/SIGTERM handled).
 ## Scope and trust limits (read before exposing this anywhere)
 
 - **No authentication.** Lobby ownership is a caller-supplied `hostUuid`;
-  anyone holding it can manage that lobby. Rating reports (`POST /report`)
-  are likewise caller-asserted — trust review lands in AI-041.
+  anyone holding it can manage that lobby. Queue pairings are likewise
+  caller-asserted — a local caller can publish a pairing for anyone's uuid.
+- **Match reporting is disabled by default** (AI-041). `POST /report` accepts
+  arbitrary caller-supplied UUIDs, so one caller could submit both "agreeing"
+  reports and mint Elo for UUIDs that never played. The adapter returns 403
+  unless started with `allowReports: true` / `LAB_ALLOW_REPORTS=1`, which
+  exists only to exercise the contract locally. Do not enable it on any
+  shared instance, and never treat lab ratings as meaningful.
+- **Request bodies are capped** at 1 MB by default (`LAB_MAX_BODY`); larger
+  bodies get 413. Error responses never include stack traces.
 - **Local only.** Binds `127.0.0.1` by default. Do not forward or expose it
   without adding authentication, rate limiting, and body limits appropriate
   to your threat model.
