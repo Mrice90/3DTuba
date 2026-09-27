@@ -33,13 +33,35 @@ const MIME = {
 
 const API_PREFIXES = ["/lobbies", "/queue", "/pair", "/report", "/leaderboard", "/rating"];
 
-function readBody(req) {
+function readBody(req, maxBytes) {
     return new Promise((resolve, reject) => {
         const chunks = [];
-        req.on("data", (c) => chunks.push(c));
-        req.on("end", () => resolve(Buffer.concat(chunks)));
-        req.on("error", reject);
-        req.on("aborted", () => reject(new Error("request aborted by client")));
+        let size = 0;
+        let done = false;
+        const fail = (err) => {
+            if (done) return;
+            done = true;
+            req.removeAllListeners("data");
+            req.removeAllListeners("end");
+            reject(err);
+        };
+        req.on("data", (c) => {
+            if (done) return;
+            size += c.length;
+            if (size > maxBytes) {
+                fail(Object.assign(new Error("request body too large"), { statusCode: 413 }));
+                return;
+            }
+            chunks.push(c);
+        });
+        req.on("end", () => {
+            if (!done) {
+                done = true;
+                resolve(Buffer.concat(chunks));
+            }
+        });
+        req.on("error", fail);
+        req.on("aborted", () => fail(Object.assign(new Error("request aborted by client"), { statusCode: 400 })));
     });
 }
 
@@ -73,8 +95,13 @@ async function serveStatic(req, res) {
  * @param {number} [opts.port=8787] 0 = ephemeral (tests)
  * @param {string} [opts.host="127.0.0.1"]
  * @param {() => number} [opts.now] controllable clock for the KV store
+ * @param {number} [opts.maxBodyBytes=1000000] request body cap (413 beyond)
+ * @param {boolean} [opts.allowReports=false] enable POST /report.
+ *   Reports are caller-asserted UUIDs with no authentication: a single
+ *   caller can submit both "agreeing" reports and mint Elo for arbitrary
+ *   UUIDs. Keep disabled until a production identity design exists.
  */
-export async function start({ port = 8787, host = "127.0.0.1", now } = {}) {
+export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes = 1_000_000, allowReports = false } = {}) {
     const kv = createKv(now ? { now } : {});
     const env = { IC_KV: kv };
 
@@ -85,7 +112,24 @@ export async function start({ port = 8787, host = "127.0.0.1", now } = {}) {
                 await serveStatic(req, res);
                 return;
             }
-            const body = await readBody(req);
+            if (!allowReports && req.method === "POST" && url.pathname === "/report") {
+                res.writeHead(403, { "content-type": "application/json" });
+                res.end(JSON.stringify({
+                    error: "match reporting is disabled in this lab build: caller-asserted UUIDs are not authentication. Set LAB_ALLOW_REPORTS=1 to exercise the contract locally.",
+                }));
+                return;
+            }
+            let body;
+            try {
+                body = await readBody(req, maxBodyBytes);
+            } catch (e) {
+                if (e.statusCode === 413) {
+                    res.writeHead(413, { "content-type": "application/json", "connection": "close" });
+                    res.end(JSON.stringify({ error: "request body too large" }), () => req.destroy());
+                    return;
+                }
+                throw e;
+            }
             const wReq = new Request(`http://local${req.url}`, {
                 method: req.method,
                 headers: req.headers,
@@ -100,9 +144,9 @@ export async function start({ port = 8787, host = "127.0.0.1", now } = {}) {
         } catch (err) {
             console.error("request failed:", err.message);
             if (!res.headersSent) {
-                res.writeHead(500, { "content-type": "application/json" });
+                res.writeHead(err.statusCode || 500, { "content-type": "application/json" });
             }
-            try { res.end(JSON.stringify({ error: "internal error" })); } catch { /* noop */ }
+            try { res.end(JSON.stringify({ error: err.statusCode ? err.message : "internal error" })); } catch { /* noop */ }
         }
     });
 
@@ -124,8 +168,11 @@ const isMain = process.argv[1] === fileURLToPath(import.meta.url);
 if (isMain) {
     const port = parseInt(process.env.PORT || "8787", 10);
     const host = process.env.HOST || "127.0.0.1";
-    const { server, port: boundPort, host: boundHost } = await start({ port, host });
+    const maxBodyBytes = parseInt(process.env.LAB_MAX_BODY || "1000000", 10);
+    const allowReports = process.env.LAB_ALLOW_REPORTS === "1";
+    const { server, port: boundPort, host: boundHost } = await start({ port, host, maxBodyBytes, allowReports });
     console.log(`lobby-lab listening on http://${boundHost}:${boundPort}`);
+    console.log(`match reporting: ${allowReports ? "ENABLED (local contract exercise only)" : "disabled"}; body cap: ${maxBodyBytes} bytes`);
     console.log("local development only — do not expose beyond loopback without real identity");
     const shutdown = () => {
         console.log("shutting down...");
