@@ -83,10 +83,27 @@ The original (`main` @ `dde98f8c`) holds **366 cards / 366 unique IDs**, all `co
 | **HEPHAESTUS** | 22 CHAR, 14 LAND, 12 STRUCT, 6 SPELL, 3 CAPITAL (`bronze_heart`, `great_forge`, `volcanic_foundry`) | none | same pattern @ `dde98f8c`; tutor names @ lines 16,24 | same as above |
 
 **Why adaptation is small (evidence-backed):**
-- The engine is faction-agnostic: every keyword used by future-faction cards (VANGUARD, SIEGE, MOLE, FAST_STRIKE, BLINK, SHARP_SHOT, ARCHIVE, WORKSHOP, TURRET, BULWARK, BEACON, WAYSTATION, HIGH_GROUND, FERTILE, COVER) already exists in the alpha's `Keyword` enum (`game-core/.../data/Keyword.java:4-11`). No engine changes required.
+- The engine is faction-agnostic at the keyword *name* level: every keyword used by future-faction cards (VANGUARD, SIEGE, MOLE, FAST_STRIKE, BLINK, SHARP_SHOT, ARCHIVE, WORKSHOP, TURRET, BULWARK, BEACON, WAYSTATION, HIGH_GROUND, FERTILE, COVER) already exists in the alpha's `Keyword` enum (`game-core/src/main/java/com/infiniteconquest/data/Keyword.java:4-11`, re-verified 2026-09-27). **Hypothesis — untested:** "no engine changes required." Enum presence alone does not prove behavioral compatibility: keyword *implementations*, `CapitalPassive` extensions, tutor name maps, card-ability wiring, and ally-deck mixing paths are all unverified. See the compatibility risk matrix (§4.5) for what must be tested before any faction expansion.
 - `FactionDecks` PRIMARY/SECONDARY_TYPES and KEYWORDS maps already contain all six factions' design entries (Hades SPELL/CHARACTER MOLE/FAST_STRIKE; Ares CHARACTER/SPELL FAST_STRIKE/SIEGE; Athena CHARACTER/STRUCTURE VANGUARD/SHARP_SHOT; Hephaestus STRUCTURE/LAND VANGUARD/SIEGE) — only the `FACTIONS` gate needs the new entries.
 - `CardArtFactory` was trimmed to two factions but degrades gracefully (procedural fallback); only the 12 Capital JPGs exist as recoverable art in the original — all other future-faction art is a gap.
 - Open item from `review/FINDINGS.md:209`: the ally-deck decision (keep Zeus↔Poseidon-style ally mixing vs pure 1v1) must be re-decided per added faction, and tutor ally-draw paths need balance re-testing.
+
+### 4.5 Compatibility risk matrix — hypotheses, not findings (verify before implementing)
+
+Each row is an *untested hypothesis* about re-adding a faction. Evidence cites the pinned alpha (`992bc95`); nothing below has been executed. Code paths re-verified 2026-09-27 against the clean clone.
+
+| # | Area | What the code shows (alpha @ `992bc95`) | Risk if wrong | Explicit test needed |
+|---|---|---|---|---|
+| R1 | Keyword behavior | All 15 future-faction keywords present in `Keyword` enum (`game-core/src/main/java/com/infiniteconquest/data/Keyword.java:4-11`) | LOW–MEDIUM | Keyword-driven behavior tests per keyword; grep keyword implementations for faction-switched branches |
+| R2 | Faction gate | `FactionDecks.FACTIONS = {"ZEUS","POSEIDON"}` (`game-cli/src/main/java/com/infiniteconquest/cli/FactionDecks.java:11-12`); unknown faction → `IllegalArgumentException` (line 54) | LOW | Add HADES to `FACTIONS`, run card-set/deck-builder suite; confirm no second gate exists |
+| R3 | Tutor name maps | `LAND_NAMES`/`STRUCTURE_NAMES` hold only ZEUS/POSEIDON (`FactionTutorExpansion.java:10-24`); `LAND_NAMES.get(faction)` NPEs for a missing faction | MEDIUM | Null-safety test: adding a faction without names must fail loudly, or make the maps total |
+| R4 | CapitalPassive | Enum at `game-core/src/main/java/com/infiniteconquest/core/CapitalPassive.java` (6 entries, 3/faction per §2.4) | MEDIUM | 12 new passives (3 × 4 future capitals) must be implemented + unit-tested |
+| R5 | Starter-deck coupling | `faction-starters.json` references runtime-only tutor IDs (§2.3) | MEDIUM | Integration test: starter decks build without the generator; decide JSON-ify tutors vs keep generator |
+| R6 | Card ability wiring | Mechanism for the 228 future cards' abilities unverified (data-driven JSON vs code keyed by ID); shared 138 must behave identically | UNKNOWN (treat as HIGH) | Locate ability implementation mechanism; per-card behavior tests; behavioral diff of shared 138 alpha-vs-original |
+| R7 | Art fallback | `CardArtFactory` procedural fallback for missing art (§3) | LOW | Visual smoke test of fallback rendering for new cards |
+| R8 | Ally-deck mixing | Zeus↔Poseidon ally paths exist; decision open per `review/FINDINGS.md:209` | MEDIUM | Design decision first, then balance re-test of tutor ally-draw per faction |
+
+Bottom line: "no engine changes required" is downgraded from finding to hypothesis. Only the keyword *name* set is verified compatible by inspection; R3–R6 each need code + tests before any faction ships. No expansions were implemented in this audit.
 
 ## 5. Manifest
 
@@ -100,7 +117,7 @@ The original (`main` @ `dde98f8c`) holds **366 cards / 366 unique IDs**, all `co
 
 ## 6. Unresolved issues / limits of this audit
 
-1. **3DTuba unreachable** — `git ls-remote https://github.com/Mrice90/3DTuba.git` returns empty (verified 2026-09-27). Deliverables written to `~/workspace/sprint-01/` instead; not attempted to create.
+1. **3DTuba push — resolved 2026-09-27.** Initial state: the repo existed but was empty (GitHub API id 1391108087, size 0, no refs; created 2026-09-27), so the sprint fallback (chat artifacts) was used first. After the user provided a token, all five deliverables were pushed via the GitHub Contents API to branch `muse/sprint-01-content-audit` (head `cec6799`), under `docs/muse/sprint-01/`, and verified via API branch + contents listing. No `main` ref exists remotely yet; no Unity Assets/Packages/ProjectSettings/root files were touched.
 2. **Tests not executed** — 72 `*Test.java` files counted (see handoff); the Gradle suite was not run in this read-only time-boxed audit.
 3. **Desolate-Tuba `codex/*` branches not surveyed** — default-branch `main` treated as "the original" per the brief; richer content could exist on feature branches (only `main` was diffed).
 4. **Meshy / ElevenLabs access** — not verified (out of audit scope); manifest `needed_3d` column is type-level pending art direction.
