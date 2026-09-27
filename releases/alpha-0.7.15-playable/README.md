@@ -56,13 +56,43 @@ A title screen opens: start a match, open the Deck Builder, or watch bots play.
 
 ## Get the built jar
 
-The prebuilt `infinite-conquest-alpha-0.7.15.jar` (~91MB) ships with the release
-handoff. The repository carries the recipe, not the binary — a repository rule
-rejects 90MB+ blobs via the API. Rebuild the identical jar any time:
+The prebuilt `infinite-conquest-alpha-0.7.15.jar` (~91 MB) ships with the
+release handoff — **not in this repository**: a repository rule rejects 90MB+
+blobs, so the repo carries the recipe, checksums, and launchers instead of
+the binary. Verify any jar you receive before running it:
 
 ```
-ALPHA=/path/to/tuba-alpha-checkout ./build-release.sh
+sha256sum -c CHECKSUMS.sha256        # Linux / macOS
+certutil -hashfile infinite-conquest-alpha-0.7.15.jar SHA256   # Windows
 ```
 
-against a read-only checkout of `Mrice90/TubaExperiment` @ `992bc95`
-(branch `strip/zeus-poseidon-desktop`), with Temurin JDK 17 on PATH.
+Expected: `728c3fc1…5149029523` (full hash in `CHECKSUMS.sha256`;
+provenance in `PROVENANCE.md`).
+
+## Rebuild it yourself (fetch → build → smoke → play)
+
+Prerequisites: **JDK 17+** and **git**. No Gradle, no npm install.
+
+**Linux / macOS:**
+```
+cd releases/alpha-0.7.15-playable
+./fetch-source.sh     # pinned read-only source -> ./build/alpha-src (verifies the pin)
+./build-release.sh    # diagnostics -> javac build -> jar -> CHECKSUMS.sha256 -> smoke.sh
+./smoke.sh            # re-runnable any time: manifest, classes, card data, 36 seeded bot matches
+./play.sh
+```
+
+**Windows** (same flow; scripts mirror the Linux recipe):
+```
+cd releases\alpha-0.7.15-playable
+fetch-source.bat
+build-release.bat
+smoke.bat
+play.bat
+```
+
+`build-release` fails fast with a plain-English error if Java is missing/too
+old, the source checkout is absent, or the checkout does not match the release
+pin (`992bc95`). `play.*` refuses to run a missing or checksum-mismatched jar
+and tells you exactly where to get one. Full runbook, exact commands, and what
+was verified on which OS: `docs/muse/sprint-01/alpha-build-handoff.md`.
