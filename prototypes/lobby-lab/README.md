@@ -73,6 +73,15 @@ Clean shutdown: `Ctrl-C` (SIGINT/SIGTERM handled).
 - **Local only.** Binds `127.0.0.1` by default. Do not forward or expose it
   without adding authentication, rate limiting, and body limits appropriate
   to your threat model.
+- **Local-only boundary enforced** (AI-045). A non-loopback `HOST` /
+  `start({host})` value is rejected before the server listens; every request's
+  `Host` header must be loopback (DNS-rebinding defense); browser mutations
+  (`POST`/`DELETE`/…) must carry a loopback `Origin`/`Referer`, so an
+  unrelated website cannot create or delete lobbies through your browser.
+  Non-browser clients (Node adapter, demo, curl) send no `Origin` and are
+  unaffected. Reads (`GET`) stay open — responses carry no CORS headers, so
+  a hostile page cannot read them. This is a development boundary, not
+  authentication.
 - **Ephemeral.** All state lives in process memory; restarting wipes it.
 - The deployed Worker (`infinite-conquest-lobby.*.workers.dev`) is never
   touched by this lab — no network calls leave loopback.
