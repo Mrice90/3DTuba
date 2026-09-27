@@ -88,4 +88,5 @@ console.log("[6] Client B lists again: lobby is gone");
 
 await close();
 console.log(failures === 0 ? "\nDemo complete: all expected outcomes matched." : `\nDemo complete with ${failures} mismatch(es).`);
-process.exit(failures === 0 ? 0 : 1);
+// Let pending HTTP handles finish closing before Node shuts down on Windows.
+process.exitCode = failures === 0 ? 0 : 1;

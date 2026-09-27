@@ -125,7 +125,11 @@ export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes
             } catch (e) {
                 if (e.statusCode === 413) {
                     res.writeHead(413, { "content-type": "application/json", "connection": "close" });
-                    res.end(JSON.stringify({ error: "request body too large" }), () => req.destroy());
+                    // Drain without buffering and let HTTP close gracefully after the
+                    // response. Destroying the request here can reset the Windows
+                    // socket before the client receives the 413 response.
+                    req.resume();
+                    res.end(JSON.stringify({ error: "request body too large" }));
                     return;
                 }
                 throw e;
