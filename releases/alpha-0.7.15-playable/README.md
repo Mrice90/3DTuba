@@ -53,3 +53,16 @@ A title screen opens: start a match, open the Deck Builder, or watch bots play.
   `screenshots/` for the captured boards, deck builder, and animations.
 - Upstream docs: the alpha's full manual lives in its README; the 3DTuba
   integration runbook is `docs/muse/sprint-01/alpha-core-foundation.md`.
+
+## Get the built jar
+
+The prebuilt `infinite-conquest-alpha-0.7.15.jar` (~91MB) ships with the release
+handoff. The repository carries the recipe, not the binary — a repository rule
+rejects 90MB+ blobs via the API. Rebuild the identical jar any time:
+
+```
+ALPHA=/path/to/tuba-alpha-checkout ./build-release.sh
+```
+
+against a read-only checkout of `Mrice90/TubaExperiment` @ `992bc95`
+(branch `strip/zeus-poseidon-desktop`), with Temurin JDK 17 on PATH.
