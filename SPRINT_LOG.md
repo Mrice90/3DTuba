@@ -16,3 +16,16 @@ Astra AI-030: created UnityProof using Unity 6000.6.3f1 installed URP template; 
 
 ## Coordination and retrospective
 Repository PRODUCT_BACKLOG.md / SPRINT_LOG.md now hold shared engineering truth per PO request; local automation records must pull/reconcile current repo evidence before decisions. This is not an authorization bypass. Astra owns Unity/root/integration; Muse owns accepted lobby/packaging tasks. Avoid concurrent edits to root records; send artifact/commit handoffs and append against stable IDs after coordination. Require actual browser and Windows checks, not only Linux Node green. Attachments/recipes are not accepted release destinations. Keep all scope/payment/source protections.
+
+## 2026-09-27 19:10-19:35 EDT — AI-046 delivered (Muse)
+Reproducible alpha build handoff, branch muse/sprint-01-content-audit, commits d004900...b514ebf (13 contents-API commits; local aggregate 2e48434). Changed paths only: releases/alpha-0.7.15-playable/ and docs/muse/sprint-01/alpha-build-handoff.md.
+Tests / run commands (Linux, simulated clean checkout /tmp/ai046-test):
+- ./fetch-source.sh -> pin 992bc95 verified ("OK: source matches pin ... (read-only; upstream untouched)")
+- ./build-release.sh -> diagnostics pass; Jackson 2.18.2 fetched from Maven Central into build/deps, SHA-256 verified against pinned hashes (jars are NOT tracked upstream — a clean fetch would otherwise fail); 118 sources compiled; fat jar assembled; CHECKSUMS.sha256 written; smoke auto-run
+- ./smoke.sh -> 5/5 PASS: jar non-empty; manifest Main-Class com.infiniteconquest.gui.GameShell; entry class present; card JSONs present; headless `simulate 1 42` -> "Simulated 36 matches" (~9s)
+- Negative paths verified: missing source dir -> "run ./fetch-source.sh first"; pin mismatch -> fail-closed unless ALPHA_ALLOW_UNPINNED=1; play.sh missing jar -> honest message (jar not in repo: 90MB+ blobs rejected by repo rule); tampered jar -> checksum mismatch, launch refused. dash compatibility fixed (no `|| { }` groups).
+Artifacts: reference jar SHA-256 728c3fc101ad686e8c73c7a9af979125d7052f943f7b89645edbdc5149029523 (handoff copy). Fresh rebuild is content-equivalent, NOT byte-identical (observed 20696b4535df6602849f82d7956822cf2ba09500ecbbde14569af215b52f14af — zip timestamps/ordering vary); CHECKSUMS.sha256 regenerates per build.
+Limits: Windows .bat scripts (CRLF) mirror the verified Linux recipe but were NOT executed on Windows — first Windows run is a shakedown. No binary published to GitHub, no formal release, no source-repo writes, no paid jobs.
+
+## 2026-09-27 ~19:40 EDT — handoff acknowledgement (Muse)
+Read root PRODUCT_BACKLOG.md and SPRINT_LOG.md at refreshed branch tip b514ebf. Astra handoff acknowledged (PR #1 base 09400623388f44ab23f77737e6798f8447346e13): Astra owns UnityProof and the new cross-platform supporting-tools workflow; Muse keeps accepted lobby/packaging lanes. No lane conflicts: AI-046 was already delivered (not restarted), Astra's Unity/root/integration paths untouched, root records appended (not rewritten) with Astra entries preserved. Noted: Windows AI-045 acceptance 43/43 + both demos exit 0 per Astra. AI-048 queued (bounded AI-004 packaging regression coverage). Next checkpoint 00:00 EDT Sep 28.
