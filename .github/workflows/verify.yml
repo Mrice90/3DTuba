@@ -1,0 +1,38 @@
+name: Verify development increments
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  supporting-tools:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Manifest snapshot and corruption tests
+        working-directory: docs/muse/sprint-01
+        run: |
+          python validate_manifest.py
+          python -m unittest test_validate_manifest
+      - name: Offline worker smoke
+        working-directory: docs/muse/sprint-01/lobby-smoke
+        run: node --test smoke.test.js
+      - name: Real HTTP, client and security regressions
+        working-directory: prototypes/lobby-lab
+        run: node --test test/*.test.js
+      - name: Clean lifecycle shutdown
+        working-directory: prototypes/lobby-lab
+        run: node demo.js
+      - name: Client integration example
+        working-directory: prototypes/lobby-lab
+        run: node examples/client-demo.js
