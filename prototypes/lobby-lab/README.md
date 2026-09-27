@@ -50,6 +50,9 @@ Clean shutdown: `Ctrl-C` (SIGINT/SIGTERM handled).
   The browser UI is wired through it.
 - `examples/client-demo.js` — runnable adapter integration example.
 - `docs/api.md` — endpoint schema + C# integration notes for Astra.
+- Live-service conformance: the deployed worker was fingerprinted
+  read-only on 2026-09-27 and matches the pinned contract on every probed
+  path — see `../../docs/muse/sprint-01/deployed-worker-fingerprint.md`.
 
 ## Scope and trust limits (read before exposing this anywhere)
 
