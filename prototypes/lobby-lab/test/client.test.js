@@ -26,6 +26,16 @@ test.after(async () => {
 
 const client = () => new LobbyClient({ baseUrl: `http://127.0.0.1:${ctx.port}` });
 
+test("browser fetch receives the global receiver", async () => {
+    const c = new LobbyClient({
+        fetchImpl: function () {
+            assert.equal(this, globalThis, "fetch must not receive LobbyClient as this");
+            return Promise.resolve(new Response("[]", { status: 200 }));
+        },
+    });
+    assert.deepEqual(await c.listLobbies(), []);
+});
+
 test("happy path: create -> list -> get -> delete through the adapter", async () => {
     const c = client();
     const { code, hostUuid } = await c.createLobby({
