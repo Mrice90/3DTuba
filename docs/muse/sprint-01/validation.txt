@@ -56,6 +56,20 @@ Sprint IC-2026-09-27-DAY-01 — validation results (2026-09-27, AI-027/AI-028)
      source, wrong tutor set, absent files, snapshot enforcement, and the real
      committed manifests read-only)
 
+8. LOBBY-WORKER OFFLINE SMOKE HARNESS (AI-038)
+   - Location: docs/muse/sprint-01/lobby-smoke/ (worker.js, smoke.test.js, PROVENANCE.md)
+   - worker.js: verbatim copy of lobby-worker/worker.js from TubaExperiment
+     @ 992bc95c7164416ea0a25a4ce120f6ec0a0a167a (diff-verified byte-identical).
+   - smoke.test.js: empty GET /lobbies -> POST /lobbies (create) -> GET /lobbies
+     (entry verified) -> DELETE by wrong owner (403) -> DELETE by owner (ok) ->
+     GET /lobbies empty again + GET /lobbies/:code 404. In-memory mocked KV,
+     no network, no writes to the deployed service.
+   - Command: cd docs/muse/sprint-01/lobby-smoke && node --test smoke.test.js
+   - Output (2026-09-27, Node v24.20.0, exit 0):
+     pass 1, fail 0
+   - This is a contract smoke test, not a playable game and not an end-to-end
+     pass against the deployed Worker.
+
 6. UNRESOLVED ISSUES
    a. Gradle test suite (72 *Test.java) not executed — read-only time-boxed audit.
    b. Desolate-Tuba codex/* + feature branches not individually surveyed;
