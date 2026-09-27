@@ -43,6 +43,13 @@ Clean shutdown: `Ctrl-C` (SIGINT/SIGTERM handled).
   quick-match lifecycle, report/Elo flow. Version mismatch is pinned as
   *unsupported* by the worker contract (stored/echoed, never enforced).
 - `demo.js` — runnable lifecycle demo printing expected outcomes.
+- `public/client.js` — reusable JS adapter (`LobbyClient`/`LobbyError`):
+  configurable loopback base URL (non-loopback refused unless opted in),
+  per-request timeout, `AbortSignal` cancellation, typed/documented
+  request/response shapes, and errors carrying status + message + code.
+  The browser UI is wired through it.
+- `examples/client-demo.js` — runnable adapter integration example.
+- `docs/api.md` — endpoint schema + C# integration notes for Astra.
 
 ## Scope and trust limits (read before exposing this anywhere)
 
