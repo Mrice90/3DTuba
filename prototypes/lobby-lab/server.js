@@ -7,6 +7,9 @@
  * - In-memory KV with TTL + controllable clock (see kv.js).
  * - Serves the browser UI from public/.
  * - Binds loopback (127.0.0.1) by default; override with HOST/PORT env.
+ * - Local-only boundary (AI-045): non-loopback bind hosts are rejected
+ *   before listening; per request, the Host header must be loopback and
+ *   browser mutations must carry a loopback Origin/Referer.
  *
  * LOCAL DEVELOPMENT ONLY. Caller-supplied UUIDs are NOT authentication:
  * anyone holding a hostUuid can manage that lobby. Never expose this
@@ -32,6 +35,53 @@ const MIME = {
 };
 
 const API_PREFIXES = ["/lobbies", "/queue", "/pair", "/report", "/leaderboard", "/rating"];
+
+/**
+ * Loopback-only policy (AI-045). The lab server must never be reachable
+ * beyond this machine:
+ * - start() rejects non-loopback bind hosts BEFORE listening (covers the
+ *   HOST env var, which the main block passes straight into start()).
+ * - every request's Host header must be loopback (defeats DNS rebinding,
+ *   where evil.example resolves to 127.0.0.1).
+ * - state-changing requests from a browser must carry a loopback Origin
+ *   (or Referer); non-browser clients send neither and are unaffected.
+ *
+ * This is a local-development boundary, NOT production authentication:
+ * caller-supplied UUIDs still own lobbies (see README.md).
+ */
+export function isLoopbackHost(host) {
+    if (!host || typeof host !== "string") return false;
+    const h = host.trim().toLowerCase();
+    if (h === "localhost" || h === "::1" || h === "[::1]") return true;
+    const v4 = h.match(/^127\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+    if (v4) return v4.slice(1).every((n) => Number(n) <= 255);
+    return false;
+}
+
+/** Hostname part of the request's Host header (port stripped). Null if absent. */
+function hostHeaderHostname(req) {
+    const host = req.headers.host;
+    if (!host || typeof host !== "string") return null;
+    const bracketed = host.match(/^\[([^\]]+)\](?::\d+)?$/);
+    if (bracketed) return bracketed[1];
+    return host.split(":")[0];
+}
+
+/**
+ * Hostname of the request's Origin (falling back to Referer). Null when
+ * neither is present — i.e. a non-browser client (Node LobbyClient, demo,
+ * curl). Returns "" when the value is present but unparseable, which
+ * fail-closed counts as non-loopback.
+ */
+function requestOriginHostname(req) {
+    const origin = req.headers.origin || req.headers.referer;
+    if (!origin) return null;
+    try {
+        return new URL(origin).hostname;
+    } catch {
+        return "";
+    }
+}
 
 function readBody(req, maxBytes) {
     return new Promise((resolve, reject) => {
@@ -93,7 +143,8 @@ async function serveStatic(req, res) {
  * Start the lab server.
  * @param {object} opts
  * @param {number} [opts.port=8787] 0 = ephemeral (tests)
- * @param {string} [opts.host="127.0.0.1"]
+ * @param {string} [opts.host="127.0.0.1"] must be loopback; anything else
+ *   throws before the server listens (AI-045)
  * @param {() => number} [opts.now] controllable clock for the KV store
  * @param {number} [opts.maxBodyBytes=1000000] request body cap (413 beyond)
  * @param {boolean} [opts.allowReports=false] enable POST /report.
@@ -102,11 +153,36 @@ async function serveStatic(req, res) {
  *   UUIDs. Keep disabled until a production identity design exists.
  */
 export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes = 1_000_000, allowReports = false } = {}) {
+    if (!isLoopbackHost(host)) {
+        throw new Error(`refusing to bind non-loopback host "${host}": lobby-lab is local-development-only`);
+    }
     const kv = createKv(now ? { now } : {});
     const env = { IC_KV: kv };
 
     const server = http.createServer(async (req, res) => {
         try {
+            // AI-045 local-only boundary: checked before routing, body
+            // buffering, or any state change.
+            const hh = hostHeaderHostname(req);
+            if (!hh) {
+                res.writeHead(400, { "content-type": "application/json" });
+                res.end(JSON.stringify({ error: "Host header required" }));
+                return;
+            }
+            if (!isLoopbackHost(hh)) {
+                res.writeHead(403, { "content-type": "application/json" });
+                res.end(JSON.stringify({ error: "refusing non-loopback Host: lobby-lab serves loopback only" }));
+                return;
+            }
+            const mutating = req.method !== "GET" && req.method !== "HEAD" && req.method !== "OPTIONS";
+            if (mutating) {
+                const oh = requestOriginHostname(req);
+                if (oh !== null && !isLoopbackHost(oh)) {
+                    res.writeHead(403, { "content-type": "application/json" });
+                    res.end(JSON.stringify({ error: "cross-origin mutation refused: lobby-lab accepts browser mutations from loopback origins only" }));
+                    return;
+                }
+            }
             const url = new URL(req.url, "http://local");
             if (!isApiPath(url.pathname)) {
                 await serveStatic(req, res);
@@ -125,7 +201,11 @@ export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes
             } catch (e) {
                 if (e.statusCode === 413) {
                     res.writeHead(413, { "content-type": "application/json", "connection": "close" });
-                    res.end(JSON.stringify({ error: "request body too large" }), () => req.destroy());
+                    // Drain without buffering and let HTTP close gracefully after the
+                    // response. Destroying the request here can reset the Windows
+                    // socket before the client receives the 413 response.
+                    req.resume();
+                    res.end(JSON.stringify({ error: "request body too large" }));
                     return;
                 }
                 throw e;
