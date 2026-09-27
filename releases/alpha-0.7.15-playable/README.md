@@ -96,3 +96,25 @@ old, the source checkout is absent, or the checkout does not match the release
 pin (`992bc95`). `play.*` refuses to run a missing or checksum-mismatched jar
 and tells you exactly where to get one. Full runbook, exact commands, and what
 was verified on which OS: `docs/muse/sprint-01/alpha-build-handoff.md`.
+
+## Regression (AI-048)
+
+`regress.sh` / `regress.bat` re-runs the whole pipeline (fetch → build →
+smoke) inside an isolated temp copy of this directory and reports
+`REGRESSION: PASS` or `REGRESSION: FAIL at <stage>`. After the build it
+verifies the fresh jar against its **own** freshly generated
+`CHECKSUMS.sha256` — rebuilds are content-equivalent, not byte-identical
+(JAR timestamps/ordering vary), so an unrelated reference artifact is never
+used for comparison.
+
+```
+./regress.sh                 # full clean regression, expect REGRESSION: PASS
+./regress.sh --break=pin     # fault injection: off-pin source must fail the build
+./regress.sh --break=checksum # fault injection: corrupted jar must fail verification
+```
+
+In `--break` mode the harness expects the failure: `intentional break
+correctly detected at stage '<stage>'` means the detection test passed. Set
+`REGRESS_KEEP=1` to keep the temp dir for inspection. Upstream repos are only
+fetched read-only; nothing is pushed anywhere.
+
