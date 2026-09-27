@@ -1,0 +1,40 @@
+Sprint IC-2026-09-27-DAY-01 — validation results (2026-09-27, AI-027/AI-028)
+
+1. DUPLICATE-ID CHECK
+   - manifest.csv + manifest.json: 391 rows, 391 unique card_ids — PASS, no duplicates.
+   - Source-level: alpha 143 JSON cards / 143 unique IDs; original 366 / 366 unique (script-verified) — PASS.
+
+2. REQUIRED-FIELD CHECK (card_id, name, faction, type, source, needed_3d,
+   animation_events, sound_cues, provenance)
+   - 391/391 rows complete — PASS, none missing.
+   - art_path intentionally empty where no bespoke art exists (art_status explains);
+     not counted as missing.
+
+3. SOURCE-COMMIT VERIFICATION
+   - TubaExperiment: git rev-parse HEAD = 992bc95c7164416ea0a25a4ce120f6ec0a0a167a
+     on strip/zeus-poseidon-desktop — matches pinned SHA.
+   - Desolate-Tuba: git rev-parse HEAD = dde98f8c71ec80ba9046271d1c84e160735c8fcb
+     on main — matches pinned SHA.
+
+4. CHANGED-FILE LIST (source repos must be untouched)
+   - /tmp/tuba-alpha: git status --porcelain → 0 changed files — CLEAN.
+   - /tmp/tuba-original: git status --porcelain → 0 changed files — CLEAN.
+   - No commits, pushes, merges, deletes, deploys, or releases performed in either repo.
+   - Deliverables created ONLY in ~/workspace/sprint-01/:
+     audit-report.md, manifest.csv, manifest.json, handoff.md, validation.txt
+
+5. 3DTUBA BLOCKER
+   - git ls-remote https://github.com/Mrice90/3DTuba.git → empty output
+     (verified 2026-09-27): repository does not exist or is not public.
+   - No branch created, no write attempted. Deliverables staged at
+     ~/workspace/sprint-01/ for handover as chat artifacts.
+
+6. UNRESOLVED ISSUES
+   a. Gradle test suite (72 *Test.java) not executed — read-only time-boxed audit.
+   b. Desolate-Tuba codex/* + feature branches not individually surveyed;
+      default-branch main used as "the original".
+   c. Meshy / ElevenLabs access not verified (out of audit scope).
+   d. manifest needed_3d column is type-level; bespoke per-card 3D direction pending Astra.
+   e. "Multiplayer screen opened empty" (user report) unverified end-to-end;
+      in-code default lobby URL now present (see handoff.md).
+   f. Stale docs: lobby-worker/README.md "not deployed yet" vs live worker (see handoff.md).
