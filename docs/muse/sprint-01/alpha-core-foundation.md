@@ -19,6 +19,18 @@ there. All verification happened in a scratch copy.
 - **Unit tests:** 169/169 pass, including `MovementRulesTest` 9/9
   (the AI-036 parity fixture now has real executed results, not just
   source-derived expectations).
+  - *2026-09-27 15:00 EDT rerun:* the full 169-test suite re-executed as a
+    single clean scan — `java -jar libs/junit-platform-console-standalone-1.10.2.jar
+    execute --class-path "build/core-classes:build/net-classes:build/cli-classes:
+    build/gui-classes:build/test-classes:build/driver:game-core/src/main/resources:
+    game-cli/src/main/resources:game-cli/src/test/resources:libs/jackson-databind-2.18.2.jar:
+    libs/jackson-core-2.18.2.jar:libs/jackson-annotations-2.18.2.jar"
+    --scan-class-path build/test-classes` → **169 tests found, 169 successful,
+    0 failed** (41 containers, ~9.5 s). This replaces the earlier partial
+    evidence: the first full-classpath scan had missed the test-resource
+    directory, causing `AlliedDeckTest` (needs
+    `game-cli/src/test/resources/prototype-icd1.txt`) to fail on classpath
+    grounds alone; with resources present it passes.
 
 ## Module map
 
