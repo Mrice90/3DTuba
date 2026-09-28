@@ -158,6 +158,6 @@ if not defined DH (
   echo ERROR: could not hash %JARF% with certutil.
   exit /b 24
 )
-if /i not "!DH!"=="%EXP%" (echo ERROR: checksum mismatch for %JARF% -- expected %EXP%, got !DH! & exit /b 25)
+if /i not "!DH!"=="%EXP%" (echo ERROR: checksum mismatch for %JARF% -- expected %EXP%, got !DH! & echo ::error::AI-052-WIN hash mismatch %JARF% exp=%EXP% got=!DH! & exit /b 25)
 echo verified %JARF%
 exit /b 0
