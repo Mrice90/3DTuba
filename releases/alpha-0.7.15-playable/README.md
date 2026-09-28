@@ -110,7 +110,10 @@ used for comparison.
 ```
 ./regress.sh                 # full clean regression, expect REGRESSION: PASS
 ./regress.sh --break=pin     # fault injection: off-pin source must fail the build
+./regress.sh --break=dep     # fault injection: corrupted dependency jar must fail hash verification
+./regress.sh --break=compile # fault injection: syntax error must fail javac
 ./regress.sh --break=checksum # fault injection: corrupted jar must fail verification
+./regress.sh --break=smoke   # fault injection: missing card data must fail the build's smoke step
 ```
 
 In `--break` mode the harness expects the failure: `intentional break
