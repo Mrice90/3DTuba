@@ -73,18 +73,25 @@ chmod +x "$WORK"/*.sh 2>/dev/null || true
 cd "$WORK"
 
 case "$BREAK_MODE" in
-  pin)      EXPECT_FAIL_AT="build" ;;
-  dep)      EXPECT_FAIL_AT="build" ;;
-  depswap)  EXPECT_FAIL_AT="build" ;;
-  compile)  EXPECT_FAIL_AT="build" ;;
-  checksum) EXPECT_FAIL_AT="verify" ;;
-  smoke)    EXPECT_FAIL_AT="build" ;;
-  *)        EXPECT_FAIL_AT="" ;;
+  pin)      EXPECT_FAIL_AT="build"; EXPECT_CODE=20 ;;  # source pin check
+  dep)      EXPECT_FAIL_AT="build"; EXPECT_CODE=23 ;;  # dependency .sha1 check
+  depswap)  EXPECT_FAIL_AT="build"; EXPECT_CODE=24 ;;  # dependency SHA-256 pin (AI-055)
+  compile)  EXPECT_FAIL_AT="build"; EXPECT_CODE=25 ;;  # javac
+  checksum) EXPECT_FAIL_AT="verify"; EXPECT_CODE="" ;; # harness's own verify, not the build
+  smoke)    EXPECT_FAIL_AT="build"; EXPECT_CODE=26 ;;  # smoke.sh
+  *)        EXPECT_FAIL_AT=""; EXPECT_CODE="" ;;
 esac
+BUILD_CODE=""  # AI-056: exit code of the last build-release.sh run
 
 fail() { # fail <stage> <detail>
   if [ -n "$BREAK_MODE" ]; then
     if [ "$1" = "$EXPECT_FAIL_AT" ]; then
+      # AI-056: when the build ran, assert the failure came from the expected
+      # check's distinct exit code — not just any build failure.
+      if [ -n "${EXPECT_CODE:-}" ] && [ -n "${BUILD_CODE:-}" ] && [ "$BUILD_CODE" != "$EXPECT_CODE" ]; then
+        echo "REGRESSION: FAIL at stage '$1' ($2) — break '$BREAK_MODE' exited $BUILD_CODE, expected check exit $EXPECT_CODE"
+        exit 1
+      fi
       echo "REGRESSION: intentional break correctly detected at stage '$1' ($2)"
       exit 0
     fi
@@ -145,7 +152,9 @@ if [ "$BREAK_MODE" = "smoke" ]; then
 fi
 
 echo "== stage: build =="
-if ! ./build-release.sh; then fail build "build-release.sh exited non-zero (for --break=smoke this is the expected underlying smoke.sh failure)"; fi
+./build-release.sh
+BUILD_CODE=$?
+if [ $BUILD_CODE -ne 0 ]; then fail build "build-release.sh exited $BUILD_CODE"; fi
 echo "stage build: OK"
 
 echo "== stage: verify =="

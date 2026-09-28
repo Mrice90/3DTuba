@@ -5,6 +5,12 @@ rem read-only. Run fetch-source.bat first. Requires JDK 17+ and git on PATH.
 rem Env: ALPHA (default build\alpha-src under this script)
 rem      STAGE (default build\stage under this script)
 rem      ALPHA_ALLOW_UNPINNED=1 to build a different checkout (not the release recipe)
+rem AI-056 exit codes (distinct per check; asserted by regress.bat):
+rem    1  diagnostics / certutil hash-tool failure
+rem   10-15 missing tools / java too old
+rem   20 no git repo at ALPHA / 21 source pin mismatch
+rem   22 no curl / 23 download failed / 24 hash failed / 25 .sha1 mismatch / 26 .sha1 fetch failed / 27 SHA-256 pin mismatch (AI-055)
+rem   28 compilation/jarring failed / 29 smoke test failed
 setlocal EnableDelayedExpansion
 
 set PIN=992bc95c7164416ea0a25a4ce120f6ec0a0a167a
@@ -88,7 +94,7 @@ for %%M in (game-core game-cli game-gui net-server) do (
     echo "!SRC!">>"%SRCLIST%"
   )
 )
-javac -encoding UTF-8 -nowarn -cp "%CP_JARS%" -d "%STAGE_DIR%\classes" @"%SRCLIST%" || exit /b 1
+javac -encoding UTF-8 -nowarn -cp "%CP_JARS%" -d "%STAGE_DIR%\classes" @"%SRCLIST%" || exit /b 28
 
 echo == resources ==
 for %%M in (game-core game-cli game-gui net-server) do (
@@ -109,7 +115,7 @@ echo == jarring ==
   echo Implementation-Title: Infinite Conquest ^(alpha^)
   echo Implementation-Version: %VERSION%
 ) > "%STAGE_DIR%\manifest.txt"
-jar --create --file "%STAGE_DIR%\release\%JARNAME%" --manifest "%STAGE_DIR%\manifest.txt" -C "%STAGE_DIR%\classes" . || exit /b 1
+jar --create --file "%STAGE_DIR%\release\%JARNAME%" --manifest "%STAGE_DIR%\manifest.txt" -C "%STAGE_DIR%\classes" . || exit /b 28
 
 echo == checksum ==
 rem AI-052-WIN: certutil prints the hash on the only colon-free line. The old
@@ -131,7 +137,7 @@ copy /Y "%STAGE_DIR%\release\CHECKSUMS.sha256" "%HERE%CHECKSUMS.sha256" >nul
 echo copied %JARNAME% + CHECKSUMS.sha256 next to the launchers
 
 echo == smoke ==
-call "%HERE%smoke.bat" "%HERE%%JARNAME%" || exit /b 1
+call "%HERE%smoke.bat" "%HERE%%JARNAME%" || exit /b 29
 
 echo == done ==
 dir "%HERE%%JARNAME%" "%HERE%CHECKSUMS.sha256"

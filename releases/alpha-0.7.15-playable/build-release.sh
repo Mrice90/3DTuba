@@ -22,6 +22,18 @@ ALPHA="${ALPHA:-$SCRIPT_DIR/build/alpha-src}"
 STAGE="${STAGE:-$SCRIPT_DIR/build/stage}"
 
 die() { echo "ERROR: $*" >&2; exit 1; }
+# AI-056: each verification check fails with its own exit code, so the
+# regression harness can assert WHICH check fired — not just that the build
+# failed. Codes:
+#    1 diagnostics (missing tools, bad java, missing source)
+#   20 source pin mismatch
+#   21 dependency download failed
+#   22 dependency .sha1 fetch failed
+#   23 dependency .sha1 mismatch (transmission check)
+#   24 dependency SHA-256 pin mismatch (supply-chain check, AI-055)
+#   25 compilation/jarring failed
+#   26 smoke test failed
+die_code() { local code="$1"; shift; echo "ERROR: $*" >&2; exit "$code"; }
 
 echo "== diagnostics =="
 command -v git >/dev/null || die "git not found on PATH (needed for the pin check)"
@@ -41,7 +53,7 @@ echo "java specification version: ${JAVA_SPEC:-unknown}"
 HEAD="$(git -C "$ALPHA" rev-parse HEAD)"
 echo "alpha: $HEAD"
 if [ "$HEAD" != "$PIN" ] && [ "${ALPHA_ALLOW_UNPINNED:-0}" != "1" ]; then
-    die "alpha checkout ($HEAD) does not match release pin ($PIN). Set ALPHA_ALLOW_UNPINNED=1 to build it anyway (not the release recipe)."
+    die_code 20 "alpha checkout ($HEAD) does not match release pin ($PIN). Set ALPHA_ALLOW_UNPINNED=1 to build it anyway (not the release recipe)."
 fi
 
 echo "== dependencies (pinned, hash-verified) =="
@@ -76,20 +88,20 @@ for art in jackson-databind jackson-core jackson-annotations; do
     url="$MVN/$art/$JACKSON_VER/$jar"
     if [ ! -f "$DEPS/$jar" ]; then
         echo "fetching $jar ..."
-        fetch "$url" "$DEPS/$jar" || die "download failed for $jar"
+        fetch "$url" "$DEPS/$jar" || die_code 21 "download failed for $jar"
     fi
     if [ ! -f "$DEPS/$jar.sha1" ]; then
         echo "fetching $jar.sha1 ..."
-        fetch "$url.sha1" "$DEPS/$jar.sha1" || die "could not fetch $jar.sha1"
+        fetch "$url.sha1" "$DEPS/$jar.sha1" || die_code 22 "could not fetch $jar.sha1"
     fi
     # Secondary check: Maven .sha1 files contain just the hash; compare manually.
     exp=$(awk '{print $1}' "$DEPS/$jar.sha1")
     got=$(sha1sum "$DEPS/$jar" | awk '{print $1}')
-    [ -n "$exp" ] && [ "$exp" = "$got" ] || die "checksum mismatch for $jar (expected $exp, got $got)"
+    [ -n "$exp" ] && [ "$exp" = "$got" ] || die_code 23 "checksum mismatch for $jar (expected $exp, got $got)"
     # AI-055: primary trust anchor — pinned SHA-256, fail closed.
     pin="$(pin_for "$art")"
     got256=$(sha256sum "$DEPS/$jar" | awk '{print $1}')
-    [ -n "$pin" ] && [ "$pin" = "$got256" ] || die "SHA-256 pin mismatch for $jar (supply-chain check failed; expected $pin, got $got256)"
+    [ -n "$pin" ] && [ "$pin" = "$got256" ] || die_code 24 "SHA-256 pin mismatch for $jar (supply-chain check failed; expected $pin, got $got256)"
     echo "verified $jar (sha1 + pinned sha256)"
 done
 echo "dependencies verified"
@@ -108,7 +120,7 @@ find "$ALPHA/game-core/src/main/java" "$ALPHA/game-cli/src/main/java" \
 echo "sources: $(wc -l < "$STAGE/sources.txt")"
 javac -encoding UTF-8 -nowarn \
   -cp "$CP_JARS" \
-  -d "$STAGE/classes" @"$STAGE/sources.txt"
+  -d "$STAGE/classes" @"$STAGE/sources.txt" || die_code 25 "compilation failed (javac)"
 
 echo "== resources =="
 for m in game-core game-cli game-gui net-server; do
@@ -132,7 +144,7 @@ Implementation-Title: Infinite Conquest (alpha)
 Implementation-Version: $VERSION
 EOF
 jar --create --file "$STAGE/release/$JAR" \
-    --manifest "$STAGE/manifest.txt" -C "$STAGE/classes" .
+    --manifest "$STAGE/manifest.txt" -C "$STAGE/classes" . || die_code 25 "jarring failed"
 
 echo "== checksum =="
 (cd "$STAGE/release" && sha256sum "$JAR" | tee CHECKSUMS.sha256)
@@ -141,7 +153,7 @@ cp "$STAGE/release/CHECKSUMS.sha256" "$SCRIPT_DIR/CHECKSUMS.sha256"
 echo "copied $JAR + CHECKSUMS.sha256 next to the launchers"
 
 echo "== smoke =="
-JAR_PATH="$SCRIPT_DIR/$JAR" bash "$SCRIPT_DIR/smoke.sh"
+JAR_PATH="$SCRIPT_DIR/$JAR" bash "$SCRIPT_DIR/smoke.sh" || die_code 26 "smoke test failed (smoke.sh)"
 
 echo "== done =="
 ls -la "$SCRIPT_DIR/$JAR" "$SCRIPT_DIR/CHECKSUMS.sha256"

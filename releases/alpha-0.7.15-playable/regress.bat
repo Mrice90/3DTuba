@@ -68,6 +68,13 @@ if "%BREAK_MODE%"=="depswap" set "EXPECT_FAIL_AT=build"
 if "%BREAK_MODE%"=="compile" set "EXPECT_FAIL_AT=build"
 if "%BREAK_MODE%"=="checksum" set "EXPECT_FAIL_AT=verify"
 if "%BREAK_MODE%"=="smoke" set "EXPECT_FAIL_AT=build"
+rem AI-056: expected build-release.bat exit code per break mode
+if "%BREAK_MODE%"=="pin" set "EXPECT_CODE=21"
+if "%BREAK_MODE%"=="dep" set "EXPECT_CODE=25"
+if "%BREAK_MODE%"=="depswap" set "EXPECT_CODE=27"
+if "%BREAK_MODE%"=="compile" set "EXPECT_CODE=28"
+if "%BREAK_MODE%"=="smoke" set "EXPECT_CODE=29"
+set "BUILD_CODE="
 if defined BREAK_MODE echo regress: intentional break mode '%BREAK_MODE%', expecting failure at stage '%EXPECT_FAIL_AT%'
 
 
@@ -159,9 +166,10 @@ if "%BREAK_MODE%"=="smoke" (
 
 echo == stage: build ==
 call "%WORK%\build-release.bat"
-if errorlevel 1 (
+set "BUILD_CODE=%ERRORLEVEL%"
+if %BUILD_CODE% NEQ 0 (
   set "FAIL_STAGE=build"
-  set "FAIL_DETAIL=build-release.bat exited non-zero (underlying failure; for --break=smoke this is the expected smoke.bat failure)"
+  set "FAIL_DETAIL=build-release.bat exited %BUILD_CODE% (underlying failure; for --break=smoke this is the expected smoke.bat failure)"
   call :fail
 )
 echo stage build: OK
@@ -229,6 +237,13 @@ rem Uses FAIL_STAGE and FAIL_DETAIL variables (call args were unreliable)
 echo ::error::AI-052-WIN regress failed at stage '%FAIL_STAGE%': %FAIL_DETAIL%
 if defined BREAK_MODE (
   if "%FAIL_STAGE%"=="%EXPECT_FAIL_AT%" (
+    rem AI-056: when the build ran, assert the failure came from the expected
+    rem checks distinct exit code -- not just any build failure.
+    if defined EXPECT_CODE if defined BUILD_CODE if not "%BUILD_CODE%"=="%EXPECT_CODE%" (
+      set "EXITCODE=1"
+      set "RESULT=REGRESSION: FAIL at stage '%FAIL_STAGE%' (%FAIL_DETAIL%) -- break '%BREAK_MODE%' exited %BUILD_CODE%, expected check exit %EXPECT_CODE%"
+      goto :finish
+    )
     set "EXITCODE=0"
     set "RESULT=REGRESSION: intentional break correctly detected at stage '%FAIL_STAGE%' (%FAIL_DETAIL%)"
     goto :finish
