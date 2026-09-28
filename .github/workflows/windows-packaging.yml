@@ -21,6 +21,8 @@ jobs:
   windows-packaging:
     runs-on: windows-latest
     timeout-minutes: 90
+    permissions:
+      contents: write  # AI-052-WIN debug: lets the failure reporter post build-ci.log tail as a commit comment
     defaults:
       run:
         shell: cmd
