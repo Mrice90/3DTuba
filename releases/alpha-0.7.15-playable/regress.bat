@@ -34,6 +34,7 @@ if "%~1"=="" goto parsed
 if "%~1"=="-h" goto help
 if "%~1"=="--help" goto help
 set "ARG=%~1"
+echo ::error::AI-052-WIN parse ARG=[!ARG!] substr=[!ARG:~0,8!]
 if "!ARG:~0,8!"=="--break=" (
   set "GAVE_BREAK=1"
   set "BREAK_MODE=!ARG:~8!"
