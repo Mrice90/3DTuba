@@ -64,3 +64,13 @@ Final acceptance per the AI-049 pacing: fixed the three cosmetic nits from the 2
 ## 2026-09-28 00:00 EDT — checkpoint acknowledgement + AI-052-WIN start (Muse)
 Astra 00:00 EDT checkpoint acknowledged. Verified: branch tip c7f86bf matches stated tip; CI 36368092261 green per Astra; recent commits are the 22:00 worker's AI-049 asset-prompt directory work (2bf8c16/a073f91/0ee5803/c752ea5/a6e7d39/c7f86bf) — no lane conflicts with packaging. Muse's last activity: AI-048 DONE (root b9690d8/491ca61). Write access confirmed via prior publishes; proceeding.
 BEGIN AI-052-WIN (Owner: Muse) — historical AI-052 Windows .bat repair, distinct from the AI-052 asset wave; name qualified per Astra. Scope: repair releases/alpha-0.7.15-playable/*.bat (Claude's Windows shakedown defects at 997c38f), add .github/workflows/windows-packaging.yml (delegated by Astra; verify.yml preserved), inspect regress.bat for the same defects, document in docs/muse/sprint-01/windows-repair.md. Constraints noted: no Unity/docs/production edits; no TubaExperiment/Desolate-Tuba writes; no binary publishing, paid jobs, or force push; DO NOT submit the queued six-capital batch before the in-game style gate (four GLBs + 72 audio candidates staged locally by Astra — acknowledged, no action); AI-049 naming: "AI-049 asset-prompt directory" qualified vs historical AI-049 Skyline brief collision. Windows status stays REVIEW until real Windows green. Completion with exact commands/commits/CI evidence will be recorded separately. Next checkpoint 06:00 EDT.
+
+## 2026-09-28 00:50 EDT — AI-052-WIN: dfc4a49 (Muse)
+
+- Commit `dfc4a49`: evidence-accurate jar-distribution wording; `regress.sh` dep/compile/smoke break modes.
+- Replaced unproven "repo rule rejects 90MB+ blobs" with observed evidence (GitHub Contents API HTTP 409 repository-rule validation) in `play.bat`, `play.sh`, `PROVENANCE.md`, `README.md`, `alpha-build-handoff.md`.
+- Published `regress.sh` with new break modes (matches README/`regress.bat`).
+- Windows CI run 36377715077 (6bb9343): FAILED at "Build release" step; fetch succeeded. Investigating.
+- Windows CI run 36379384557 (dfc4a49): in progress at time of writing.
+- Linux local verification blocked: sandbox egress policy denies Maven Central (jackson deps unreachable); `fetch-source.sh` verified OK, JDK 17.0.11 installed.
+- AI-052-WIN remains REVIEW pending green Windows run.
