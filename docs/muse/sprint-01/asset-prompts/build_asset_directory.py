@@ -6,12 +6,12 @@ generates:
   - asset-prompt-directory.json : machine-readable per-card asset specs
   - asset-prompt-directory.md   : human-readable directory + SFX group table
 
-Scope v1: ZEUS + POSEIDON alpha cards (139) + 20 runtime tutors = 159 cards.
+Scope v1: 119 ZEUS + POSEIDON alpha-json cards + 20 runtime tutors = 139 cards.
 Excluded: 19 DEMO + 5 UNASSIGNED prototype cards (dev-only, not shippable).
 
 SFX policy (per Product Owner 2026-09-27): sound effects grouped by faction +
 archetype (fallback: faction + type); fully unique SFX only for rarity-4
-cards (20 apex + 6 capitals).
+cards (20 apex-file + 6 capitals + 6 other rarity-4).
 
 Inputs (VM-local, read-only):
   manifest : /home/hatch/workspace/work-3dtuba/docs/muse/sprint-01/manifest.csv
@@ -127,7 +127,7 @@ def main():
         prompt = (f"{STYLE_ANCHOR} Subject: \"{name}\", a {ctype.lower()} of the {faction.title()} faction. "
                   f"{FACTION_STYLE[faction]} {TYPE_FRAMING[ctype]}")
         if flavor:
-            prompt += f" Character notes: {flavor}."
+            prompt += f" {ctype.title()} notes: {flavor}."
         if is_r4:
             prompt += (" Signature Apex-tier asset: push detail, presence and material richness "
                        "beyond standard cards — this is a centerpiece miniature.")
