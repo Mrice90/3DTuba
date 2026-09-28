@@ -53,7 +53,7 @@ Pipeline: generate → remesh/texture → download → `check_glb.py` → `glb_t
 | AI-057 | P3 | Muse | READY | Document or wrap `regress.bat`'s `exit` so manual runs keep the console open. | README updated, or the wrapper is tested. |
 | AI-031 | P0 | Claude (Astra lane) | IN_PROGRESS | Keep integration/security gates current. Review every new head at each checkpoint (AI-005/AI-006). | A checkpoint entry in SPRINT_LOG.md for every meeting. |
 | AI-059 | P1 | Claude | DELIVERED 2026-09-28 18:45 | Both astra/* branches are already merged (0 stranded commits). Local-only docs/production (AI-054 checker 55/55, AI-049/AI-052 validators OK) is now committed. Raw 58 MB staging binaries are kept out. | `docs/reviews/2026-09-28-1845-AI-059-astra-branches.md`. Astra confirms branch deletion on return. |
-| Meshy media (AI-061) | P1 | Claude via Meshy | IN_PROGRESS | Batch-01: 6 capitals generating (18:45). Next: remesh ~10–30K tris, texture, download, Unity stills. | PO in-game review per batch. |
+| Meshy media (AI-061) | P1 | Claude via Meshy | IN_PROGRESS | Batch-01 capitals DELIVERED 19:00: 6 generated, remeshed to 30K tris, 2K PBR textured (180 credits, 2,960 left), downloaded to assets/staging/meshy/batch-01-capitals (SHA256SUMS.txt), rendered in Unity. Next: batch-02 Zeus/Poseidon units. | PO in-game review per batch. |
 | ElevenLabs media (AI-061) | P1 | Claude via ElevenLabs | IN_PROGRESS | Capital SFX, 6×4 takes in flow S5OTgpVd2nqHXp3u7pQd. Next: pick takes, convert to 48 kHz WAV, then unit SFX groups. | PO listen-through. |
 
 ### Accepted or done (for reference; evidence in SPRINT_LOG.md)

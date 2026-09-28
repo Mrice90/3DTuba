@@ -52,12 +52,21 @@ public static class TokenPreview {
     }
     [MenuItem("Infinite Conquest/Render token preview")]
     public static void Render() {
-        string tokenPath = Arg("-tokenPath", "Assets/Art/Tokens/ThunderRam/ThunderRam.fbx");
-        string tokenName = Arg("-tokenName", "thunder-ram");
+        Render(Arg("-tokenPath", "Assets/Art/Tokens/ThunderRam/ThunderRam.fbx"), Arg("-tokenName", "thunder-ram"));
+    }
+    // Renders every Assets/Art/Tokens/<Name>/<Name>.fbx that the Blender normalizer produced.
+    [MenuItem("Infinite Conquest/Render all token previews")]
+    public static void RenderAll() {
+        foreach (var dir in Directory.GetDirectories("Assets/Art/Tokens")) {
+            string name = Path.GetFileName(dir), fbx = $"{dir}/{name}.fbx".Replace('\\', '/');
+            if (File.Exists(fbx)) Render(fbx, name);
+        }
+    }
+    static void Render(string tokenPath, string tokenName) {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         var lit = Shader.Find("Universal Render Pipeline/Lit");
-        var floor = new Material(lit) { color = new Color(.09f, .15f, .22f) };
-        var home = new Material(lit) { color = new Color(.12f, .55f, .49f) };
+        var floor = new Material(lit); floor.SetColor("_BaseColor", new Color(.09f, .15f, .22f));
+        var home = new Material(lit); home.SetColor("_BaseColor", new Color(.12f, .55f, .49f));
         for (int x = 0; x < 4; x++) for (int y = 0; y < 6; y++) {
             var t = GameObject.CreatePrimitive(PrimitiveType.Cube);
             t.transform.position = Cell(x, y); t.transform.localScale = new Vector3(1.18f, .18f, 1.18f);
@@ -86,7 +95,7 @@ public static class TokenPreview {
         Directory.CreateDirectory("Build");
         cam.fieldOfView = 30; cam.transform.position = token.transform.position + new Vector3(3.2f, 4.6f, -5.8f); cam.transform.LookAt(token.transform.position);
         Shot(cam, $"Build/token-preview-{tokenName}-board.png", 1600, 1000);
-        cam.fieldOfView = 28; cam.transform.position = b.center + new Vector3(1.6f, 1.3f, -2.4f); cam.transform.LookAt(b.center);
+        cam.fieldOfView = 28; cam.transform.position = b.center + new Vector3(1.6f, 1.3f, -2.4f).normalized * Mathf.Max(3.2f, b.size.magnitude * 1.7f); cam.transform.LookAt(b.center);
         Shot(cam, $"Build/token-preview-{tokenName}-closeup.png", 1600, 1000);
     }
 }
