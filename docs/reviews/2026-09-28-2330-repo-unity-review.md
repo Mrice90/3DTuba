@@ -15,7 +15,7 @@ Vision being measured against: a full 3D board that builds as tokens are played,
 1. **No rules in Unity.** `UnityProof/Assets/Proof/MovementState.cs` implements only the AI-036 fixture: a 1-point budget and one hard-coded enemy structure at (1,0). There are no cards, stacks, turns, combat or capitals. The real rules are in TubaExperiment `game-core` (Java, 169 tests reported). AI-003 has not decided how Unity gets authoritative rules (C# port, Java sidecar or server). Until it does, AI-060 cannot start.
    *Action:* AI-062 (board event contract with golden transcripts) lets presentation work begin against recorded events whichever way AI-003 goes.
 2. **No presentation layer yet.** No Animator, Timeline, AudioSource, VFX, camera rig or data layer (ScriptableObjects/prefabs) exists. The board and pieces are primitives built in code, and the UI is legacy `OnGUI`. That is fine for a proof, but it is not a foundation for AI-060a–c.
-3. **The asset prompts describe the wrong board.** All 139 `meshy_prompt` strings say "hex-based", and every LAND asks for a hexagonal tile. The rules board is a 4×6 square grid with stacking (`BoardPosition` WIDTH 4/HEIGHT 6, Chebyshev distance). *Action:* AI-063, before any land is generated.
+3. ~~**The asset prompts describe the wrong board.**~~ *Corrected 19:35 EDT: this finding was wrong.* The alpha plays on HEX geometry (`MatchRules.hex()`, 24 hexes in odd-row offset 4 × 6, per `BoardGeometry.java`), so the prompts' hex wording is right. The real mismatch is the other way round: the AI-036 fixture and UnityProof use the engine's SQUARE test default (Chebyshev distance, diagonals cost one) and square tiles. *Action:* UnityProof moves to hex geometry (done with the Unity fixes Mathew approved); AI-062 uses HEX.
 4. **No size contract except characters.** `check_glb.py` defaults to the 1.8-unit character contract. Keraunos Spire came out about 2.5 tiles tall and Abyssal Court overhangs its tile. *Action:* AI-063 adds a per-type footprint and height budget.
 5. **The sound vocabulary is split.** The prompt directory uses alpha cue names (DEPLOY, DESTROY, CLICK, MELEE/RANGED…) and 107 of 139 cards share group SFX. The ElevenLabs lane now produces per-unit summon/move/attack/hit/death/ability/idle. *Action:* AI-064 gives one per-card event → animation → SFX mapping and a coverage report.
 
@@ -34,7 +34,7 @@ Vision being measured against: a full 3D board that builds as tokens are played,
 | ID | Owner | Summary |
 |---|---|---|
 | AI-062 | Muse (Rune) | Board event contract v1: vocabulary with Java source citations, JSON schema, golden Zeus-vs-Poseidon transcript, validator in CI |
-| AI-063 | Muse (Rune) | Asset prompts corrected for the square stacked board, plus a per-type footprint and height budget |
+| AI-063 | Muse (Rune) | Per-type footprint and height budget for one hex tile added to the asset prompts (hex wording kept) |
 | AI-064 | Muse (Rune) | Per-card presentation manifest and coverage report (after AI-062) |
 
 Findings 2, 6, 7 and 8 are Unity code changes in the Claude/Astra lane. They are recorded here and need Mathew's approval before anyone edits game code.
