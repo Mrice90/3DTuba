@@ -168,3 +168,34 @@ still works: it corrupts the cached jar, and verification against the
 - `releases/alpha-0.7.15-playable/README.md` — documented new break modes
 - `.github/workflows/windows-packaging.yml` — new (additive; `verify.yml` preserved)
 - `docs/muse/sprint-01/windows-repair.md` — this file
+
+## Final acceptance (2026-09-28)
+
+**Green run:** `36386714758` at `f1ba391` — all steps passed:
+- Fetch → build → smoke 5/5
+- Clean `regress.bat`: PASS
+- `--break=pin`: correctly detected at build stage (via bogus `GIT_DIR`)
+- `--break=dep`: correctly detected at build stage
+- `--break=compile`: correctly detected at build stage
+- `--break=checksum`: correctly detected at verify stage
+- `--break=smoke`: correctly detected at build stage
+
+### Root causes fixed
+
+1. **Maven `.sha256` 404**: Maven Central `.sha256` URLs return nginx 404 HTML, not checksums. Switched to `.sha1` for dependency verification (SHA-256 retained for built JARs).
+
+2. **`certutil` trailing spaces**: Windows `certutil -hashfile` output has trailing spaces causing false hash mismatches. Added trimming.
+
+3. **`regress.bat` fall-through**: `:finish` used `exit /b` which returned from `call:pass` instead of terminating, causing fall-through into `:fail`. Changed to `exit` (full termination).
+
+4. **`=` as cmd delimiter**: `call regress.bat --break=pin` splits into `%1=--break` `%2=pin`. Added rejoin logic in arg parsing.
+
+5. **`--break=pin` reliability**: Replaced flaky `git fetch`/`checkout` with bogus `GIT_DIR` env var, causing `git rev-parse HEAD` to fail reliably, triggering pin verification exit 21.
+
+### Cleanup
+
+- Removed temporary debug annotations
+- Fixed workflow `.sha1` annotation label (was mislabeled `sha256`)
+- Retained useful failure reporters: hash mismatch, build exit code
+
+**Status:** AI-052-WIN complete, ready for Mathew's review.

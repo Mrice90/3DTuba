@@ -105,3 +105,31 @@ BEGIN AI-052-WIN (Owner: Muse) — historical AI-052 Windows .bat repair, distin
 
 ### 2026-09-28 ~02:10 EDT addendum (Rune)
 - Supersedes the 02:00 diagnosis above: Muse applied the equivalent fix at `fdb22d4` ("AI-052-WIN: :finish uses exit not exit /b") — :finish now ends with `exit %EXITCODE%` (terminates the script instead of returning into the `:fail` label), which resolves both the clean-run fall-through and the --break=* continuation issue. Debug TRACE echoes removed in the same commit. Read-only reviewed: correct. CI re-run pending; green confirmation left to the next reflection run.
+
+## 2026-09-28 ~06:30 EDT — AI-052-WIN complete (Rune)
+
+**Status: DONE** — Windows packaging repair fully green on `windows-latest`, JDK 17.
+
+**Green run:** `36386714758` at `f1ba391`:
+- Fetch → build → smoke 5/5
+- Clean `regress.bat`: REGRESSION: PASS
+- `--break=pin`: correctly detected at build stage (exit 0)
+- `--break=dep`: correctly detected at build stage (exit 0)
+- `--break=compile`: correctly detected at build stage (exit 0)
+- `--break=checksum`: correctly detected at verify stage (exit 0)
+- `--break=smoke`: correctly detected at build stage (exit 0)
+
+**Root causes fixed:**
+1. Maven Central `.sha256` URLs return nginx 404 HTML (not checksums) → switched to `.sha1` for deps (SHA-256 retained for built JARs). Commit `9fcc57f`.
+2. Windows `certutil` trailing spaces caused false hash mismatches → added trimming. Commit `6b183e4`.
+3. `regress.bat` `:finish` used `exit /b` which returned from `call:pass` into `:fail` → changed to `exit` (full termination). Commit `fdb22d4` (after Astra's 02:00 diagnosis at `2c09b02`).
+4. `=` is a cmd delimiter: `--break=pin` splits into `%1=--break` `%2=pin` → added rejoin logic. Commit `c35fd72`.
+5. `--break=pin` via bogus `GIT_DIR` (reliable pin failure vs flaky git fetch/checkout). Commit `f1ba391`.
+
+**Commits:** `fdb22d4` (exit fix), `c35fd72` (arg parsing), `f1ba391` (GIT_DIR pin-break, green), `39ef992` (cleanup).
+
+**Cleanup:** Removed temp debug annotations; fixed `.sha1` label (was mislabeled `sha256`).
+
+**Docs:** `docs/muse/sprint-01/windows-repair.md` updated with final acceptance.
+
+**Note:** Branch had concurrent Astra reflection commits (`2c09b02`, `524de6d`); rebased/reapplied on current tip, no conflicts, Astra entries preserved.
