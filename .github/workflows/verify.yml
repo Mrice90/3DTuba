@@ -33,6 +33,9 @@ jobs:
       - name: Clean lifecycle shutdown
         working-directory: prototypes/lobby-lab
         run: node demo.js
+      - name: Board event contract validation (AI-062)
+        working-directory: docs/muse/sprint-02/board-events
+        run: python -m unittest test_validate
       - name: Client integration example
         working-directory: prototypes/lobby-lab
         run: node examples/client-demo.js
