@@ -77,13 +77,13 @@ cd /D "%WORK%"
 
 echo == stage: fetch ==
 call "%WORK%\fetch-source.bat"
-if errorlevel 1 call :fail fetch "fetch-source.bat exited non-zero"
+if errorlevel 1 set "FAIL_STAGE=fetch" & set "FAIL_DETAIL=fetch-source.bat exited non-zero" & call :fail
 echo stage fetch: OK
 
 if "%BREAK_MODE%"=="pin" (
   echo regress: intentional break -- moving temp source off the release pin
   git -C "%WORK%\build\alpha-src" fetch -q --depth 1 origin %OFF_PIN%
-  if errorlevel 1 call :fail build "could not fetch off-pin commit for fault injection"
+  if errorlevel 1 set "FAIL_STAGE=build" & set "FAIL_DETAIL=could not fetch off-pin commit for fault injection" & call :fail
   git -C "%WORK%\build\alpha-src" checkout -q FETCH_HEAD
   echo regress: temp source is now off the release pin
 )
@@ -99,7 +99,7 @@ if "%BREAK_MODE%"=="compile" (
   for /f "delims=" %%J in ('dir /s /b "%WORK%\build\alpha-src\game-cli\src\main\java\*.java" 2^>nul') do (
     if not defined COMPILE_TARGET set "COMPILE_TARGET=%%J"
   )
-  if not defined COMPILE_TARGET call :fail build "no java source found for fault injection"
+  if not defined COMPILE_TARGET set "FAIL_STAGE=build" & set "FAIL_DETAIL=no java source found for fault injection" & call :fail
   echo @@@INVALID-JAVA-SYNTAX@@@>> "!COMPILE_TARGET!"
   echo regress: intentional break -- injected syntax error into !COMPILE_TARGET!
 )
@@ -113,20 +113,20 @@ if "%BREAK_MODE%"=="smoke" (
       set /a SMOKE_N+=1
     )
   )
-  if !SMOKE_N! EQU 0 call :fail build "no card JSON resources found for fault injection"
+  if !SMOKE_N! EQU 0 set "FAIL_STAGE=build" & set "FAIL_DETAIL=no card JSON resources found for fault injection" & call :fail
   echo regress: intentional break -- removed !SMOKE_N! card JSON resources from temp tree
 )
 
 echo == stage: build ==
 call "%WORK%\build-release.bat"
-if errorlevel 1 call :fail build "build-release.bat exited non-zero (underlying failure; for --break=smoke this is the expected smoke.bat failure)"
+if errorlevel 1 set "FAIL_STAGE=build" & set "FAIL_DETAIL=build-release.bat exited non-zero (underlying failure; for --break=smoke this is the expected smoke.bat failure)" & call :fail
 echo stage build: OK
 
 echo == stage: verify ==
 set "JAR="
 for %%F in (infinite-conquest-alpha-*.jar) do set "JAR=%%F"
-if not defined JAR call :fail verify "no built jar found"
-if not exist CHECKSUMS.sha256 call :fail verify "CHECKSUMS.sha256 missing after build"
+if not defined JAR set "FAIL_STAGE=verify" & set "FAIL_DETAIL=no built jar found" & call :fail
+if not exist CHECKSUMS.sha256 set "FAIL_STAGE=verify" & set "FAIL_DETAIL=CHECKSUMS.sha256 missing after build" & call :fail
 
 if "%BREAK_MODE%"=="checksum" (
   echo x>> "%JAR%"
@@ -144,8 +144,8 @@ for /f %%H in ('certutil -hashfile "%JAR%" SHA256 ^| findstr /v ":"') do (
   goto :got_actual
 )
 :got_actual
-if not defined EXPECTED call :fail verify "could not read expected hash from CHECKSUMS.sha256"
-if not defined ACTUAL call :fail verify "could not hash the built jar with certutil"
+if not defined EXPECTED set "FAIL_STAGE=verify" & set "FAIL_DETAIL=could not read expected hash from CHECKSUMS.sha256" & call :fail
+if not defined ACTUAL set "FAIL_STAGE=verify" & set "FAIL_DETAIL=could not hash the built jar with certutil" & call :fail
 rem AI-052-WIN: trim trailing spaces from certutil output (see build-release.bat)
 :trimactual
 if "!ACTUAL:~-1!"==" " (
@@ -153,7 +153,7 @@ if "!ACTUAL:~-1!"==" " (
   goto :trimactual
 )
 :trimactualdone
-if /i not "%EXPECTED%"=="!ACTUAL!" call :fail verify "jar does not match its own generated checksum"
+if /i not "%EXPECTED%"=="!ACTUAL!" set "FAIL_STAGE=verify" & set "FAIL_DETAIL=jar does not match its own generated checksum" & call :fail
 echo stage verify: OK (%JAR% matches its own generated checksum)
 
 call :pass
@@ -161,20 +161,20 @@ call :pass
 rem -- subroutines never return: they jump to :finish, which cleans up and exits.
 
 :fail
-rem %1 = stage, %2 = detail
-echo ::error::AI-052-WIN regress failed at stage '%~1': %~2
+rem Uses FAIL_STAGE and FAIL_DETAIL variables (call args were unreliable)
+echo ::error::AI-052-WIN regress failed at stage '%FAIL_STAGE%': %FAIL_DETAIL%
 if defined BREAK_MODE (
-  if "%~1"=="%EXPECT_FAIL_AT%" (
+  if "%FAIL_STAGE%"=="%EXPECT_FAIL_AT%" (
     set "EXITCODE=0"
-    set "RESULT=REGRESSION: intentional break correctly detected at stage '%~1' (%~2)"
+    set "RESULT=REGRESSION: intentional break correctly detected at stage '%FAIL_STAGE%' (%FAIL_DETAIL%)"
     goto :finish
   )
   set "EXITCODE=1"
-  set "RESULT=REGRESSION: FAIL at stage '%~1' (%~2) -- break '%BREAK_MODE%' expected failure at '%EXPECT_FAIL_AT%'"
+  set "RESULT=REGRESSION: FAIL at stage '%FAIL_STAGE%' (%FAIL_DETAIL%) -- break '%BREAK_MODE%' expected failure at '%EXPECT_FAIL_AT%'"
   goto :finish
 )
 set "EXITCODE=1"
-set "RESULT=REGRESSION: FAIL at stage '%~1' (%~2)"
+set "RESULT=REGRESSION: FAIL at stage '%FAIL_STAGE%' (%FAIL_DETAIL%)"
 goto :finish
 
 :pass
