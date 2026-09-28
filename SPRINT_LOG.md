@@ -133,3 +133,17 @@ BEGIN AI-052-WIN (Owner: Muse) — historical AI-052 Windows .bat repair, distin
 **Docs:** `docs/muse/sprint-01/windows-repair.md` updated with final acceptance.
 
 **Note:** Branch had concurrent Astra reflection commits (`2c09b02`, `524de6d`); rebased/reapplied on current tip, no conflicts, Astra entries preserved.
+
+## 2026-09-28 ~07:00 EDT — Linux build-release.sh .sha1 fix + AI-046 DONE (Rune)
+
+Mathew (own message 06:32 EDT) directed: check backlog/sprint log, do the work; noted Maven repo access seemed stuck.
+
+Findings:
+- Maven Central is reachable from Linux sandbox (HTTP 200 on .sha1 URLs). Earlier curl timeout was transient.
+- Root cause of Linux-side stall: build-release.sh still fetched Maven `.sha256` (which 404s as nginx HTML), while build-release.bat had been fixed to `.sha1` during AI-052-WIN. The .sh was never updated.
+- Fix: build-release.sh now fetches published `.sha1` and compares manually (Maven .sha1 files contain just the hash, not `hash  filename` format). Verified all 3 Jackson 2.18.2 jars download and match: databind deef8697..., core fb64ccac..., annotations 985d7775....
+- GitHub clone from sandbox is flaky (fetch-pack disconnects); full Linux regress.sh end-to-end blocked on network, not on the fix. The dependency-fetch stage (the Maven part) is proven working.
+- AI-046 moved REVIEW -> DONE: Windows acceptance supplied by AI-052-WIN green run 36386714758.
+
+Commit: cd4dd2c (local; push blocked by sandbox network — HTTPS needs auth, SSH blocked by proxy)
++ Publish: files shipped to muse/sprint-01-content-audit via put_file.py at the 2026-09-28 ~08:00 EDT reflection (commit hashes recorded in that run's log entry).
