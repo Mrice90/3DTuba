@@ -25,7 +25,6 @@ rem expected stage; any other outcome prints REGRESSION: FAIL and exits 1.
 rem Set REGRESS_KEEP=1 to keep the temp dir for inspection.
 rem Upstream repos are only fetched (read-only); nothing is pushed anywhere.
 setlocal EnableDelayedExpansion
-echo ::error::AI-052-WIN regress START args=[%*]
 
 set "BREAK_MODE="
 set "GAVE_BREAK="
@@ -34,10 +33,14 @@ if "%~1"=="" goto parsed
 if "%~1"=="-h" goto help
 if "%~1"=="--help" goto help
 set "ARG=%~1"
-echo ::error::AI-052-WIN parse ARG=[!ARG!] substr=[!ARG:~0,8!]
+rem AI-052-WIN: cmd splits on = so --break=pin arrives as %1=--break %2=pin; rejoin.
+if "%~1"=="--break" if not "%~2"=="" set "ARG=--break=%~2"
 if "!ARG:~0,8!"=="--break=" (
   set "GAVE_BREAK=1"
   set "BREAK_MODE=!ARG:~8!"
+  shift
+  rem AI-052-WIN: if = was a delimiter, %2 was consumed as part of ARG; shift it away.
+  if "%~1"=="--break" shift
 ) else (
   echo ERROR: unknown argument: %~1>&2
   exit /b 2
