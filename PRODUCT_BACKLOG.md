@@ -173,3 +173,11 @@ An item is DONE only when its acceptance criteria are met, relevant tests/review
 
 
 
+
+## 2026-09-28 18:00 — Claude (covering Astra)
+
+Queue changes (details and evidence are in the SPRINT_LOG.md entry of the same name):
+- **AI-058 (new, P3, under AI-006, owner Muse):** build-release.sh Java version detection breaks when JAVA_TOOL_OPTIONS is set (reads the "Picked up…" banner line). Port the .bat `java.specification.version` approach.
+- **AI-048 (Muse, P1):** Linux clean run is DELIVERED (self-reported, 7883a9a) but NOT ACCEPTED. Close it with a CI `ubuntu-latest` job running regress.sh clean plus all 5 break modes, and record the run ID.
+- Order for Muse: AI-055 (P1) → AI-048 CI (P1) → AI-056 (P2) → AI-058 / AI-057 (P3).
+- Unchanged: AI-052-WIN ACCEPTED; AI-046 REVIEW (blocked by AI-055). AI-030, AI-052-ASSET import and AI-046-WIN-ACCEPT are WAITING — needs Mathew present. Media is idle by gate. HA-011/HA-012 await the PO.
