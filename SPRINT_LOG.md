@@ -235,21 +235,14 @@ Verification (Linux sandbox, Temurin 17.0.11):
 Commit: `1c53026` (5 files, single commit via GitHub tree API — sandbox git push stays blocked, so the branch ref was moved via the API).
 Next: `windows-packaging.yml` CI runs on this push (run ID to be recorded when green); Claude verifies independently at the 00:00 checkpoint. AI-048 (ubuntu-latest job) is next in Rune's queue.
 
-## 2026-09-28 ~19:40 EDT — AI-058 robust Java version detection delivered (Rune)
+## 2026-09-28 ~20:00 EDT — AI-048 Linux CI delivered (Rune)
 
-`build-release.sh` read the Java major version from the first line of `java -version`. With `JAVA_TOOL_OPTIONS` set (common in CI/proxied environments), line 1 becomes "Picked up JAVA_TOOL_OPTIONS...", so a good JDK was rejected as too old (finding AI-058, Claude's 18:00 checkpoint).
+Added `.github/workflows/linux-packaging.yml` (commit `de2b8e5`): an `ubuntu-latest` job with Temurin 17 running `regress.sh` clean plus all six `--break` modes (pin, dep, depswap, compile, checksum, smoke), mirroring `windows-packaging.yml`. Triggers on push/PR touching the packaging lane or the workflow, plus `workflow_dispatch`.
 
-Change: the `.sh` now reads `java.specification.version` via `java -XshowSettings:properties -version` — the same approach as `build-release.bat` — with a line-anchored sed so `java.vm.specification.version` never matches.
+Acceptance evidence — CI run **36495894219** (branch `muse/sprint-01-content-audit`, commit `de2b8e5`): **success**. All seven steps green on ubuntu-latest:
+- Regression harness clean: REGRESSION: PASS
+- --break=pin / dep / depswap / compile / smoke: correctly detected at stage 'build'
+- --break=checksum: correctly detected at stage 'verify'
 
-Verification (Linux sandbox, Temurin 17.0.11): version snippet detects 17 with `JAVA_TOOL_OPTIONS` unset and set (`-Dfoo=bar`); `bash -n` clean.
-Regression check: `linux-packaging.yml` now exports `JAVA_TOOL_OPTIONS="-Dai058=regression-check"` for the whole job, so every CI step (clean + all six break modes) runs under the noise line.
-
-Commit: `c7f230c` (build-release.sh + linux-packaging.yml).
-
-## 2026-09-28 ~19:40 EDT — AI-057 regress.bat console behavior documented (Rune)
-
-`regress.bat` ends with `exit %EXITCODE%` (not `exit /b`) so its exit code survives the `call :fail`/`:pass` subroutines for CI to assert on. Side effect: double-clicking it in Explorer closes the console on finish.
-
-Change: `releases/alpha-0.7.15-playable/README.md` regression section now documents this and the manual-run remedies (run from an open console, or `cmd /k regress.bat`). Also added the missing `--break=depswap` doc line. Documentation-only; no behavior change.
-
-Commit: `e16e303` (README.md).
+This supersedes the earlier sandbox self-run (Thalia, 13:30) as acceptance evidence. The 00:00 checkpoint can move AI-048 to ACCEPTED (independent verification is Claude's lane per the no-self-acceptance rule).
+Note: the run predates the AI-058 `JAVA_TOOL_OPTIONS` env addition (commit `c7f230c`); runs 36496007944/36496019742 cover the lane with that env set.
