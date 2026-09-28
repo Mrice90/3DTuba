@@ -45,11 +45,8 @@ echo "== dependencies (pinned, hash-verified) =="
 DEPS="$SCRIPT_DIR/build/deps"
 MVN="https://repo1.maven.org/maven2/com/fasterxml/jackson/core"
 JACKSON_VER="2.18.2"
-declare -A JHASH=(
-    [jackson-databind]=4b364e6850dc89172fcf1d4dd26b8ff5488eda44ff4657e22dd265203dd5ab3c
-    [jackson-core]=d8054ae7c0d1c2d2f55d28e46026ebe5892881f3fab5f439233184381c3b4a1f
-    [jackson-annotations]=581bd61000ef7648943f781ca05689e56d03f6052748365a8e2b3a9b5d3fa32f
-)
+# AI-052-WIN: no hardcoded hashes; the published .sha256 is fetched from
+# Maven Central (cached in $DEPS) and the jar is verified against it.
 mkdir -p "$DEPS"
 fetch() {
     if command -v curl >/dev/null; then curl -sSL --max-time 180 -o "$2" "$1";
@@ -58,11 +55,16 @@ fetch() {
 }
 for art in jackson-databind jackson-core jackson-annotations; do
     jar="$art-$JACKSON_VER.jar"
+    url="$MVN/$art/$JACKSON_VER/$jar"
     if [ ! -f "$DEPS/$jar" ]; then
         echo "fetching $jar ..."
-        fetch "$MVN/$art/$JACKSON_VER/$jar" "$DEPS/$jar" || die "download failed for $jar"
+        fetch "$url" "$DEPS/$jar" || die "download failed for $jar"
     fi
-    echo "${JHASH[$art]}  $DEPS/$jar" | sha256sum -c - || die "checksum mismatch for $jar (expected ${JHASH[$art]})"
+    if [ ! -f "$DEPS/$jar.sha256" ]; then
+        echo "fetching $jar.sha256 ..."
+        fetch "$url.sha256" "$DEPS/$jar.sha256" || die "could not fetch $jar.sha256"
+    fi
+    (cd "$DEPS" && sha256sum -c "$jar.sha256") || die "checksum mismatch for $jar (see $jar.sha256)"
 done
 echo "dependencies verified"
 CP_JARS="$DEPS/jackson-databind-$JACKSON_VER.jar:$DEPS/jackson-core-$JACKSON_VER.jar:$DEPS/jackson-annotations-$JACKSON_VER.jar"

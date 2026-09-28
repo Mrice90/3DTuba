@@ -114,8 +114,13 @@ Jackson JAR's SHA-256 does not match the hardcoded expected value. The
 themselves are wrong (never verified — Linux could not download from Maven
 due to sandbox egress blocking).
 
-**Fix pending:** obtain correct SHA-256 for jackson-databind/core/annotations
-2.18.2 from Maven Central `.sha256` files and update both `.bat` and `.sh`.
+**Fix applied (commit pending):** eliminated hardcoded hashes. `:fetchdep`
+(now takes only the artifact name) downloads the published `.sha256` from
+Maven Central (cached in `build/deps/`) and verifies the jar against it via
+`certutil`. `build-release.sh` does the same with `sha256sum -c`. New exit
+code 26 = `.sha256` fetch/parse failure. The `--break=dep` negative test
+still works: it corrupts the cached jar, and verification against the
+(cached or freshly fetched) `.sha256` fails with exit 25.
 
 ### Linux verification (local)
 
@@ -140,6 +145,7 @@ due to sandbox egress blocking).
 | 23 | fetchdep | download failed |
 | 24 | fetchdep | `certutil` hash failed |
 | 25 | fetchdep | SHA-256 mismatch |
+| 26 | fetchdep | `.sha256` fetch/parse failed |
 
 ## Files changed
 

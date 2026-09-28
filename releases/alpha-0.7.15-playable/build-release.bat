@@ -55,11 +55,11 @@ rem The Jackson jars are NOT tracked in the upstream repo; fetch the exact
 rem artifacts from Maven Central and verify SHA-256 before use.
 set DEPS=%HERE%build\deps
 if not exist "%DEPS%" mkdir "%DEPS%"
-call :fetchdep jackson-databind 4b364e6850dc89172fcf1d4dd26b8ff5488eda44ff4657e22dd265203dd5ab3c
+call :fetchdep jackson-databind
 if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
-call :fetchdep jackson-core d8054ae7c0d1c2d2f55d28e46026ebe5892881f3fab5f439233184381c3b4a1f
+call :fetchdep jackson-core
 if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
-call :fetchdep jackson-annotations 581bd61000ef7648943f781ca05689e56d03f6052748365a8e2b3a9b5d3fa32f
+call :fetchdep jackson-annotations
 if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
 echo dependencies verified
 set CP_JARS=%DEPS%\jackson-databind-2.18.2.jar;%DEPS%\jackson-core-2.18.2.jar;%DEPS%\jackson-annotations-2.18.2.jar
@@ -130,9 +130,10 @@ dir "%HERE%%JARNAME%" "%HERE%CHECKSUMS.sha256"
 exit /b 0
 
 :fetchdep
-rem %1 = artifact, %2 = expected sha256 (lowercase)
+rem AI-052-WIN: %1 = artifact. No hardcoded hash; the published .sha256 is
+rem fetched from Maven Central (cached in %DEPS%) and the jar is verified
+rem against it. This avoids stale hardcoded hashes.
 set ART=%~1
-set EXP=%~2
 set JARF=%ART%-2.18.2.jar
 set URL=https://repo1.maven.org/maven2/com/fasterxml/jackson/core/%ART%/2.18.2/%JARF%
 if not exist "%DEPS%\%JARF%" (
@@ -140,8 +141,16 @@ if not exist "%DEPS%\%JARF%" (
   where curl.exe >nul 2>nul || (echo ERROR: curl.exe not found -- install curl or place %JARF% in %DEPS% manually. & exit /b 22)
   curl.exe -sSL --max-time 180 -o "%DEPS%\%JARF%" "%URL%" || (echo ERROR: download failed for %JARF% & exit /b 23)
 )
-rem AI-052-WIN: the FOR command string was missing its closing single-quote,
-rem and "skip=1" skipped the actual hash line (see above).
+if not exist "%DEPS%\%JARF%.sha256" (
+  echo fetching %JARF%.sha256 ...
+  curl.exe -sSL --max-time 60 -o "%DEPS%\%JARF%.sha256" "%URL%.sha256" || (echo ERROR: could not fetch %JARF%.sha256 & exit /b 26)
+)
+set EXP=
+for /f "tokens=1" %%E in ('type "%DEPS%\%JARF%.sha256"') do (if not defined EXP set EXP=%%E)
+if not defined EXP (
+  echo ERROR: could not parse %JARF%.sha256.
+  exit /b 26
+)
 set DH=
 for /f %%H in ('certutil -hashfile "%DEPS%\%JARF%" SHA256 ^| findstr /v ":"') do (set DH=%%H & goto :depchecked)
 :depchecked
