@@ -15,10 +15,10 @@ if defined ALPHA (set ALPHA_DIR=%ALPHA%) else (set ALPHA_DIR=%HERE%build\alpha-s
 if defined STAGE (set STAGE_DIR=%STAGE%) else (set STAGE_DIR=%HERE%build\stage)
 
 echo == diagnostics ==
-where git >nul 2>nul || (echo ERROR: git not found on PATH. & exit /b 1)
-where java >nul 2>nul || (echo ERROR: java not found on PATH -- install JDK 17+. & exit /b 1)
-where javac >nul 2>nul || (echo ERROR: javac not found -- install a full JDK 17+, not just a JRE. & exit /b 1)
-where jar >nul 2>nul || (echo ERROR: 'jar' tool not found -- install a full JDK 17+. & exit /b 1)
+where git >nul 2>nul || (echo ERROR: git not found on PATH. & exit /b 10)
+where java >nul 2>nul || (echo ERROR: java not found on PATH -- install JDK 17+. & exit /b 11)
+where javac >nul 2>nul || (echo ERROR: javac not found -- install a full JDK 17+, not just a JRE. & exit /b 12)
+where jar >nul 2>nul || (echo ERROR: 'jar' tool not found -- install a full JDK 17+. & exit /b 13)
 
 rem AI-052-WIN: match java.specification.version exactly. The old
 rem findstr /c:"java.version" also matched java.version.date, so the last
@@ -27,11 +27,11 @@ set JV=
 for /f "tokens=3" %%v in ('java -XshowSettings:properties -version 2^>^&1 ^| findstr /c:"java.specification.version"') do set JV=%%v
 if not defined JV (
   echo ERROR: could not determine java.specification.version -- JDK 17+ required.
-  exit /b 1
+  exit /b 14
 )
 set JMAJOR=0
 for /f "delims=. tokens=1" %%m in ("!JV!") do set JMAJOR=%%m
-if !JMAJOR! LSS 17 (echo ERROR: java specification version !JV! is too old -- JDK 17+ required. & exit /b 1)
+if !JMAJOR! LSS 17 (echo ERROR: java specification version !JV! is too old -- JDK 17+ required. & exit /b 15)
 echo java specification version: !JV!
 
 if not exist "%ALPHA_DIR%\.git" (
