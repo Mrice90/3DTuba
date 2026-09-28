@@ -77,13 +77,21 @@ cd /D "%WORK%"
 
 echo == stage: fetch ==
 call "%WORK%\fetch-source.bat"
-if errorlevel 1 set "FAIL_STAGE=fetch" & set "FAIL_DETAIL=fetch-source.bat exited non-zero" & call :fail
+if errorlevel 1 (
+  set "FAIL_STAGE=fetch"
+  set "FAIL_DETAIL=fetch-source.bat exited non-zero"
+  call :fail
+)
 echo stage fetch: OK
 
 if "%BREAK_MODE%"=="pin" (
   echo regress: intentional break -- moving temp source off the release pin
   git -C "%WORK%\build\alpha-src" fetch -q --depth 1 origin %OFF_PIN%
-  if errorlevel 1 set "FAIL_STAGE=build" & set "FAIL_DETAIL=could not fetch off-pin commit for fault injection" & call :fail
+  if errorlevel 1 (
+  set "FAIL_STAGE=build"
+  set "FAIL_DETAIL=could not fetch off-pin commit for fault injection"
+  call :fail
+)
   git -C "%WORK%\build\alpha-src" checkout -q FETCH_HEAD
   echo regress: temp source is now off the release pin
 )
@@ -99,7 +107,11 @@ if "%BREAK_MODE%"=="compile" (
   for /f "delims=" %%J in ('dir /s /b "%WORK%\build\alpha-src\game-cli\src\main\java\*.java" 2^>nul') do (
     if not defined COMPILE_TARGET set "COMPILE_TARGET=%%J"
   )
-  if not defined COMPILE_TARGET set "FAIL_STAGE=build" & set "FAIL_DETAIL=no java source found for fault injection" & call :fail
+  if not defined COMPILE_TARGET (
+  set "FAIL_STAGE=build"
+  set "FAIL_DETAIL=no java source found for fault injection"
+  call :fail
+)
   echo @@@INVALID-JAVA-SYNTAX@@@>> "!COMPILE_TARGET!"
   echo regress: intentional break -- injected syntax error into !COMPILE_TARGET!
 )
@@ -113,20 +125,36 @@ if "%BREAK_MODE%"=="smoke" (
       set /a SMOKE_N+=1
     )
   )
-  if !SMOKE_N! EQU 0 set "FAIL_STAGE=build" & set "FAIL_DETAIL=no card JSON resources found for fault injection" & call :fail
+  if !SMOKE_N! EQU 0 (
+  set "FAIL_STAGE=build"
+  set "FAIL_DETAIL=no card JSON resources found for fault injection"
+  call :fail
+)
   echo regress: intentional break -- removed !SMOKE_N! card JSON resources from temp tree
 )
 
 echo == stage: build ==
 call "%WORK%\build-release.bat"
-if errorlevel 1 set "FAIL_STAGE=build" & set "FAIL_DETAIL=build-release.bat exited non-zero (underlying failure; for --break=smoke this is the expected smoke.bat failure)" & call :fail
+if errorlevel 1 (
+  set "FAIL_STAGE=build"
+  set "FAIL_DETAIL=build-release.bat exited non-zero (underlying failure; for --break=smoke this is the expected smoke.bat failure)"
+  call :fail
+)
 echo stage build: OK
 
 echo == stage: verify ==
 set "JAR="
 for %%F in (infinite-conquest-alpha-*.jar) do set "JAR=%%F"
-if not defined JAR set "FAIL_STAGE=verify" & set "FAIL_DETAIL=no built jar found" & call :fail
-if not exist CHECKSUMS.sha256 set "FAIL_STAGE=verify" & set "FAIL_DETAIL=CHECKSUMS.sha256 missing after build" & call :fail
+if not defined JAR (
+  set "FAIL_STAGE=verify"
+  set "FAIL_DETAIL=no built jar found"
+  call :fail
+)
+if not exist CHECKSUMS.sha256 (
+  set "FAIL_STAGE=verify"
+  set "FAIL_DETAIL=CHECKSUMS.sha256 missing after build"
+  call :fail
+)
 
 if "%BREAK_MODE%"=="checksum" (
   echo x>> "%JAR%"
@@ -144,8 +172,16 @@ for /f %%H in ('certutil -hashfile "%JAR%" SHA256 ^| findstr /v ":"') do (
   goto :got_actual
 )
 :got_actual
-if not defined EXPECTED set "FAIL_STAGE=verify" & set "FAIL_DETAIL=could not read expected hash from CHECKSUMS.sha256" & call :fail
-if not defined ACTUAL set "FAIL_STAGE=verify" & set "FAIL_DETAIL=could not hash the built jar with certutil" & call :fail
+if not defined EXPECTED (
+  set "FAIL_STAGE=verify"
+  set "FAIL_DETAIL=could not read expected hash from CHECKSUMS.sha256"
+  call :fail
+)
+if not defined ACTUAL (
+  set "FAIL_STAGE=verify"
+  set "FAIL_DETAIL=could not hash the built jar with certutil"
+  call :fail
+)
 rem AI-052-WIN: trim trailing spaces from certutil output (see build-release.bat)
 :trimactual
 if "!ACTUAL:~-1!"==" " (
@@ -153,7 +189,11 @@ if "!ACTUAL:~-1!"==" " (
   goto :trimactual
 )
 :trimactualdone
-if /i not "%EXPECTED%"=="!ACTUAL!" set "FAIL_STAGE=verify" & set "FAIL_DETAIL=jar does not match its own generated checksum" & call :fail
+if /i not "%EXPECTED%"=="!ACTUAL!" (
+  set "FAIL_STAGE=verify"
+  set "FAIL_DETAIL=jar does not match its own generated checksum"
+  call :fail
+)
 echo stage verify: OK (%JAR% matches its own generated checksum)
 
 call :pass
