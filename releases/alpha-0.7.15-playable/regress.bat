@@ -25,6 +25,7 @@ rem expected stage; any other outcome prints REGRESSION: FAIL and exits 1.
 rem Set REGRESS_KEEP=1 to keep the temp dir for inspection.
 rem Upstream repos are only fetched (read-only); nothing is pushed anywhere.
 setlocal EnableDelayedExpansion
+echo ::error::AI-052-WIN regress START args=[%*]
 
 set "BREAK_MODE="
 set "GAVE_BREAK="
