@@ -246,3 +246,15 @@ Acceptance evidence — CI run **36495894219** (branch `muse/sprint-01-content-a
 
 This supersedes the earlier sandbox self-run (Thalia, 13:30) as acceptance evidence. The 00:00 checkpoint can move AI-048 to ACCEPTED (independent verification is Claude's lane per the no-self-acceptance rule).
 Note: the run predates the AI-058 `JAVA_TOOL_OPTIONS` env addition (commit `c7f230c`); runs 36496007944/36496019742 cover the lane with that env set.
+
+## 2026-09-28 ~20:30 EDT — AI-056 distinct check exit codes delivered (Rune)
+
+Each verification check in the build scripts now fails with its own exit code, and the regression harnesses assert the break failed with the *expected* code — a wrong-code failure is a harness FAIL, not a pass.
+
+`build-release.sh` (new `die_code` helper): pin=20, dep download=21, dep .sha1 fetch=22, dep .sha1 mismatch=23, dep SHA-256 pin=24, compile/jar=25, smoke=26; diagnostics stay at 1.
+`build-release.bat`: javac/jar now exit 28, smoke exits 29 (were 1); pin (20/21) and dep (22-27) codes unchanged; full scheme in a header comment.
+`regress.sh` / `regress.bat`: capture the build exit code; per break mode expect pin 20/21, dep 23/25, depswap 24/27, compile 25/28, smoke 26/29 (checksum breaks at the harness's own verify stage, no build code).
+
+Verification (Linux sandbox, Temurin 17): `bash -n` clean on both scripts; direct fault injection into build-release.sh gives pin->20, dep->23, depswap->24; `fail()` unit-tested for match/mismatch/checksum cases. Compile/smoke codes use the identical mechanism; the full 7-mode matrix on both OSes is covered by the CI runs this commit triggers.
+
+Commit: `f663f24` (build-release.sh/.bat, regress.sh/.bat).

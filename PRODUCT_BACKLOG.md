@@ -31,7 +31,7 @@
 | AI-046-WIN-ACCEPT | P1 | Claude | READY | On Mathew's PC (JDK 17.0.20 Adoptium): fresh clone of the head, then `fetch-source.bat` → `build-release.bat` → `smoke.bat` 5/5 → `regress.bat` clean → missing/tampered-jar refusal in `play.bat`. Record the artifact hash. | `docs/reviews/<date>-windows-acceptance.md` with the commands, outputs and jar SHA-256. |
 | AI-030 | P0 | Claude (Astra lane) | IN_PROGRESS | Clean-checkout build PASSED 06:00; runtime smoke PASSED 18:25 (legal=true, blocked=true, exit 0). Next: runtime smoke of that fresh build (`-proofSmoke`, legal=true, blocked=true), then click-through legal/blocked/reset. | smoke JSON + screenshot + exe SHA-256 in the review folder. Mouse acceptance is recorded separately (it may need Mathew). |
 | AI-052-ASSET | P0 | Claude | IN_PROGRESS: Thunder Ram rendered in Unity 2026-09-28 18:40 (HA-009 sent); Leviathan and Abyss Gate still to download | Thunder Ram first: download the textured GLB from Meshy → `check_glb.py --require-materials` → import into UnityProof → place on a board tile → screenshot. Then Leviathan Wakeborn and Abyss Gate. | GLB check passes (or failures are documented and fixed via Blender/Meshy). The asset renders in the scene at board scale. The screenshot goes to Mathew as HA-009. |
-| AI-056 | P2 | Muse | READY (after AI-048) | Give each check a distinct exit code, and have `regress` assert the expected code per break mode. | Each break mode fails only its own check. The CI run ID is recorded. |
+| AI-056 | P2 | Muse | DELIVERED 2026-09-28 ~20:30 | Distinct exit codes per check (commit `f663f24`); regress asserts the expected code per break mode. CI runs in flight for both OSes. | Each break mode fails only its own check. The CI run ID is recorded. |
 | AI-053 | P2 | Claude | WAITING on AI-052-ASSET | Select the Skyline Seer audio palette (AI-051 + AI-053 candidates), convert to 48 kHz WAV, normalize, map to events. | In-game audio review by Mathew. |
 | AI-058 | P3 | Muse | READY | Detect the Java version via `java.specification.version` (as in the `.bat`), not `java -version | head -1`. | Build passes with `JAVA_TOOL_OPTIONS` set. A regression check is added. |
 | AI-057 | P3 | Muse | READY | Document or wrap `regress.bat`'s `exit` so manual runs keep the console open. | README updated, or the wrapper is tested. |
@@ -227,7 +227,7 @@ An item is DONE only when its acceptance criteria are met, relevant tests/review
 | AI-053 | AI-020 | Skyline Seer melee cue | ElevenLabs | REVIEW |
 | AI-054 | AI-018 | `check_glb.py` staging checker | Claude | DONE (committed with AI-059, 55/55) |
 | AI-055 | AI-005 | Pin Jackson hashes (supply chain) | Muse | DELIVERED 2026-09-28 |
-| AI-056 | AI-006 | Distinct exit code per regression check | Muse | READY |
+| AI-056 | AI-006 | Distinct exit code per regression check | Muse | DELIVERED 2026-09-28 |
 | AI-057 | AI-006 | regress.bat manual-run exit | Muse | READY |
 | AI-058 | AI-006 | Java version detection with JAVA_TOOL_OPTIONS | Muse | READY |
 | AI-059 | AI-031 | Reconcile unmerged astra/* branches | Claude | DELIVERED |
