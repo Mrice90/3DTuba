@@ -1,0 +1,59 @@
+name: Windows packaging
+# AI-052-WIN: Windows shakedown for the alpha-0.7.15 playable packaging lane.
+# Runs fetch -> build -> smoke on windows-latest with JDK 17, then the
+# regression harness (clean PASS plus intentional-break negative coverage).
+# verify.yml is untouched; this workflow is additive.
+on:
+  push:
+    branches:
+      - muse/sprint-01-content-audit
+    paths:
+      - 'releases/alpha-0.7.15-playable/**'
+      - '.github/workflows/windows-packaging.yml'
+  pull_request:
+    paths:
+      - 'releases/alpha-0.7.15-playable/**'
+      - '.github/workflows/windows-packaging.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows-packaging:
+    runs-on: windows-latest
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: cmd
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Fetch pinned source
+        working-directory: releases/alpha-0.7.15-playable
+        run: call fetch-source.bat
+      - name: Build release (auto-runs smoke)
+        working-directory: releases/alpha-0.7.15-playable
+        run: call build-release.bat
+      - name: Smoke standalone re-run (expect 5/5)
+        working-directory: releases/alpha-0.7.15-playable
+        run: call smoke.bat
+      - name: Regression harness clean (expect REGRESSION PASS)
+        working-directory: releases/alpha-0.7.15-playable
+        run: call regress.bat
+      - name: Negative coverage --break=pin (expect detection at build)
+        working-directory: releases/alpha-0.7.15-playable
+        run: call regress.bat --break=pin
+      - name: Negative coverage --break=dep (expect detection at build)
+        working-directory: releases/alpha-0.7.15-playable
+        run: call regress.bat --break=dep
+      - name: Negative coverage --break=compile (expect detection at build)
+        working-directory: releases/alpha-0.7.15-playable
+        run: call regress.bat --break=compile
+      - name: Negative coverage --break=checksum (expect detection at verify)
+        working-directory: releases/alpha-0.7.15-playable
+        run: call regress.bat --break=checksum
+      - name: Negative coverage --break=smoke (expect detection at build)
+        working-directory: releases/alpha-0.7.15-playable
+        run: call regress.bat --break=smoke
