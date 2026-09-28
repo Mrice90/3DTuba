@@ -79,12 +79,31 @@ if defined BREAK_MODE echo regress: intentional break mode '%BREAK_MODE%', expec
 
 
 set "HERE=%~dp0"
+rem AI-065: %RANDOM% is time-seeded; back-to-back runs in the same second get
+rem the same seed and collide. Loop until we find a free name.
+:mkwork
 set "WORK=%TEMP%\alpha-regress-%RANDOM%%RANDOM%"
+if exist "%WORK%" goto :mkwork
 echo regress: work dir %WORK%
-mkdir "%WORK%" || (echo ERROR: cannot create %WORK%>&2 & exit /b 1)
-xcopy "%HERE%." "%WORK%\" /E /I /Q >nul || (echo ERROR: copy failed>&2 & exit /b 1)
+mkdir "%WORK%" 2>nul
+if not exist "%WORK%" (
+  set "FAIL_STAGE=setup"
+  set "FAIL_DETAIL=cannot create work dir %WORK%"
+  call :fail
+)
+rem AI-065: robocopy is long-path aware; xcopy hits MAX_PATH (260) when the
+rem source tree is deep (e.g. build\alpha-src under a deep %TEMP%).
+rem /XD build + /XF *.jar: build output is rebuilt anyway, so don't copy it.
+rem Robocopy exit codes 0-7 mean success; 8+ means failure.
+robocopy "%HERE%." "%WORK%" /E /XD build /XF infinite-conquest-alpha-*.jar >nul
+if errorlevel 8 (
+  set "FAIL_STAGE=setup"
+  set "FAIL_DETAIL=copy failed"
+  call :fail
+)
 rem Fresh copy of the packaging dir, with any previous build output removed so
-rem the regression always starts clean.
+rem the regression always starts clean (belt and braces; robocopy already
+rem excluded them above).
 if exist "%WORK%\build" rmdir /S /Q "%WORK%\build"
 del /Q "%WORK%\infinite-conquest-alpha-*.jar" 2>nul
 cd /D "%WORK%"
