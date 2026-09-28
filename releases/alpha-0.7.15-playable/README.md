@@ -113,7 +113,15 @@ used for comparison.
 ./regress.sh --break=compile # fault injection: syntax error must fail javac
 ./regress.sh --break=checksum # fault injection: corrupted jar must fail verification
 ./regress.sh --break=smoke   # fault injection: missing card data must fail the build's smoke step
+./regress.sh --break=depswap # fault injection (AI-055): self-consistent wrong jar + .sha1 must fail the pinned SHA-256 check
 ```
+
+**Windows console note (AI-057):** `regress.bat` ends with `exit %EXITCODE%`
+(not `exit /b`) so its exit code survives the `call :fail` / `call :pass`
+subroutines — this is what CI asserts on. The side effect: double-clicking
+`regress.bat` in Explorer closes the console window as soon as it finishes.
+For manual runs, open a console first (`cmd`) and run it there, or launch it
+as `cmd /k regress.bat` to keep the window open after the verdict.
 
 In `--break` mode the harness expects the failure: `intentional break
 correctly detected at stage '<stage>'` means the detection test passed. Set
