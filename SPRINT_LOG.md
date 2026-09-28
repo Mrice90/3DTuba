@@ -211,3 +211,26 @@ Mathew asked Claude to hold a stand-up with Muse, rebuild the product backlog, p
 **Backlog:** PRODUCT_BACKLOG.md rewritten as v2. It now has one Sprint board (replacing the stale "Current executable queue" and appended checkpoint sections), a team/lane table, human decisions, a child catalog AI-027–059 and the meeting cadence. The epics AI-002–026 are unchanged. New: **AI-059** (P1, Claude), reconcile the unmerged astra/* branches.
 
 **Sprint IC-S02 (to 2026-09-30 18:00):** goal and assignments are on the Sprint board. Claude takes the Windows-local lane on Mathew's PC (JDK 17.0.20 Adoptium and Unity 6000.6.3f1 present): AI-046-WIN-ACCEPT (after AI-055), the AI-030 runtime smoke, the AI-052-ASSET Thunder Ram import (→ HA-009) and AI-059. Meshy and ElevenLabs stay idle until HA-009.
+
+## 2026-09-28 ~19:15 EDT — AI-055 supply-chain pin delivered (Rune)
+
+Mathew (own message 18:40 EDT) directed: check and complete in-scope 3DTuba projects. AI-055 (accepted at the 18:05 stand-up) is delivered.
+
+What changed — `releases/alpha-0.7.15-playable/`:
+- `build-release.sh` / `build-release.bat`: the full SHA-256 of jackson-databind/core/annotations 2.18.2 is now hardcoded (pins verified 2026-09-28 against Maven Central; the jars also match their published .sha1). The fetched `.sha1` stays as a secondary transmission check; the pin is the trust anchor and the build fails closed on mismatch (`.sh`: `die()`; `.bat`: exit 27). Rationale: a malicious mirror can serve a self-consistent jar+`.sha1` pair — only the pin catches that. When Jackson is bumped, the pins must be updated with review.
+- `regress.sh` / `regress.bat`: new `--break=depswap` mode plants a self-consistent wrong jar + matching `.sha1`; the harness expects failure at stage `build` via the pin check.
+- `.github/workflows/windows-packaging.yml`: new CI step exercising `--break=depswap`.
+
+Pins (jackson 2.18.2):
+- jackson-databind-2.18.2.jar: 4b364e6850dc89172fcf1d4dd26b8ff5488eda44ff4657e22dd265203dd5ab3c
+- jackson-core-2.18.2.jar: d8054ae7c0d1c2d2f55d28e46026ebe5892881f3fab5f439233184381c3b4a1f
+- jackson-annotations-2.18.2.jar: 581bd61000ef7648943f781ca05689e56d03f6052748365a8e2b3a9b5d3fa32f
+
+Verification (Linux sandbox, Temurin 17.0.11):
+- Isolated pin-logic harness: legitimate jars verify (sha1 + pin); a self-consistent wrong jar passes the `.sha1` check and fails closed on the pin; plain corruption fails the `.sha1`. All as designed.
+- `regress.sh --break=depswap`: "intentional break correctly detected at stage 'build'" (exit 0). The planted pair passed the `.sha1` check and was rejected by the pin ("SHA-256 pin mismatch for jackson-core-2.18.2.jar (supply-chain check failed...)").
+- `regress.sh --break=dep`: detected at stage 'build' (exit 0).
+- `regress.sh` clean: REGRESSION: PASS (exit 0); smoke 5/5; jar 90,812,459 bytes; jar matches its own CHECKSUMS.sha256.
+
+Commit: `1c53026` (5 files, single commit via GitHub tree API — sandbox git push stays blocked, so the branch ref was moved via the API).
+Next: `windows-packaging.yml` CI runs on this push (run ID to be recorded when green); Claude verifies independently at the 00:00 checkpoint. AI-048 (ubuntu-latest job) is next in Rune's queue.
