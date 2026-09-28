@@ -160,7 +160,10 @@ if not defined DH (
 )
 rem AI-052-WIN: trim trailing spaces from certutil output (for /f can leave them)
 :trimdh
-if "!DH:~-1!"==" " set "DH=!DH:~0,-1!" & goto :trimdh
+if "!DH:~-1!"==" " (
+  set "DH=!DH:~0,-1!"
+  goto :trimdh
+)
 :trimdone
 if /i not "!DH!"=="%EXP%" (echo ERROR: checksum mismatch for %JARF% -- expected %EXP%, got !DH! & echo ::error::AI-052-WIN hash mismatch %JARF% exp=%EXP% got=!DH! & exit /b 25)
 echo verified %JARF%

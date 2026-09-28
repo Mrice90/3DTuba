@@ -148,7 +148,10 @@ if not defined EXPECTED call :fail verify "could not read expected hash from CHE
 if not defined ACTUAL call :fail verify "could not hash the built jar with certutil"
 rem AI-052-WIN: trim trailing spaces from certutil output (see build-release.bat)
 :trimactual
-if "!ACTUAL:~-1!"==" " set "ACTUAL=!ACTUAL:~0,-1!" & goto :trimactual
+if "!ACTUAL:~-1!"==" " (
+  set "ACTUAL=!ACTUAL:~0,-1!"
+  goto :trimactual
+)
 :trimactualdone
 if /i not "%EXPECTED%"=="!ACTUAL!" call :fail verify "jar does not match its own generated checksum"
 echo stage verify: OK (%JAR% matches its own generated checksum)
