@@ -35,7 +35,7 @@ jobs:
         run: call fetch-source.bat
       - name: Build release (auto-runs smoke)
         working-directory: releases/alpha-0.7.15-playable
-        run: call build-release.bat
+        run: call build-release.bat || (echo ::error::AI-052-WIN build-release exit code %ERRORLEVEL% & exit /b %ERRORLEVEL%)
       - name: Smoke standalone re-run (expect 5/5)
         working-directory: releases/alpha-0.7.15-playable
         run: call smoke.bat
