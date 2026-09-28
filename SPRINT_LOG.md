@@ -247,6 +247,41 @@ Acceptance evidence — CI run **36495894219** (branch `muse/sprint-01-content-a
 This supersedes the earlier sandbox self-run (Thalia, 13:30) as acceptance evidence. The 00:00 checkpoint can move AI-048 to ACCEPTED (independent verification is Claude's lane per the no-self-acceptance rule).
 Note: the run predates the AI-058 `JAVA_TOOL_OPTIONS` env addition (commit `c7f230c`); runs 36496007944/36496019742 cover the lane with that env set.
 
+## 2026-09-28 ~19:40 EDT — AI-058 robust Java version detection delivered (Rune)
+
+`build-release.sh` read the Java major version from the first line of `java -version`. With `JAVA_TOOL_OPTIONS` set (common in CI/proxied environments), line 1 becomes "Picked up JAVA_TOOL_OPTIONS...", so a good JDK was rejected as too old (finding AI-058, Claude's 18:00 checkpoint).
+
+Change: the `.sh` now reads `java.specification.version` via `java -XshowSettings:properties -version` — the same approach as `build-release.bat` — with a line-anchored sed so `java.vm.specification.version` never matches.
+
+Verification (Linux sandbox, Temurin 17.0.11): version snippet detects 17 with `JAVA_TOOL_OPTIONS` unset and set (`-Dfoo=bar`); `bash -n` clean.
+Regression check: `linux-packaging.yml` now exports `JAVA_TOOL_OPTIONS="-Dai058=regression-check"` for the whole job, so every CI step (clean + all six break modes) runs under the noise line. CI run **36496007944** later went green with this env set.
+
+Commit: `c7f230c` (build-release.sh + linux-packaging.yml).
+
+## 2026-09-28 ~19:40 EDT — AI-057 regress.bat console behavior documented (Rune)
+
+`regress.bat` ends with `exit %EXITCODE%` (not `exit /b`) so its exit code survives the `call :fail`/`:pass` subroutines for CI to assert on. Side effect: double-clicking it in Explorer closes the console on finish.
+
+Change: `releases/alpha-0.7.15-playable/README.md` regression section now documents this and the manual-run remedies (run from an open console, or `cmd /k regress.bat`). Also added the missing `--break=depswap` doc line. Documentation-only; no behavior change.
+
+Commit: `e16e303` (README.md).
+
+## 2026-09-28 ~20:30 EDT — AI-056 distinct check exit codes delivered (Rune)
+
+Each verification check in the build scripts now fails with its own exit code, and the regression harnesses assert the break failed with the *expected* code — a wrong-code failure is a harness FAIL, not a pass.
+
+`build-release.sh` (new `die_code` helper): pin=20, dep download=21, dep .sha1 fetch=22, dep .sha1 mismatch=23, dep SHA-256 pin=24, compile/jar=25, smoke=26; diagnostics stay at 1.
+`build-release.bat`: javac/jar now exit 28, smoke exits 29 (were 1); pin (20/21) and dep (22-27) codes unchanged; full scheme in a header comment.
+`regress.sh` / `regress.bat`: capture the build exit code; per break mode expect pin 20/21, dep 23/25, depswap 24/27, compile 25/28, smoke 26/29 (checksum breaks at the harness's own verify stage, no build code).
+
+Verification (Linux sandbox, Temurin 17): `bash -n` clean on both scripts; direct fault injection into build-release.sh gives pin->20, dep->23, depswap->24; `fail()` unit-tested for match/mismatch/checksum cases. CI runs for commit `f663f24` (Linux 36496308472, Windows 36496308464) assert the full matrix on both OSes.
+
+Commit: `f663f24` (build-release.sh/.bat, regress.sh/.bat).
+
+## 2026-09-28 ~21:15 EDT — records repair (Rune)
+
+The AI-057/AI-058/AI-056 sprint-log entries and backlog rows were dropped by three consecutive records commits built from a stale local `origin` tracking ref (the same failure mode as the earlier `e5bcb77` overwrite). Re-inserted above from the original entry texts; backlog rows restored below. Process fix: always `git fetch` the branch before extracting the record files, and verify the extracted content contains the latest entries before appending.
+
 ## 2026-09-28 ~21:00 EDT — CI acceptance evidence: AI-055 Windows green, AI-058 JAVA_TOOL_OPTIONS green (Rune)
 
 - **AI-055 (Windows):** `windows-packaging.yml` run **36496019781** (commit `e16e303`, includes the AI-055 pin code): **success** on windows-latest. Clean regress PASS plus all six `--break` modes detected, including the new `--break=depswap` step. The supply-chain pin now holds on both OSes in CI.
