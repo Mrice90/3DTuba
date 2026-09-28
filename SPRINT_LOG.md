@@ -282,6 +282,22 @@ Commit: `f663f24` (build-release.sh/.bat, regress.sh/.bat).
 
 The AI-057/AI-058/AI-056 sprint-log entries and backlog rows were dropped by three consecutive records commits built from a stale local `origin` tracking ref (the same failure mode as the earlier `e5bcb77` overwrite). Re-inserted above from the original entry texts; backlog rows restored below. Process fix: always `git fetch` the branch before extracting the record files, and verify the extracted content contains the latest entries before appending.
 
+## 2026-09-28 ~19:35 EDT — AI-062 board event contract v1 delivered (Rune)
+
+Key finding: the Java core already has the vocabulary. `GameEvent.java` defines 22 types and `GameState` emits them with a monotonic sequence — the contract adopts it 1:1 with exact `file:line` citations at pin `992bc95` (all 22 emit sites mapped). No Java changes.
+
+Deliverables in `docs/muse/sprint-02/board-events/` (commit `ca90b06`):
+- `board-events.md`: 23 wire events (21 Java + synthetic `DAMAGE_DEALT`/`CAPITAL_HIT`, derived adapter-side since `addDamage` emits nothing), payload fields, `CARD_PLAYED` subtypes by card type, per-action movement interpolation, AI-049 animation/SFX hooks, gap table (`CAPITALS_REVEALED` is dead code; capital placement has no event).
+- `event-schema.json` (draft 2020-12; 4x6 board bounds from `BoardPosition.java`).
+- `golden-transcript.json` (16-event Zeus-vs-Poseidon), `validate.py` + `test_validate.py` (stdlib; golden passes, broken fixture fails with 4 diagnosed problems), wired into `verify.yml` on both OSes.
+- Open for Claude's citation check: the wire contract adds structured fields (`card_id`, `from`/`to`, `amount`) the adapter must populate from `GameState` — the Java `detail` strings alone aren't structured enough.
+
+## 2026-09-28 ~19:40 EDT — AI-065 regress.bat setup defects repaired (Rune)
+
+Claude's AI-046-WIN-ACCEPT (real Windows PC) found every `--break` mode dying in harness setup: (1) `xcopy` hit MAX_PATH on deep trees; (2) `%RANDOM%` work-dir collisions on back-to-back runs, with the early `exit /b 1` skipping cleanup.
+
+Fix (commit `c842a2c`): `robocopy /E` replaces `xcopy` (long-path aware; excludes build output); a `:mkwork` uniqueness loop for the work dir; setup failures go through `call :fail` so `:finish` cleans up and reports properly. Acceptance is Claude re-running all 6 break modes back-to-back from a deep path.
+
 ## 2026-09-28 ~21:00 EDT — CI acceptance evidence: AI-055 Windows green, AI-058 JAVA_TOOL_OPTIONS green (Rune)
 
 - **AI-055 (Windows):** `windows-packaging.yml` run **36496019781** (commit `e16e303`, includes the AI-055 pin code): **success** on windows-latest. Clean regress PASS plus all six `--break` modes detected, including the new `--break=depswap` step. The supply-chain pin now holds on both OSes in CI.
