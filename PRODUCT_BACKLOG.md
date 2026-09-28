@@ -10,6 +10,22 @@
 - **IDs are never reused.** Split big items into child IDs (AI-0xx-SUFFIX) and keep the parent ID.
 - **Boundaries:** all changes go to 3DTuba. TubaExperiment (rules reference) and Desolate-Tuba (historical content) are read and copy only, and must never be pushed to, merged into or edited. There are no purchases, top-ups or plan upgrades without the Product Owner. Existing Meshy/ElevenLabs credits may be spent on briefed work (PO decision 2026-09-28 10:05). Record provider IDs and cost, and never resubmit an uncertain job.
 
+## Product vision (Product Owner direction, 2026-09-28 evening)
+The end goal is a full 3D board environment that is built as tokens are played. Tokens are animated and every one has unique sound effects. The bar is polish above typical AAA, able to compete with Hearthstone and other top strategy games. What this means for every item:
+- **The board is built by play.** Placing a land, structure or capital raises that part of the battlefield in 3D (ground placement → rising structure → complete). Each match ends as a unique diorama.
+- **Every token is alive:** deploy, idle, move, attack, hit and destroy animations, each with its own sound. Apex (rarity 4) cards get signature presentations.
+- **Hearthstone-class feel:** tactile interactions, strong impact feedback (camera shake, particles, hit-stop), readable at a glance, 60 fps on target devices, and no placeholder art in a release build.
+- **Continuous media production:** Meshy and ElevenLabs always have a batch in flight or in review, using existing credits (PO authorized credit use, 2026-09-28 18:43 EDT; no purchases). The Product Owner reviews each batch in-game, and that review steers the next batch rather than blocking it.
+
+### AI-060 — Build-as-you-play 3D battlefield (north-star epic)
+P0 | BACKLOG | Owner: Claude (Astra lane) → Astra from 2026-10-04 | Dependencies: AI-003, AI-017, AI-052-ASSET.
+Children: AI-060a, token placement drives the board-growth animation (deploy staging for lands, structures and capitals). AI-060b, a per-event animation controller (idle/move/attack/hit/destroy) driven by authoritative rule events. AI-060c, an impact-feedback kit (camera shake, particles, hit-stop, SFX triggers). AI-060d, a performance budget with profiling on desktop and mobile targets. Acceptance: a Zeus-vs-Poseidon match in Unity where every played permanent visibly builds the board, animates on each rule event with its own sound, and holds 60 fps on the reference PC.
+
+### AI-061 — Continuous media production lane
+P1 | IN_PROGRESS | Owner: Claude (operates Meshy + ElevenLabs) | Dependencies: AI-049 prompt directory.
+Pipeline: generate → remesh/texture → download → `check_glb.py` → `glb_to_token_fbx.py` (Blender) → Unity `TokenPreview.Render` still → PO review. Order: batch-01 capitals (6), then Zeus/Poseidon units by rarity, then spells/effects. Record flow/job IDs, credits and review in `docs/production/ASSET_QUEUE.md`.
+- 2026-09-28 18:30–18:45 EDT: ElevenLabs flow `S5OTgpVd2nqHXp3u7pQd`, signature SFX for all 6 capitals (4 takes each). Meshy: 6 capital text-to-3D jobs (Meshy 6, 20 credits each, 3,140 → 3,020 credits).
+
 ## Team and lanes (verified 2026-09-28)
 | Worker | How reached | Lane | Availability |
 |---|---|---|---|
@@ -37,8 +53,8 @@
 | AI-057 | P3 | Muse | READY | Document or wrap `regress.bat`'s `exit` so manual runs keep the console open. | README updated, or the wrapper is tested. |
 | AI-031 | P0 | Claude (Astra lane) | IN_PROGRESS | Keep integration/security gates current. Review every new head at each checkpoint (AI-005/AI-006). | A checkpoint entry in SPRINT_LOG.md for every meeting. |
 | AI-059 | P1 | Claude | DELIVERED 2026-09-28 18:45 | Both astra/* branches are already merged (0 stranded commits). Local-only docs/production (AI-054 checker 55/55, AI-049/AI-052 validators OK) is now committed. Raw 58 MB staging binaries are kept out. | `docs/reviews/2026-09-28-1845-AI-059-astra-branches.md`. Astra confirms branch deletion on return. |
-| Meshy media | — | Meshy | WAITING on HA-009 | Six-capital batch (`docs/muse/sprint-01/asset-prompts/batch-01-queue.md`) is held until the Thunder Ram style check passes. | — |
-| ElevenLabs media | — | ElevenLabs | WAITING on HA-009 | No new generation until the in-game style check. | — |
+| Meshy media (AI-061) | P1 | Claude via Meshy | IN_PROGRESS | Batch-01: 6 capitals generating (18:45). Next: remesh ~10–30K tris, texture, download, Unity stills. | PO in-game review per batch. |
+| ElevenLabs media (AI-061) | P1 | Claude via ElevenLabs | IN_PROGRESS | Capital SFX, 6×4 takes in flow S5OTgpVd2nqHXp3u7pQd. Next: pick takes, convert to 48 kHz WAV, then unit SFX groups. | PO listen-through. |
 
 ### Accepted or done (for reference; evidence in SPRINT_LOG.md)
 AI-037/038 manifest + offline smoke DONE · AI-045 lobby guards merged (PR #1) · AI-047 Windows/browser lobby fixes merged (PR #1) · AI-049 asset prompt directory DONE (139 cards, 21 SFX groups, 32 apex briefs) · AI-052-WIN Windows packaging repair ACCEPTED (run 36386714758) · AI-054 GLB staging checker verified 55/55 (local, not yet committed) · AI-029/032/033/034 setup verified.
