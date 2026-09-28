@@ -195,14 +195,12 @@ if /i not "%EXPECTED%"=="!ACTUAL!" (
   call :fail
 )
 echo stage verify: OK (%JAR% matches its own generated checksum)
-echo ::notice::AI-052-WIN TRACE: about to call :pass
 
 call :pass
 
 rem -- subroutines never return: they jump to :finish, which cleans up and exits.
 
 :fail
-echo ::notice::AI-052-WIN TRACE: entered :fail, FAIL_STAGE=%FAIL_STAGE%
 rem Uses FAIL_STAGE and FAIL_DETAIL variables (call args were unreliable)
 echo ::error::AI-052-WIN regress failed at stage '%FAIL_STAGE%': %FAIL_DETAIL%
 if defined BREAK_MODE (
@@ -220,7 +218,6 @@ set "RESULT=REGRESSION: FAIL at stage '%FAIL_STAGE%' (%FAIL_DETAIL%)"
 goto :finish
 
 :pass
-echo ::notice::AI-052-WIN TRACE: entered :pass
 if defined BREAK_MODE (
   set "EXITCODE=1"
   set "RESULT=REGRESSION: BREAK NOT DETECTED -- pipeline passed despite --break=%BREAK_MODE%"
@@ -231,9 +228,10 @@ set "RESULT=REGRESSION: PASS"
 goto :finish
 
 :finish
-echo ::notice::AI-052-WIN TRACE: entered :finish, RESULT=%RESULT%
 echo %RESULT%
 if not "%REGRESS_KEEP%"=="1" (
   if defined WORK if exist "%WORK%" rmdir /S /Q "%WORK%"
 )
-exit /b %EXITCODE%
+rem AI-052-WIN: use 'exit' (not 'exit /b') to terminate the script. 'exit /b'
+rem would return from 'call :pass'/':fail' and fall through into the next label.
+exit %EXITCODE%
