@@ -36,6 +36,9 @@ jobs:
       - name: Board event contract validation (AI-062)
         working-directory: docs/muse/sprint-02/board-events
         run: python -m unittest test_validate
+      - name: Asset prompt board-scale contract (AI-063)
+        working-directory: docs/muse/sprint-01/asset-prompts
+        run: python -m unittest test_asset_directory
       - name: Client integration example
         working-directory: prototypes/lobby-lab
         run: node examples/client-demo.js

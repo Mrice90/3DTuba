@@ -67,6 +67,32 @@ TYPE_FRAMING = {
                 "structure -> completed citadel."),
 }
 
+# AI-063 board-scale contract (docs/muse/sprint-02/board-scale.md). Budgets are
+# sized for one hex tile on the 4x6 odd-row-offset HEX board
+# (BoardGeometry.HEX at pin 992bc95). SPELL has no board presence.
+BOARD_SCALE = {
+    "LAND":      {"board_footprint": "1 hex tile", "height_budget": "≤0.25 units (top surface)"},
+    "STRUCTURE": {"board_footprint": "≤0.9 hex",    "height_budget": "≤1.6 units"},
+    "CHARACTER": {"board_footprint": "≤0.8 hex",    "height_budget": "1.8 units"},
+    "CAPITAL":   {"board_footprint": "1 hex tile",  "height_budget": "≤2.2 units"},
+    "SPELL":     {"board_footprint": None,          "height_budget": None},
+}
+
+# Stack-role + scale language appended to every Meshy prompt (AI-063). The hex
+# wording elsewhere in the prompts is kept; this only adds the size contract
+# and states what stacks on what.
+PROMPT_SCALE = {
+    "LAND": (" Scale: one full hex tile; top surface \u2264 0.25 units, flat and sturdy "
+             "enough to carry a unit token standing on top of it."),
+    "STRUCTURE": (" Scale: footprint \u2264 0.9 of a hex, height \u2264 1.6 units; sits on "
+                  "top of a land tile without overhanging neighbouring hexes."),
+    "CHARACTER": (" Scale: footprint \u2264 0.8 of a hex, 1.8 units tall; stands on top "
+                  "of a land tile."),
+    "CAPITAL": (" Scale: occupies one full hex, height \u2264 2.2 units; the headquarters "
+                "other pieces gather around."),
+    "SPELL": (" Scale: no board footprint \u2014 pure VFX."),
+}
+
 CUE_WORDS = {
     "DEPLOY": "placement thump", "DESTROY": "destruction crash", "CLICK": "selection click",
     "SHUFFLE": "card shuffle", "ATTACK": "attack whoosh-impact", "HIT": "hit thud",
@@ -131,6 +157,9 @@ def main():
         if is_r4:
             prompt += (" Signature Apex-tier asset: push detail, presence and material richness "
                        "beyond standard cards — this is a centerpiece miniature.")
+        # AI-063: board-scale contract + stack role (hex wording kept).
+        prompt += PROMPT_SCALE[ctype]
+        scale = BOARD_SCALE[ctype]
 
         # ---- SFX grouping ----
         if is_r4:
@@ -148,6 +177,8 @@ def main():
             "rarity": rarity, "apex_tier": is_r4, "archetypes": archetypes,
             "keywords": keywords, "description": desc[:300],
             "source": r["source"],
+            "board_footprint": scale["board_footprint"],
+            "height_budget": scale["height_budget"],
             "meshy_prompt": prompt, "animation_events": anim, "sound_cues": cues,
             "sfx_mode": sfx_mode, "sfx_group": group_id,
         })
@@ -263,6 +294,8 @@ def main():
     for e in entries:
         L.append(f"### {e['name']} (`{e['id']}`) — {e['faction']} {e['type']} · rarity {e['rarity']}"
                  + (" · APEX" if e["apex_tier"] else ""))
+        if e["board_footprint"] and e["height_budget"]:
+            L.append(f"Board scale: footprint {e['board_footprint']}, height {e['height_budget']}")
         if e["archetypes"]:
             L.append(f"Archetypes: {', '.join(e['archetypes'])}")
         L.append("")

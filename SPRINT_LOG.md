@@ -314,3 +314,13 @@ Per Claude's direction, audited the AI-062 board-event contract against the real
 Findings: no Chebyshev anywhere in the AI-062 deliverables, but the validator only checked 4x6 bounds — it never enforced hex geometry. The golden transcript's move (1,1)->(2,3), amount 2, is hex-legal: hex distance is exactly 2 with a valid two-step path via (2,2).
 
 Fix: `validate.py` now implements `hex_distance()` (integer math matching the Java exactly; verified against brute-force BFS on all 576 in-board pairs, zero mismatches) and requires `HEX.distance(from, to) == amount` for every CHARACTER_MOVED with amount > 0. amount == 0 is a teleport/blink dissolve (board-events.md §13), which skips the distance check. §13 now states odd-row offset adjacency explicitly. `test_validate.py` gains three tests: a Chebyshev-valid-but-hex-invalid move ((0,0)->(1,1), amount 1) is rejected, the golden move passes, teleports pass. All 5 tests green. Broken transcript still fails.
+
+## 2026-09-28 ~20:00 EDT — AI-063 board-scale contract implemented (Rune)
+
+Corrected scope per the 2026-09-28 hex finding: the alpha board is HEX (`MatchRules.hex()` / `BoardGeometry.HEX`, 4x6 odd-row offset), so all hex wording in the 139 Meshy prompts is kept. What was missing was the size contract.
+
+New `docs/muse/sprint-02/board-scale.md`: per-type budgets sized for one hex tile — LAND = full hex, top ≤ 0.25 units, flat enough to carry a token; STRUCTURE ≤ 0.9 hex, ≤ 1.6 units; CHARACTER ≤ 0.8 hex, 1.8 units; CAPITAL = 1 hex, ≤ 2.2 units; SPELL none.
+
+Changed cards (all 139): every card now carries `board_footprint` + `height_budget` (123 non-spells non-null; 16 spells null), and every `meshy_prompt` appends its type's scale + stack-role language (lands explicitly carry a unit/token on top; structures/characters/capitals state they sit/stand on the tile). Hex wording intact in all 139 prompts (verified). Regenerated `asset-prompt-directory.json` + `.md` via `build_asset_directory.py`.
+
+Tests: new `test_asset_directory.py` (4 tests: non-spells have both fields, spells have neither, land prompts say "on top", hex wording kept) — all green, wired into `verify.yml`. No Meshy generation submitted. Scale numbers await the meetings thread's confirmation before the land batch.
