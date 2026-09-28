@@ -159,6 +159,7 @@ rem -- subroutines never return: they jump to :finish, which cleans up and exits
 
 :fail
 rem %1 = stage, %2 = detail
+echo ::error::AI-052-WIN regress failed at stage '%~1': %~2
 if defined BREAK_MODE (
   if "%~1"=="%EXPECT_FAIL_AT%" (
     set "EXITCODE=0"
