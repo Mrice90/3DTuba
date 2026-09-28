@@ -306,3 +306,11 @@ Fix (commit `c842a2c`): `robocopy /E` replaces `xcopy` (long-path aware; exclude
 - **AI-056:** CI runs for commit `f663f24` (Linux 36496308472, Windows 36496308464) in progress at press time; they assert the new per-check exit codes across all break modes on both OSes.
 
 All five queue items (AI-055, AI-048, AI-056, AI-058, AI-057) are now DELIVERED with CI evidence. Independent acceptance remains Claude's lane at the 00:00 checkpoint per the no-self-acceptance rule.
+
+## 2026-09-28 ~19:45 EDT — AI-062 hex-geometry audit and validator fix (Rune)
+
+Per Claude's direction, audited the AI-062 board-event contract against the real game geometry. The alpha plays on HEX (`MatchRules.hex()` / `BoardGeometry.HEX` at pin `992bc95`), not the SQUARE test default. Verified `BoardGeometry.java` (odd-row offset: `q = x - (y - (y & 1)) / 2`, cube max-norm distance) from a read-only checkout of the pinned commit.
+
+Findings: no Chebyshev anywhere in the AI-062 deliverables, but the validator only checked 4x6 bounds — it never enforced hex geometry. The golden transcript's move (1,1)->(2,3), amount 2, is hex-legal: hex distance is exactly 2 with a valid two-step path via (2,2).
+
+Fix: `validate.py` now implements `hex_distance()` (integer math matching the Java exactly; verified against brute-force BFS on all 576 in-board pairs, zero mismatches) and requires `HEX.distance(from, to) == amount` for every CHARACTER_MOVED with amount > 0. amount == 0 is a teleport/blink dissolve (board-events.md §13), which skips the distance check. §13 now states odd-row offset adjacency explicitly. `test_validate.py` gains three tests: a Chebyshev-valid-but-hex-invalid move ((0,0)->(1,1), amount 1) is rejected, the golden move passes, teleports pass. All 5 tests green. Broken transcript still fails.

@@ -93,9 +93,11 @@ The Java event carries only the instance id (`GameState.java:196`); the
 `GameState.recordCharacterMoved` (`GameState.java:206`, emit at `:208`) emits **one**
 event per move action: `"<instanceId> <from> -> <to> cost <distance>"`.
 The per-step path is internal to `GameEngine.moveCharacter`. The adapter
-**interpolates**: walk the straight/board path from `from` to `to` in
-`amount` steps, playing `move(320ms)` per step. (Teleport/Blink also emit
-`CHARACTER_MOVED` with distance 0 — present as a dissolve, not a walk.)
+**interpolates**: walk a hex-adjacent path from `from` to `to` in `amount`
+steps — odd-row offset adjacency per `BoardGeometry.HEX`
+(`HEX.distance(from, to) == amount`; never Chebyshev) — playing
+`move(320ms)` per step. (Teleport/Blink also emit `CHARACTER_MOVED` with
+distance 0 — present as a dissolve, not a walk.)
 
 ### §22 — Synthetic damage events
 `addDamage`/`addCombatDamage` emit **no** Java event; only lethal damage
