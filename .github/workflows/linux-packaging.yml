@@ -1,0 +1,50 @@
+name: Linux packaging
+# AI-048: Linux shakedown for the alpha-0.7.15 playable packaging lane.
+# Mirrors windows-packaging.yml: the regression harness (clean PASS plus
+# intentional-break negative coverage) on ubuntu-latest with JDK 17.
+# verify.yml is untouched; this workflow is additive.
+on:
+  push:
+    branches:
+      - muse/sprint-01-content-audit
+    paths:
+      - 'releases/alpha-0.7.15-playable/**'
+      - '.github/workflows/linux-packaging.yml'
+  pull_request:
+    paths:
+      - 'releases/alpha-0.7.15-playable/**'
+      - '.github/workflows/linux-packaging.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  linux-packaging:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Regression harness clean (expect REGRESSION PASS)
+        working-directory: releases/alpha-0.7.15-playable
+        run: ./regress.sh
+      - name: Negative coverage --break=pin (expect detection at build)
+        working-directory: releases/alpha-0.7.15-playable
+        run: ./regress.sh --break=pin
+      - name: Negative coverage --break=dep (expect detection at build)
+        working-directory: releases/alpha-0.7.15-playable
+        run: ./regress.sh --break=dep
+      - name: Negative coverage --break=depswap (expect detection at build)
+        working-directory: releases/alpha-0.7.15-playable
+        run: ./regress.sh --break=depswap
+      - name: Negative coverage --break=compile (expect detection at build)
+        working-directory: releases/alpha-0.7.15-playable
+        run: ./regress.sh --break=compile
+      - name: Negative coverage --break=checksum (expect detection at verify)
+        working-directory: releases/alpha-0.7.15-playable
+        run: ./regress.sh --break=checksum
+      - name: Negative coverage --break=smoke (expect detection at build)
+        working-directory: releases/alpha-0.7.15-playable
+        run: ./regress.sh --break=smoke
