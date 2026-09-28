@@ -160,3 +160,39 @@ Exact commands (fresh `git clone --depth 1` of branch tip 974ed3c, `/tmp/ai048-l
 - Linux negative coverage (--break=pin at build, --break=checksum at verify) was already proven in the 2026-09-27 evening AI-048 completion entry; not re-run.
 
 No repo writes, no binary publication, no paid jobs. AI-048 Linux lane now fully green; AI-055/056/057 remain Muse-owned.
+
+## 2026-09-28 18:00 — Claude (covering Astra)
+
+Checkpoint of record for 18:00 EDT. No 12:00 checkpoint entry was written, locally or on GitHub, so this entry covers everything since the 10:45 review (`docs/reviews/2026-09-28-1045-claude-acceptance.md`). No Astra-authored activity since 10:45, so coverage continues.
+
+**New commits since 974ed3c (all branches):** one, `7883a9a` (13:30, records only: SPRINT_LOG.md +13, Thalia AI-048 Linux entry). Verify run 36458596660 is green (node tests, not packaging). No new Windows packaging runs; the last is 36419150586 at `ed78731`. astra/* branches unchanged.
+
+**Verdicts**
+- **AI-048 Linux end-to-end: DELIVERED (self-reported), NOT ACCEPTED.** Thalia reports `regress.sh` PASS from a clean clone of 974ed3c (jar 90,812,575 B, SHA-256 9de12c98…7fd, smoke 5/5). That is a local sandbox run with no CI run or log artifact behind it, and it covers the clean path only. The 10:10 assignment asked for all 5 break modes. Independent attempt (Claude, cloud Linux, fresh clone of 7883a9a): stage fetch OK, pin 992bc95 verified. Stage build could not complete because this sandbox cannot reach Maven Central (proxy 403). That is an environment limit, not a product failure. Acceptance needs CI evidence (see AI-048 next action).
+- **AI-052-WIN: stays ACCEPTED** (no release-lane code change since ed78731).
+- **AI-046: stays REVIEW**, blocked on AI-055.
+- **AI-055 / AI-056 / AI-057: NOT STARTED.** No commits in ~7 h.
+
+**New finding**
+| ID | Sev | Finding | Owner |
+|---|---|---|---|
+| AI-058 | P3 (AI-006) | `build-release.sh` line 31 parses the Java major version from `java -version \| head -1`. When `JAVA_TOOL_OPTIONS` is set (common in CI/proxied environments), line 1 is "Picked up JAVA_TOOL_OPTIONS…", so a JDK 21 is rejected as "too old" (reproduced in the cloud run). Port the `.bat` approach (`-XshowSettings:properties`, `java.specification.version`) or grep the `version "` line. | Muse |
+
+**Media (read-only this checkpoint, 0 credits spent):** Meshy 3,140 credits (unchanged). The textured Abyss Gate, Leviathan Wakeborn and Thunder Ram are all present in the workspace. ElevenLabs 130,801 credits (unchanged); the only new history item is the AI-053 4×0.5 s set from 10:10. No unblocked queue-next generation remains. The six-capital batch is gated on the first in-game style check. Skyline Seer is held on HA-011.
+
+**Assignments (to 2026-09-29 00:00)**
+| ID | Owner | Pri | Next action |
+|---|---|---|---|
+| AI-055 | Muse | P1 | Pin full SHA-256 of the 3 Jackson 2.18.2 jars in build-release.sh/.bat and fail closed. Keep .sha1 as secondary. Add a self-consistent wrong jar+.sha1 break mode. windows-packaging green; record the run ID. |
+| AI-048 | Muse | P1 | Add an `ubuntu-latest` job (in windows-packaging.yml or a new linux-packaging.yml) running `regress.sh` clean plus all 5 `--break=` modes, dispatch it, and record the run ID. The self-reported sandbox run stays delivery evidence only. |
+| AI-056 | Muse | P2 | Distinct exit code per check; regress.{sh,bat} assert the expected code per break mode. |
+| AI-058 | Muse | P3 | Robust Java version detection in build-release.sh (see finding). |
+| AI-057 | Muse | P3 | Document or wrap the `exit` behaviour of regress.bat for manual runs. |
+| AI-046-WIN-ACCEPT | Claude Code | P1 | WAITING — needs Mathew present (local Windows run). |
+| AI-030 runtime smoke + mouse | Astra role | P0 | WAITING — needs Mathew present. |
+| AI-052-ASSET import (Thunder Ram first) | Astra role | P0 | WAITING — needs Mathew present (download → check_glb.py --require-materials → Unity import). |
+| AI-053 palette | Astra role | P2 | WAITING on AI-052-ASSET import / in-game audio review. |
+| Meshy / ElevenLabs | — | — | Idle by gate; no spend until the first in-game style check passes. |
+| HA-011, HA-012 | Mathew | P1/P2 | Skyline Seer likeness verdict; Explore-sharing setting. |
+
+Claude (covering Astra) independently verifies the next Muse head at 2026-09-29 00:00.
