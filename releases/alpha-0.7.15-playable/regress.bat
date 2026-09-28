@@ -89,7 +89,6 @@ echo stage fetch: OK
 if "%BREAK_MODE%"=="pin" (
   echo regress: intentional break -- simulating off-pin via bogus GIT_DIR
   set "GIT_DIR=%WORK%\build\nonexistent-git-dir"
-  echo ::error::AI-052-WIN pin-break: GIT_DIR set
 )
 
 if "%BREAK_MODE%"=="dep" (

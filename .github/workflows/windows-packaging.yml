@@ -39,7 +39,7 @@ jobs:
           call build-release.bat
           if %ERRORLEVEL% NEQ 0 (
             echo ::error::AI-052-WIN build-release exit code %ERRORLEVEL%
-            for %%F in (build\deps\*.sha1) do (for /f "tokens=1" %%H in ('type "%%F"') do (echo ::error::AI-052-WIN sha256 %%~nxF=%%H))
+            for %%F in (build\deps\*.sha1) do (for /f "tokens=1" %%H in ('type "%%F"') do (echo ::error::AI-052-WIN sha1 %%~nxF=%%H))
             exit /b %ERRORLEVEL%
           )
       - name: Smoke standalone re-run (expect 5/5)
