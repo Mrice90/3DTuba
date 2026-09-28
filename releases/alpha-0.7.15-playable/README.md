@@ -57,8 +57,7 @@ A title screen opens: start a match, open the Deck Builder, or watch bots play.
 ## Get the built jar
 
 The prebuilt `infinite-conquest-alpha-0.7.15.jar` (~91 MB) ships with the
-release handoff — **not in this repository**: a repository rule rejects 90MB+
-blobs, so the repo carries the recipe, checksums, and launchers instead of
+release handoff — **not in this repository**: publishing the ~91 MB jar via the GitHub Contents API was refused with HTTP 409 (repository rule validation), so the repo carries the recipe, checksums, and launchers instead of
 the binary. Verify any jar you receive before running it:
 
 ```

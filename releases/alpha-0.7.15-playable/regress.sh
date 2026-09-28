@@ -17,8 +17,15 @@
 #   --break=pin        move the temp source tree off the release pin; the build
 #                      must fail closed at pin verification (ALPHA_ALLOW_UNPINNED
 #                      is unset).
+#   --break=dep        corrupt a dependency jar in the temp tree; the build's
+#                      hash verification must fail.
+#   --break=compile    inject a syntax error into one temp source file; javac
+#                      must fail.
 #   --break=checksum   corrupt the built JAR after smoke; the self-checksum
 #                      verification must fail.
+#   --break=smoke      remove card data resources from the temp tree; the
+#                      build's smoke step must fail (underlying smoke.sh
+#                      non-zero exit).
 # In --break mode the harness EXPECTS the pipeline to fail at that stage:
 #   REGRESSION: intentional break correctly detected at '<stage>'  (exit 0)
 # If the pipeline passes despite the break:
@@ -37,7 +44,7 @@ for arg in "$@"; do
     *) echo "ERROR: unknown argument: $arg" >&2; exit 2 ;;
   esac
 done
-case "$BREAK_MODE" in ""|pin|checksum) ;; *) echo "ERROR: --break must be pin or checksum" >&2; exit 2 ;; esac
+case "$BREAK_MODE" in ""|pin|dep|compile|checksum|smoke) ;; *) echo "ERROR: --break must be pin, dep, compile, checksum, or smoke" >&2; exit 2 ;; esac
 
 # A known non-pin commit on the same branch, used only for the --break=pin
 # fault injection (checked out inside the temp dir; upstream untouched).
@@ -62,7 +69,10 @@ cd "$WORK"
 
 case "$BREAK_MODE" in
   pin)      EXPECT_FAIL_AT="build" ;;
+  dep)      EXPECT_FAIL_AT="build" ;;
+  compile)  EXPECT_FAIL_AT="build" ;;
   checksum) EXPECT_FAIL_AT="verify" ;;
+  smoke)    EXPECT_FAIL_AT="build" ;;
   *)        EXPECT_FAIL_AT="" ;;
 esac
 
@@ -99,8 +109,27 @@ if [ "$BREAK_MODE" = "pin" ]; then
   echo "regress: intentional break — source now at $(git -C build/alpha-src rev-parse HEAD) (not the release pin)"
 fi
 
+if [ "$BREAK_MODE" = "dep" ]; then
+  mkdir -p build/deps
+  printf 'corrupted-dependency' > build/deps/jackson-core-2.18.2.jar
+  echo "regress: intentional break — corrupted build/deps/jackson-core-2.18.2.jar"
+fi
+
+if [ "$BREAK_MODE" = "compile" ]; then
+  target="$(find build/alpha-src/game-cli/src/main/java -name '*.java' | head -1)"
+  [ -n "$target" ] || fail build "no java source found for fault injection"
+  printf '\n@@@INVALID-JAVA-SYNTAX@@@\n' >> "$target"
+  echo "regress: intentional break — injected syntax error into $target"
+fi
+
+if [ "$BREAK_MODE" = "smoke" ]; then
+  count="$(find build/alpha-src -path '*src/main/resources*' -iname '*card*.json' -delete -print | wc -l)"
+  [ "$count" -gt 0 ] || fail build "no card JSON resources found for fault injection"
+  echo "regress: intentional break — removed $count card JSON resources from temp tree"
+fi
+
 echo "== stage: build =="
-if ! ./build-release.sh; then fail build "build-release.sh exited non-zero"; fi
+if ! ./build-release.sh; then fail build "build-release.sh exited non-zero (for --break=smoke this is the expected underlying smoke.sh failure)"; fi
 echo "stage build: OK"
 
 echo "== stage: verify =="

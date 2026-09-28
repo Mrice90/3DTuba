@@ -76,8 +76,7 @@ play.bat                 # Windows  (or double-click it)
 ```
 
 The launchers check Java and the jar. **If the jar is missing** they do not
-fail cryptically — they explain the jar is not in the repo (90MB+ blobs are
-rejected by a repository rule), where the handoff copy comes from, the exact
+fail cryptically — they explain the jar is not in the repo (publishing the ~91 MB jar via the GitHub API was refused with HTTP 409 repository-rule validation), where the handoff copy comes from, the exact
 `sha256sum`/`certutil` command to verify it, and the expected hash. If
 `CHECKSUMS.sha256` sits next to the jar, the checksum is verified
 automatically before launch.

@@ -14,7 +14,7 @@ call :checkver || exit /b 1
 if not exist "%JAR%" (
   rem AI-052-WIN: escape every literal paren inside the block.
   echo ERROR: %JAR% not found.
-  echo The jar is NOT stored in this repository ^(a repo rule rejects 90MB+ blobs^).
+  echo The jar is NOT stored in this repository ^(publishing it via the GitHub API was refused: HTTP 409 repository-rule validation^).
   echo Get it from the release handoff, place it next to play.bat, then verify:
   echo   certutil -hashfile "%JAR%" SHA256
   echo Expected: 728c3fc101ad686e8c73c7a9af979125d7052f943f7b89645edbdc5149029523

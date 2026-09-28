@@ -11,7 +11,7 @@ if ! command -v java >/dev/null 2>&1; then
 fi
 if [ ! -s "$JAR" ]; then
     echo "ERROR: $JAR not found." >&2
-    echo "The jar is NOT stored in this repository (a repo rule rejects 90MB+ blobs)." >&2
+    echo "The jar is NOT stored in this repository (publishing it via the GitHub API was refused: HTTP 409 repository-rule validation)." >&2
     echo "Get it from the release handoff, place it next to play.sh, and verify it:" >&2
     echo "  sha256sum -c CHECKSUMS.sha256" >&2
     echo "Or rebuild it from the pinned source: ./fetch-source.sh && ./build-release.sh" >&2

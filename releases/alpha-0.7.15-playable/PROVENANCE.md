@@ -39,7 +39,6 @@ Reference build produced 2026-09-27 by Rune (AI-044), reproduced by recipe 2026-
 
 ## Distribution notes
 
-- The jar is **not stored in this repository**: a repository rule rejects
-  90MB+ blobs. It travels with the release handoff; this directory carries
+- The jar is **not stored in this repository**: attempts to publish the ~91 MB jar via the GitHub Contents API were refused with HTTP 409 (repository rule validation). It travels with the release handoff; this directory carries
   the reproducible recipe, checksums, launchers, and screenshots.
 - No formal GitHub Release has been created for this build.
