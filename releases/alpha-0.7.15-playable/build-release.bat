@@ -39,7 +39,7 @@ echo java specification version: !JV!
 
 if not exist "%ALPHA_DIR%\.git" (
   echo ERROR: alpha source not found at %ALPHA_DIR% -- run fetch-source.bat first.
-  exit /b 1
+  exit /b 20
 )
 
 for /f %%h in ('git -C "%ALPHA_DIR%" rev-parse HEAD') do set HEAD=%%h
@@ -47,7 +47,7 @@ echo alpha: !HEAD!
 if not "!HEAD!"=="%PIN%" if not "%ALPHA_ALLOW_UNPINNED%"=="1" (
   rem AI-052-WIN: escape every literal paren inside the block.
   echo ERROR: checkout ^(!HEAD!^) does not match release pin ^(%PIN%^). Set ALPHA_ALLOW_UNPINNED=1 to build anyway.
-  exit /b 1
+  exit /b 21
 )
 
 echo == dependencies (pinned, hash-verified) ==
@@ -55,9 +55,12 @@ rem The Jackson jars are NOT tracked in the upstream repo; fetch the exact
 rem artifacts from Maven Central and verify SHA-256 before use.
 set DEPS=%HERE%build\deps
 if not exist "%DEPS%" mkdir "%DEPS%"
-call :fetchdep jackson-databind 4b364e6850dc89172fcf1d4dd26b8ff5488eda44ff4657e22dd265203dd5ab3c || exit /b 1
-call :fetchdep jackson-core d8054ae7c0d1c2d2f55d28e46026ebe5892881f3fab5f439233184381c3b4a1f || exit /b 1
-call :fetchdep jackson-annotations 581bd61000ef7648943f781ca05689e56d03f6052748365a8e2b3a9b5d3fa32f || exit /b 1
+call :fetchdep jackson-databind 4b364e6850dc89172fcf1d4dd26b8ff5488eda44ff4657e22dd265203dd5ab3c
+if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
+call :fetchdep jackson-core d8054ae7c0d1c2d2f55d28e46026ebe5892881f3fab5f439233184381c3b4a1f
+if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
+call :fetchdep jackson-annotations 581bd61000ef7648943f781ca05689e56d03f6052748365a8e2b3a9b5d3fa32f
+if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
 echo dependencies verified
 set CP_JARS=%DEPS%\jackson-databind-2.18.2.jar;%DEPS%\jackson-core-2.18.2.jar;%DEPS%\jackson-annotations-2.18.2.jar
 
@@ -134,8 +137,8 @@ set JARF=%ART%-2.18.2.jar
 set URL=https://repo1.maven.org/maven2/com/fasterxml/jackson/core/%ART%/2.18.2/%JARF%
 if not exist "%DEPS%\%JARF%" (
   echo fetching %JARF% ...
-  where curl.exe >nul 2>nul || (echo ERROR: curl.exe not found -- install curl or place %JARF% in %DEPS% manually. & exit /b 1)
-  curl.exe -sSL --max-time 180 -o "%DEPS%\%JARF%" "%URL%" || (echo ERROR: download failed for %JARF% & exit /b 1)
+  where curl.exe >nul 2>nul || (echo ERROR: curl.exe not found -- install curl or place %JARF% in %DEPS% manually. & exit /b 22)
+  curl.exe -sSL --max-time 180 -o "%DEPS%\%JARF%" "%URL%" || (echo ERROR: download failed for %JARF% & exit /b 23)
 )
 rem AI-052-WIN: the FOR command string was missing its closing single-quote,
 rem and "skip=1" skipped the actual hash line (see above).
@@ -144,8 +147,8 @@ for /f %%H in ('certutil -hashfile "%DEPS%\%JARF%" SHA256 ^| findstr /v ":"') do
 :depchecked
 if not defined DH (
   echo ERROR: could not hash %JARF% with certutil.
-  exit /b 1
+  exit /b 24
 )
-if /i not "!DH!"=="%EXP%" (echo ERROR: checksum mismatch for %JARF% -- expected %EXP%, got !DH! & exit /b 1)
+if /i not "!DH!"=="%EXP%" (echo ERROR: checksum mismatch for %JARF% -- expected %EXP%, got !DH! & exit /b 25)
 echo verified %JARF%
 exit /b 0
