@@ -54,3 +54,6 @@ Mathew reports both Meshy and ElevenLabs are set up and connected — ran a test
 
 ## 2026-09-27 ~20:28 EDT — human setup verified: Claude Code worker (Mathew direct)
 Mathew reports the Claude worker is also set up and green. All three human-setup items (AI-032/033/034: Claude, Meshy, ElevenLabs) are now verified working — zero remaining human-side setup blockers ahead of the 00:00 tasking checkpoint.
+
+## 2026-09-27 ~20:35 EDT — AI-049 asset prompt directory v1 (Rune)
+Per Mathew's direction: built the per-card asset directory for the 00:00 tasking checkpoint. Generator (docs/muse/sprint-01/asset-prompts/build_asset_directory.py) produced asset-prompt-directory.json + .md from the pinned manifest + alpha card JSONs: 139 cards (119 Zeus/Poseidon + 20 tutors), each with a Meshy prompt grounded in card data and the existing art style, animation events, and an ElevenLabs SFX brief. SFX grouped by faction+archetype (21 groups); unique SFX for rarity-4 apex tier only (32: 20 apex-file + 6 capitals + 6 other rarity-4). 19 DEMO + 5 UNASSIGNED prototypes excluded as dev-only. Validation: 139/139 prompts+briefs present, unique IDs, counts reconcile. Pacing: 21:00 run does independent validation + 10-prompt spot-check QA; 22:00 run does final acceptance -> DONE and queues first Meshy/ElevenLabs batches.
