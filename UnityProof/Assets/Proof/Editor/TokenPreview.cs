@@ -2,6 +2,7 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using InfiniteConquest.Proof;
 
 // AI-052-ASSET: place an imported Meshy token on the proof board and render review stills.
 // Batch: unity -batchmode -executeMethod TokenPreview.Render -tokenPath <asset> -tokenName <name>
@@ -11,7 +12,6 @@ public static class TokenPreview {
         for (int i = 0; i < a.Length - 1; i++) if (a[i] == name) return a[i + 1];
         return fallback;
     }
-    static Vector3 Cell(int x, int y) { return new Vector3((x - 1.5f) * 1.3f, 0, (y - 2.5f) * 1.3f); }
     static void Shot(Camera cam, string path, int w, int h) {
         var rt = new RenderTexture(w, h, 24) { antiAliasing = 8 };
         cam.targetTexture = rt; cam.Render();
@@ -23,9 +23,12 @@ public static class TokenPreview {
         Debug.Log("TOKEN_PREVIEW wrote " + path);
     }
     // Builds a URP Lit material from Token_*.png written by the Blender normalizer.
+    // Returns null when the normalizer wrote no base colour, so the model keeps its imported materials.
     // glTF packs roughness in G and metal in B; URP wants metal in R and smoothness in A.
     static Material BuildMaterial(string dir) {
         string Tex(string tag) => $"{dir}/Token_{tag}.png";
+        var baseColor = AssetDatabase.LoadAssetAtPath<Texture2D>(Tex("BaseColor"));
+        if (baseColor == null) { Debug.Log("TOKEN_MATERIAL none: keeping imported materials in " + dir); return null; }
         var normalImp = (TextureImporter)AssetImporter.GetAtPath(Tex("Normal"));
         if (normalImp != null && normalImp.textureType != TextureImporterType.NormalMap) { normalImp.textureType = TextureImporterType.NormalMap; normalImp.SaveAndReimport(); }
         string mrPath = Tex("MetallicRoughness"), msPath = Tex("MetallicSmoothness");
@@ -41,12 +44,18 @@ public static class TokenPreview {
             var msImp = (TextureImporter)AssetImporter.GetAtPath(msPath); msImp.sRGBTexture = false; msImp.SaveAndReimport();
         }
         var mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-        mat.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(Tex("BaseColor")));
+        mat.SetTexture("_BaseMap", baseColor);
         var n = AssetDatabase.LoadAssetAtPath<Texture2D>(Tex("Normal"));
         if (n) { mat.SetTexture("_BumpMap", n); mat.EnableKeyword("_NORMALMAP"); }
         var m = AssetDatabase.LoadAssetAtPath<Texture2D>(msPath);
         if (m) { mat.SetTexture("_MetallicGlossMap", m); mat.SetFloat("_Smoothness", 1f); mat.EnableKeyword("_METALLICSPECGLOSSMAP"); }
-        AssetDatabase.CreateAsset(mat, $"{dir}/Token.mat");
+        // Update Token.mat in place so re-renders keep its GUID and any references to it.
+        string matPath = $"{dir}/Token.mat";
+        var existing = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+        if (existing != null) {
+            existing.shader = mat.shader; existing.CopyPropertiesFromMaterial(mat); existing.shaderKeywords = mat.shaderKeywords;
+            EditorUtility.SetDirty(existing); AssetDatabase.SaveAssets(); mat = existing;
+        } else AssetDatabase.CreateAsset(mat, matPath);
         Debug.Log($"TOKEN_MATERIAL base={mat.GetTexture("_BaseMap") != null} normal={n != null} metal={m != null}");
         return mat;
     }
@@ -67,17 +76,20 @@ public static class TokenPreview {
         var lit = Shader.Find("Universal Render Pipeline/Lit");
         var floor = new Material(lit); floor.SetColor("_BaseColor", new Color(.09f, .15f, .22f));
         var home = new Material(lit); home.SetColor("_BaseColor", new Color(.12f, .55f, .49f));
-        for (int x = 0; x < 4; x++) for (int y = 0; y < 6; y++) {
-            var t = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            t.transform.position = Cell(x, y); t.transform.localScale = new Vector3(1.18f, .18f, 1.18f);
-            t.GetComponent<Renderer>().sharedMaterial = (x == 1 && y == 2) ? home : floor;
+        for (int x = 0; x < BoardLayout.Width; x++) for (int y = 0; y < BoardLayout.Height; y++) {
+            BoardLayout.CreateTile(x, y, (x == 1 && y == 2) ? home : floor);
         }
         var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(tokenPath);
         if (prefab == null) throw new System.Exception("token asset not found: " + tokenPath);
         var token = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
         var tokenMat = BuildMaterial(Path.GetDirectoryName(tokenPath).Replace('\\', '/'));
-        foreach (var r in token.GetComponentsInChildren<Renderer>()) r.sharedMaterial = tokenMat;
-        token.transform.position = Cell(1, 2) + Vector3.up * .09f;
+        // Fill every material slot, not just slot 0, so multi-submesh models don't keep default grey elsewhere.
+        if (tokenMat != null) foreach (var r in token.GetComponentsInChildren<Renderer>()) {
+            var slots = r.sharedMaterials;
+            for (int i = 0; i < slots.Length; i++) slots[i] = tokenMat;
+            r.sharedMaterials = slots;
+        }
+        token.transform.position = BoardLayout.CellCenter(1, 2) + Vector3.up * BoardLayout.TileTop;
         token.transform.rotation = Quaternion.Euler(0, 200, 0);
         var b = new Bounds(token.transform.position, Vector3.zero);
         foreach (var r in token.GetComponentsInChildren<Renderer>()) b.Encapsulate(r.bounds);
