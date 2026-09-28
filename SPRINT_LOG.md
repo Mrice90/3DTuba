@@ -234,3 +234,22 @@ Verification (Linux sandbox, Temurin 17.0.11):
 
 Commit: `1c53026` (5 files, single commit via GitHub tree API — sandbox git push stays blocked, so the branch ref was moved via the API).
 Next: `windows-packaging.yml` CI runs on this push (run ID to be recorded when green); Claude verifies independently at the 00:00 checkpoint. AI-048 (ubuntu-latest job) is next in Rune's queue.
+
+## 2026-09-28 ~19:40 EDT — AI-058 robust Java version detection delivered (Rune)
+
+`build-release.sh` read the Java major version from the first line of `java -version`. With `JAVA_TOOL_OPTIONS` set (common in CI/proxied environments), line 1 becomes "Picked up JAVA_TOOL_OPTIONS...", so a good JDK was rejected as too old (finding AI-058, Claude's 18:00 checkpoint).
+
+Change: the `.sh` now reads `java.specification.version` via `java -XshowSettings:properties -version` — the same approach as `build-release.bat` — with a line-anchored sed so `java.vm.specification.version` never matches.
+
+Verification (Linux sandbox, Temurin 17.0.11): version snippet detects 17 with `JAVA_TOOL_OPTIONS` unset and set (`-Dfoo=bar`); `bash -n` clean.
+Regression check: `linux-packaging.yml` now exports `JAVA_TOOL_OPTIONS="-Dai058=regression-check"` for the whole job, so every CI step (clean + all six break modes) runs under the noise line.
+
+Commit: `c7f230c` (build-release.sh + linux-packaging.yml).
+
+## 2026-09-28 ~19:40 EDT — AI-057 regress.bat console behavior documented (Rune)
+
+`regress.bat` ends with `exit %EXITCODE%` (not `exit /b`) so its exit code survives the `call :fail`/`:pass` subroutines for CI to assert on. Side effect: double-clicking it in Explorer closes the console on finish.
+
+Change: `releases/alpha-0.7.15-playable/README.md` regression section now documents this and the manual-run remedies (run from an open console, or `cmd /k regress.bat`). Also added the missing `--break=depswap` doc line. Documentation-only; no behavior change.
+
+Commit: `e16e303` (README.md).
