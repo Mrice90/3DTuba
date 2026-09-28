@@ -21,6 +21,12 @@ jobs:
   linux-packaging:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    # AI-058 regression check: run the whole lane with JAVA_TOOL_OPTIONS set,
+    # so the "Picked up JAVA_TOOL_OPTIONS" noise line is present. The build's
+    # Java version detection must read java.specification.version (not the
+    # first line of `java -version`) and keep working.
+    env:
+      JAVA_TOOL_OPTIONS: "-Dai058=regression-check"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4

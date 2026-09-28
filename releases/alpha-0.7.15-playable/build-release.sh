@@ -28,9 +28,14 @@ command -v git >/dev/null || die "git not found on PATH (needed for the pin chec
 command -v java >/dev/null || die "java not found on PATH — install JDK 17+ (Temurin/Adoptium)"
 command -v javac >/dev/null || die "javac not found on PATH — install a full JDK 17+ (not just a JRE)"
 command -v jar >/dev/null || die "'jar' tool not found on PATH — install a full JDK 17+"
-JAVA_MAJOR="$(java -version 2>&1 | head -1 | sed -E 's/.*version "([0-9]+).*/\1/')"
-[ "${JAVA_MAJOR:-0}" -ge 17 ] 2>/dev/null || die "java $JAVA_MAJOR is too old — JDK 17+ required"
-echo "java: $(java -version 2>&1 | head -1)"
+# AI-058: read java.specification.version (not the first line of
+# `java -version`), so JAVA_TOOL_OPTIONS noise ("Picked up ...") can't
+# mislead the check — same approach as build-release.bat. The sed anchors
+# to line start so java.vm.specification.version never matches.
+JAVA_SPEC="$(java -XshowSettings:properties -version 2>&1 | sed -n 's/^[[:space:]]*java.specification.version = //p' | head -1 | tr -d '[:space:]')"
+JAVA_MAJOR="$(printf '%s' "$JAVA_SPEC" | sed -E 's/^([0-9]+).*/\1/')"
+[ "${JAVA_MAJOR:-0}" -ge 17 ] 2>/dev/null || die "java specification version ${JAVA_SPEC:-unknown} is too old — JDK 17+ required"
+echo "java specification version: ${JAVA_SPEC:-unknown}"
 
 [ -d "$ALPHA/.git" ] || die "alpha source not found at $ALPHA — run ./fetch-source.sh first"
 HEAD="$(git -C "$ALPHA" rev-parse HEAD)"
