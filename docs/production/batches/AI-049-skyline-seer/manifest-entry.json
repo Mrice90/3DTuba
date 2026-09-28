@@ -1,0 +1,139 @@
+{
+  "work_id": "AI-049",
+  "brief_version": "AI-049-v1 (derived from ASSET_QUEUE.md AI-050 brief v1 and AI-051 brief v1)",
+  "card_id": "zeus_ability_skyline_seer",
+  "source_manifest": {
+    "csv": "docs/muse/sprint-01/manifest.csv",
+    "json": "docs/muse/sprint-01/manifest.json",
+    "csv_line": 23
+  },
+  "source_row": {
+    "card_id": "zeus_ability_skyline_seer",
+    "name": "Skyline Seer",
+    "faction": "ZEUS",
+    "type": "CHARACTER",
+    "source": "alpha-json",
+    "art_path": "game-gui/src/main/resources/art/characters/zeus_ability_skyline_seer.jpg",
+    "art_status": "bespoke",
+    "needed_3d": "3D character model — stylized, faction-themed; idle/attack/hit/death states",
+    "animation_events": "deploy_flight(400ms);move(320ms);melee(360ms)/ranged_projectile;damage_float(1200ms);hit_flash(350ms);destroy(320ms)",
+    "sound_cues": "DEPLOY;MOVE;MELEE/RANGED;DAMAGE;DESTROY",
+    "provenance": "game-core/src/main/resources/cards/faction-ability-cards.json @ 992bc95c7164416ea0a25a4ce120f6ec0a0a167a",
+    "status": "PROTOTYPE",
+    "expansion_gap": "false",
+    "notes": "runtime via PrototypeCardPool"
+  },
+  "provenance": {
+    "card_definition": "game-core/src/main/resources/cards/faction-ability-cards.json @ 992bc95c7164416ea0a25a4ce120f6ec0a0a167a",
+    "source_repository": "TubaExperiment",
+    "pinned_commit": "992bc95c7164416ea0a25a4ce120f6ec0a0a167a",
+    "reference_art": "game-gui/src/main/resources/art/characters/zeus_ability_skyline_seer.jpg @ 992bc95c7164416ea0a25a4ce120f6ec0a0a167a (not present in this repository; not inspected)",
+    "event_evidence": "docs/muse/sprint-01/audit-report.md section 3 (Fx.java timings, SoundEffects.Cue enum) and section 5 (type-derived events)",
+    "unverified": [],
+    "verified": [
+      "2026-09-27 Claude Code: faction-ability-cards.json @ 992bc95 gives range 2, movement 3, attack 4, SHARP_SHOT. InfiniteConquestGui.java:2330 plays RANGED when target distance > 1, MELEE when adjacent. Ranged is primary; adjacent MELEE cue is not in this batch (proposed AI-053)."
+    ]
+  },
+  "events": [
+    {
+      "event": "deploy",
+      "animation_events": ["deploy_flight"],
+      "animation_ms": 400,
+      "sound_cue": "DEPLOY",
+      "audio_duration_s": 0.7,
+      "audio_output": "assets/staging/elevenlabs/AI-051-skyline-seer/zeus_ability_skyline_seer_deploy_c{01-04}.wav"
+    },
+    {
+      "event": "move",
+      "animation_events": ["move"],
+      "animation_ms": 320,
+      "sound_cue": "MOVE",
+      "audio_duration_s": 0.5,
+      "audio_output": "assets/staging/elevenlabs/AI-051-skyline-seer/zeus_ability_skyline_seer_move_c{01-04}.wav"
+    },
+    {
+      "event": "attack",
+      "animation_events": ["ranged_projectile"],
+      "animation_ms": null,
+      "sound_cue": "RANGED",
+      "audio_duration_s": 0.8,
+      "audio_output": "assets/staging/elevenlabs/AI-051-skyline-seer/zeus_ability_skyline_seer_attack_c{01-04}.wav"
+    },
+    {
+      "event": "hit",
+      "animation_events": ["hit_flash", "damage_float"],
+      "animation_ms": 350,
+      "sound_cue": "DAMAGE",
+      "audio_duration_s": 0.5,
+      "audio_output": "assets/staging/elevenlabs/AI-051-skyline-seer/zeus_ability_skyline_seer_hit_c{01-04}.wav"
+    },
+    {
+      "event": "destroy",
+      "animation_events": ["destroy"],
+      "animation_ms": 320,
+      "sound_cue": "DESTROY",
+      "audio_duration_s": 1.1,
+      "audio_output": "assets/staging/elevenlabs/AI-051-skyline-seer/zeus_ability_skyline_seer_destroy_c{01-04}.wav"
+    }
+  ],
+  "outputs": {
+    "meshy": {
+      "directory": "assets/staging/meshy/AI-050-skyline-seer/",
+      "model": "assets/staging/meshy/AI-050-skyline-seer/zeus_ability_skyline_seer.glb",
+      "preview": "assets/staging/meshy/AI-050-skyline-seer/zeus_ability_skyline_seer_preview.png"
+    },
+    "elevenlabs": {
+      "directory": "assets/staging/elevenlabs/AI-051-skyline-seer/",
+      "file_pattern": "zeus_ability_skyline_seer_{event}_c{01-04}.mp3 (provider originals; convert selected candidates to 48 kHz WAV during integration)"
+    }
+  },
+  "technical_constraints": {
+    "meshy": {
+      "format": "glb",
+      "up_axis": "+Y",
+      "forward_axis": "+Z",
+      "origin": "feet at origin",
+      "height_units": 1.8,
+      "pose": "symmetrical neutral A-pose or relaxed combat-ready stance suitable for later rigging",
+      "materials": "separated logical materials (robe, armor, staff, skin/hair); game-safe, no photoreal skin",
+      "topology": "clean game-ready geometry, closed watertight surfaces where practical, no tiny floating pieces, no extreme cloth wisps; optimized variant produced during cleanup",
+      "prohibited": ["base fused to feet", "text", "logos", "gore", "photoreal human skin", "existing copyrighted character likeness"]
+    },
+    "elevenlabs": {
+      "format": "wav",
+      "sample_rate_hz": 48000,
+      "looping": false,
+      "speech": false,
+      "variations_per_cue": 4,
+      "variations_gate": "four candidates per cue only after cost approval",
+      "loudness": "unclipped (no sample at 0 dBFS); final loudness and peak normalization happen during game integration",
+      "prohibited": ["speech", "chanting", "melody", "thunderclap cliches", "modern machinery", "gun-like transients", "excessive bass", "long reverb tails", "montage of multiple cues in one file"]
+    }
+  },
+  "providers": [
+    {
+      "work_id": "AI-050",
+      "provider": "Meshy",
+      "state": "REVIEW",
+      "job_id": "meshy-history-2026-09-27-zeus_ability_skyline_seer",
+      "brief_version": "AI-049-v1",
+      "credit_estimate": 40,
+      "credit_charge": 40,
+      "output_location": "assets/staging/meshy/AI-050-skyline-seer/",
+      "reviewer": null,
+      "result": "One GLB downloaded from two paid attempts; preview must identify the attempt and verify staff/likeness before acceptance"
+    },
+    {
+      "work_id": "AI-051",
+      "provider": "ElevenLabs",
+      "state": "REVIEW",
+      "job_id": "FCIltiGj4Rfx1M17RgT7",
+      "brief_version": "AI-049-v1",
+      "credit_estimate": 158.4,
+      "credit_charge": null,
+      "output_location": "assets/staging/elevenlabs/AI-051-skyline-seer/",
+      "reviewer": null,
+      "result": "20/20 MP3 provider originals downloaded; candidate selection, WAV conversion, normalization, and in-game review pending"
+    }
+  ]
+}

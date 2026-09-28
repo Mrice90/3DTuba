@@ -1,0 +1,176 @@
+{
+  "wave_id": "claude-wave-01",
+  "work_id": "AI-052",
+  "brief_version": "AI-052-v1",
+  "created": "2026-09-27",
+  "author": "Claude Code",
+  "state": "BRIEF",
+  "no_provider_calls": "Nothing in this wave has been submitted to Meshy or ElevenLabs and no credits have been spent. The coordinator launches jobs only after validate_requests.py passes and the PO approves the credit estimate.",
+  "muse_source": {
+    "branch": "origin/muse/sprint-01-content-audit",
+    "commit": "fb19be14c07972fc95a34b5762842a647544e5c2",
+    "path": "docs/muse/sprint-01/asset-prompts/asset-prompt-directory.json",
+    "read_with": "git show fb19be14c07972fc95a34b5762842a647544e5c2:docs/muse/sprint-01/asset-prompts/asset-prompt-directory.json"
+  },
+  "excluded_card_ids": ["zeus_ability_skyline_seer"],
+  "selection_rationale": "Three new style-library anchors, each in an SFX group not yet in production, so no request overlaps the in-flight Skyline Seer work (AI-050/051/053, group ZEUS_HUMAN). Silhouettes are deliberately different: a low quadruped wedge (Zeus), a tall limbless coil (Poseidon), and a wide squat ring-in-arch structure (board). Each one anchors a shared SFX group that covers 10, 3, and 4 cards.",
+  "requests": [
+    {
+      "role": "zeus_character",
+      "card_id": "zeus_siege_thunder_ram",
+      "staging_key": "AI-052-zeus_siege_thunder_ram",
+      "source": {
+        "commit": "fb19be14c07972fc95a34b5762842a647544e5c2",
+        "path": "docs/muse/sprint-01/asset-prompts/asset-prompt-directory.json",
+        "json_pointer": "cards[id=zeus_siege_thunder_ram]",
+        "name": "Thunder Ram",
+        "faction": "ZEUS",
+        "type": "CHARACTER",
+        "rarity": 3,
+        "keywords": ["SIEGE"],
+        "description": "A storm front taught to break walls.",
+        "sfx_mode": "group",
+        "sfx_group": "ZEUS_CHARACTER"
+      },
+      "silhouette_class": "low quadruped wedge",
+      "silhouette_notes": "Wide, low, horn-led body on four planted legs. Reads nothing like the upright staff-bearing Skyline Seer. 'Ram' is interpreted as a war ram beast because the card is a SIEGE character, not a battering-ram object.",
+      "meshy": {
+        "provider": "Meshy",
+        "type": "Text to 3D",
+        "model": "Meshy 6",
+        "options": {"pose": "None", "generations": 1, "license": "Private"},
+        "prompt": "Stylized 3D game miniature for a hex-tile tactics board game: Thunder Ram, an original Zeus-faction siege beast. A four-legged war ram of bronze armor over dark marble, head lowered to charge, massive forward-curled horns wrapped in gold-white lightning, storm-cloud mane along its spine. Silhouette: wide low wedge body, heavy horns leading, four thick legs planted square. Regal, severe, sky-wrathful. Painterly hand-painted look, subtle glowing energy accents, clean shapes readable from an elevated three-quarter camera. Neutral standing pose, legs clear of the body, no base. Clean closed game-ready geometry with separate materials: bronze armor, marble body, lightning glow. No text, logos, rider, gore, or floating fragments.",
+        "technical_constraints": {
+          "format": "glb",
+          "up_axis": "+Y",
+          "forward_axis": "+Z",
+          "origin": "center of the four-hoof footprint at ground level",
+          "height_units": 1.3,
+          "footprint": "fits inside one board hex",
+          "topology": "remesh to a board-piece budget during cleanup; generated face count is expected to be far above budget (AI-050 precedent: 575k-622k tris)"
+        }
+      },
+      "elevenlabs": {
+        "provider": "ElevenLabs",
+        "type": "Sound Effects",
+        "model": "eleven_text_to_sound_v2",
+        "model_confirmed": false,
+        "sfx_group": "ZEUS_CHARACTER",
+        "sfx_group_card_count": 10,
+        "sfx_brief": "SFX GROUP ZEUS_CHARACTER — shared sound family for 10 Zeus Character cards. Palette: crackling electricity, bronze impacts, thunderous lows. Design 5 short game-ready effects sharing one reverb space and material language: select (0.2s), deploy/place (0.8s), attack (0.7s), hit (0.4s), death (1.2s). Cues covered: DAMAGE (effect), DEPLOY (placement thump), DESTROY (destruction crash), MELEE/RANGED (effect), MOVE (movement whoosh). WAV 48kHz/24-bit, peaks -6dB, no music, no voice. File naming: zeus_character_<cue>.wav",
+        "generation_notes": "ElevenLabs generates no shorter than 0.5 s, so select (0.2 s) and hit (0.4 s) are generated at 0.5 s and trimmed at integration. The results are group assets, shared by all 10 ZEUS_CHARACTER cards.",
+        "muse_brief_flags": ["The brief's five designed effects (select/deploy/attack/hit/death) do not match its covered cue list: MOVE is covered but has no designed effect, and select has no matching cue. The coordinator should generate a MOVE cue as the fifth effect or ask Muse before running."]
+      }
+    },
+    {
+      "role": "poseidon_character",
+      "card_id": "poseidon_leviathan_wakeborn",
+      "staging_key": "AI-052-poseidon_leviathan_wakeborn",
+      "source": {
+        "commit": "fb19be14c07972fc95a34b5762842a647544e5c2",
+        "path": "docs/muse/sprint-01/asset-prompts/asset-prompt-directory.json",
+        "json_pointer": "cards[id=poseidon_leviathan_wakeborn]",
+        "name": "Leviathan Wakeborn",
+        "faction": "POSEIDON",
+        "type": "CHARACTER",
+        "rarity": 3,
+        "keywords": ["VANGUARD"],
+        "description": "A massive bioframe rising in the wake of old sea gods.",
+        "sfx_mode": "group",
+        "sfx_group": "POSEIDON_BEAST"
+      },
+      "silhouette_class": "tall limbless coil",
+      "silhouette_notes": "Tall vertical S-curve with the head and crest high and no limbs. Its tall, thin outline contrasts with the low, wide ram and the squat gate.",
+      "meshy": {
+        "provider": "Meshy",
+        "type": "Text to 3D",
+        "model": "Meshy 6",
+        "options": {"pose": "None", "generations": 1, "license": "Private"},
+        "prompt": "Stylized 3D game miniature for a hex-tile tactics board game: Leviathan Wakeborn, an original Poseidon-faction sea beast. A massive serpentine leviathan rising upright in a tall S-curve from a coiled lower body, finned crest, heavy jaw, dark bronze scale plates overgrown with coral, bioluminescent teal glow along its ridges. Silhouette: tall vertical coil, head and crest high, no limbs. Ancient, crushing, relentless. Painterly hand-painted look, readable from an elevated three-quarter camera. The coils form its own footprint; no water, rocks, or scenic base. Clean closed game-ready geometry with separate materials: scales, coral, glow. No text, logos, gore, tentacle clutter, or floating fragments.",
+        "technical_constraints": {
+          "format": "glb",
+          "up_axis": "+Y",
+          "forward_axis": "+Z",
+          "origin": "center of the coil footprint at ground level",
+          "height_units": 2.4,
+          "footprint": "fits inside one board hex",
+          "topology": "remesh to a board-piece budget during cleanup; generated face count is expected to be far above budget (AI-050 precedent: 575k-622k tris)"
+        }
+      },
+      "elevenlabs": {
+        "provider": "ElevenLabs",
+        "type": "Sound Effects",
+        "model": "eleven_text_to_sound_v2",
+        "model_confirmed": false,
+        "sfx_group": "POSEIDON_BEAST",
+        "sfx_group_card_count": 3,
+        "sfx_brief": "SFX GROUP POSEIDON_BEAST — shared sound family for 3 Poseidon Beast cards. Palette: deep water pressure, teal shimmer, crushing wave impacts. Design 5 short game-ready effects sharing one reverb space and material language: select (0.2s), deploy/place (0.8s), attack (0.7s), hit (0.4s), death (1.2s). Cues covered: DAMAGE (effect), DEPLOY (placement thump), DESTROY (destruction crash), MELEE/RANGED (effect), MOVE (movement whoosh). WAV 48kHz/24-bit, peaks -6dB, no music, no voice. File naming: poseidon_beast_<cue>.wav",
+        "generation_notes": "ElevenLabs generates no shorter than 0.5 s, so select (0.2 s) and hit (0.4 s) are generated at 0.5 s and trimmed at integration. The results are group assets, shared by all 3 POSEIDON_BEAST cards.",
+        "muse_brief_flags": ["The brief's five designed effects (select/deploy/attack/hit/death) do not match its covered cue list: MOVE is covered but has no designed effect, and select has no matching cue. The coordinator should generate a MOVE cue as the fifth effect or ask Muse before running."]
+      }
+    },
+    {
+      "role": "board_structure",
+      "card_id": "poseidon_abyss_gate",
+      "staging_key": "AI-052-poseidon_abyss_gate",
+      "source": {
+        "commit": "fb19be14c07972fc95a34b5762842a647544e5c2",
+        "path": "docs/muse/sprint-01/asset-prompts/asset-prompt-directory.json",
+        "json_pointer": "cards[id=poseidon_abyss_gate]",
+        "name": "Abyss Gate",
+        "faction": "POSEIDON",
+        "type": "STRUCTURE",
+        "rarity": 3,
+        "keywords": [],
+        "description": "A colossal seal protecting the deepest arcology.",
+        "sfx_mode": "group",
+        "sfx_group": "POSEIDON_FORTRESS"
+      },
+      "silhouette_class": "wide squat ring-in-arch",
+      "silhouette_notes": "Wide, low mass centered on a round sealed door. Reads as architecture, not a creature. It was chosen over Zeus spires because a tall spire would echo the Skyline Seer's upright staff.",
+      "meshy": {
+        "provider": "Meshy",
+        "type": "Text to 3D",
+        "model": "Meshy 6",
+        "options": {"pose": "None", "generations": 1, "license": "Private"},
+        "prompt": "Stylized 3D game miniature for a hex-tile tactics board game: Abyss Gate, an original Poseidon-faction fortress structure. A colossal circular sealed vault door set in a thick squat arch of dark stone and bronze, flanked by two low buttress towers, coral growth on the masonry, a glowing bioluminescent teal seal ring at the center with leviathan relief motifs. Silhouette: wide, low, heavy ring-in-arch mass that fits one hex tile, flat underside. Ancient, crushing, immovable. Painterly hand-painted look, readable from an elevated three-quarter camera. Clean closed game-ready geometry with separate materials: stone, bronze, coral, glow. No text, logos, characters, water, terrain, or floating fragments.",
+        "technical_constraints": {
+          "format": "glb",
+          "up_axis": "+Y",
+          "forward_axis": "+Z (door faces +Z)",
+          "origin": "center of the flat underside",
+          "height_units": 1.5,
+          "footprint": "fits inside one board hex",
+          "topology": "remesh to a board-piece budget during cleanup; generated face count is expected to be far above budget (AI-050 precedent: 575k-622k tris)"
+        }
+      },
+      "elevenlabs": {
+        "provider": "ElevenLabs",
+        "type": "Sound Effects",
+        "model": "eleven_text_to_sound_v2",
+        "model_confirmed": false,
+        "sfx_group": "POSEIDON_FORTRESS",
+        "sfx_group_card_count": 4,
+        "sfx_brief": "SFX GROUP POSEIDON_FORTRESS — shared sound family for 4 Poseidon Fortress cards. Palette: deep water pressure, teal shimmer, crushing wave impacts. Design 5 short game-ready effects sharing one reverb space and material language: select (0.2s), deploy/place (0.8s), attack (0.7s), hit (0.4s), death (1.2s). Cues covered: CLICK (selection click), DEPLOY (placement thump), DESTROY (destruction crash). WAV 48kHz/24-bit, peaks -6dB, no music, no voice. File naming: poseidon_fortress_<cue>.wav",
+        "generation_notes": "ElevenLabs generates no shorter than 0.5 s, so select (0.2 s) and hit (0.4 s) are generated at 0.5 s and trimmed at integration. The results are group assets, shared by all 4 POSEIDON_FORTRESS cards.",
+        "muse_brief_flags": ["The brief designs attack/hit/death effects, but the card's cues are only CLICK/DEPLOY/DESTROY. The coordinator should generate only select (CLICK), deploy (DEPLOY), and death (DESTROY), which saves the attack/hit credits, unless Muse confirms otherwise."]
+      }
+    }
+  ],
+  "tracking_fields": ["work_id", "card_id", "provider", "state", "job_id", "brief_version", "credit_estimate", "credit_charge", "output_location", "reviewer", "result", "submitted_at", "submitted_by"],
+  "credit_policy": {
+    "meshy_credit_estimate_per_request": 20,
+    "meshy_estimate_basis": "One Text to 3D Meshy 6 preview generation. AI-050 was charged 20 credits (3,150 -> 3,130) on 2026-09-27. Texture and remesh are extra and need separate approval.",
+    "elevenlabs_credit_estimate_per_request": null,
+    "elevenlabs_estimate_basis": "No estimate yet. The coordinator records the flow's estimate in tracking.json and gets PO approval before running. The AI-051 precedent is 158.4 credits for a 5-cue x 4-candidate flow.",
+    "resubmission": "Never resubmit an uncertain paid job. Before submitting, check the provider history for an existing job for this card and record its ID."
+  },
+  "review_gates": [
+    {"gate": "G0-validated", "stage": "before submission", "owner": "Claude Code", "check": "validate_requests.py exits 0 and the unit tests pass"},
+    {"gate": "G1-cost-approved", "stage": "before submission", "owner": "PO", "check": "PO approves the exact credit estimate per job. Record the approval in tracking.json.credit_estimate and the queue."},
+    {"gate": "G2-submitted-recorded", "stage": "at submission", "owner": "Coordinator", "check": "job_id (or history identification), submitted_at, submitted_by, and the balance before/after go into tracking.json. State becomes SUBMITTED."},
+    {"gate": "G3-preview-review", "stage": "after generation", "owner": "Astra + PO", "check": "Silhouette matches silhouette_class from the board camera, the key features are present (ram horns / upright coil / sealed ring door), and there is no existing-IP likeness. Fail means REJECT, not a silent regenerate."},
+    {"gate": "G4-technical", "stage": "after download", "owner": "Astra", "check": "GLB passes the AI-054 check_glb.py checks for scale, origin, up axis, and naming. A remesh to the board budget is produced. The audio is unclipped, nonverbal, and matches the requested durations and group naming."},
+    {"gate": "G5-in-game", "stage": "integration", "owner": "Astra", "check": "Unity import succeeds, with an in-game screenshot and a listen in a dense tactical mix. After that the final manifest row and commit are made. Generated does not mean accepted."}
+  ]
+}

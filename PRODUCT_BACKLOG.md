@@ -36,7 +36,7 @@
 | AI-058 | P3 | Muse | READY | Detect the Java version via `java.specification.version` (as in the `.bat`), not `java -version | head -1`. | Build passes with `JAVA_TOOL_OPTIONS` set. A regression check is added. |
 | AI-057 | P3 | Muse | READY | Document or wrap `regress.bat`'s `exit` so manual runs keep the console open. | README updated, or the wrapper is tested. |
 | AI-031 | P0 | Claude (Astra lane) | IN_PROGRESS | Keep integration/security gates current. Review every new head at each checkpoint (AI-005/AI-006). | A checkpoint entry in SPRINT_LOG.md for every meeting. |
-| AI-059 | P1 | Claude | READY | Reconcile Astra's unmerged branches (`astra/unity-movement-proof` 997c38f, `astra/night-2026-09-27` 3b6dc52) against the working branch. List each unmerged commit, what it does and whether it is safe to bring over. Do not merge without Mathew. | A written recommendation in `docs/reviews/`. |
+| AI-059 | P1 | Claude | DELIVERED 2026-09-28 18:45 | Both astra/* branches are already merged (0 stranded commits). Local-only docs/production (AI-054 checker 55/55, AI-049/AI-052 validators OK) is now committed. Raw 58 MB staging binaries are kept out. | `docs/reviews/2026-09-28-1845-AI-059-astra-branches.md`. Astra confirms branch deletion on return. |
 | Meshy media | — | Meshy | WAITING on HA-009 | Six-capital batch (`docs/muse/sprint-01/asset-prompts/batch-01-queue.md`) is held until the Thunder Ram style check passes. | — |
 | ElevenLabs media | — | ElevenLabs | WAITING on HA-009 | No new generation until the in-game style check. | — |
 
@@ -225,9 +225,9 @@ An item is DONE only when its acceptance criteria are met, relevant tests/review
 | AI-052-WIN | AI-046 | Windows .bat repair | Muse | ACCEPTED |
 | AI-052-ASSET | AI-018 | Thunder Ram, Leviathan Wakeborn, Abyss Gate models + 13 SFX | Meshy / ElevenLabs → Claude import | READY for import |
 | AI-053 | AI-020 | Skyline Seer melee cue | ElevenLabs | REVIEW |
-| AI-054 | AI-018 | `check_glb.py` staging checker | Claude | VERIFIED local, commit pending |
+| AI-054 | AI-018 | `check_glb.py` staging checker | Claude | DONE (committed with AI-059, 55/55) |
 | AI-055 | AI-005 | Pin Jackson hashes (supply chain) | Muse | READY |
 | AI-056 | AI-006 | Distinct exit code per regression check | Muse | READY |
 | AI-057 | AI-006 | regress.bat manual-run exit | Muse | READY |
 | AI-058 | AI-006 | Java version detection with JAVA_TOOL_OPTIONS | Muse | READY |
-| AI-059 | AI-031 | Reconcile unmerged astra/* branches | Claude | READY |
+| AI-059 | AI-031 | Reconcile unmerged astra/* branches | Claude | DELIVERED |
