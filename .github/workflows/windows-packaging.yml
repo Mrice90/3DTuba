@@ -54,6 +54,9 @@ jobs:
       - name: Negative coverage --break=dep (expect detection at build)
         working-directory: releases/alpha-0.7.15-playable
         run: call regress.bat --break=dep
+      - name: Negative coverage --break=depswap (expect detection at build)
+        working-directory: releases/alpha-0.7.15-playable
+        run: call regress.bat --break=depswap
       - name: Negative coverage --break=compile (expect detection at build)
         working-directory: releases/alpha-0.7.15-playable
         run: call regress.bat --break=compile

@@ -41,13 +41,25 @@ fi
 
 echo "== dependencies (pinned, hash-verified) =="
 # The Jackson jars are NOT tracked in the upstream repo; fetch the exact
-# artifacts from Maven Central and verify the published .sha1 before use.
+# artifacts from Maven Central and verify them before use.
+#
+# AI-055: supply-chain pin. The full SHA-256 of each jar is hardcoded below
+# (verified 2026-09-28 against Maven Central; the jars also match their
+# published .sha1). The fetched .sha1 is kept as a secondary transmission
+# check, but the PIN is the trust anchor: a malicious mirror can serve a
+# self-consistent jar+.sha1 pair, and only the pin catches that
+# (see regress.sh --break=depswap). When Jackson is bumped, update these
+# pins with review — never delete the check.
 DEPS="$SCRIPT_DIR/build/deps"
 MVN="https://repo1.maven.org/maven2/com/fasterxml/jackson/core"
 JACKSON_VER="2.18.2"
-# AI-052-WIN: no hardcoded hashes; the published .sha1 is fetched from
-# Maven Central (cached in $DEPS) and the jar is verified against it.
-# (Maven Central .sha256 URLs return 404 HTML; .sha1 is the published checksum.)
+pin_for() { # AI-055: SHA-256 pin per artifact
+    case "$1" in
+        jackson-databind)    echo "4b364e6850dc89172fcf1d4dd26b8ff5488eda44ff4657e22dd265203dd5ab3c" ;;
+        jackson-core)        echo "d8054ae7c0d1c2d2f55d28e46026ebe5892881f3fab5f439233184381c3b4a1f" ;;
+        jackson-annotations) echo "581bd61000ef7648943f781ca05689e56d03f6052748365a8e2b3a9b5d3fa32f" ;;
+    esac
+}
 mkdir -p "$DEPS"
 fetch() {
     if command -v curl >/dev/null; then curl -sSL --max-time 180 -o "$2" "$1";
@@ -65,10 +77,15 @@ for art in jackson-databind jackson-core jackson-annotations; do
         echo "fetching $jar.sha1 ..."
         fetch "$url.sha1" "$DEPS/$jar.sha1" || die "could not fetch $jar.sha1"
     fi
-    # Maven .sha1 files contain just the hash; compare manually against sha1sum.
+    # Secondary check: Maven .sha1 files contain just the hash; compare manually.
     exp=$(awk '{print $1}' "$DEPS/$jar.sha1")
     got=$(sha1sum "$DEPS/$jar" | awk '{print $1}')
     [ -n "$exp" ] && [ "$exp" = "$got" ] || die "checksum mismatch for $jar (expected $exp, got $got)"
+    # AI-055: primary trust anchor — pinned SHA-256, fail closed.
+    pin="$(pin_for "$art")"
+    got256=$(sha256sum "$DEPS/$jar" | awk '{print $1}')
+    [ -n "$pin" ] && [ "$pin" = "$got256" ] || die "SHA-256 pin mismatch for $jar (supply-chain check failed; expected $pin, got $got256)"
+    echo "verified $jar (sha1 + pinned sha256)"
 done
 echo "dependencies verified"
 CP_JARS="$DEPS/jackson-databind-$JACKSON_VER.jar:$DEPS/jackson-core-$JACKSON_VER.jar:$DEPS/jackson-annotations-$JACKSON_VER.jar"

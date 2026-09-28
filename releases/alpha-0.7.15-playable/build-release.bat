@@ -55,6 +55,15 @@ rem The Jackson jars are NOT tracked in the upstream repo; fetch the exact
 rem artifacts from Maven Central and verify SHA-256 before use.
 set DEPS=%HERE%build\deps
 if not exist "%DEPS%" mkdir "%DEPS%"
+rem AI-055: supply-chain pin -- full SHA-256 of each Jackson 2.18.2 jar,
+rem verified 2026-09-28 against Maven Central (jars also match published .sha1).
+rem The fetched .sha1 stays as a secondary transmission check; the PIN is the
+rem trust anchor (a malicious mirror can serve a self-consistent jar+.sha1;
+rem only the pin catches that -- see regress.bat --break=depswap). When Jackson
+rem is bumped, update these pins with review -- never delete the check.
+set PIN_jackson_databind=4b364e6850dc89172fcf1d4dd26b8ff5488eda44ff4657e22dd265203dd5ab3c
+set PIN_jackson_core=d8054ae7c0d1c2d2f55d28e46026ebe5892881f3fab5f439233184381c3b4a1f
+set PIN_jackson_annotations=581bd61000ef7648943f781ca05689e56d03f6052748365a8e2b3a9b5d3fa32f
 call :fetchdep jackson-databind
 if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
 call :fetchdep jackson-core
@@ -130,9 +139,10 @@ dir "%HERE%%JARNAME%" "%HERE%CHECKSUMS.sha256"
 exit /b 0
 
 :fetchdep
-rem AI-052-WIN: %1 = artifact. No hardcoded hash; the published .sha1 is
-rem fetched from Maven Central (cached in %DEPS%) and the jar is verified
-rem against it. This avoids stale hardcoded hashes.
+rem AI-055: %1 = artifact. The published .sha1 is fetched from Maven Central
+rem (cached in %DEPS%) as a secondary transmission check; the primary check
+rem is the hardcoded SHA-256 pin (PIN_jackson_*, verified 2026-09-28).
+rem Update the pins with review when Jackson is bumped.
 set ART=%~1
 set JARF=%ART%-2.18.2.jar
 set URL=https://repo1.maven.org/maven2/com/fasterxml/jackson/core/%ART%/2.18.2/%JARF%
@@ -166,5 +176,24 @@ if "!DH:~-1!"==" " (
 )
 :trimdone
 if /i not "!DH!"=="%EXP%" (echo ERROR: checksum mismatch for %JARF% -- expected %EXP%, got !DH! & echo ::error::AI-052-WIN hash mismatch %JARF% exp=%EXP% got=!DH! & exit /b 25)
-echo verified %JARF%
+rem AI-055: primary trust anchor -- pinned SHA-256, fail closed.
+set PEXP=
+if "%ART%"=="jackson-databind" set PEXP=%PIN_jackson_databind%
+if "%ART%"=="jackson-core" set PEXP=%PIN_jackson_core%
+if "%ART%"=="jackson-annotations" set PEXP=%PIN_jackson_annotations%
+set PH=
+for /f %%H in ('certutil -hashfile "%DEPS%\%JARF%" SHA256 ^| findstr /v ":"') do (set PH=%%H & goto :pin256checked)
+:pin256checked
+if not defined PH (
+  echo ERROR: could not hash %JARF% with certutil ^(SHA256^).
+  exit /b 24
+)
+:trimp256
+if "!PH:~-1!"==" " (
+  set "PH=!PH:~0,-1!"
+  goto :trimp256
+)
+:trimp256done
+if /i not "!PH!"=="!PEXP!" (echo ERROR: SHA-256 pin mismatch for %JARF% -- supply-chain check failed & exit /b 27)
+echo verified %JARF% (sha1 + pinned sha256)
 exit /b 0

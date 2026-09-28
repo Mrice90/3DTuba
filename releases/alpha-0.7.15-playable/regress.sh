@@ -19,6 +19,11 @@
 #                      is unset).
 #   --break=dep        corrupt a dependency jar in the temp tree; the build's
 #                      hash verification must fail.
+#   --break=depswap    plant a SELF-CONSISTENT wrong jar + matching .sha1
+#                      (supply-chain swap: what a malicious mirror would serve).
+#                      The .sha1 check passes by construction; only the AI-055
+#                      pinned SHA-256 may catch it — the build must fail closed
+#                      at dependency verification.
 #   --break=compile    inject a syntax error into one temp source file; javac
 #                      must fail.
 #   --break=checksum   corrupt the built JAR after smoke; the self-checksum
@@ -44,7 +49,7 @@ for arg in "$@"; do
     *) echo "ERROR: unknown argument: $arg" >&2; exit 2 ;;
   esac
 done
-case "$BREAK_MODE" in ""|pin|dep|compile|checksum|smoke) ;; *) echo "ERROR: --break must be pin, dep, compile, checksum, or smoke" >&2; exit 2 ;; esac
+case "$BREAK_MODE" in ""|pin|dep|depswap|compile|checksum|smoke) ;; *) echo "ERROR: --break must be pin, dep, depswap, compile, checksum, or smoke" >&2; exit 2 ;; esac
 
 # A known non-pin commit on the same branch, used only for the --break=pin
 # fault injection (checked out inside the temp dir; upstream untouched).
@@ -70,6 +75,7 @@ cd "$WORK"
 case "$BREAK_MODE" in
   pin)      EXPECT_FAIL_AT="build" ;;
   dep)      EXPECT_FAIL_AT="build" ;;
+  depswap)  EXPECT_FAIL_AT="build" ;;
   compile)  EXPECT_FAIL_AT="build" ;;
   checksum) EXPECT_FAIL_AT="verify" ;;
   smoke)    EXPECT_FAIL_AT="build" ;;
@@ -113,6 +119,16 @@ if [ "$BREAK_MODE" = "dep" ]; then
   mkdir -p build/deps
   printf 'corrupted-dependency' > build/deps/jackson-core-2.18.2.jar
   echo "regress: intentional break — corrupted build/deps/jackson-core-2.18.2.jar"
+fi
+
+if [ "$BREAK_MODE" = "depswap" ]; then
+  # Supply-chain swap: wrong jar with a MATCHING .sha1, exactly what a
+  # compromised mirror serves. The .sha1 check passes; the pinned SHA-256
+  # (AI-055) is the only control that may reject it.
+  mkdir -p build/deps
+  printf 'attacker-controlled-dependency-swap' > build/deps/jackson-core-2.18.2.jar
+  sha1sum build/deps/jackson-core-2.18.2.jar | awk '{print $1}' > build/deps/jackson-core-2.18.2.jar.sha1
+  echo "regress: intentional break — self-consistent wrong jar + .sha1 (supply-chain swap)"
 fi
 
 if [ "$BREAK_MODE" = "compile" ]; then

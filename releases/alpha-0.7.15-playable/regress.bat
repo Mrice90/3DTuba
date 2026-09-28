@@ -7,12 +7,16 @@ rem polluted. Then verifies the fresh JAR against its OWN freshly generated
 rem CHECKSUMS.sha256 (rebuilds are not byte-identical, so an unrelated reference
 rem artifact must not be used).
 rem
-rem Usage: regress.bat [--break=pin ^| --break=dep ^| --break=compile ^| --break=checksum ^| --break=smoke]
+rem Usage: regress.bat [--break=pin ^| --break=dep ^| --break=depswap ^| --break=compile ^| --break=checksum ^| --break=smoke]
 rem   (no flag)        clean run: every stage must succeed; prints REGRESSION: PASS.
 rem   --break=pin      check out a non-pin commit in the temp source tree; the
 rem                    build must fail closed at stage 'build' (pin verification).
 rem   --break=dep      corrupt a dependency jar in the temp tree; the build must
 rem                    fail its hash verification at stage 'build'.
+rem   --break=depswap  plant a SELF-CONSISTENT wrong jar + matching .sha1
+rem                    (supply-chain swap, what a malicious mirror serves);
+rem                    the .sha1 check passes by construction -- only the AI-055
+rem                    pinned SHA-256 may fail it at stage 'build'.
 rem   --break=compile  inject a syntax error into one temp source file; javac
 rem                    must fail at stage 'build'.
 rem   --break=checksum corrupt the built jar after smoke; the harness's own
@@ -48,18 +52,19 @@ if "!ARG:~0,8!"=="--break=" (
 shift
 goto parse
 :help
-echo Usage: regress.bat [--break=pin ^| --break=dep ^| --break=compile ^| --break=checksum ^| --break=smoke]
+echo Usage: regress.bat [--break=pin ^| --break=dep ^| --break=depswap ^| --break=compile ^| --break=checksum ^| --break=smoke]
 exit /b 0
 :parsed
 if defined GAVE_BREAK (
-  if not "%BREAK_MODE%"=="pin" if not "%BREAK_MODE%"=="dep" if not "%BREAK_MODE%"=="compile" if not "%BREAK_MODE%"=="checksum" if not "%BREAK_MODE%"=="smoke" (
-    echo ERROR: --break must be pin, dep, compile, checksum, or smoke>&2
+  if not "%BREAK_MODE%"=="pin" if not "%BREAK_MODE%"=="dep" if not "%BREAK_MODE%"=="depswap" if not "%BREAK_MODE%"=="compile" if not "%BREAK_MODE%"=="checksum" if not "%BREAK_MODE%"=="smoke" (
+    echo ERROR: --break must be pin, dep, depswap, compile, checksum, or smoke>&2
     exit /b 2
   )
 )
 
 if "%BREAK_MODE%"=="pin" set "EXPECT_FAIL_AT=build"
 if "%BREAK_MODE%"=="dep" set "EXPECT_FAIL_AT=build"
+if "%BREAK_MODE%"=="depswap" set "EXPECT_FAIL_AT=build"
 if "%BREAK_MODE%"=="compile" set "EXPECT_FAIL_AT=build"
 if "%BREAK_MODE%"=="checksum" set "EXPECT_FAIL_AT=verify"
 if "%BREAK_MODE%"=="smoke" set "EXPECT_FAIL_AT=build"
@@ -96,6 +101,30 @@ if "%BREAK_MODE%"=="dep" (
   echo corrupted-dependency> "%WORK%\build\deps\jackson-core-2.18.2.jar"
   echo regress: intentional break -- corrupted build\deps\jackson-core-2.18.2.jar
 )
+
+rem AI-055: supply-chain swap — wrong jar with a MATCHING .sha1, exactly what a
+rem compromised mirror serves. The .sha1 check passes; the pinned SHA-256 is the
+rem only control that may reject it. Linear flow (no block) so the trim loop
+rem labels below are safe.
+if not "%BREAK_MODE%"=="depswap" goto :nodepswap
+if not exist "%WORK%\build\deps" mkdir "%WORK%\build\deps"
+echo attacker-controlled-dependency-swap> "%WORK%\build\deps\jackson-core-2.18.2.jar"
+set "SWAPH="
+for /f %%H in ('certutil -hashfile "%WORK%\build\deps\jackson-core-2.18.2.jar" SHA1 ^| findstr /v ":"') do set "SWAPH=%%H"
+:trimswap
+if "!SWAPH:~-1!"==" " (
+  set "SWAPH=!SWAPH:~0,-1!"
+  goto :trimswap
+)
+:trimswapdone
+if not defined SWAPH (
+  set "FAIL_STAGE=build"
+  set "FAIL_DETAIL=could not hash planted jar for depswap fault injection"
+  call :fail
+)
+echo !SWAPH!> "%WORK%\build\deps\jackson-core-2.18.2.jar.sha1"
+echo regress: intentional break -- self-consistent wrong jar + .sha1 (supply-chain swap)
+:nodepswap
 
 if "%BREAK_MODE%"=="compile" (
   set "COMPILE_TARGET="
