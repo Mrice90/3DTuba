@@ -24,7 +24,10 @@ rem AI-052-WIN: match java.specification.version exactly. The old
 rem findstr /c:"java.version" also matched java.version.date, so the last
 rem match won and the check compared a calendar date instead of the version.
 set JV=
-for /f "tokens=3" %%v in ('java -XshowSettings:properties -version 2^>^&1 ^| findstr /c:"java.specification.version"') do set JV=%%v
+rem AI-052-WIN: temp file avoids pipe-in-for quoting issues on cmd
+java -XshowSettings:properties -version > "%TEMP%\jv-props.txt" 2>&1
+for /f "tokens=3" %%v in ('find "java.specification.version" "%TEMP%\jv-props.txt"') do set JV=%%v
+del "%TEMP%\jv-props.txt" 2>nul
 if not defined JV (
   echo ERROR: could not determine java.specification.version -- JDK 17+ required.
   exit /b 14
