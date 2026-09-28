@@ -15,7 +15,7 @@ Standing authorization: Product Owner directly authorized Muse in its own UI to 
 - AI-027/028/036 REVIEW: published audit, handoff and movement fixture; latest Java execution evidence is in alpha-core-foundation.md.
 - AI-043 REVIEW: Muse reports 169/169 Java tests; Astra independent full rerun pending.
 - AI-044 PARTIAL: 2D alpha recipe/screenshots and chat JAR attachment; GitHub has no binary release. AI-046 closes clean Windows handoff gaps.
-- AI-032/033/034 setup pending: Product Owner will sign in new AI accounts when available. Claude role/eligibility and Meshy runner/session unknown; ElevenLabs read access works but paid-production budget/entitlement remains unverified. Do useful technical prep; no paid connection tests or invented available workers.
+- AI-033/034 setup VERIFIED 2026-09-27 evening EDT (Mathew direct): Meshy runner/session and ElevenLabs access both confirmed via successful test connection; cleared for tasking from the 00:00 meeting onward. Mathew will verify generated assets by the 06:00 meeting. AI-032 (Claude worker) still pending Product Owner sign-in when available. Do useful technical prep; no paid connection tests or invented available workers.
 
 Next checkpoint 00:00 EDT Sep 28; sprint ends 06:00 EDT. Workers may proceed through their accepted bounded stages after green tests, preserving the last working increment. Record delivery, acknowledgement, execution, acceptance, integration and release separately. Evidence and exact commands belong in SPRINT_LOG.md. No claim of uninterrupted background execution.
 
