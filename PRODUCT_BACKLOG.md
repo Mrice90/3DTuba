@@ -8,7 +8,48 @@
 - **Statuses:** BACKLOG → READY → IN_PROGRESS → DELIVERED → ACCEPTED/DONE. Anything that can't move gets BLOCKED plus the reason. WAITING means it waits on a named person or gate.
 - **Priorities:** P0 blocks the playable slice or security. P1 is next-up. P2 is quality. P3 is polish.
 - **IDs are never reused.** Split big items into child IDs (AI-0xx-SUFFIX) and keep the parent ID.
+- **Before any write to this file or SPRINT_LOG.md**, fetch the current head and change only your own rows or sections. Never upload a whole-file copy taken earlier. (Added 2026-09-28 after commit `e5bcb77` was written from a stale copy and dropped the product vision, AI-060 and AI-061.)
 - **Boundaries:** all changes go to 3DTuba. TubaExperiment (rules reference) and Desolate-Tuba (historical content) are read and copy only, and must never be pushed to, merged into or edited. There are no purchases, top-ups or plan upgrades without the Product Owner. Existing Meshy/ElevenLabs credits may be spent on briefed work (PO decision 2026-09-28 10:05). Record provider IDs and cost, and never resubmit an uncertain job.
+
+## Product vision (Product Owner direction, 2026-09-28 evening)
+The end goal is a full 3D board environment that is built as tokens are played. Tokens are animated and every one has unique sound effects. The bar is polish above typical AAA, able to compete with Hearthstone and other top strategy games. What this means for every item:
+- **The board is built by play.** Placing a land, structure or capital raises that part of the battlefield in 3D (ground placement → rising structure → complete). Each match ends as a unique diorama.
+- **Every token is alive:** deploy, idle, move, attack, hit and destroy animations, each with its own sound. Apex (rarity 4) cards get signature presentations.
+- **Hearthstone-class feel:** tactile interactions, strong impact feedback (camera shake, particles, hit-stop), readable at a glance, 60 fps on target devices, and no placeholder art in a release build.
+- **Continuous media production:** Meshy and ElevenLabs always have a batch in flight or in review, using existing credits (PO authorized credit use, 2026-09-28 18:43 EDT; no purchases). The Product Owner reviews each batch in-game, and that review steers the next batch rather than blocking it.
+
+### AI-060 — Build-as-you-play 3D battlefield (north-star epic)
+P0 | BACKLOG | Owner: Claude (Astra lane) → Astra from 2026-10-04 | Dependencies: AI-003, AI-017, AI-052-ASSET.
+Children: AI-060a, token placement drives the board-growth animation (deploy staging for lands, structures and capitals). AI-060b, a per-event animation controller (idle/move/attack/hit/destroy) driven by authoritative rule events. AI-060c, an impact-feedback kit (camera shake, particles, hit-stop, SFX triggers). AI-060d, a performance budget with profiling on desktop and mobile targets. Acceptance: a Zeus-vs-Poseidon match in Unity where every played permanent visibly builds the board, animates on each rule event with its own sound, and holds 60 fps on the reference PC.
+
+### AI-061 — Continuous media production lane
+P1 | IN_PROGRESS | Owner: Claude (operates Meshy + ElevenLabs) | Dependencies: AI-049 prompt directory.
+Pipeline: generate → remesh/texture → download → `check_glb.py` → `glb_to_token_fbx.py` (Blender) → Unity `TokenPreview.Render` still → PO review. Order: batch-01 capitals (6), then Zeus/Poseidon units by rarity, then spells/effects. Record flow/job IDs, credits and review in `docs/production/ASSET_QUEUE.md`.
+- 2026-09-28 19:00 EDT, batch 01 capitals DELIVERED: 6 Meshy models, remeshed to 30K tris, 2K PBR, 180 credits, staged in `assets/staging/meshy/batch-01-capitals` (SHA256SUMS.txt). SFX 6×4 takes in ElevenLabs flow `S5OTgpVd2nqHXp3u7pQd`.
+- 2026-09-28 19:15 EDT, batch 02 apex units DELIVERED: 8 Meshy models (Skyfather Archon, Keraunos Seraph, Olympian Storm Titan, Aetherbolt Avatar, Atlantis Tide Sovereign, Kraken Prime Avatar, Abysswalker Nereid, Abyssal Leviathan), 240 credits, 2,720 left, staged in `assets/staging/meshy/batch-02-apex-units`. SFX 8×4 takes in flow `GvmEQ8CxxWdrwkB1JQbL`.
+- 2026-09-28 19:09 EDT: the ElevenLabs lane moved to the Claude "ElevenLabs sound assets" thread. Meshy, Unity import and meetings stay with the Claude meetings thread.
+
+### AI-062 — Board event contract v1 (child of AI-060b)
+P1 | READY 2026-09-28 | Owner: Muse (Rune) | Reviewer: Claude | Dependencies: none (reads the pinned Java rules, read-only).
+Why: the 3D board, animations and sounds must be driven by authoritative rule events, but no event vocabulary exists. UnityProof only knows two hard-coded movement cases, and the rules live in TubaExperiment `game-core` (Java). A contract with golden transcripts lets presentation work start now, whatever AI-003 decides about how Unity gets the rules.
+Work (all under `docs/muse/sprint-02/board-events/`): read TubaExperiment `992bc95` `game-core` (GameEngine, MovementRules, board/stack, combat, capital and ability code) and list every state change a player must see: card deployed onto a stack, land stacked, structure raised, capital placed, character moved (one event per step), attack declared, opportunity attack, damage dealt, card destroyed, ability activated, spell cast and resolved, capital hit, GP change, turn start/end, match end. Deliver:
+- `board-events.md`: one row per event with its payload fields (event, seq, turn, player, card_id, instance_id, from/to `{x,y}`, stack_index, amount), the Java `file:line` at the pin that causes it, and the presentation hooks it drives (animation key from the AI-049 `animation_events`, SFX cue key).
+- `board-events.schema.json` (JSON Schema 2020-12), one event per line (JSONL).
+- `golden/zeus-vs-poseidon-short.jsonl`: a hand-derived transcript of a short scripted match (both capitals placed, 2 lands, 1 structure, 1 character that moves 2 steps and attacks, 1 destroy), using card IDs from `manifest.json`.
+- `validate_board_events.py` and `test_validate_board_events.py` (standard library only): schema check plus invariants (seq strictly increasing, coordinates inside 4×6, moves only for CHARACTER instances, a destroyed instance emits nothing later, stack_index consistent per cell). Add both to `.github/workflows/verify.yml`.
+Acceptance: verify.yml green on Linux and Windows with the new step; every event cites a Java source line at the pin; Claude checks the citations against the Java source. Out of scope: Unity or Java code changes.
+
+### AI-063 — Fix the asset prompt directory for the real board (child of AI-049/AI-017)
+P1 | READY 2026-09-28 | Owner: Muse (Rune) | Reviewer: Claude (meetings thread, as Meshy owner) | Dependencies: none.
+Why: all 139 `meshy_prompt` strings say "hex-based tactics board game", and every LAND asks for a "hexagonal terrain tile". The rules board is a 4×6 square grid (`BoardPosition` WIDTH 4, HEIGHT 6, Chebyshev distance) where lands stack under structures and characters, and UnityProof tiles are 1.18-unit squares on a 1.3 spacing. There is also no size contract beyond characters (`check_glb.py` defaults to 1.8 units), and Keraunos Spire came out about 2.5 tiles tall, hiding its neighbours. The 35 lands have not been generated yet, so fixing this now avoids wasted credits.
+Work: add `docs/muse/sprint-02/board-scale.md` proposing a footprint and height budget per type (starting point: LAND = full 1×1 square tile, top surface ≤ 0.25 units, flat enough for a token to stand on; STRUCTURE ≤ 0.9 tile, ≤ 1.6 units; CHARACTER ≤ 0.8 tile, 1.8 units per `check_glb.py`; CAPITAL = 1 tile, ≤ 2.2 units; SPELL none). Update `build_asset_directory.py` to use square-tile wording, add `board_footprint` and `height_budget` fields per card, and state the stack role in each prompt (lands must carry a unit on top). Regenerate the `.json` and `.md`. Add a test that no prompt contains "hex" and every non-spell card has both fields, and run it in verify.yml.
+Acceptance: regenerated directory plus a changed-card summary in SPRINT_LOG.md; CI green; the meetings thread confirms the scale numbers before the next Meshy batch uses them. Batches 01 and 02 are not regenerated because of this item; that is the Meshy lane's call.
+
+### AI-064 — Per-card presentation manifest and coverage report (child of AI-060, AI-018–020)
+P2 | READY after AI-062 | Owner: Muse (Rune) | Reviewer: Claude | Dependencies: AI-062 event vocabulary.
+Why: the vision needs every token to have its own animations and sounds, but 107 of 139 cards currently share group SFX, and the cue names (DEPLOY, DESTROY, CLICK, MELEE/RANGED…) differ from the cue set the ElevenLabs lane now produces (summon, move, attack, hit, death, ability, idle). Nothing shows what each card still lacks.
+Work (under `docs/muse/sprint-02/presentation/`): `presentation-manifest.json` mapping every card to the AI-062 events it can emit, each with an animation clip key and a unique SFX key (`<card_id>_<cue>`), plus its model path. `coverage.py` (standard library) reads the manifest and a staging root and writes a Markdown table per card showing whether the model, textures, each animation and each SFX are present or missing. Test it against a small fixture tree and run it in verify.yml.
+Acceptance: CI green; Claude runs `coverage.py` on Mathew's PC against `assets/staging/` and posts the first real coverage report; the ElevenLabs thread confirms the cue names match what it produces.
 
 ## Team and lanes (verified 2026-09-28)
 | Worker | How reached | Lane | Availability |
@@ -37,8 +78,11 @@
 | AI-057 | P3 | Muse | DELIVERED 2026-09-28 ~19:40 | README documents the `exit %EXITCODE%` behavior and remedies (commit `e16e303`). | README updated, or the wrapper is tested. |
 | AI-031 | P0 | Claude (Astra lane) | IN_PROGRESS | Keep integration/security gates current. Review every new head at each checkpoint (AI-005/AI-006). | A checkpoint entry in SPRINT_LOG.md for every meeting. |
 | AI-059 | P1 | Claude | DELIVERED 2026-09-28 18:45 | Both astra/* branches are already merged (0 stranded commits). Local-only docs/production (AI-054 checker 55/55, AI-049/AI-052 validators OK) is now committed. Raw 58 MB staging binaries are kept out. | `docs/reviews/2026-09-28-1845-AI-059-astra-branches.md`. Astra confirms branch deletion on return. |
-| Meshy media | — | Meshy | WAITING on HA-009 | Six-capital batch (`docs/muse/sprint-01/asset-prompts/batch-01-queue.md`) is held until the Thunder Ram style check passes. | — |
-| ElevenLabs media | — | ElevenLabs | WAITING on HA-009 | No new generation until the in-game style check. | — |
+| Meshy media (AI-061) | P1 | Claude (meetings thread) via Meshy | IN_PROGRESS | Batch 01 capitals DELIVERED 19:00 (6 models, 180 credits). Batch 02 apex units DELIVERED 19:15 (8 models, 240 credits, 2,720 left), staged in `assets/staging/meshy/batch-02-apex-units`. Next: batch-02 Unity renders and PO sheet, then the remaining Zeus/Poseidon units. Lands wait for AI-063. | PO in-game review per batch. |
+| ElevenLabs media (AI-061) | P1 | Claude (ElevenLabs sound assets thread) | IN_PROGRESS | Capital SFX 6×4 takes (flow `S5OTgpVd2nqHXp3u7pQd`) and apex-unit SFX 8×4 takes (flow `GvmEQ8CxxWdrwkB1JQbL`). Next: stage and pick takes, full cue sets per unit. | PO listen-through. |
+| AI-062 | P1 | Muse (Rune) | READY 2026-09-28 | Board event contract v1 from the pinned Java rules: vocabulary with source citations, JSON schema, golden Zeus-vs-Poseidon transcript, validator in verify.yml. | CI green on both OSes; Claude checks the citations. |
+| AI-063 | P1 | Muse (Rune) | READY 2026-09-28 | Replace the hex wording in all 139 Meshy prompts with the real 4×6 square stacked board; add a per-type footprint and height budget; regenerate; test in verify.yml. | CI green; the meetings thread confirms the scale before the land batch. |
+| AI-064 | P2 | Muse (Rune) | READY after AI-062 | Per-card presentation manifest (events → animation key + unique SFX key) and a coverage report script. | CI green; Claude posts the first real coverage report. |
 
 ### Accepted or done (for reference; evidence in SPRINT_LOG.md)
 AI-037/038 manifest + offline smoke DONE · AI-045 lobby guards merged (PR #1) · AI-047 Windows/browser lobby fixes merged (PR #1) · AI-049 asset prompt directory DONE (139 cards, 21 SFX groups, 32 apex briefs) · AI-052-WIN Windows packaging repair ACCEPTED (run 36386714758) · AI-054 GLB staging checker verified 55/55 (local, not yet committed) · AI-029/032/033/034 setup verified.
@@ -201,7 +245,7 @@ Each meeting reads this file plus the latest SPRINT_LOG.md entries, verifies cla
 ## Definition of done
 An item is DONE only when its acceptance criteria are met, relevant tests/review pass, integration is verified, and the records include branch/commit/artifact evidence. A draft, generated asset, passing unit test or repository file alone is not a finished feature. RELEASED additionally requires a verified deployed/store/distribution destination. Scope or policy decisions are preserved in PRODUCT_LOG.md; unresolved dependencies stay visible in the Human decisions table.
 
-## Child action catalog (IDs 027–059)
+## Child action catalog (IDs 027–064)
 | ID | Parent | Summary | Owner | Status |
 |---|---|---|---|---|
 | AI-027/028 | AI-002 | Repository audit and handoff | Muse | REVIEW |
@@ -230,4 +274,9 @@ An item is DONE only when its acceptance criteria are met, relevant tests/review
 | AI-056 | AI-006 | Distinct exit code per regression check | Muse | DELIVERED 2026-09-28 |
 | AI-057 | AI-006 | regress.bat manual-run exit | Muse | DELIVERED 2026-09-28 |
 | AI-058 | AI-006 | Java version detection with JAVA_TOOL_OPTIONS | Muse | DELIVERED 2026-09-28 |
+| AI-060 | AI-017 | Build-as-you-play 3D battlefield (north star) | Claude → Astra | BACKLOG |
+| AI-061 | AI-018/020 | Continuous media production lane | Claude | IN_PROGRESS |
+| AI-062 | AI-060 | Board event contract v1 | Muse | READY |
+| AI-063 | AI-049/017 | Asset prompts fixed for the square stacked board | Muse | READY |
+| AI-064 | AI-060/018–020 | Presentation manifest + coverage report | Muse | READY after AI-062 |
 | AI-059 | AI-031 | Reconcile unmerged astra/* branches | Claude | DELIVERED |
