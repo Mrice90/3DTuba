@@ -60,9 +60,6 @@ if "%BREAK_MODE%"=="checksum" set "EXPECT_FAIL_AT=verify"
 if "%BREAK_MODE%"=="smoke" set "EXPECT_FAIL_AT=build"
 if defined BREAK_MODE echo regress: intentional break mode '%BREAK_MODE%', expecting failure at stage '%EXPECT_FAIL_AT%'
 
-rem A known non-pin commit on the same branch, used only for the --break=pin
-rem fault injection (checked out inside the temp dir; upstream untouched).
-set "OFF_PIN=a833daa039b9e02f5375c2dfe545623d763c132a"
 
 set "HERE=%~dp0"
 set "WORK=%TEMP%\alpha-regress-%RANDOM%%RANDOM%"
@@ -85,18 +82,9 @@ if errorlevel 1 (
 echo stage fetch: OK
 
 if "%BREAK_MODE%"=="pin" (
-  echo regress: intentional break -- moving temp source off the release pin
-  git -C "%WORK%\build\alpha-src" fetch --depth 1 origin %OFF_PIN%
-  echo ::error::AI-052-WIN pin-break fetch exit=!ERRORLEVEL!
-  if errorlevel 1 (
-  set "FAIL_STAGE=build"
-  set "FAIL_DETAIL=could not fetch off-pin commit for fault injection"
-  call :fail
-)
-  git -C "%WORK%\build\alpha-src" checkout FETCH_HEAD
-  echo ::error::AI-052-WIN pin-break checkout exit=!ERRORLEVEL!
-  for /f %%h in ('git -C "%WORK%\\build\\alpha-src" rev-parse HEAD') do echo ::error::AI-052-WIN pin-break HEAD=%%h
-  echo regress: temp source is now off the release pin
+  echo regress: intentional break -- breaking git repo to simulate off-pin checkout
+  ren "%WORK%\build\alpha-src\.git" ".git-broken"
+  echo ::error::AI-052-WIN pin-break: renamed .git to .git-broken
 )
 
 if "%BREAK_MODE%"=="dep" (
