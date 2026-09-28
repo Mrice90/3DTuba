@@ -1,6 +1,6 @@
 # Blender headless: import a Meshy GLB, normalize to a board token (bottom-center origin,
 # longest horizontal side = target footprint), export FBX with embedded textures.
-# usage: blender -b -P glb_to_token_fbx.py -- in.glb out.fbx footprint
+# usage: blender -b -P glb_to_token_fbx.py -- in.glb out.fbx size [height]  (height: size is the target height, not footprint)
 import bpy, sys, mathutils
 args = sys.argv[sys.argv.index("--") + 1:]
 src, dst, footprint = args[0], args[1], float(args[2])
@@ -18,7 +18,7 @@ pts = [obj.matrix_world @ v.co for v in obj.data.vertices]
 mn = mathutils.Vector([min(p[i] for p in pts) for i in range(3)])
 mx = mathutils.Vector([max(p[i] for p in pts) for i in range(3)])
 size = mx - mn  # Blender is Z-up
-s = footprint / max(size.x, size.y)
+s = footprint / (size.z if len(args) > 3 and args[3] == "height" else max(size.x, size.y))
 off = mathutils.Vector(((mn.x + mx.x) / 2, (mn.y + mx.y) / 2, mn.z))
 for v in obj.data.vertices: v.co = (v.co - off) * s
 obj.location = (0, 0, 0); obj.name = "Token"
