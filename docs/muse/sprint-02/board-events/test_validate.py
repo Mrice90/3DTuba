@@ -1,9 +1,10 @@
 """Cross-platform regression test for the AI-062 board-event validator (stdlib only)."""
+import os
 import subprocess
 import sys
 import unittest
 
-HERE = __file__.rsplit("/", 1)[0] or "."
+HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def run_validator(transcript):
