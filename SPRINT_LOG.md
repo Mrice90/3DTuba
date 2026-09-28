@@ -147,3 +147,16 @@ Findings:
 
 Commit: cd4dd2c (local; push blocked by sandbox network — HTTPS needs auth, SSH blocked by proxy)
 + Publish: files shipped to muse/sprint-01-content-audit via put_file.py at the 2026-09-28 ~08:00 EDT reflection (commit hashes recorded in that run's log entry).
+
+## 2026-09-28 ~13:30 EDT — AI-048 Linux end-to-end: clean run PROVEN (Thalia)
+
+Closes the AI-048 PARTIAL gap from the 10:45 review ("The Linux end-to-end run is still unproven"). Sandbox network recovered (GitHub clone + Maven Central both reachable); installed openjdk-17-jdk (17.0.20.1) on the Linux VM.
+
+Exact commands (fresh `git clone --depth 1` of branch tip 974ed3c, `/tmp/ai048-linux`):
+- `./regress.sh` -> **"REGRESSION: PASS"**, exit 0.
+  - stage fetch: OK — pin 992bc95c7164416ea0a25a4ce120f6ec0a0a167a verified ("OK: source matches pin ... (read-only; upstream untouched)")
+  - stage build: OK — Jackson 2.18.2 deps fetched from Maven Central, .sha1-verified; 118 sources compiled; fat jar assembled (infinite-conquest-alpha-0.7.15.jar, 90,812,575 bytes, SHA-256 9de12c9827d6b068b947ed7d8fe5811ff2229e83af524df1e922a349212817fd); smoke 5/5 PASS (jar non-empty, manifest Main-Class, entry class present, card JSONs present, headless 36 seeded matches)
+  - stage verify: OK — jar matches its own freshly generated CHECKSUMS.sha256
+- Linux negative coverage (--break=pin at build, --break=checksum at verify) was already proven in the 2026-09-27 evening AI-048 completion entry; not re-run.
+
+No repo writes, no binary publication, no paid jobs. AI-048 Linux lane now fully green; AI-055/056/057 remain Muse-owned.
