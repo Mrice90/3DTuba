@@ -80,10 +80,77 @@ smoke) → standalone smoke re-run (expect 5/5) → `regress.bat` clean (expect
 
 ## Evidence
 
-TBD — filled in after the CI run. Linux verification commands run locally:
+### Windows CI runs (2026-09-28)
 
-- `./regress.sh` → `REGRESSION: PASS`
-- `./regress.sh --break=pin|dep|compile|checksum|smoke` → each `intentional break correctly detected at stage '<stage>'`
+All runs on `windows-latest` + Temurin JDK 17, branch `muse/sprint-01-content-audit`.
+
+| Run ID | Head | Result | Build duration | Notes |
+|--------|------|--------|----------------|-------|
+| 36377715077 | 6bb9343 | FAIL | ~13s | Fetch OK, build failed, rest skipped. Annotation: exit code 1. |
+| 36379384557 | dfc4a49 | FAIL | ~3s | Fetch OK, build failed in 3s. Deterministic early failure. |
+| 36379813995 | 81a4e59 | FAIL | ~3s | Build failed; temp log reporter also failed. |
+| 36379930108 | 8f9bbd4 | FAIL | ~3s | Build failed; reporter failed despite contents:write. |
+| 36380115553 | 711f459 | FAIL | ~3s | Build failed; distinct exit codes 10-15 not visible in annotations. |
+| 36380263656 | e370567 | FAIL | ~3s | Build failed; java version check via temp file did not help. |
+
+### Diagnosis via exit-code annotations
+
+GitHub Actions logs require sign-in; public API does not expose step output.
+Added temporary `::error::` annotation emitting the build script's exit code.
+
+- Commit `a9b352f`: first attempt used `%ERRORLEVEL%` in a `||` branch —
+  expanded at parse time to 0 (classic batch gotcha). Annotation showed "exit code 0".
+- Commit `94b3b66`: fixed with two-line `if %ERRORLEVEL% NEQ 0` capture.
+  Annotation revealed: **`build-release exit code 1`**.
+- Commit `5cfc52a`: added distinct codes 20-25 for pin/fetchdep stages and
+  fixed subroutine code propagation (`|| exit /b 1` was swallowing codes).
+  Annotation revealed: **`build-release exit code 25` = checksum mismatch**.
+
+### Root cause
+
+Exit 25 is `if /i not "!DH!"=="%EXP%"` in `:fetchdep` — the downloaded
+Jackson JAR's SHA-256 does not match the hardcoded expected value. The
+`certutil` parsing (`findstr /v ":"`) is correct; the expected hashes
+themselves are wrong (never verified — Linux could not download from Maven
+due to sandbox egress blocking).
+
+**Fix pending:** obtain correct SHA-256 for jackson-databind/core/annotations
+2.18.2 from Maven Central `.sha256` files and update both `.bat` and `.sh`.
+
+### Linux verification (local)
+
+- `./regress.sh` → `bash -n` passes; full run blocked by Maven egress timeout
+  (`curl: (28) Operation timed out` fetching jackson-databind).
+- Temurin JDK 17.0.11 installed at `~/workspace/.jdk/jdk-17.0.11+9`.
+- Pinned alpha `992bc95c7164416ea0a25a4ce120f6ec0a0a167a` contains 6 card JSONs.
+
+## Exit code reference (`build-release.bat`)
+
+| Code | Stage | Meaning |
+|------|-------|---------|
+| 10 | diagnostics | `git` not on PATH |
+| 11 | diagnostics | `java` not on PATH |
+| 12 | diagnostics | `javac` not on PATH (need full JDK) |
+| 13 | diagnostics | `jar` not on PATH (need full JDK) |
+| 14 | diagnostics | `java.specification.version` undetermined |
+| 15 | diagnostics | Java version < 17 |
+| 20 | pin | alpha source `.git` not found |
+| 21 | pin | HEAD does not match pin (use ALPHA_ALLOW_UNPINNED=1) |
+| 22 | fetchdep | `curl.exe` not found |
+| 23 | fetchdep | download failed |
+| 24 | fetchdep | `certutil` hash failed |
+| 25 | fetchdep | SHA-256 mismatch |
+
+## Files changed
+
+- `releases/alpha-0.7.15-playable/fetch-source.bat` — paren escapes
+- `releases/alpha-0.7.15-playable/build-release.bat` — CRLF; exact version match; paren escapes; slash-normalized argfile; escaped manifest title; fixed certutil parsing; fixed `:fetchdep` quoting; temp-file java version check; exit codes 10-15, 20-25
+- `releases/alpha-0.7.15-playable/play.bat` — paren escapes; exact version match; tamper checksum refusal
+- `releases/alpha-0.7.15-playable/regress.bat` — control-flow, checksum-read, and certutil fixes; new break modes; validated args
+- `releases/alpha-0.7.15-playable/regress.sh` — new break modes (`dep`, `compile`, `smoke`)
+- `releases/alpha-0.7.15-playable/README.md` — documented new break modes
+- `.github/workflows/windows-packaging.yml` — new (additive; `verify.yml` preserved); temp debug annotation for exit code (to be removed after green)
+- `docs/muse/sprint-01/windows-repair.md` — this file
 
 ## Files changed
 

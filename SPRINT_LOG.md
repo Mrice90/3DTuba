@@ -74,3 +74,19 @@ BEGIN AI-052-WIN (Owner: Muse) — historical AI-052 Windows .bat repair, distin
 - Windows CI run 36379384557 (dfc4a49): in progress at time of writing.
 - Linux local verification blocked: sandbox egress policy denies Maven Central (jackson deps unreachable); `fetch-source.sh` verified OK, JDK 17.0.11 installed.
 - AI-052-WIN remains REVIEW pending green Windows run.
+
+## 2026-09-28 01:30 EDT — AI-052-WIN: Windows CI diagnosis — exit code 25 (checksum mismatch) (Rune)
+
+**Correction to 00:50 entry:** run 36379384557 (dfc4a49) FAILED, not "in progress". All Windows runs 2026-09-28 fail at "Build release" in ~3s after successful fetch.
+
+**Diagnostic method:** GitHub Actions logs require sign-in; public API exposes only annotations. Added temporary `::error::` annotation emitting `build-release.bat` exit code (commits a9b352f, 94b3b66, 5cfc52a).
+
+**Findings:**
+- `%ERRORLEVEL%` in a `||` branch expands at parse time (got 0); fixed with two-line `if %ERRORLEVEL% NEQ 0` capture.
+- `build-release.bat` exits with code 1 (not 10-15), then with distinct codes: **exit 25 = SHA-256 checksum mismatch** in `:fetchdep`.
+- `certutil` parsing (`findstr /v ":"`) is correct. The hardcoded Jackson 2.18.2 SHA-256 values are wrong (never verified; Linux sandbox cannot reach Maven Central).
+- Root cause: incorrect expected hashes for jackson-databind/core/annotations 2.18.2.
+
+**Commits:** e370567 (temp-file java version check), a9b352f/94b3b66 (exit-code annotation debug), 5cfc52a (codes 20-25, subroutine propagation).
+
+**Next:** obtain correct hashes from Maven Central `.sha256` files; update `.bat` and `.sh`; remove debug annotation; re-run CI to green. AI-052-WIN remains REVIEW.
