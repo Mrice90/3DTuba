@@ -1,34 +1,62 @@
-# Shared repository work plan
+# Infinite Conquest — product backlog
 
-Updated 2026-09-27 19:15 EDT. Product Owner directs workers to maintain sprint/backlog context in this repository. This file and SPRINT_LOG.md are shared engineering records; local automation records must reconcile them at each checkpoint. They do not override direct Product Owner instructions or grant access by themselves.
+**Version 2 — 2026-09-28 18:30 EDT.** Maintained by Claude (covering Astra's lane until Astra returns on 2026-10-04). This is the single shared backlog for every worker. A copy is kept in `C:\Users\mattj\OneDrive\Documents\AI Dev\Infinite Conquest\PRODUCT_BACKLOG.md`, and this repository copy wins if the two ever differ. Evidence and run logs go in `SPRINT_LOG.md`, not here.
 
-Standing authorization: Product Owner directly authorized Muse in its own UI to work with Astra in the designated repos and maintain sprint/backlog records. HA-010 is resolved by that direct message and Muse acceptance. Both TubaExperiment and Desolate-Tuba remain read-only; all changes go to 3DTuba. No paid jobs, purchases or live publication implied.
+## How to use this file
+- **Pick work** from the Sprint board below: take the highest-priority item in your lane whose status is READY or IN_PROGRESS and is not blocked.
+- **When you start** an item, set it to IN_PROGRESS with the date. **When you deliver**, set it to DELIVERED and put the commit, CI run ID and exact commands in `SPRINT_LOG.md`. Only a different worker moves an item to ACCEPTED or DONE (no self-acceptance).
+- **Statuses:** BACKLOG → READY → IN_PROGRESS → DELIVERED → ACCEPTED/DONE. Anything that can't move gets BLOCKED plus the reason. WAITING means it waits on a named person or gate.
+- **Priorities:** P0 blocks the playable slice or security. P1 is next-up. P2 is quality. P3 is polish.
+- **IDs are never reused.** Split big items into child IDs (AI-0xx-SUFFIX) and keep the parent ID.
+- **Boundaries:** all changes go to 3DTuba. TubaExperiment (rules reference) and Desolate-Tuba (historical content) are read and copy only, and must never be pushed to, merged into or edited. There are no purchases, top-ups or plan upgrades without the Product Owner. Existing Meshy/ElevenLabs credits may be spent on briefed work (PO decision 2026-09-28 10:05). Record provider IDs and cost, and never resubmit an uncertain job.
 
-## Current executable queue (supersedes older item statuses below)
-- AI-047 / Astra / REVIEW: Windows and browser lobby fixes at 70d3fac, PR #1. Muse ported behavior, and Astra merged Muse history through 702f602 without conflict. Windows combined validation passed 43/43 and both demos exit 0. Integrated via PR #1 merge 0940062; no release claim.
-- AI-045 / Muse; Astra acceptance / REVIEW: local-only binding, Host and browser-origin guards at b3e17a6 with 10 negative tests at 7f85e47; Muse reports 43/43 Linux checks. Astra independently passed 43/43 Windows checks and both demos; merged in PR #1. Guarded browser lifecycle follow-up remains in acceptance queue. Output prototypes/lobby-lab and docs/muse/sprint-01. No production identity claim.
-- AI-046 / Muse / DONE 2026-09-28 ~07:00 EDT: reproducible Windows/Linux packaging handoff fully accepted. Windows acceptance supplied by AI-052-WIN (run 36386714758 at f1ba391: fetch->build->smoke 5/5, clean regress PASS, all 5 negative modes correctly detected). Linux build-release.sh fixed 2026-09-28 to use Maven .sha1 (Central .sha256 URLs 404; .sha1 verified for all 3 Jackson 2.18.2 jars). Jackson deps hash-verified via published .sha1 (no hardcoded hashes). smoke.sh/.bat 5 checks incl. headless 36-match seeded engine run; play.sh/.bat checksum auto-verify, tampered jar refused; CHECKSUMS.sha256 for release jars. No binary published, no formal release, source repos untouched. Evidence: SPRINT_LOG.md 2026-09-28 entries.
-- AI-048 / Muse / DONE 2026-09-27 evening EDT: bounded AI-004 packaging regression coverage delivered. regress.sh/.bat re-runs fetch->build->smoke in an isolated temp copy and reports REGRESSION: PASS / FAIL at <stage>; verify stage checks the fresh jar against its OWN freshly generated CHECKSUMS.sha256 (never an unrelated reference artifact — rebuilds are content-equivalent, not byte-identical). Intentional-break modes: --break=pin (off-pin checkout must fail the build) and --break=checksum (corrupted jar must fail verification). Commits: c4ae900/c1c61dc (harness), a85d87f (README), 25961dd (exec-bit fix, see below). Evidence: `--break=pin` -> correctly detected at stage 'build' (exit 0); `--break=checksum` -> correctly detected at stage 'verify' (exit 0); clean run -> REGRESSION: PASS, 118 sources, smoke 5/5, jar 2b7c65a6...f017 self-verified (exit 0). Real defect found and fixed by the harness: the four .sh scripts were 100644 in the repo, so a pristine clone could not run ./fetch-source.sh (Permission denied); fixed to 100755 in 25961dd. regress.bat written (CRLF) but NOT executed on Windows — first Windows run is a shakedown. README documents usage. No source writes, no binary publication, no paid jobs. Evidence: SPRINT_LOG.md AI-048 completion entry.
-- AI-052-WIN / Muse / DONE 2026-09-28 ~06:30 EDT: Windows .bat packaging repair + negative coverage. Fixed: Maven .sha256 404 (switched to .sha1 for deps), certutil trailing spaces, regress.bat :finish fall-through (exit /b -> exit), = delimiter in arg parsing, --break=pin via GIT_DIR. Green run 36386714758 at f1ba391: fetch->build->smoke 5/5, clean regress PASS, all 5 negative modes correctly detected at named stages. Commits: 9fcc57f, 6b183e4, fdb22d4, c35fd72, f1ba391, 39ef992. Docs: docs/muse/sprint-01/windows-repair.md. Evidence: SPRINT_LOG.md 2026-09-28 ~06:30 entry.
-- AI-030 / Astra / IN_PROGRESS / P0: UnityProof isolated 3D movement slice from pinned AI-036 cases; legal adjacent move spends one and enemy structure rejects move without state change. Output UnityProof source, Windows build, runnable scene, fixture checks and runtime smoke evidence. Windows build, eleven assertions and two runtime outcomes pass; rendered board screenshot inspected. Mouse-event acceptance and clean-checkout rebuild remain REVIEW. Only two-case parity, not full engine migration. Do not edit Muse paths concurrently.
-- AI-031 / Astra / IN_PROGRESS / P0: integrate reviewed increments, provenance/security/bug checks and reproducible commands; Windows/Linux supporting-tools workflow authored; remote CI evidence pending. Review new failures at each checkpoint.
-- AI-037/038 DONE: real 391-row manifest + 29 Python tests and one Node offline smoke independently passed; these are supporting tools.
-- AI-027/028/036 REVIEW: published audit, handoff and movement fixture; latest Java execution evidence is in alpha-core-foundation.md.
-- AI-043 REVIEW: Muse reports 169/169 Java tests; Astra independent full rerun pending.
-- AI-044 PARTIAL: 2D alpha recipe/screenshots and chat JAR attachment; GitHub has no binary release. AI-046 closes clean Windows handoff gaps.
-- AI-032/033/034 setup VERIFIED 2026-09-27 evening EDT (Mathew direct): Claude worker, Meshy runner/session, and ElevenLabs access all confirmed working via successful test connections; all cleared for tasking from the 00:00 meeting onward. Mathew will verify generated assets by the 06:00 meeting. Zero remaining human-side setup blockers. Do useful technical prep; no paid connection tests or invented available workers.
-- AI-049 DONE 2026-09-27 ~22:15 EDT (Rune): asset prompt directory v1 + final acceptance — 139 cards with Meshy prompts, 21 faction/archetype SFX groups, 32 unique apex-tier SFX briefs, docs/muse/sprint-01/asset-prompts/. Three 21:00 QA nits fixed and directory regenerated from pinned inputs (commits 2bf8c16/a073f91/0ee5803); first generation batches queued in batch-01-queue.md (c752ea5), not submitted.
+## Team and lanes (verified 2026-09-28)
+| Worker | How reached | Lane | Availability |
+|---|---|---|---|
+| Mathew (Product Owner) | direct | Decisions (HA-xxx), style verdicts, anything needing a purchase | as available |
+| Claude (covering Astra) | Claude project "ai dev", running on Mathew's PC | Meetings, backlog and sprint records, independent acceptance, Windows-local runs, Unity (`UnityProof/`), asset download/import, security review | through 2026-10-04 |
+| Muse — Rune (and Thalia) | muse.ai main chat and reflections | `releases/`, `.github/workflows/`, `prototypes/lobby-lab/`, `docs/muse/` | available; hourly reflections |
+| Meshy | meshy.ai web workspace in Chrome (signed in) | 3D models: generate, remesh, texture | existing credits only (3,140 on 2026-09-28) |
+| ElevenLabs | Claude connector | Sound effects | existing credits only (130,801 on 2026-09-28) |
+| Astra (ChatGPT Codex) | Codex automations | Integration and Unity lane owner | **unavailable until 2026-10-04 08:12 EDT** (usage limit) |
 
-Next checkpoint 00:00 EDT Sep 28; sprint ends 06:00 EDT. Workers may proceed through their accepted bounded stages after green tests, preserving the last working increment. Record delivery, acknowledgement, execution, acceptance, integration and release separately. Evidence and exact commands belong in SPRINT_LOG.md. No claim of uninterrupted background execution.
+## Sprint board — sprint IC-S02 (2026-09-28 18:30 → 2026-09-30 18:00 EDT)
+**Sprint goal:** close the supply-chain gap and make the packaging pipeline fully CI-verified on both OSes (AI-055, AI-048, AI-046). Then get the first textured 3D asset (Thunder Ram) running in the Unity proof scene so the style gate (HA-009) can open media production.
 
-## Open decisions
-HA-003 target platforms/release order/cross-play; HA-004 currency/login campaign rules; HA-006 expansion roster remain unspecified. Proceed with reversible prototype and inventory work; do not invent commercial choices. HA-005 is agent-side live-service/version verification, no hosting purchase pending. Unity Personal license verified; package metadata warned about sign-in during initialization, but project creation completed. Record a human blocker only if a required operation actually fails.
+| ID | Pri | Owner | Status | Next action | Acceptance |
+|---|---|---|---|---|---|
+| AI-055 | P1 | Muse (Rune) | IN_PROGRESS 2026-09-28 18:07 | Pin the full SHA-256 of jackson-databind/core/annotations 2.18.2 in `build-release.sh` and `.bat`, and fail closed on mismatch. Keep the fetched `.sha1` as a secondary check. Add a `--break=depswap` mode (self-consistent wrong jar + `.sha1`). | Windows and Linux packaging CI green. The new break mode is detected at stage `build`. The run ID is recorded. Claude verifies independently. |
+| AI-048 | P1 | Muse | DELIVERED (Linux self-run, not accepted) | Add an `ubuntu-latest` job running `regress.sh` clean plus all `--break` modes, then dispatch it. | Green CI run ID covering the clean run and every break mode on Linux. |
+| AI-046 | P1 | Muse → Claude accepts | REVIEW (blocked by AI-055) | After AI-055 lands, Claude runs AI-046-WIN-ACCEPT locally. | See AI-046-WIN-ACCEPT. |
+| AI-046-WIN-ACCEPT | P1 | Claude | READY | On Mathew's PC (JDK 17.0.20 Adoptium): fresh clone of the head, then `fetch-source.bat` → `build-release.bat` → `smoke.bat` 5/5 → `regress.bat` clean → missing/tampered-jar refusal in `play.bat`. Record the artifact hash. | `docs/reviews/<date>-windows-acceptance.md` with the commands, outputs and jar SHA-256. |
+| AI-030 | P0 | Claude (Astra lane) | IN_PROGRESS | Clean-checkout build PASSED 06:00. Next: runtime smoke of that fresh build (`-proofSmoke`, legal=true, blocked=true), then click-through legal/blocked/reset. | smoke JSON + screenshot + exe SHA-256 in the review folder. Mouse acceptance is recorded separately (it may need Mathew). |
+| AI-052-ASSET | P0 | Claude | READY | Thunder Ram first: download the textured GLB from Meshy → `check_glb.py --require-materials` → import into UnityProof → place on a board tile → screenshot. Then Leviathan Wakeborn and Abyss Gate. | GLB check passes (or failures are documented and fixed via Blender/Meshy). The asset renders in the scene at board scale. The screenshot goes to Mathew as HA-009. |
+| AI-056 | P2 | Muse | READY (after AI-048) | Give each check a distinct exit code, and have `regress` assert the expected code per break mode. | Each break mode fails only its own check. The CI run ID is recorded. |
+| AI-053 | P2 | Claude | WAITING on AI-052-ASSET | Select the Skyline Seer audio palette (AI-051 + AI-053 candidates), convert to 48 kHz WAV, normalize, map to events. | In-game audio review by Mathew. |
+| AI-058 | P3 | Muse | READY | Detect the Java version via `java.specification.version` (as in the `.bat`), not `java -version | head -1`. | Build passes with `JAVA_TOOL_OPTIONS` set. A regression check is added. |
+| AI-057 | P3 | Muse | READY | Document or wrap `regress.bat`'s `exit` so manual runs keep the console open. | README updated, or the wrapper is tested. |
+| AI-031 | P0 | Claude (Astra lane) | IN_PROGRESS | Keep integration/security gates current. Review every new head at each checkpoint (AI-005/AI-006). | A checkpoint entry in SPRINT_LOG.md for every meeting. |
+| AI-059 | P1 | Claude | READY | Reconcile Astra's unmerged branches (`astra/unity-movement-proof` 997c38f, `astra/night-2026-09-27` 3b6dc52) against the working branch. List each unmerged commit, what it does and whether it is safe to bring over. Do not merge without Mathew. | A written recommendation in `docs/reviews/`. |
+| Meshy media | — | Meshy | WAITING on HA-009 | Six-capital batch (`docs/muse/sprint-01/asset-prompts/batch-01-queue.md`) is held until the Thunder Ram style check passes. | — |
+| ElevenLabs media | — | ElevenLabs | WAITING on HA-009 | No new generation until the in-game style check. | — |
 
----
+### Accepted or done (for reference; evidence in SPRINT_LOG.md)
+AI-037/038 manifest + offline smoke DONE · AI-045 lobby guards merged (PR #1) · AI-047 Windows/browser lobby fixes merged (PR #1) · AI-049 asset prompt directory DONE (139 cards, 21 SFX groups, 32 apex briefs) · AI-052-WIN Windows packaging repair ACCEPTED (run 36386714758) · AI-054 GLB staging checker verified 55/55 (local, not yet committed) · AI-029/032/033/034 setup verified.
 
-# Infinite Conquest product backlog
+### In review, not yet accepted
+AI-027/028/036 audit, handoff and movement fixture · AI-043 Java suite (169/169 reported, independent rerun pending) · AI-044 2D alpha recipe (PARTIAL) · AI-050 Skyline Seer model (held for HA-011) · AI-051/052 audio candidates (awaiting palette selection).
 
-Version 1 — 2026-09-27. Product Owner direction is recorded in PRODUCT_LOG.md; evidence and limits are in REPOSITORY_BASELINE.md. This backlog supports the four independent daily meeting runs. Priority is execution order, not a promised delivery date. Split large items into bounded child action IDs before implementation; preserve parent IDs and never recycle IDs.
+## Human decisions (Product Owner)
+| ID | Decision needed | Blocks |
+|---|---|---|
+| HA-009 | Review the first textured in-game sample (Thunder Ram) once Claude imports it. | All further Meshy/ElevenLabs batches |
+| HA-011 | Skyline Seer: its cowl resembles a well-known comic character. Reject and regenerate (open helm/laurel), or accept? | AI-050 |
+| HA-012 | ElevenLabs "Generations may be shared to Explore page" is ON. Turn it off for unreleased audio? | Asset confidentiality |
+| HA-003 | Desktop/mobile targets, release order, cross-play | AI-013/014/015 final scope |
+| HA-004 | Currency and login-reward calendar/eligibility | AI-021/022/023 |
+| HA-006 | First expansion roster | AI-024 |
+
+## Epics and requirements
 
 ## Product and commercial requirements
 
@@ -161,23 +189,45 @@ Define realistic load targets and test capacity, timeouts, rate limits and servi
 P1 | BACKLOG | Owner: Astra with Product Owner playtest input | Dependencies: applicable free-base items AI-003–AI-020 and AI-025; expansion commerce items before paid releases.
 Run the release matrix on supported desktop/mobile devices, cross-client sessions and clean accounts. Acceptance: every released card meets its asset manifest, key user journeys and matchmaking/ranking pass, distribution/update/rollback are verified, and security/bug gates pass with recorded evidence. Review applicable store, privacy, age-rating and asset-use requirements against current primary sources before submission. Mark RELEASED only with actual destination/version evidence.
 
-## Recurring checkpoint procedure
+## Meeting cadence (2026-09-28 → 2026-10-04)
+Astra's four Codex checkpoints (00:00/06:00/12:00/18:00 EDT) can't run until Astra's usage resets on 2026-10-04 08:12 EDT. Until then Claude runs the meetings from Mathew's PC:
+- **09:00 EDT stand-up:** read the new heads and CI since the last meeting, check in with Rune in Muse, triage AI-005/AI-006, refresh the Sprint board, collect Mathew's decisions.
+- **18:00 EDT review:** independent acceptance of delivered items, a sprint-log entry of record, the next assignments for every available worker.
+- Rune's hourly lobby-lab reflections continue unchanged (see `docs/muse/sprint-01/reflection-schedule.md`).
+- **2026-10-04 18:00 EDT:** the lane goes back to Astra, with the Sprint board as the handoff.
 
-At 00:00, 06:00, 12:00 and 18:00 read the compact state/logs and relevant backlog entries. Inspect changes and check results since the last checkpoint, triage AI-005/AI-006 findings, select the highest-priority unblocked work, and record the exact next action. Once CI is configured it checks each covered change. Scheduled meetings do not imply continuous execution or media jobs running in the background.
-
-Keep generation jobs resumable: record provider job ID, input brief/version, expected outputs, current state and review result before polling or retrying. Do not resubmit an uncertain paid job. Keep specialist assignments bounded and tied to action IDs; only assign verified available workers.
+Each meeting reads this file plus the latest SPRINT_LOG.md entries, verifies claims against commits and CI, and ends with a concrete assignment for every available worker. Scheduled meetings do not imply continuous execution. Keep generation jobs resumable: record the provider job ID, input brief/version, expected outputs, state and review result before polling or retrying.
 
 ## Definition of done
+An item is DONE only when its acceptance criteria are met, relevant tests/review pass, integration is verified, and the records include branch/commit/artifact evidence. A draft, generated asset, passing unit test or repository file alone is not a finished feature. RELEASED additionally requires a verified deployed/store/distribution destination. Scope or policy decisions are preserved in PRODUCT_LOG.md; unresolved dependencies stay visible in the Human decisions table.
 
-An item is DONE only when its acceptance criteria are met, relevant tests/review pass, integration is verified, and the records include branch/commit/artifact evidence. A draft, generated asset, passing unit test or repository file alone is not a finished feature. RELEASED additionally requires a verified deployed/store/distribution destination. Scope or policy decisions are preserved in PRODUCT_LOG.md; unresolved dependencies stay visible here and in HUMAN_ACTIONS.md.
-
-
-
-
-## 2026-09-28 18:00 — Claude (covering Astra)
-
-Queue changes (details and evidence are in the SPRINT_LOG.md entry of the same name):
-- **AI-058 (new, P3, under AI-006, owner Muse):** build-release.sh Java version detection breaks when JAVA_TOOL_OPTIONS is set (reads the "Picked up…" banner line). Port the .bat `java.specification.version` approach.
-- **AI-048 (Muse, P1):** Linux clean run is DELIVERED (self-reported, 7883a9a) but NOT ACCEPTED. Close it with a CI `ubuntu-latest` job running regress.sh clean plus all 5 break modes, and record the run ID.
-- Order for Muse: AI-055 (P1) → AI-048 CI (P1) → AI-056 (P2) → AI-058 / AI-057 (P3).
-- Unchanged: AI-052-WIN ACCEPTED; AI-046 REVIEW (blocked by AI-055). AI-030, AI-052-ASSET import and AI-046-WIN-ACCEPT are WAITING — needs Mathew present. Media is idle by gate. HA-011/HA-012 await the PO.
+## Child action catalog (IDs 027–059)
+| ID | Parent | Summary | Owner | Status |
+|---|---|---|---|---|
+| AI-027/028 | AI-002 | Repository audit and handoff | Muse | REVIEW |
+| AI-029 | AI-002 | 3DTuba clone + Unity/Blender inventory | Astra | DONE |
+| AI-030 | AI-003 | UnityProof 3D movement slice | Astra → Claude | IN_PROGRESS |
+| AI-031 | AI-004/005 | Integration and quality gates | Astra → Claude | IN_PROGRESS |
+| AI-032/033/034 | — | Claude / Meshy / ElevenLabs setup | Mathew | VERIFIED |
+| AI-035 | AI-002 | Audit documentation correction | Muse | DONE |
+| AI-036 | AI-007 | Movement fixture (legal/blocked cases) | Muse | REVIEW |
+| AI-037/038 | AI-016/004 | Manifest validator + offline lobby smoke | Muse | DONE |
+| AI-039–042 | AI-008 | Local lobby implementation package | Muse | PARTIAL → folded into AI-045/047 |
+| AI-043 | AI-007 | Java rules suite (169 tests) | Muse | REVIEW |
+| AI-044 | AI-013 | 2D alpha build recipe | Muse | PARTIAL |
+| AI-045 | AI-005 | Lobby loopback/Host/Origin guards | Muse | DONE (PR #1) |
+| AI-046 | AI-013 | Reproducible Windows/Linux packaging handoff | Muse | REVIEW (AI-055) |
+| AI-047 | AI-008 | Windows/browser lobby fixes | Astra | DONE (PR #1) |
+| AI-048 | AI-004 | Packaging regression harness | Muse | DELIVERED |
+| AI-049 | AI-016/020 | Asset prompt directory (-DIRECTORY Muse; -SKYLINE Claude brief validator) | Rune / Claude | DONE |
+| AI-050 | AI-018 | Skyline Seer Meshy model | Meshy | REVIEW (HA-011) |
+| AI-051 | AI-020 | Skyline Seer SFX (20 candidates) | ElevenLabs | REVIEW |
+| AI-052-WIN | AI-046 | Windows .bat repair | Muse | ACCEPTED |
+| AI-052-ASSET | AI-018 | Thunder Ram, Leviathan Wakeborn, Abyss Gate models + 13 SFX | Meshy / ElevenLabs → Claude import | READY for import |
+| AI-053 | AI-020 | Skyline Seer melee cue | ElevenLabs | REVIEW |
+| AI-054 | AI-018 | `check_glb.py` staging checker | Claude | VERIFIED local, commit pending |
+| AI-055 | AI-005 | Pin Jackson hashes (supply chain) | Muse | READY |
+| AI-056 | AI-006 | Distinct exit code per regression check | Muse | READY |
+| AI-057 | AI-006 | regress.bat manual-run exit | Muse | READY |
+| AI-058 | AI-006 | Java version detection with JAVA_TOOL_OPTIONS | Muse | READY |
+| AI-059 | AI-031 | Reconcile unmerged astra/* branches | Claude | READY |

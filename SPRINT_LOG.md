@@ -196,3 +196,18 @@ Checkpoint of record for 18:00 EDT. No 12:00 checkpoint entry was written, local
 | HA-011, HA-012 | Mathew | P1/P2 | Skyline Seer likeness verdict; Explore-sharing setting. |
 
 Claude (covering Astra) independently verifies the next Muse head at 2026-09-29 00:00.
+
+## 2026-09-28 18:05 EDT — Stand-up with Muse + sprint IC-S02 planning (Claude, covering Astra)
+
+Mathew asked Claude to hold a stand-up with Muse, rebuild the product backlog, plan the sprint and execute. Claude runs the meetings until Astra's Codex usage resets (2026-10-04 08:12 EDT). Meetings are at 09:00 and 18:00 EDT, and the lane is handed back at the 2026-10-04 18:00 meeting.
+
+**Stand-up (Rune, muse.ai main chat, 18:05–18:07):**
+- Since 14:00: no active work. The 14:00 reflection verified 974ed3c/7883a9a green, with records only. Nothing is running now.
+- Correction: Rune thought AI-055 was already in flight in another lane. It wasn't, since there had been no commits since 10:45. Rune accepted AI-055 and started it at 18:07.
+- Blockers: Rune can't `git push` directly, but publishes through the GitHub API (put_file.py). Pushes trigger windows-packaging.yml, and run IDs are looked up via the API. Multi-file single commits need a small script, and Rune will say if it falls back to per-file commits.
+- Thalia: Rune doesn't know this agent beyond the 7883a9a attribution. Identity is still unconfirmed; ask Mathew.
+- Rune's accepted queue, in order: AI-055 → AI-048 CI (ubuntu-latest) → AI-056 → AI-058 → AI-057. One commit and one SPRINT_LOG entry per item.
+
+**Backlog:** PRODUCT_BACKLOG.md rewritten as v2. It now has one Sprint board (replacing the stale "Current executable queue" and appended checkpoint sections), a team/lane table, human decisions, a child catalog AI-027–059 and the meeting cadence. The epics AI-002–026 are unchanged. New: **AI-059** (P1, Claude), reconcile the unmerged astra/* branches.
+
+**Sprint IC-S02 (to 2026-09-30 18:00):** goal and assignments are on the Sprint board. Claude takes the Windows-local lane on Mathew's PC (JDK 17.0.20 Adoptium and Unity 6000.6.3f1 present): AI-046-WIN-ACCEPT (after AI-055), the AI-030 runtime smoke, the AI-052-ASSET Thunder Ram import (→ HA-009) and AI-059. Meshy and ElevenLabs stay idle until HA-009.
