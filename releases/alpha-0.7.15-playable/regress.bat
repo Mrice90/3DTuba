@@ -90,6 +90,7 @@ if "%BREAK_MODE%"=="pin" (
   echo regress: intentional break -- breaking git repo to simulate off-pin checkout
   ren "%WORK%\build\alpha-src\.git" ".git-broken"
   echo ::error::AI-052-WIN pin-break: renamed .git to .git-broken
+  if exist "%WORK%\build\alpha-src\.git-broken" (echo ::error::AI-052-WIN pin-break VERIFIED: .git-broken exists) else (echo ::error::AI-052-WIN pin-break FAILED: rename did not work)
 )
 
 if "%BREAK_MODE%"=="dep" (
