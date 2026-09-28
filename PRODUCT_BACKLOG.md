@@ -16,6 +16,7 @@ Standing authorization: Product Owner directly authorized Muse in its own UI to 
 - AI-043 REVIEW: Muse reports 169/169 Java tests; Astra independent full rerun pending.
 - AI-044 PARTIAL: 2D alpha recipe/screenshots and chat JAR attachment; GitHub has no binary release. AI-046 closes clean Windows handoff gaps.
 - AI-032/033/034 setup VERIFIED 2026-09-27 evening EDT (Mathew direct): Claude worker, Meshy runner/session, and ElevenLabs access all confirmed working via successful test connections; all cleared for tasking from the 00:00 meeting onward. Mathew will verify generated assets by the 06:00 meeting. Zero remaining human-side setup blockers. Do useful technical prep; no paid connection tests or invented available workers.
+- AI-049 IN_PROGRESS (Rune): asset prompt directory v1 built 2026-09-27 evening — 139 cards with Meshy prompts, 21 faction/archetype SFX groups, 32 unique apex-tier SFX briefs, in docs/muse/sprint-01/asset-prompts/. 21:00 run: validation + spot-check QA. 22:00 run: final acceptance -> DONE, then queue first Meshy/ElevenLabs batches.
 
 Next checkpoint 00:00 EDT Sep 28; sprint ends 06:00 EDT. Workers may proceed through their accepted bounded stages after green tests, preserving the last working increment. Record delivery, acknowledgement, execution, acceptance, integration and release separately. Evidence and exact commands belong in SPRINT_LOG.md. No claim of uninterrupted background execution.
 
@@ -126,6 +127,10 @@ Map movement, idle, attack, cast, hit, death, deployment and special abilities a
 ### AI-020 — Unique per-card sound effects
 P1 | BACKLOG | Owner: Astra integration; proposed ElevenLabs production | Dependencies: AI-016, HA-002 setup.
 Prepare bounded audio briefs for every applicable card action with purpose, tone, duration, format and loudness targets. Acceptance: each card has distinct approved cues; no clipping, missing files or runaway overlapping sounds; mute/volume controls work and persist; playback matches animation/game events on desktop and mobile; provenance and generation job status are recorded. Dialogue/music remain optional unless separately requested.
+
+### AI-049 — Asset prompt directory with SFX grouping (child of AI-016/AI-020)
+P1 | IN_PROGRESS | Owner: Rune | Dependencies: AI-016 manifest, AI-032/033/034 (verified).
+Per Product Owner direction 2026-09-27: build a per-card asset directory with Meshy generation prompts and ElevenLabs SFX briefs; group SFX by faction + archetype (fallback faction + type); unique SFX only for apex-tier (rarity 4). v1 delivered 2026-09-27 evening: 139 cards (119 alpha-json + 20 runtime tutors), 21 SFX groups, 32 unique-SFX briefs; generator script + JSON + Markdown in docs/muse/sprint-01/asset-prompts/. Pacing: 21:00 run validates (re-run build script, reconcile counts, 10-prompt spot-check); 22:00 run does final acceptance, marks DONE, then queues first Meshy/ElevenLabs batches. Acceptance: every playable ID has a Meshy prompt + SFX brief; counts reconcile; spot-check passes; worker-ready batching notes present.
 
 ## Four-faction expansions and ownership
 
