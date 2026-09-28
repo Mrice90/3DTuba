@@ -130,7 +130,7 @@ dir "%HERE%%JARNAME%" "%HERE%CHECKSUMS.sha256"
 exit /b 0
 
 :fetchdep
-rem AI-052-WIN: %1 = artifact. No hardcoded hash; the published .sha256 is
+rem AI-052-WIN: %1 = artifact. No hardcoded hash; the published .sha1 is
 rem fetched from Maven Central (cached in %DEPS%) and the jar is verified
 rem against it. This avoids stale hardcoded hashes.
 set ART=%~1
@@ -141,18 +141,18 @@ if not exist "%DEPS%\%JARF%" (
   where curl.exe >nul 2>nul || (echo ERROR: curl.exe not found -- install curl or place %JARF% in %DEPS% manually. & exit /b 22)
   curl.exe -sSL --max-time 180 -o "%DEPS%\%JARF%" "%URL%" || (echo ERROR: download failed for %JARF% & exit /b 23)
 )
-if not exist "%DEPS%\%JARF%.sha256" (
-  echo fetching %JARF%.sha256 ...
-  curl.exe -sSL --max-time 60 -o "%DEPS%\%JARF%.sha256" "%URL%.sha256" || (echo ERROR: could not fetch %JARF%.sha256 & exit /b 26)
+if not exist "%DEPS%\%JARF%.sha1" (
+  echo fetching %JARF%.sha1 ...
+  curl.exe -sSL --max-time 60 -o "%DEPS%\%JARF%.sha1" "%URL%.sha1" || (echo ERROR: could not fetch %JARF%.sha1 & exit /b 26)
 )
 set EXP=
-for /f "tokens=1" %%E in ('type "%DEPS%\%JARF%.sha256"') do (if not defined EXP set EXP=%%E)
+for /f "tokens=1" %%E in ('type "%DEPS%\%JARF%.sha1"') do (if not defined EXP set EXP=%%E)
 if not defined EXP (
-  echo ERROR: could not parse %JARF%.sha256.
+  echo ERROR: could not parse %JARF%.sha1.
   exit /b 26
 )
 set DH=
-for /f %%H in ('certutil -hashfile "%DEPS%\%JARF%" SHA256 ^| findstr /v ":"') do (set DH=%%H & goto :depchecked)
+for /f %%H in ('certutil -hashfile "%DEPS%\%JARF%" SHA1 ^| findstr /v ":"') do (set DH=%%H & goto :depchecked)
 :depchecked
 if not defined DH (
   echo ERROR: could not hash %JARF% with certutil.
