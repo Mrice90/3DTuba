@@ -29,7 +29,9 @@ if exist "%DEST%\.git" (
 for /f %%h in ('git -C "%DEST%" rev-parse HEAD') do set HEAD=%%h
 echo checked out: %HEAD%
 if not "%HEAD%"=="%PIN%" (
-  echo ERROR: checkout (%HEAD%) does not match pin (%PIN%^); refusing to continue.
+  rem AI-052-WIN: every literal paren inside a block must be escaped, otherwise
+  rem the first ) closes the IF block and the script dies with exit 255.
+  echo ERROR: checkout ^(%HEAD%^) does not match pin ^(%PIN%^); refusing to continue.
   exit /b 1
 )
 echo OK: source matches pin %PIN% (read-only; upstream untouched)
