@@ -86,13 +86,16 @@ echo stage fetch: OK
 
 if "%BREAK_MODE%"=="pin" (
   echo regress: intentional break -- moving temp source off the release pin
-  git -C "%WORK%\build\alpha-src" fetch -q --depth 1 origin %OFF_PIN%
+  git -C "%WORK%\build\alpha-src" fetch --depth 1 origin %OFF_PIN%
+  echo ::error::AI-052-WIN pin-break fetch exit=!ERRORLEVEL!
   if errorlevel 1 (
   set "FAIL_STAGE=build"
   set "FAIL_DETAIL=could not fetch off-pin commit for fault injection"
   call :fail
 )
-  git -C "%WORK%\build\alpha-src" checkout -q FETCH_HEAD
+  git -C "%WORK%\build\alpha-src" checkout FETCH_HEAD
+  echo ::error::AI-052-WIN pin-break checkout exit=!ERRORLEVEL!
+  for /f %%h in ('git -C "%WORK%\\build\\alpha-src" rev-parse HEAD') do echo ::error::AI-052-WIN pin-break HEAD=%%h
   echo regress: temp source is now off the release pin
 )
 
