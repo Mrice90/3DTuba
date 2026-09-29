@@ -323,3 +323,18 @@ Evidence: SPRINT_LOG.md 2026-09-29 06:00 entry and `docs/reviews/2026-09-29-0600
 
 - **AI-069 DELIVERED** (`docs/muse/sprint-02/presentation/`, commits `f7e1167`, `c540163`): `encoding="utf-8"` on every `open()` in `coverage.py` and `test_coverage.py`; `newline="\n"` on the report write. Root cause confirmed: the ✅/❌ status glyphs are not encodable in Windows cp1252, which is the `open()` default there (Linux CI was UTF-8, which is why the 02:00 reflection's Linux-only verification missed it). Test the mechanism locally: `open(...,'w',encoding='cp1252').write('✅')` raises `UnicodeEncodeError: 'charmap' codec can't encode character '\u2705'`; with `encoding='utf-8'` it writes fine. Failing-before evidence is the real CI history: 8 Verify runs red at step 11 "Presentation manifest coverage (AI-064)" from `36515172274` (`82cdd9b`) to `36528709751` (`e344162`); last green was `36512570343` (`d3df0f0`). **Passing-after: Verify run 36565491824 (tip `c540163`) completed / success — both `ubuntu-latest` and `windows-latest` jobs green.** AI-064's rejection is resolved on the delivery side; re-acceptance is Claude's (reviewer).
 - **AI-070 DELIVERED** (`docs/muse/sprint-02/win-split-analysis.md`, commit `b1a193d`): win-split analysis of AI-066 event dumps over 31 seeds. Base run (21 seeds, seat 0 = Zeus): Zeus wins 21/21. Swap run (10 seeds, local-only harness variant with deck args swapped, seat 0 = Poseidon, seat 1 = Zeus; engine/bots/rules untouched): Zeus wins 7/10. Combined **Zeus wins 28/31 ≈ 90% — the winner follows the Zeus starter deck, not the seat: starter-deck asymmetry, not first-player advantage** (the harness always seats player 0 first, 31/31, yet Zeus still wins 70% from the second seat). All dumps validate against the AI-062 schema; determinism re-verified (seed-42 rerun byte-identical). Balance flag for AI-012 (Zeus/Poseidon are both meant to be free and viable): Zeus starter beats Poseidon starter ~90% under HERO bots. No rules change — analysis only.
+
+## 2026-09-29 12:00 — Claude (covering Astra): board update
+Evidence: SPRINT_LOG.md 2026-09-29 12:00 entry and `docs/reviews/2026-09-29-1200-claude-acceptance.md`. These rows supersede earlier rows for the same IDs.
+
+| ID | Pri | Owner | Status | Next action |
+|---|---|---|---|---|
+| AI-069 | P1 | Muse | ACCEPTED 2026-09-29 12:00 (Verify 36565491824, tip 36565877747) | — |
+| AI-064 | P2 | Muse | DELIVERED; CI part ACCEPTED 2026-09-29 12:00 (rejection lifted) | PC coverage run (WAITING — needs Mathew present) + ElevenLabs cue-name confirmation. |
+| AI-070 | P3 | Muse | ACCEPTED 2026-09-29 12:00 (analysis) | Follow-up in AI-072; balance flag to AI-012. |
+| **AI-072** (new, AI-006) | P2 | Muse | READY | Commit deck-swap/mirror options in EventDump; ≥20 seeds per arrangement; seat effect reported separately. |
+| **AI-071** (new, AI-006) | P3 | Muse | READY | UTF-8 `open()` in `build_presentation_manifest.py:72,118`. |
+| **AI-073** (new, AI-006) | P3 | Muse | READY | Pin `ubuntu-24.04`, bump actions to Node-24 majors (Ubuntu 26 migration 2026-10-19). |
+| AI-065 / AI-046 | P1 | Muse → Claude accepts | DELIVERED / REVIEW | WAITING — needs Mathew present. |
+| AI-030, AI-052-ASSET | P0 | Claude (Astra lane) | IN_PROGRESS | WAITING — needs Mathew present (incl. batch-04 GLB import). |
+| AI-061 | P1 | Claude media threads | IN_PROGRESS | Meshy 2,050 / ElevenLabs 127,473; hold for HA-009 + batch-04 in-game check. |
