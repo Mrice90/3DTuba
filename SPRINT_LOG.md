@@ -354,3 +354,49 @@ New tool `releases/alpha-0.7.15-playable/tools/event-dump/`: `EventDump.java` ru
 - AI-066 local rerun deliberately skipped: Linux packaging CI run 36519850577 at tip already proves the event-dump step end-to-end; a local rerun would need a full alpha source fetch + fat-jar build for no new evidence.
 - Pending lanes (not mine): Claude runs `coverage.py` against `assets/staging/` and posts the first real coverage report; ElevenLabs thread confirms cue names; Meshy media batches (AI-061) with Mathew; AI-030 UnityProof smoke/click-through; AI-046 stays REVIEW until Muse's AI-055 lands and Claude accepts.
 - Standing gaps unchanged: browser UI visual check unverifiable from remote tooling (loopback unreachable); generation batches in human/paid lanes.
+
+## 2026-09-29 06:00 — Claude (covering Astra)
+
+Checkpoint of record for 06:00 EDT. **No 00:00 checkpoint was written** (no GitHub entry, no local `reviews/2026-09-29-0000/`), so this covers everything since the 18:00 entry (`1422a04`/`978b514`) up to head **`e344162`**. No Astra-authored activity since 2026-09-28 10:45, so coverage continues. astra/* branches unchanged (`3b6dc52`, `997c38f`); `claude/unity-hex-proof` `83e11d7` is merged (`d3df0f0`, Matt approved). Review: `docs/reviews/2026-09-29-0600-claude-acceptance.md` (`ff8fabc`).
+
+**Regression — verify.yml red on Windows since `82cdd9b`.** Every Verify run from 36515172274 (`82cdd9b`) to 36528709751 (`e344162`, 8 runs) fails in `supporting-tools (windows-latest)` step 11 "Presentation manifest coverage (AI-064)": `test_coverage.test_fixture_tree` → `coverage.py` line 91 `f.write(text)` → `UnicodeEncodeError: 'charmap' codec can't encode character '\u2705'` (`open(out_path, "w")` with no encoding → cp1252 on Windows). Step 12 "Client integration example" and later Windows steps are skipped. Ubuntu job green. The AI-064 "CI green" claim and the 02:00 reflection's verification were Linux-only. Last green Verify: 36512570343 (`d3df0f0`).
+
+**Verdicts (delivery ≠ acceptance; worker CI = delivery evidence, checked here step by step)**
+| ID | Verdict | Evidence |
+|---|---|---|
+| AI-055 | **ACCEPTED** (closes finding) | `1c53026`: identical full SHA-256 pins in .sh/.bat, fail-closed (exit 24/27), .sha1 secondary. Win 36496019781 + 36519850697 and Linux 36519850577 green incl. `--break=depswap`; clean runs prove pins match the real Maven jars. |
+| AI-048 | **ACCEPTED** | `linux-packaging.yml` (`de2b8e5`); Linux 36495894219 green: clean + 6 break steps all success. |
+| AI-056 | **ACCEPTED** (closes finding) | `f663f24`: regress.sh/.bat assert per-mode EXPECT_CODE. First Linux run 36496308472 FAILED (all 7 steps; regress.sh mode 100644), not recorded by Muse; fixed `ccfb22f`, green Linux 36497421600/36519850577, Win 36496308464. |
+| AI-058 | **ACCEPTED** | `c7f230c`; Linux 36496007944 green with `JAVA_TOOL_OPTIONS` set for the whole job (log shows "Picked up JAVA_TOOL_OPTIONS"). |
+| AI-057 | **ACCEPTED** | README §regression documents `exit %EXITCODE%` + `cmd /k` (`e16e303`). |
+| AI-066 | **ACCEPTED (CI)** | Linux 36519850577 event-dump step: seeds 42/1234/98765 → 235/706/817 events, all VALID. Determinism (byte-identical rerun) not independently re-run. Observation: winner 0 in all 3 seeds (see AI-070). |
+| AI-063, AI-068 | **ACCEPTED (contract/tests)** | `test_asset_directory` 6/6 OK on both OSes (Win step 10 of 36528709751). Scale numbers still need Meshy-lane confirmation before the land batch. |
+| AI-064 | **REJECTED** (regression) | Windows verify red, see above → AI-069. |
+| AI-065 | DELIVERED, not accepted | `c842a2c`; Win packaging 36497699735 green (short CI path). Acceptance is the local deep-path back-to-back run. |
+| AI-046 | REVIEW | Unblocked by AI-055; waits on AI-065 local rerun. |
+| Claude-lane items (hex UnityProof merge, AI-052-ASSET Thunder Ram, AI-061 batches 01/02, AI-046-WIN-ACCEPT partial) | Not self-accepted | Recorded by the interactive Claude sessions; PO review (HA-009) is the acceptance. |
+
+**New findings (under AI-006)**
+| ID | Sev | Finding | Owner |
+|---|---|---|---|
+| AI-069 | P1 | Windows verify red since `82cdd9b`: `coverage.py` writes (and should read) text with the platform default encoding. Use `encoding="utf-8"` on every `open()` in `docs/muse/sprint-02/presentation/` (and `newline="\n"` for the report); re-run Verify, record a run where **both** jobs are green. Also blocks the first real coverage report on Mathew's Windows PC. Process: check every job of every workflow on a push, not only the ubuntu one. | Muse |
+| AI-070 | P3 | AI-066 dumps: player 0 wins all 3 seeded matches. Analysis only (no rules change; TubaExperiment stays read-only): run ~20 seeds, report the win split and whether it is first-player/bot asymmetry, in `docs/muse/sprint-02/`. | Muse |
+
+**Media (read-only, 0 credits spent by this checkpoint)**
+- Meshy: **2,140** credits (2,720 recorded at 19:15 → 580 spent since, not yet recorded in ASSET_QUEUE/backlog). Newest workspace items dated 09/28 are untextured. Owning Claude media thread to record what was generated. Skyline Seer held (HA-011).
+- ElevenLabs: **127,473** credits (130,801 at 18:00 → 3,328 since; consistent with the batch-01/02 SFX flows `S5OTgpVd2nqHXp3u7pQd`, `GvmEQ8CxxWdrwkB1JQbL`). "Generations may be shared to Explore page" still ON (HA-012).
+- No new spend here: no briefed queue-next item is both unblocked and unowned (HA-009 verdict not recorded; batches predate the AI-068 style change).
+
+**Assignments (to 2026-09-29 12:00)**
+| ID | Owner | Pri | Next action |
+|---|---|---|---|
+| AI-069 | Muse | P1 | Fix encoding in coverage.py (+ any other open() in presentation/), Verify green on ubuntu **and** windows, record run ID. Correct the AI-064 row/log claim. |
+| AI-070 | Muse | P3 | Win-split analysis over ~20 seeds (docs only). |
+| AI-065 / AI-046-WIN-ACCEPT | Claude Code | P1 | WAITING — needs Mathew present (6 break modes back-to-back from a deep path on the PC, fresh clone of `e344162`). |
+| AI-064 coverage report | Claude (Astra lane) | P2 | Blocked on AI-069, then WAITING — needs Mathew present. |
+| AI-030 mouse acceptance | Claude (Astra lane) | P0 | WAITING — needs Mathew present. |
+| AI-052-ASSET Leviathan + Abyss Gate | Claude (Astra lane) | P0 | WAITING — needs Mathew present. |
+| AI-061 Meshy / ElevenLabs | Claude media threads | P1 | Record the 580 Meshy credits / new items in ASSET_QUEUE; next batch uses the AI-068 prompts. |
+| HA-009, HA-011, HA-012 | Mathew | P1/P2 | Thunder Ram verdict; Skyline Seer likeness; Explore sharing. |
+
+Next checkpoint 2026-09-29 12:00 EDT. No release or full-match claim.
