@@ -400,3 +400,6 @@ Checkpoint of record for 06:00 EDT. **No 00:00 checkpoint was written** (no GitH
 | HA-009, HA-011, HA-012 | Mathew | P1/P2 | Thunder Ram verdict; Skyline Seer likeness; Explore sharing. |
 
 Next checkpoint 2026-09-29 12:00 EDT. No release or full-match claim.
+
+## 2026-09-29 ~06:20 EDT — Claude (covering Astra): media ledger clarified (Mathew, direct)
+Mathew confirmed that the Meshy spend of 2,720 → 2,140 (580 credits) after 2026-09-28 19:15 went on 3D assets generated from the alpha's existing card art (image-to-3D). The ElevenLabs spend of 130,801 → 127,473 (3,328 credits) went on the audio batches made last night. Both were authorized and done in Mathew's own session. HA-014 is CLOSED. Still open for the owning media thread: list the image-to-3D items (card IDs, staging paths) and the audio batch flow IDs in ASSET_QUEUE.md, so AI-064 coverage and the HA-009 review can find them. Note: the image-to-3D models come from alpha art, so they predate the AI-068 techno-myth style. Mathew's in-game review decides whether they stay.
