@@ -1,0 +1,1364 @@
+{
+ "source": "docs/muse/sprint-02/presentation/presentation-manifest.json",
+ "cards": [
+  {
+   "id": "zeus_ability_stormfront",
+   "name": "Stormfront Plateau",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_ability_oracle_spire",
+   "name": "Oracle Spire",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_ability_skyline_seer",
+   "name": "Skyline Seer",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "Tokens/zeus_ability_skyline_seer/zeus_ability_skyline_seer",
+   "modelSource": "meshy/AI-050-skyline-seer/zeus_ability_skyline_seer.glb",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_ability_healing_shoal",
+   "name": "Healing Shoal",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_ability_tidewell",
+   "name": "Tidewell Bastion",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_ability_reefwarden",
+   "name": "Reefwarden",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "Tokens/poseidon_ability_reefwarden/poseidon_ability_reefwarden",
+   "modelSource": "meshy/batch-03-rarity3-units/poseidon_ability_reefwarden.glb",
+   "sfx": []
+  },
+  {
+   "id": "zeus_apex_thunder_gods_verdict",
+   "name": "Thunder God's Verdict",
+   "faction": "ZEUS",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_apex_wrath_of_olympus",
+   "name": "Wrath of Olympus",
+   "faction": "ZEUS",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_apex_divine_tailwind",
+   "name": "Divine Tailwind",
+   "faction": "ZEUS",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_apex_crownstorm_ascendance",
+   "name": "Crownstorm Ascendance",
+   "faction": "ZEUS",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_apex_imperial_sky_aegis",
+   "name": "Imperial Sky Aegis",
+   "faction": "ZEUS",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_apex_skyfather_archon",
+   "name": "Skyfather Archon",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "Tokens/zeus_apex_skyfather_archon/zeus_apex_skyfather_archon",
+   "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_apex_skyfather_archon.glb",
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "zeus_apex_keraunos_seraph",
+   "name": "Keraunos Seraph",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "Tokens/zeus_apex_keraunos_seraph/zeus_apex_keraunos_seraph",
+   "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_apex_keraunos_seraph.glb",
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "zeus_apex_olympian_storm_titan",
+   "name": "Olympian Storm Titan",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "Tokens/zeus_apex_olympian_storm_titan/zeus_apex_olympian_storm_titan",
+   "modelSource": "meshy/batch-04-alpha-img2-3d/rigged/zeus_apex_olympian_storm_titan.glb",
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "zeus_apex_celestial_throne_grid",
+   "name": "Celestial Throne Grid",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_apex_worldstorm_spire",
+   "name": "Worldstorm Spire",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_apex_atlantis_crown_basin",
+   "name": "Atlantis Crown Basin",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_apex_oceanus_current_vault",
+   "name": "Oceanus Current Vault",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_apex_leviathan_nursery_trench",
+   "name": "Leviathan Nursery Trench",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_apex_trident_confluence",
+   "name": "Trident Confluence",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_apex_worldsea_platform",
+   "name": "Worldsea Platform",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_apex_atlantis_tide_sovereign",
+   "name": "Atlantis Tide Sovereign",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "Tokens/poseidon_apex_atlantis_tide_sovereign/poseidon_apex_atlantis_tide_sovereign",
+   "modelSource": "meshy/batch-02-apex-units/poseidon_apex_atlantis_tide_sovereign.glb",
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "poseidon_apex_kraken_prime_avatar",
+   "name": "Kraken Prime Avatar",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "Tokens/poseidon_apex_kraken_prime_avatar/poseidon_apex_kraken_prime_avatar",
+   "modelSource": "meshy/batch-02-apex-units/poseidon_apex_kraken_prime_avatar.glb",
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "poseidon_apex_abysswalker_nereid",
+   "name": "Abysswalker Nereid",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "Tokens/poseidon_apex_abysswalker_nereid/poseidon_apex_abysswalker_nereid",
+   "modelSource": "meshy/batch-02-apex-units/poseidon_apex_abysswalker_nereid.glb",
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "poseidon_apex_maelstrom_verdict",
+   "name": "Maelstrom Verdict",
+   "faction": "POSEIDON",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_apex_leviathan_gate",
+   "name": "Leviathan Gate",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_capital_olympus_citadel",
+   "name": "Olympus Citadel",
+   "faction": "ZEUS",
+   "type": "CAPITAL",
+   "model": "Tokens/zeus_capital_olympus_citadel/zeus_capital_olympus_citadel",
+   "modelSource": "meshy/batch-01-capitals/zeus_capital_olympus_citadel.glb",
+   "sfx": [
+    "deploy",
+    "hit",
+    "destroy",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "zeus_capital_keraunos_spire",
+   "name": "Keraunos Spire",
+   "faction": "ZEUS",
+   "type": "CAPITAL",
+   "model": "Tokens/zeus_capital_keraunos_spire/zeus_capital_keraunos_spire",
+   "modelSource": "meshy/batch-01-capitals/zeus_capital_keraunos_spire.glb",
+   "sfx": [
+    "deploy",
+    "hit",
+    "destroy",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "zeus_capital_cloud_throne",
+   "name": "Cloud Throne",
+   "faction": "ZEUS",
+   "type": "CAPITAL",
+   "model": "Tokens/zeus_capital_cloud_throne/zeus_capital_cloud_throne",
+   "modelSource": "meshy/batch-01-capitals/zeus_capital_cloud_throne.glb",
+   "sfx": [
+    "deploy",
+    "hit",
+    "destroy",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "poseidon_capital_atlantis_nexus",
+   "name": "Atlantis Nexus",
+   "faction": "POSEIDON",
+   "type": "CAPITAL",
+   "model": "Tokens/poseidon_capital_atlantis_nexus/poseidon_capital_atlantis_nexus",
+   "modelSource": "meshy/batch-01-capitals/poseidon_capital_atlantis_nexus.glb",
+   "sfx": [
+    "deploy",
+    "hit",
+    "destroy",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "poseidon_capital_trident_bastion",
+   "name": "Trident Bastion",
+   "faction": "POSEIDON",
+   "type": "CAPITAL",
+   "model": "Tokens/poseidon_capital_trident_bastion/poseidon_capital_trident_bastion",
+   "modelSource": "meshy/batch-01-capitals/poseidon_capital_trident_bastion.glb",
+   "sfx": [
+    "deploy",
+    "hit",
+    "destroy",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "poseidon_capital_abyssal_court",
+   "name": "Abyssal Court",
+   "faction": "POSEIDON",
+   "type": "CAPITAL",
+   "model": "Tokens/poseidon_capital_abyssal_court/poseidon_capital_abyssal_court",
+   "modelSource": "meshy/batch-01-capitals/poseidon_capital_abyssal_court.glb",
+   "sfx": [
+    "deploy",
+    "hit",
+    "destroy",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "zeus_cloudline_courier",
+   "name": "Cloudline Courier",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_arc_relay_scout",
+   "name": "Arc Relay Scout",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_thunderhead_skirmisher",
+   "name": "Thunderhead Skirmisher",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_iris_signal_runner",
+   "name": "Iris Signal Runner",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_aegis_airguard",
+   "name": "Aegis Airguard",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_cyclone_marksman",
+   "name": "Cyclone Marksman",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_boltwing_cavalier",
+   "name": "Boltwing Cavalier",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_tempest_oracle",
+   "name": "Tempest Oracle",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_hera_protocol_warden",
+   "name": "Hera Protocol Warden",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_stormgate_adept",
+   "name": "Stormgate Adept",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_eagle_of_the_high_grid",
+   "name": "Eagle of the High Grid",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "Tokens/zeus_eagle_of_the_high_grid/zeus_eagle_of_the_high_grid",
+   "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_eagle_of_the_high_grid.glb",
+   "sfx": []
+  },
+  {
+   "id": "zeus_keraunos_prime",
+   "name": "Keraunos Prime",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "Tokens/zeus_keraunos_prime/zeus_keraunos_prime",
+   "modelSource": "meshy/batch-04-alpha-img2-3d/rigged/zeus_keraunos_prime.glb",
+   "sfx": []
+  },
+  {
+   "id": "zeus_olympian_cloudbank",
+   "name": "Olympian Cloudbank",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_ionized_skyway",
+   "name": "Ionized Skyway",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_eagles_perch_array",
+   "name": "Eagle's Perch Array",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_throneward_conduit",
+   "name": "Throneward Conduit",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_storm_relay_pylon",
+   "name": "Storm Relay Pylon",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_cloudwall_bastion",
+   "name": "Cloudwall Bastion",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_keraunos_charging_spire",
+   "name": "Keraunos Charging Spire",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_zeus_command_nexus",
+   "name": "Zeus Command Nexus",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_tidepool_surveyor",
+   "name": "Tidepool Surveyor",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_nereid_current_rider",
+   "name": "Nereid Current-Rider",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_reefline_defender",
+   "name": "Reefline Defender",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_undertow_stalker",
+   "name": "Undertow Stalker",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_triton_waveguard",
+   "name": "Triton Waveguard",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_delphic_sonar_adept",
+   "name": "Delphic Sonar Adept",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_kraken_tendril_drone",
+   "name": "Kraken Tendril Drone",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_naiad_flowshaper",
+   "name": "Naiad Flowshaper",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_abyssal_molecrab",
+   "name": "Abyssal Molecrab",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_oceanid_pressure_mage",
+   "name": "Oceanid Pressure Mage",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_leviathan_wakeborn",
+   "name": "Leviathan Wakeborn",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "Tokens/poseidon_leviathan_wakeborn/poseidon_leviathan_wakeborn",
+   "modelSource": "meshy/AI-052-poseidon_leviathan_wakeborn/textured/poseidon_leviathan_wakeborn_textured.glb",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_poseidons_trident_core",
+   "name": "Poseidon's Trident Core",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "Tokens/poseidon_poseidons_trident_core/poseidon_poseidons_trident_core",
+   "modelSource": "meshy/batch-03-rarity3-units/poseidon_poseidons_trident_core.glb",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_neon_tidelands",
+   "name": "Neon Tidelands",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_coral_data_reef",
+   "name": "Coral Data Reef",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_abyssal_pressure_trench",
+   "name": "Abyssal Pressure Trench",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_palace_of_tides_approach",
+   "name": "Palace of Tides Approach",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_tidal_pump_station",
+   "name": "Tidal Pump Station",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_coral_bulwark",
+   "name": "Coral Bulwark",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_sonar_beacon",
+   "name": "Sonar Beacon",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_abyss_gate",
+   "name": "Abyss Gate",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "Tokens/poseidon_abyss_gate/poseidon_abyss_gate",
+   "modelSource": "meshy/AI-052-poseidon_abyss_gate/textured/poseidon_abyss_gate_textured.glb",
+   "sfx": []
+  },
+  {
+   "id": "zeus_ion_storm_lattice",
+   "name": "Ion Storm Lattice",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_moonwell_tidegate",
+   "name": "Moonwell Tidegate",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_drowned_archive",
+   "name": "Drowned Archive",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_zephyr_mooring_mast",
+   "name": "Zephyr Mooring Mast",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_driftwood_breakwater",
+   "name": "Driftwood Breakwater",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_land_dawncloud_step",
+   "name": "Dawncloud Step",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_structure_aegis_conductor",
+   "name": "Aegis Conductor",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_land_empyrean_current",
+   "name": "Empyrean Current",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_structure_oracle_of_storms",
+   "name": "Oracle of Storms",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_land_saltmarsh_harbor",
+   "name": "Saltmarsh Harbor",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_structure_current_exchange",
+   "name": "Current Exchange",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_land_pelagic_kingdom",
+   "name": "Pelagic Kingdom",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_structure_ambrosial_spring",
+   "name": "Ambrosial Spring",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_land_thunderstep_plateau",
+   "name": "Thunderstep Plateau",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_land_aurora_reach",
+   "name": "Aurora Reach",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_structure_stormglass_relay",
+   "name": "Stormglass Relay",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_structure_cloud_archive",
+   "name": "Cloud Archive",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_land_coral_tributary",
+   "name": "Coral Tributary",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_land_leviathan_shelf",
+   "name": "Leviathan Shelf",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_structure_tidevault",
+   "name": "Tidevault",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_structure_pearl_infirmary",
+   "name": "Pearl Infirmary",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_keyword_sparkstep_runner",
+   "name": "Sparkstep Runner",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_keyword_cloudline_raider",
+   "name": "Cloudline Raider",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "Tokens/zeus_keyword_cloudline_raider/zeus_keyword_cloudline_raider",
+   "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_keyword_cloudline_raider.glb",
+   "sfx": []
+  },
+  {
+   "id": "zeus_keyword_aetherbolt_avatar",
+   "name": "Aetherbolt Avatar",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "Tokens/zeus_keyword_aetherbolt_avatar/zeus_keyword_aetherbolt_avatar",
+   "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_keyword_aetherbolt_avatar.glb",
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "zeus_keyword_stormgate_sentinel",
+   "name": "Stormgate Sentinel",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_keyword_thunderhead_guardian",
+   "name": "Thunderhead Guardian",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "Tokens/zeus_keyword_thunderhead_guardian/zeus_keyword_thunderhead_guardian",
+   "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_keyword_thunderhead_guardian.glb",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_keyword_reef_tunneler",
+   "name": "Reef Tunneler",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_keyword_trench_stalker",
+   "name": "Trench Stalker",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "Tokens/poseidon_keyword_trench_stalker/poseidon_keyword_trench_stalker",
+   "modelSource": "meshy/batch-03-rarity3-units/poseidon_keyword_trench_stalker.glb",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_keyword_abyssal_leviathan",
+   "name": "Abyssal Leviathan",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "Tokens/poseidon_keyword_abyssal_leviathan/poseidon_keyword_abyssal_leviathan",
+   "modelSource": "meshy/batch-02-apex-units/poseidon_keyword_abyssal_leviathan.glb",
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
+  },
+  {
+   "id": "poseidon_keyword_breakwater_hoplite",
+   "name": "Breakwater Hoplite",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_keyword_maelstrom_bulwark",
+   "name": "Maelstrom Bulwark",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "Tokens/poseidon_keyword_maelstrom_bulwark/poseidon_keyword_maelstrom_bulwark",
+   "modelSource": "meshy/batch-03-rarity3-units/poseidon_keyword_maelstrom_bulwark.glb",
+   "sfx": []
+  },
+  {
+   "id": "zeus_chain_lightning",
+   "name": "Chain Lightning",
+   "faction": "ZEUS",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_skybreaker_bolt",
+   "name": "Skybreaker Bolt",
+   "faction": "ZEUS",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_windstep_protocol",
+   "name": "Windstep Protocol",
+   "faction": "ZEUS",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_stormcharge",
+   "name": "Stormcharge",
+   "faction": "ZEUS",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_aegis_of_the_sky",
+   "name": "Aegis of the Sky",
+   "faction": "ZEUS",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_crushing_depths",
+   "name": "Crushing Depths",
+   "faction": "POSEIDON",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_erode_foundation",
+   "name": "Erode Foundation",
+   "faction": "POSEIDON",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_restorative_tide",
+   "name": "Restorative Tide",
+   "faction": "POSEIDON",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_undertow_recall",
+   "name": "Undertow Recall",
+   "faction": "POSEIDON",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_tidal_armor",
+   "name": "Tidal Armor",
+   "faction": "POSEIDON",
+   "type": "SPELL",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_fast_tempest_duelist",
+   "name": "Tempest Duelist",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_siege_thunder_ram",
+   "name": "Thunder Ram",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "Tokens/zeus_siege_thunder_ram/zeus_siege_thunder_ram",
+   "modelSource": "meshy/AI-052-zeus_siege_thunder_ram/textured/zeus_siege_thunder_ram_textured.glb",
+   "sfx": []
+  },
+  {
+   "id": "zeus_sharp_aether_spotter",
+   "name": "Aether Spotter",
+   "faction": "ZEUS",
+   "type": "CHARACTER",
+   "model": "Tokens/zeus_sharp_aether_spotter/zeus_sharp_aether_spotter",
+   "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_sharp_aether_spotter.glb",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_fast_razorfin_lancer",
+   "name": "Razorfin Lancer",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_siege_kraken_sapper",
+   "name": "Kraken Sapper",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "Tokens/poseidon_siege_kraken_sapper/poseidon_siege_kraken_sapper",
+   "modelSource": "meshy/batch-03-rarity3-units/poseidon_siege_kraken_sapper.glb",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_sharp_tidewall_harpooner",
+   "name": "Tidewall Harpooner",
+   "faction": "POSEIDON",
+   "type": "CHARACTER",
+   "model": "Tokens/poseidon_sharp_tidewall_harpooner/poseidon_sharp_tidewall_harpooner",
+   "modelSource": "meshy/batch-03-rarity3-units/poseidon_sharp_tidewall_harpooner.glb",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_tutor_land_1",
+   "name": "Mole-Tide Channel",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_tutor_structure_1",
+   "name": "Undertow Burrow Gate",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_tutor_land_2",
+   "name": "Vanguard Reef",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_tutor_structure_2",
+   "name": "Tideguard Barracks",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_tutor_land_3",
+   "name": "Leviathan Mooring Shelf",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_tutor_structure_3",
+   "name": "Nereid Calling Conch",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_tutor_land_4",
+   "name": "Sunken Muster Basin",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_tutor_structure_4",
+   "name": "Leviathan Muster Dock",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_tutor_land_5",
+   "name": "Worldsea Anchorage",
+   "faction": "POSEIDON",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "poseidon_tutor_structure_5",
+   "name": "Thalassic Hero Hall",
+   "faction": "POSEIDON",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_tutor_land_1",
+   "name": "Stormwright's Approach",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_tutor_structure_1",
+   "name": "Sparkstep Beacon",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_tutor_land_2",
+   "name": "Blinkway Plateau",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_tutor_structure_2",
+   "name": "Cloudline Dispatch",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_tutor_land_3",
+   "name": "Far-Sight Cloudbank",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_tutor_structure_3",
+   "name": "Sharp-Shot Observatory",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_tutor_land_4",
+   "name": "Keraunic Assembly Field",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_tutor_structure_4",
+   "name": "Seraphic Relay",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_tutor_land_5",
+   "name": "Olympian Muster Sky",
+   "faction": "ZEUS",
+   "type": "LAND",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  },
+  {
+   "id": "zeus_tutor_structure_5",
+   "name": "Skyfather's Summons",
+   "faction": "ZEUS",
+   "type": "STRUCTURE",
+   "model": "",
+   "modelSource": "",
+   "sfx": []
+  }
+ ]
+}

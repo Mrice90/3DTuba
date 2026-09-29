@@ -1,0 +1,796 @@
+{
+ "generated": "2026-09-29T17:47:33",
+ "staging": "3DTuba/assets/staging (local, read-only)",
+ "models": {
+  "poseidon_ability_reefwarden": {
+   "source": "meshy/batch-03-rarity3-units/poseidon_ability_reefwarden.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    0.9663150012493134,
+    1.897879183292389,
+    0.6916570365428925
+   ],
+   "triangles": 30912,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.5092, 0.3644, 1.0) scale 0.5269",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_abyss_gate": {
+   "source": "meshy/AI-052-poseidon_abyss_gate/textured/poseidon_abyss_gate_textured.glb",
+   "alternatives": [
+    "meshy/AI-052-poseidon_abyss_gate/poseidon_abyss_gate.glb"
+   ],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.8976799845695496,
+    1.7646232843399048,
+    1.0776342153549194
+   ],
+   "triangles": 29862,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (1.0754, 0.6107, 1.0) scale 0.5667",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_apex_abysswalker_nereid": {
+   "source": "meshy/batch-02-apex-units/poseidon_apex_abysswalker_nereid.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    0.8399620056152344,
+    1.8979301452636719,
+    1.0931422114372253
+   ],
+   "triangles": 30906,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.4426, 0.576, 1.0) scale 0.5269",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_apex_atlantis_tide_sovereign": {
+   "source": "meshy/batch-02-apex-units/poseidon_apex_atlantis_tide_sovereign.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.0313270092010498,
+    1.8984192609786987,
+    0.787731260061264
+   ],
+   "triangles": 30908,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.5433, 0.4149, 1.0) scale 0.5268",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_apex_kraken_prime_avatar": {
+   "source": "meshy/batch-02-apex-units/poseidon_apex_kraken_prime_avatar.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.2538560032844543,
+    1.8984252214431763,
+    1.2632622718811035
+   ],
+   "triangles": 31232,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.6605, 0.6654, 1.0) scale 0.5268",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_capital_abyssal_court": {
+   "source": "meshy/batch-01-capitals/poseidon_capital_abyssal_court.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.8968430161476135,
+    1.771292269229889,
+    1.871292233467102
+   ],
+   "triangles": 29638,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (1.0709, 1.0565, 1.0) scale 0.5646",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_capital_atlantis_nexus": {
+   "source": "meshy/batch-01-capitals/poseidon_capital_atlantis_nexus.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "height",
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.8976430296897888,
+    1.3241451382637024,
+    1.7737992405891418
+   ],
+   "triangles": 30764,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (1.4331, 1.3396, 1.0) scale 0.7552",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_capital_trident_bastion": {
+   "source": "meshy/batch-01-capitals/poseidon_capital_trident_bastion.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.8981959819793701,
+    1.7473282217979431,
+    1.8252962827682495
+   ],
+   "triangles": 30516,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (1.0863, 1.0446, 1.0) scale 0.5723",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_keyword_abyssal_leviathan": {
+   "source": "meshy/batch-02-apex-units/poseidon_keyword_abyssal_leviathan.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    0.9362309873104095,
+    1.897967278957367,
+    1.458645224571228
+   ],
+   "triangles": 31310,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.4933, 0.7685, 1.0) scale 0.5269",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_keyword_maelstrom_bulwark": {
+   "source": "meshy/batch-03-rarity3-units/poseidon_keyword_maelstrom_bulwark.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    0.9882220029830933,
+    1.8974362015724182,
+    0.6865781545639038
+   ],
+   "triangles": 30768,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.5208, 0.3618, 1.0) scale 0.527",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_keyword_trench_stalker": {
+   "source": "meshy/batch-03-rarity3-units/poseidon_keyword_trench_stalker.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.1676669716835022,
+    1.893080234527588,
+    1.318167269229889
+   ],
+   "triangles": 31112,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.6168, 0.6963, 1.0) scale 0.5282",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_leviathan_wakeborn": {
+   "source": "meshy/AI-052-poseidon_leviathan_wakeborn/textured/poseidon_leviathan_wakeborn_textured.glb",
+   "alternatives": [
+    "meshy/AI-052-poseidon_leviathan_wakeborn/poseidon_leviathan_wakeborn.glb"
+   ],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    0.6112940013408661,
+    1.8989102840423584,
+    1.3252122402191162
+   ],
+   "triangles": 10434,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.3219, 0.6979, 1.0) scale 0.5266",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_poseidons_trident_core": {
+   "source": "meshy/batch-03-rarity3-units/poseidon_poseidons_trident_core.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    0.9912990033626556,
+    1.8986493349075317,
+    0.6731529533863068
+   ],
+   "triangles": 30952,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.5221, 0.3545, 1.0) scale 0.5267",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_sharp_tidewall_harpooner": {
+   "source": "meshy/batch-03-rarity3-units/poseidon_sharp_tidewall_harpooner.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    0.5835150182247162,
+    1.897987186908722,
+    1.71884423494339
+   ],
+   "triangles": 31192,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.3074, 0.9056, 1.0) scale 0.5269",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "poseidon_siege_kraken_sapper": {
+   "source": "meshy/batch-03-rarity3-units/poseidon_siege_kraken_sapper.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "height",
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.4245479702949524,
+    1.4282491207122803,
+    1.896529197692871
+   ],
+   "triangles": 30990,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.9974, 1.3279, 1.0) scale 0.7002",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "zeus_ability_skyline_seer": {
+   "source": "meshy/AI-050-skyline-seer/zeus_ability_skyline_seer.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.5388039946556091,
+    1.8988805413246155,
+    0.7829256057739258
+   ],
+   "triangles": 575174,
+   "images": 0,
+   "converted": true,
+   "blender": [
+    "DECIMATED 575174 -> 60000",
+    "TOKEN_SIZE (0.8107, 0.4124, 1.0) scale 0.5266"
+   ]
+  },
+  "zeus_apex_keraunos_seraph": {
+   "source": "meshy/batch-04-alpha-img2-3d/zeus_apex_keraunos_seraph.glb",
+   "alternatives": [
+    "meshy/batch-02-apex-units/zeus_apex_keraunos_seraph.glb"
+   ],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "height",
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.8704140186309814,
+    1.5210132002830505,
+    1.6833441853523254
+   ],
+   "triangles": 30394,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (1.2297, 1.1067, 1.0) scale 0.6575",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "zeus_apex_olympian_storm_titan": {
+   "source": "meshy/batch-04-alpha-img2-3d/rigged/zeus_apex_olympian_storm_titan.glb",
+   "alternatives": [
+    "meshy/batch-04-alpha-img2-3d/zeus_apex_olympian_storm_titan.glb",
+    "meshy/batch-02-apex-units/zeus_apex_olympian_storm_titan.glb"
+   ],
+   "check_glb": "PASS",
+   "check_fails": [],
+   "bounds_size": [
+    1.1440000534057617,
+    1.7999999362115453,
+    1.032820701599121
+   ],
+   "triangles": 31553,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.6356, 0.5738, 1.0) scale 0.5556",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "zeus_apex_skyfather_archon": {
+   "source": "meshy/batch-04-alpha-img2-3d/zeus_apex_skyfather_archon.glb",
+   "alternatives": [
+    "meshy/batch-02-apex-units/zeus_apex_skyfather_archon.glb"
+   ],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.8985430002212524,
+    1.7002822756767273,
+    1.2391510605812073
+   ],
+   "triangles": 30989,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (1.1166, 0.7288, 1.0) scale 0.5881",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "zeus_capital_cloud_throne": {
+   "source": "meshy/batch-01-capitals/zeus_capital_cloud_throne.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.8981870412826538,
+    1.7864532470703125,
+    1.8982532620429993
+   ],
+   "triangles": 29750,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (1.0625, 1.0626, 1.0) scale 0.5598",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "zeus_capital_keraunos_spire": {
+   "source": "meshy/batch-01-capitals/zeus_capital_keraunos_spire.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    0.7865579724311829,
+    1.8991822600364685,
+    0.7880021035671234
+   ],
+   "triangles": 28988,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.4142, 0.4149, 1.0) scale 0.5265",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "zeus_capital_olympus_citadel": {
+   "source": "meshy/batch-01-capitals/zeus_capital_olympus_citadel.glb",
+   "alternatives": [],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "height",
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.896664023399353,
+    1.3444151282310486,
+    1.8124972581863403
+   ],
+   "triangles": 30326,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (1.4108, 1.3482, 1.0) scale 0.7438",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "zeus_eagle_of_the_high_grid": {
+   "source": "meshy/batch-04-alpha-img2-3d/zeus_eagle_of_the_high_grid.glb",
+   "alternatives": [
+    "meshy/batch-03-rarity3-units/zeus_eagle_of_the_high_grid.glb"
+   ],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "height",
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.9021809697151184,
+    0.8351911008358002,
+    0.7314381003379822
+   ],
+   "triangles": 30127,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (2.2775, 0.8758, 1.0) scale 1.1973",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "zeus_keraunos_prime": {
+   "source": "meshy/batch-04-alpha-img2-3d/rigged/zeus_keraunos_prime.glb",
+   "alternatives": [
+    "meshy/batch-04-alpha-img2-3d/zeus_keraunos_prime.glb",
+    "meshy/batch-03-rarity3-units/zeus_keraunos_prime.glb"
+   ],
+   "check_glb": "PASS",
+   "check_fails": [],
+   "bounds_size": [
+    0.8666738271713257,
+    1.7999999201992658,
+    0.3895883560180664
+   ],
+   "triangles": 30520,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.4815, 0.2164, 1.0) scale 0.5556",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "zeus_keyword_aetherbolt_avatar": {
+   "source": "meshy/batch-04-alpha-img2-3d/zeus_keyword_aetherbolt_avatar.glb",
+   "alternatives": [
+    "meshy/batch-02-apex-units/zeus_keyword_aetherbolt_avatar.glb"
+   ],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.5614429712295532,
+    1.899831235408783,
+    1.0994431972503662
+   ],
+   "triangles": 31068,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.8219, 0.5787, 1.0) scale 0.5264",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "zeus_keyword_cloudline_raider": {
+   "source": "meshy/batch-04-alpha-img2-3d/zeus_keyword_cloudline_raider.glb",
+   "alternatives": [
+    "meshy/batch-03-rarity3-units/zeus_keyword_cloudline_raider.glb"
+   ],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.6407399773597717,
+    1.9002512097358704,
+    1.2026101350784302
+   ],
+   "triangles": 30876,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.8634, 0.6329, 1.0) scale 0.5262",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "zeus_keyword_thunderhead_guardian": {
+   "source": "meshy/batch-04-alpha-img2-3d/zeus_keyword_thunderhead_guardian.glb",
+   "alternatives": [
+    "meshy/batch-03-rarity3-units/zeus_keyword_thunderhead_guardian.glb"
+   ],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    0.9639890193939209,
+    1.90074622631073,
+    0.7950712144374847
+   ],
+   "triangles": 30622,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.5072, 0.4183, 1.0) scale 0.5261",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "zeus_sharp_aether_spotter": {
+   "source": "meshy/batch-04-alpha-img2-3d/zeus_sharp_aether_spotter.glb",
+   "alternatives": [
+    "meshy/batch-03-rarity3-units/zeus_sharp_aether_spotter.glb"
+   ],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.3296979665756226,
+    1.900435209274292,
+    1.376322090625763
+   ],
+   "triangles": 30733,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (0.6997, 0.7242, 1.0) scale 0.5262",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  },
+  "zeus_siege_thunder_ram": {
+   "source": "meshy/AI-052-zeus_siege_thunder_ram/textured/zeus_siege_thunder_ram_textured.glb",
+   "alternatives": [
+    "meshy/AI-052-zeus_siege_thunder_ram/zeus_siege_thunder_ram.glb"
+   ],
+   "check_glb": "FAIL",
+   "check_fails": [
+    "height",
+    "feet_at_origin"
+   ],
+   "bounds_size": [
+    1.2708860039710999,
+    1.2575621008872986,
+    1.8979942202568054
+   ],
+   "triangles": 9936,
+   "images": 3,
+   "converted": true,
+   "blender": [
+    "TOKEN_SIZE (1.0106, 1.5093, 1.0) scale 0.7952",
+    "TEXTURE BaseColor 2048 2048",
+    "TEXTURE Normal 2048 2048",
+    "TEXTURE MetallicRoughness 2048 2048"
+   ]
+  }
+ },
+ "rejected": {},
+ "sfx": {
+  "poseidon_apex_abysswalker_nereid": [
+   "ability",
+   "attack",
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "move",
+   "signature"
+  ],
+  "poseidon_apex_atlantis_tide_sovereign": [
+   "ability",
+   "attack",
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "move",
+   "signature"
+  ],
+  "poseidon_apex_kraken_prime_avatar": [
+   "ability",
+   "attack",
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "move",
+   "signature"
+  ],
+  "poseidon_capital_abyssal_court": [
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "signature"
+  ],
+  "poseidon_capital_atlantis_nexus": [
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "signature"
+  ],
+  "poseidon_capital_trident_bastion": [
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "signature"
+  ],
+  "poseidon_keyword_abyssal_leviathan": [
+   "ability",
+   "attack",
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "move",
+   "signature"
+  ],
+  "zeus_apex_keraunos_seraph": [
+   "ability",
+   "attack",
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "move",
+   "signature"
+  ],
+  "zeus_apex_olympian_storm_titan": [
+   "ability",
+   "attack",
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "move",
+   "signature"
+  ],
+  "zeus_apex_skyfather_archon": [
+   "ability",
+   "attack",
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "move",
+   "signature"
+  ],
+  "zeus_capital_cloud_throne": [
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "signature"
+  ],
+  "zeus_capital_keraunos_spire": [
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "signature"
+  ],
+  "zeus_capital_olympus_citadel": [
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "signature"
+  ],
+  "zeus_keyword_aetherbolt_avatar": [
+   "ability",
+   "attack",
+   "deploy",
+   "destroy",
+   "hit",
+   "idle",
+   "move",
+   "signature"
+  ]
+ },
+ "sfx_index": null
+}

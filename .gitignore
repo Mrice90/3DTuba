@@ -24,3 +24,9 @@
 # Python test caches
 __pycache__/
 *.pyc
+
+# AI-080 playtest: staged media is copied/converted locally from assets/staging (never committed).
+UnityProof/Assets/Playtest/Resources/Tokens/
+UnityProof/Assets/Playtest/Resources/Tokens.meta
+UnityProof/Assets/Playtest/Resources/Sfx/
+UnityProof/Assets/Playtest/Resources/Sfx.meta

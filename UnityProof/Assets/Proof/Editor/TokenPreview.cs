@@ -25,7 +25,7 @@ public static class TokenPreview {
     // Builds a URP Lit material from Token_*.png written by the Blender normalizer.
     // Returns null when the normalizer wrote no base colour, so the model keeps its imported materials.
     // glTF packs roughness in G and metal in B; URP wants metal in R and smoothness in A.
-    static Material BuildMaterial(string dir) {
+    public static Material BuildMaterial(string dir) {
         string Tex(string tag) => $"{dir}/Token_{tag}.png";
         var baseColor = AssetDatabase.LoadAssetAtPath<Texture2D>(Tex("BaseColor"));
         if (baseColor == null) { Debug.Log("TOKEN_MATERIAL none: keeping imported materials in " + dir); return null; }

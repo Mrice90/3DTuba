@@ -32,3 +32,27 @@ The player checks the legal and blocked outcomes through the same Move/Reset han
 
 Source files: MovementState.cs (restricted model, hex distance), BoardLayout.cs (board size, hex tile mesh and world positions, shared by every script), MovementProof.cs (3D view/input), Editor/ProofBuild.cs (fixture validation and build), Editor/TokenPreview.cs (Meshy token review stills). Unity packages are pinned by Packages/packages-lock.json. The project has no cloud link, purchases, network service, or account system.
 
+
+## 3D playtest build (AI-080, Claude Unity thread 2026-09-29)
+
+`Assets/Scenes/Playtest.unity` is now the first scene in the build. It shows the hex board with a stand-in or real model for each of the 139 cards and replays AI-066 event dumps. With `-bridgeCmd` it also runs live play over the AI-079 rules bridge. MovementProof stays in the build, and `-proofSmoke` routes to it, so the smoke above still holds.
+
+1. Stage the local media (read-only from `3DTuba/assets/staging`; the output is git-ignored):
+   `python UnityProof/Tools/stage_playtest_assets.py --staging <...>/3DTuba/assets/staging`
+   This runs `check_glb.py` and then Blender (`glb_to_playtest_token.py`), copies the `picks/` WAVs, and writes `Resources/Playtest/cards.json`.
+2. Build: `Unity -batchmode -quit -projectPath UnityProof -executeMethod PlaytestBuild.Build -buildPath <dir>\InfiniteConquestPlaytest.exe`
+3. Smoke: `InfiniteConquestPlaytest.exe -batchmode -playtestSmoke -playtestResult smoke.json`
+   Screenshots: `InfiniteConquestPlaytest.exe -playtestShots <dir>`
+   Another dump: `-playtestDump <file.jsonl>`
+
+Scripts live in `Assets/Playtest/Scripts`:
+- `PlaytestGame`: HUD, playback, live play, gallery, smoke
+- `BoardView`: tiles, hover, markers, stacks
+- `TokenFactory`: AI-063 scaling and stand-ins
+- `SfxBank`: per-card picks plus generic fallback
+- `Vfx`
+- `CameraRig`
+- `WireEvents`
+- `BridgeClient`
+
+The review sheet is `docs/reviews/2026-09-29-unity-playtest/`.
