@@ -111,11 +111,12 @@ AI-027/028/036 audit, handoff and movement fixture · AI-043 Java suite (169/169
 | HA-009 | Review the first textured in-game sample (Thunder Ram) once Claude imports it. | All further Meshy/ElevenLabs batches |
 | HA-011 | Skyline Seer: its cowl resembles a well-known comic character. Reject and regenerate (open helm/laurel), or accept? | AI-050 |
 | HA-012 | ElevenLabs "Generations may be shared to Explore page" is ON. Turn it off for unreleased audio? | Asset confidentiality |
-| HA-003 | Desktop/mobile targets, release order, cross-play | AI-013/014/015 final scope |
+| HA-003 | PARTLY DECIDED 2026-09-29: PC + Android first, Apple later, cross-play YES (see AI-091). Still open: min Android version/devices, store channels, Apple timing | AI-013/014/015 final scope |
 | HA-004 | Currency and login-reward calendar/eligibility | AI-021/022/023 |
 | HA-006 | First expansion roster | AI-024 |
 | HA-016 | Target architecture: C# rules core shared by the Unity client and the server; Java bridge as scaffold/oracle only (recommended). See "Long-term architecture goals". | AI-083, AI-087 |
 | HA-017 | Game-server hosting provider, monthly budget ceiling, region(s). | AI-085 |
+| HA-018 | PC store channel(s) (Steam / itch.io / direct) and Google Play developer account (one-time fee = purchase); Apple developer account timing later. | AI-013, AI-086 release |
 
 ## Epics and requirements
 
@@ -434,4 +435,24 @@ Every match stores seed + intents (a few KB). Any match can be replayed determin
 ### AI-090 — Balance simulation at scale (child of AI-012)
 P2 | BACKLOG | Owner: Muse | Dependencies: AI-083 (fast in-process sims), AI-076.
 Headless C# bot-vs-bot runs over thousands of seeds per deck/seat/mode (extending AI-072), with a win-rate report per card and per matchup. It runs on each balance change and before every expansion release. Acceptance: the report reproduces the AI-072 numbers on the same seeds and flags any matchup outside 45–55% after the AI-012 tuning.
+
+
+## Long-term goal: PC + Android with seamless cross-play matchmaking (Product Owner, 2026-09-29 ~18:20 EDT)
+**Mathew, direct:** a major long-term goal is for Infinite Conquest to be playable on **PC and Android**, with **Apple (iOS, possibly macOS) later**. Every platform must be able to **matchmake seamlessly with every other**: one player pool, and a PC player can be matched against an Android player without noticing any difference.
+
+This partly settles **HA-003**: the platform order is PC (Windows) first with Android alongside, then Apple later, and cross-play is **yes**. Still open under HA-003: minimum Android version and reference devices, the store channels (Steam / itch / direct for PC; Google Play), and the Apple timing.
+
+What it means for existing items:
+- **AI-083/AI-085** (C# rules core shared by client and server) are now **required**, not just recommended. A JVM can't run on Android or iOS, and cross-play needs one authoritative rules engine that every client matches exactly.
+- **AI-086** mobile targets **Android first**; iOS becomes a later child (AI-086-IOS) once an Apple developer account exists (a purchase → Product Owner).
+- **AI-008/AI-015** matchmaking and cross-device identity must be platform-neutral from the start. Nothing in the protocol, identity or deck format may be tied to one OS.
+
+### AI-091 — Cross-platform matchmaking and cross-play (epic; children AI-008, AI-010, AI-015, AI-085, AI-086)
+P0 (long-term) | BACKLOG | Owner: Astra (from 2026-10-04) | Dependencies: AI-083 parity, AI-085 server, HA-003 remainder, HA-017 hosting.
+- **One pool:** a single matchmaking queue across PC and Android (later Apple), with ranked and casual queues and a skill rating from AI-011. Platform is metadata only, never a queue split. Optional input-based filtering can come later if touch vs mouse turns out to matter competitively.
+- **Version gate:** client and server share a protocol version and a content hash (cards.json, AI-088). Mismatched clients get a clear "update required" message rather than a desync. The rules release cadence is identical across platforms.
+- **Identity:** one account across devices (AI-015). Guest play is upgradeable to a linked account. Decks, ownership (AI-021) and ratings follow the player, not the device. Platform logins (Google Play Games; Steam; Apple later) link to the same account.
+- **Fairness:** all rules run server-side (AI-085), and hidden state is redacted per player. Turn timers suit touch play, and reconnect/resume (AI-009) covers mobile backgrounding and network changes.
+- **UX parity:** the same board readability and actions on mouse and touch (no hover-only information; AI-014). Cross-play is on by default.
+- **Acceptance:** a Windows PC and an Android phone on different networks find each other through the queue, play a full ranked match on the authoritative server, and both record the same result exactly once. A version-mismatched client is refused cleanly. A mobile player who backgrounds the app for 60 s mid-turn reconnects to the same state. Repeat for Apple when it's added.
 
