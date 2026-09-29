@@ -117,6 +117,7 @@ AI-027/028/036 audit, handoff and movement fixture · AI-043 Java suite (169/169
 | HA-016 | Target architecture: C# rules core shared by the Unity client and the server; Java bridge as scaffold/oracle only (recommended). See "Long-term architecture goals". | AI-083, AI-087 |
 | HA-017 | Game-server hosting provider, monthly budget ceiling, region(s). | AI-085 |
 | HA-018 | PARTLY DECIDED 2026-09-29: PC store = itch.io primary (Steam possible later, not ruled out). Google Play: no account yet, Mathew sets it up closer to the Android release. Open: Steam yes/no + timing; Apple account timing. | AI-013, AI-086 release |
+| HA-019 | Payment processor(s) for in-app purchases: Stripe, PayPal, a merchant-of-record (Paddle / Lemon Squeezy / Xsolla) or others. Decide closer to release; see "Payments" note (store-billing rules, $0.99 fee math, tax). | AI-023, AI-092 |
 
 ## Epics and requirements
 
@@ -459,3 +460,16 @@ P0 (long-term) | BACKLOG | Owner: Astra (from 2026-10-04) | Dependencies: AI-083
 
 ### 2026-09-29 ~18:30 — Store channels (Product Owner)
 Mathew: **itch.io is the primary PC channel**. Steam is not ruled out for later. **Google Play:** there is no developer account yet; Mathew creates it closer to the Android release (a one-time fee, his purchase). Effects: AI-013 targets an itch.io release (a zip/installer build, uploaded with the butler CLI through a CI job once the account is linked; no Steam SDK dependency for now, and identity must not assume Steam). AI-086 keeps producing Android builds for internal testing (sideload APK/AAB) until the Play account exists. AI-091's platform logins start with our own account + Google Play Games; Steam login is added if Steam is adopted. HA-018 is updated.
+
+### 2026-09-29 ~18:40 — Payments for a free-to-play game (Product Owner consideration)
+Mathew: the game is free, so in-app purchases (the AI-023 $0.99 four-faction unlock and later packs) need a payment processor. Candidates: **Stripe, PayPal**, or others chosen closer to release (HA-019). Not a current-sprint item. Captured so the architecture leaves room for it.
+
+Things the decision must account for (verify against current primary sources at decision time; policies change):
+- **Store billing rules:** apps distributed through Google Play (and Apple's App Store later) are generally required to use the store's own billing for digital goods. Alternative/external payment options exist only in some regions and under specific programs. So the Android build most likely needs **Google Play Billing** on Play, and Stripe/PayPal covers PC (itch.io/direct) and web. itch.io provides no in-game purchase API of its own.
+- **Micro-price fees:** on $0.99, a typical card rate of ~2.9% + $0.30 takes about a third. PayPal's micropayment pricing or a merchant-of-record may net more; compare the net-per-sale at decision time. Bundling (e.g. a full four-faction pack at a higher price) also changes the math (HA-004).
+- **Sales tax / VAT:** selling worldwide means collecting and remitting VAT/GST. A **merchant of record** (Paddle, Lemon Squeezy, Xsolla, or similar) takes that on for a higher fee. Direct Stripe/PayPal leaves it with Mathew (Stripe Tax helps but doesn't remit everywhere).
+- **Processor-agnostic entitlements:** whatever the processor, purchases are verified **server-side** (webhook or receipt validation) and granted as durable entitlements on the player's account (AI-021). This way a purchase made on PC is owned on Android and vice versa (AI-091 cross-play), refunds/chargebacks revoke cleanly, and no client can unlock factions itself.
+
+### AI-092 — Payment integration layer (child of AI-021/AI-023)
+P2 (long-term) | BACKLOG | Owner: Astra | Dependencies: AI-085 server, AI-021 entitlements, HA-019 processor, HA-004 prices, HA-018 stores.
+A server-side purchase service with one interface and pluggable providers: Google Play Billing (Android on Play), and Stripe and/or PayPal or a merchant-of-record for PC/web (Apple IAP later). Webhook/receipt verification, idempotent grants, refund/chargeback revocation, restore purchases, and an audit log. Sandbox/test mode only until release, with no real-money transactions without the Product Owner. Acceptance: in each provider's sandbox, a purchase grants the entitlement exactly once across PC and Android, a refund revokes it, a duplicate webhook is harmless, and a forged client unlock fails.
