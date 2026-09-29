@@ -114,6 +114,8 @@ AI-027/028/036 audit, handoff and movement fixture · AI-043 Java suite (169/169
 | HA-003 | Desktop/mobile targets, release order, cross-play | AI-013/014/015 final scope |
 | HA-004 | Currency and login-reward calendar/eligibility | AI-021/022/023 |
 | HA-006 | First expansion roster | AI-024 |
+| HA-016 | Target architecture: C# rules core shared by the Unity client and the server; Java bridge as scaffold/oracle only (recommended). See "Long-term architecture goals". | AI-083, AI-087 |
+| HA-017 | Game-server hosting provider, monthly budget ceiling, region(s). | AI-085 |
 
 ## Epics and requirements
 
@@ -395,3 +397,41 @@ Evidence: SPRINT_LOG.md 2026-09-29 17:15 entry and `docs/reviews/2026-09-29-1800
 | **AI-081** (new, AI-061/AI-019) | P1 | Claude — Meshy thread | IN_PROGRESS | Animatable models: rig humanoid CHARACTER models (Meshy auto-rig/animate) with idle/walk/attack/hit/death clips and export FBX/GLB with animations. Non-humanoids stay static (Unity tweens). Plus the AI-067 lands (local `batch-05-lands`), then the remaining structures. |
 | **AI-082** (new, AI-061/AI-020) | P1 | Claude — ElevenLabs thread | IN_PROGRESS (green-lit) | Full cue sets (deploy/move/attack/hit/destroy/ability/idle, + signature for apex) for every card that has a model or is in the lands batch, then the rest of the roster by SFX group. Picks go in `picks/<card_id>_<cue>.wav`. |
 | AI-075, AI-077, AI-074, AI-078, AI-076 | P1–P3 | Muse | READY / IN_PROGRESS | Unchanged, behind AI-079. |
+
+## Long-term architecture goals (Product Owner, 2026-09-29 ~18:10 EDT)
+Captured at Mathew's request after the AI-079 discussion. **Direction:** the Java rules bridge (AI-079) is a playtest scaffold, not the shipping architecture. The target is one rules core in C# that runs inside Unity (offline play, mobile, AI opponents) and, unchanged, on an authoritative server for ranked/online play. TubaExperiment stays the rules source of truth until the C# core passes conformance; from then on the C# core is the runtime. Hosting is not "in git": GitHub keeps the code and runs CI, and a live game server needs separate hosting (cost → HA-017). The final architecture call remains AI-003 (Astra, from 2026-10-04) and HA-003/HA-016 (Mathew).
+
+**Milestones:** (1) 3D playtest on the Java bridge (AI-079/AI-080, this sprint) → (2) C# core at event-for-event parity on the golden seeds (AI-083/AI-084) → (3) Unity runs on the C# core, and the bridge is retired from the client (AI-087) → (4) mobile builds on target devices (AI-086) → (5) authoritative server for ranked/online (AI-085).
+
+### AI-083 — Rules core ported to a C# library (child of AI-003/AI-007)
+P1 | BACKLOG (starts after the AI-080 playtest) | Owner: Astra (Unity/integration) with Claude until 2026-10-04; Muse for test tooling | Dependencies: AI-079, AI-084, HA-016.
+A pure .NET Standard 2.1 / C# library (`rules-core/`, no UnityEngine references) that implements the pinned alpha rules (TubaExperiment `992bc95`): HEX geometry, stacking, deploy/move/attack/ability/spell resolution, GP, turn structure, victory and the HERO bot. It emits AI-062 wire events natively. It is deterministic: seeded RNG, no wall-clock or hash-order dependence. Port it module by module, each gated by AI-084 conformance. Acceptance: 100% event-for-event parity with the Java engine on the golden seed corpus (all three EventDump modes, ≥ 60 seeds) and on bridge-scripted human games, and it runs headless in `dotnet test` on Linux and Windows CI.
+
+### AI-084 — Java↔C# differential conformance harness (child of AI-004/AI-083)
+P1 | BACKLOG | Owner: Muse (Rune) | Dependencies: AI-066, AI-079.
+The golden corpus is the AI-066/AI-072 EventDump outputs plus AI-079 bridge transcripts (scripted human actions). A comparison tool runs the same seed and action script through both engines and reports the first diverging event (seq, field, both values). It runs in CI on every commit that touches `rules-core/`, and a divergence fails the build. It also covers the AI-078 reproducible-jar work, so the Java oracle itself is stable. Acceptance: the harness catches an intentionally broken C# rule, and parity is reported as n/N seeds.
+
+### AI-085 — Authoritative game server for ranked and online play (child of AI-008/AI-010/AI-011)
+P1 | BACKLOG | Owner: Astra | Dependencies: AI-083, AI-005, HA-017 (hosting and cost).
+The server runs the same C# rules core. Clients send intents; the server validates, resolves and broadcasts events with redacted hidden state (hands, deck order). Ranked results come only from the server, never from client agreement. Reconnect and resume use the event log (AI-009). The existing lobby worker stays for discovery, or is folded in. Acceptance: two clients on separate networks complete a match. Forged, duplicate or replayed intents are rejected in tests. Hidden state is never sent to the opponent. Results are written exactly once (AI-011).
+
+### AI-086 — Mobile build pipeline and device budgets (child of AI-014/AI-060d)
+P1 | BACKLOG | Owner: Astra | Dependencies: AI-083 (no JVM on device), HA-003 (platforms).
+Unity Android (and iOS if HA-003 confirms it) builds in CI, touch input (no hover or right-click dependence), safe areas, and asset LOD/texture variants for the Meshy models (2K → 1K/512 mobile). Budgets: 60 fps on the reference phone, memory, thermals, download size. Acceptance: a full match on a real device within budget.
+
+### AI-087 — Unity client on the C# core; retire the client-side Java bridge (child of AI-003)
+P2 | BACKLOG | Owner: Astra | Dependencies: AI-083 parity.
+Swap the AI-080 BridgeClient for an in-process C# core behind the same interface, so the presentation layer (board, stand-ins, timeline AI-075, audio) does not change. The Java bridge stays only as the conformance oracle in AI-084. The shipping desktop build then carries no Java runtime. Acceptance: the playtest build runs with no Java installed and gives the same match as the bridge on the golden seeds.
+
+### AI-088 — Single card-data source (child of AI-016/AI-024)
+P2 | BACKLOG | Owner: Muse (tooling) → Astra (runtime) | Dependencies: AI-083.
+Card definitions (stats, costs, keywords, abilities as data where possible) are exported once from the pinned alpha into a versioned `cards.json` that the C# core, the presentation manifest (AI-064), the asset directory (AI-049) and the expansion work (AI-024) all read. This removes hand-copied card lists. Acceptance: all 139 cards load from the file in both engines with identical conformance results, and a schema test runs in CI.
+
+### AI-089 — Replays, spectating and bug-report capture (child of AI-006/AI-009)
+P3 | BACKLOG | Owner: Astra/Muse | Dependencies: AI-083.
+Every match stores seed + intents (a few KB). Any match can be replayed deterministically in the Unity client, which gives bug reports with exact reproduction, a spectator mode and a highlight-reel base for marketing. Acceptance: a saved playtest match replays identically after an app restart and on another machine.
+
+### AI-090 — Balance simulation at scale (child of AI-012)
+P2 | BACKLOG | Owner: Muse | Dependencies: AI-083 (fast in-process sims), AI-076.
+Headless C# bot-vs-bot runs over thousands of seeds per deck/seat/mode (extending AI-072), with a win-rate report per card and per matchup. It runs on each balance change and before every expansion release. Acceptance: the report reproduces the AI-072 numbers on the same seeds and flags any matchup outside 45–55% after the AI-012 tuning.
+
