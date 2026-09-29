@@ -54,3 +54,11 @@ jobs:
       - name: Negative coverage --break=smoke (expect detection at build)
         working-directory: releases/alpha-0.7.15-playable
         run: ./regress.sh --break=smoke
+      # AI-066: real-engine event dump. Builds the pinned alpha JAR, runs 3
+      # seeded Zeus-vs-Poseidon AI matches, and validates every JSONL dump
+      # against the AI-062 board-events wire format (validate.py).
+      - name: AI-066 event dump (3 seeded AI matches, validate wire format)
+        working-directory: releases/alpha-0.7.15-playable
+        run: |
+          ./build-release.sh
+          ./tools/event-dump/run.sh
