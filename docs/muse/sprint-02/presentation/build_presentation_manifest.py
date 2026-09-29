@@ -69,7 +69,7 @@ def slug(anim_key):
 
 
 def main():
-    with open(ASSET_DIR) as f:
+    with open(ASSET_DIR, encoding="utf-8") as f:
         cards = json.load(f)["cards"]
 
     manifest = {}
@@ -115,7 +115,7 @@ def main():
         "cards": manifest,
     }
     path = os.path.join(HERE, "presentation-manifest.json")
-    with open(path, "w") as f:
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(out, f, indent=1)
     n_events = sum(len(m["events"]) for m in manifest.values())
     print(f"manifest: {len(manifest)} cards, {n_events} event mappings -> {path}")
