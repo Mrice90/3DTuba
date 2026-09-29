@@ -571,3 +571,31 @@ AI-080 (P0), AI-052-ASSET and AI-030. Work is on branch **`claude/unity-playtest
 - **Smokes.** `-proofSmoke` exits 0 with legal=true and blocked=true. The new `-playtestSmoke` exits 0 with 8/8 checks. Editor validation passes, including the 14 AI-036 assertions.
 - **To playtest:** run the exe. The match plays itself. Use Pause/Step/speed, click pieces to see markers, and press G for the card gallery (all / real / stand-ins).
 - No Meshy/ElevenLabs credits spent. The local 3DTuba checkout was only read (`assets/staging`).
+
+## 2026-09-29 18:00 — Claude (covering Astra)
+Scheduled checkpoint run 17:52 EDT. The review of record for this checkpoint is the 17:15 GitHub entry (`740340d`, `docs/reviews/2026-09-29-1800-claude-acceptance.md`), written in an interactive session with Mathew. This run did not repeat it. It records the delta and mirrors it locally. Coverage continues: there are no Astra-authored entries after 2026-09-28 10:45.
+
+**Heads.** `muse/sprint-01-content-audit` is at `517297a`. There are no Muse commits after `09b816f` (15:02). Commits since then are all Claude: the 17:15 review, plus Mathew's direct PO decisions at `49b47fe`, `648600c`, `571b6db`, `a4450fd`, `22fbd06` and `517297a` (playtest feedback: AI-093/094/095, HA-020). The Unity thread's log entry is `cb10dee`. `claude/unity-playtest-20260929` is at `f38f5e1` (new, not merged, no PR). The `astra/*` and `claude/unity-hex-proof` branches are unchanged. The Actions API is not reachable from the cloud (repo not attached), so no new CI runs were checked this run.
+
+**Verdicts carried from the 17:15 review:** AI-071, 072, 073, 066, 064 and 067 are ACCEPTED. AI-074 through AI-078 are new.
+
+**New this run: AI-080 (Claude Unity thread) is DELIVERED (playback slice) and NOT ACCEPTED.** It was independently checked from the cloud:
+- `cards.json` on the branch has 139 cards: 48 CHARACTER, 35 LAND, 34 STRUCTURE, 16 SPELL, 6 CAPITAL.
+- The seed-42 dump `UnityProof/Assets/Playtest/Data/dump-seed-42.txt` is **VALID: 235 events, seq 0..234** under the AI-062 `validate.py`.
+
+The Unity build, the smokes (`-playtestSmoke` 8/8) and the exe SHA-256 `96b492cb…0873` are worker-reported and were not re-run, because that needs the laptop. Acceptance criterion: Mathew plays a full match in the Windows build. That is blocked on AI-079 (the rules bridge has not landed). Mathew watched the playback build live (`517297a`), but that is PO feedback, not the acceptance criterion. Merging is Mathew's call.
+
+**Media.** No credits were spent by this run. The Meshy (AI-081) and ElevenLabs (AI-082) threads are live in other sessions. Spending here could duplicate their submissions.
+
+**Assignments (unchanged from the 17:45 PO board)**
+
+| Owner | Next |
+|---|---|
+| Muse (Rune) | AI-079 rules bridge (P0), then AI-075, 077, 074, 078, 076 |
+| Claude Unity thread | AI-080: wire BridgeClient to AI-079 when it lands; HA-009 sheet on branch |
+| Claude Meshy thread | AI-081 rig/animate humanoids + AI-067 lands (`batch-05-lands`), existing credits only |
+| Claude ElevenLabs thread | AI-082 cue sets, `picks/<card_id>_<cue>.wav` |
+| Claude (covering Astra) | 2026-09-30 00:00: accept AI-079 if delivered; triage new heads |
+| Mathew | WAITING — needs Mathew present: AI-030 mouse acceptance, AI-065 deep-path break rerun. Decisions: HA-009 (steers, no longer blocks), HA-011, HA-012, HA-003 remainder, HA-015..020 |
+
+No release or full-match claim.
