@@ -523,3 +523,14 @@ Trade-offs accepted: v1.0 needs a connection for every mode (no offline play) an
 **Post-release (re-prioritized to P3):** AI-083 C# core, AI-084 conformance harness, AI-087 in-process client core (offline mode), AI-090 large-scale sims (the Java EventDump harness covers balance until then), iOS/Apple.
 
 **Other delegated calls made now:** (a) HA-009 first question: **keep batch-04** for Zeus units present in both batches (the newest style, some rigged); batch-02 stays as an alternative. (b) The Unity playtest branch is merged into the working branch once AI-093 lands and CI is green (Claude does it; no PR to main). (c) The playtest build is kept at `Infinite Conquest\playtest\unity-build-<date>\`.
+
+### 2026-09-29 ~19:40 — Reuse the alpha matchmaking service (Product Owner question → release path)
+The alpha's online service (`prototypes/lobby-lab/upstream/worker.js`, deployed Cloudflare Worker + KV, free tier; drift probe 200 OK at 15:00) is a **rendezvous + Elo service only**: lobbies (`/lobbies`), a quick-match queue (`/queue`, `/queue/poll`, `/pair`), results (`/report`, applied only when both clients agree) and `/leaderboard`, `/rating/:uuid`. Matches themselves are **player-hosted**: the host's game exposes a `wss://` tunnel URL, and the Worker never sees game traffic.
+
+**Decision: keep the Worker as v1.0's matchmaking front door** (saves building AI-008 from scratch, costs $0, already live), with these changes:
+1. **Pairing hands out a game-server room, not a player tunnel.** When two tickets pair, the Worker asks the AI-085 game server for a room (or mints a signed room token) and gives both players that `wssUrl`. No player hosts, so Android-vs-Android works and nobody runs the authority on their own machine.
+2. **Results come from the game server, not client agreement.** `/report` accepts only a server-signed result (shared secret/HMAC), and the two-client agreement path is retired for ranked (AI-010).
+3. **Identity:** random UUIDs are replaced/linked to real accounts (AI-015) before ranked launches.
+4. **Scale watch:** KV is eventually consistent, and the list-based queue scan can double-pair under load. That's fine for launch-scale traffic. Move the queue to a Durable Object (still Cloudflare) if concurrent queue size or double pairings show up in monitoring (AI-025).
+5. The Java game server itself can't run on Cloudflare Workers. It needs a small JVM host (HA-017).
+New child **AI-096** (P0, Muse lane `prototypes/lobby-lab/` → deploy with Mathew): Worker v2 with room assignment, signed results and a `dataVersion` gate, keeping the existing endpoints backward compatible for the 2D alpha during transition. Tests in lobby-lab (`npm test`).
