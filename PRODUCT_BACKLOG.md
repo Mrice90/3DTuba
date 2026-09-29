@@ -114,7 +114,7 @@ AI-027/028/036 audit, handoff and movement fixture · AI-043 Java suite (169/169
 | HA-003 | PARTLY DECIDED 2026-09-29: PC + Android first, Apple later, cross-play YES (see AI-091). Still open: min Android version/devices, store channels, Apple timing | AI-013/014/015 final scope |
 | HA-004 | Currency and login-reward calendar/eligibility | AI-021/022/023 |
 | HA-006 | First expansion roster | AI-024 |
-| HA-016 | Target architecture: C# rules core shared by the Unity client and the server; Java bridge as scaffold/oracle only (recommended). See "Long-term architecture goals". | AI-083, AI-087 |
+| HA-016 | DECIDED 2026-09-29 (PO delegated "fastest path to full release"): release on a server-authoritative JAVA rules server + Unity thin client (PC + Android); C# port deferred to post-release. See "Release path decision". | AI-083, AI-085, AI-087 |
 | HA-017 | Game-server hosting provider, monthly budget ceiling, region(s). | AI-085 |
 | HA-018 | PARTLY DECIDED 2026-09-29: PC store = itch.io primary (Steam possible later, not ruled out). Google Play: no account yet, Mathew sets it up closer to the Android release. Open: Steam yes/no + timing; Apple account timing. | AI-013, AI-086 release |
 | HA-019 | Payment processor(s) for in-app purchases: Stripe, PayPal, a merchant-of-record (Paddle / Lemon Squeezy / Xsolla) or others. Decide closer to release; see "Payments" note (store-billing rules, $0.99 fee math, tax). | AI-023, AI-092 |
@@ -499,3 +499,27 @@ P2 (long-term) | BACKLOG | Owner: Astra/Muse | Dependencies: AI-085 (server-veri
 Server-evaluated achievements computed from the authoritative match event log (AI-062 events). Examples: win with each faction, destroy a capital with a spell, 10 matches, first ranked win. Rewards are cosmetics (AI-094). Progress is shown in the client and can't be granted by the client. Acceptance: an achievement unlocks exactly once from a real server-recorded match, and its cosmetic appears in the loadout on both platforms.
 
 Also linked: **AI-022** login rewards now include cosmetics as reward options (alongside the faction unlock), and **AI-076/HA-015** (the turn-order coin flip) becomes the in-game coin-flip moment that uses the COIN cosmetic.
+
+## 2026-09-29 ~19:25 — Release path decision (Product Owner delegated: "choose the path that gets us to full release fastest")
+**Decision (Claude, under Mathew's delegation; Astra reviews on 2026-10-04):** ship v1.0 as a **server-authoritative Java rules server + Unity thin client** on PC (itch.io) and Android. **Don't port the rules to C# before release.**
+
+Why this is faster than the "Long-term architecture goals" plan written at ~18:10 (which it supersedes on ordering):
+- The rules already exist, tested and pinned in Java (TubaExperiment 992bc95; AI-066/072/079). A C# port plus event-for-event conformance is weeks of work that ships no new player-visible value.
+- Cross-play needs an authoritative server anyway (AI-085/AI-091). If the server runs the Java engine, **no client runs rules at all**. The Unity client only sends intents and renders events, so Android needs no JVM and PC and Android are identical by construction.
+- The AI-079 bridge protocol (new/legal/act → AI-062 events + state) *is* the thin-client protocol. Moving it from stdin/stdout to a WebSocket with auth and hidden-state redaction is the server, which removes a whole integration layer.
+- Bots run on the server too, so practice vs AI works on every platform.
+
+Trade-offs accepted: v1.0 needs a connection for every mode (no offline play) and hosting from launch (HA-017, a small JVM service; turn-based traffic is light). Offline play, on-device AI and the C# core move post-release.
+
+**Re-sequenced critical path to v1.0:**
+1. **AI-079** bridge (Muse, in progress) → **AI-080** live human seat in Unity via the bridge (local playtests).
+2. **AI-085 (now P0)** game server: the Java engine behind a WebSocket, using the same message shapes as AI-079. It adds auth, hidden-state redaction, turn timers, reconnect (AI-009) and server-side bots. Owner: Muse (server code in its lane under `releases/`/`server/`) with Claude/Astra integration.
+3. **AI-091/AI-008** one cross-play queue (casual + ranked) + **AI-010/AI-011** trusted results and leaderboards on that server.
+4. **AI-086** Android build (Unity, touch UI, mobile LOD) + **AI-013** PC itch.io build. Sideload testing until the Play account exists.
+5. Content: AI-061 models + SFX for all Zeus/Poseidon cards (stand-ins stay only until each card's real asset lands), AI-093 textured tiles, AI-060 impact polish.
+6. Monetization for v1.0 kept minimal: AI-021 entitlements + AI-023 unlock via **Google Play Billing (Android)** and **one merchant-of-record for PC** (fastest: it handles global VAT/tax; final pick HA-019). AI-094 cosmetics at launch = a few free default tile styles/coins/card backs plus the loadout. Achievements (AI-095), login-reward cosmetics (AI-022) and cosmetic sales ship in a post-launch update.
+7. AI-005/AI-006 security and release gates, AI-026 release validation, then v1.0.
+
+**Post-release (re-prioritized to P3):** AI-083 C# core, AI-084 conformance harness, AI-087 in-process client core (offline mode), AI-090 large-scale sims (the Java EventDump harness covers balance until then), iOS/Apple.
+
+**Other delegated calls made now:** (a) HA-009 first question: **keep batch-04** for Zeus units present in both batches (the newest style, some rigged); batch-02 stays as an alternative. (b) The Unity playtest branch is merged into the working branch once AI-093 lands and CI is green (Claude does it; no PR to main). (c) The playtest build is kept at `Infinite Conquest\playtest\unity-build-<date>\`.
