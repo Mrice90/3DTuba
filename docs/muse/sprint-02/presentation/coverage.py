@@ -31,7 +31,7 @@ def main():
     manifest_path, staging = sys.argv[1], sys.argv[2]
     out_path = sys.argv[3] if len(sys.argv) > 3 else None
 
-    with open(manifest_path) as f:
+    with open(manifest_path, encoding="utf-8") as f:
         manifest = json.load(f)
     cards = manifest["cards"]
 
@@ -87,7 +87,9 @@ def main():
 
     text = "\n".join(L)
     if out_path:
-        with open(out_path, "w") as f:
+        # AI-069: explicit UTF-8 + LF newlines — Windows defaults to cp1252,
+        # which raised UnicodeEncodeError on the ✅/❌ status glyphs.
+        with open(out_path, "w", encoding="utf-8", newline="\n") as f:
             f.write(text)
         print(f"coverage report -> {out_path}")
     else:
