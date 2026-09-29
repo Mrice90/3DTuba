@@ -99,3 +99,82 @@ first-player advantage.**
   non-starter card pool.
 - The swap variant of the harness was used locally for analysis and was not
   committed; the base `EventDump.java` in the repo is unchanged.
+
+---
+
+## AI-072 reproducible re-run (2026-09-29)
+
+Supersedes the "uncommitted swap variant" limit above: the swap harness is
+now committed as `EventDump --mode=swap`, plus a `--mode=mirror`
+(Zeus starter at both seats) seat-bias control. Protocol:
+`releases/alpha-0.7.15-playable/tools/event-dump/run-balance.sh` — 20 seeds
+(1–20) × 3 modes, every dump validated against the AI-062 wire format.
+Engine, bots and rules untouched; only the harness deck assignment varies.
+Pinned alpha fat jar (TubaExperiment `992bc95c7`, read-only).
+
+### Reproducibility checks
+
+- Base seeds 1–20 reproduce the AI-070 base table exactly (20/20 Zeus).
+- Base seed 42 → 235 events, winner 0 — same count as CI 36519850577.
+- Same seed + mode → byte-identical dump (EventDump is fully seeded).
+
+### Results (60 matches, all dumps VALID)
+
+| mode | arrangement | Zeus wins | Poseidon wins | draws | n |
+|---|---|---|---|---|---|
+| base | seat 0 = Zeus | 20 (100%) | 0 | 0 | 20 |
+| swap | seat 1 = Zeus | 12 (60%) | 8 (40%) | 0 | 20 |
+| mirror | Zeus both seats | seat 0: 12 (60%) | seat 1: 8 (40%) | 0 | 20 |
+
+Winner seats, seeds 1–20 (digit = winning seat index):
+
+- base: `00000000000000000000`
+- swap (Zeus at seat 1): `11100111100101111000`
+- mirror: `11100100000101100010`
+
+### Decomposition: deck effect vs seat effect
+
+- **Deck effect (holding seat constant):** seat 0 — Zeus 20/20 (100%) vs
+  Poseidon 8/20 (40%) → **+60pp for the Zeus starter**. Seat 1 — Zeus 12/20
+  (60%) vs Poseidon 0/20 (0%) → **+60pp**. The deck advantage is the same at
+  both seats.
+- **Seat effect (holding deck constant):** Zeus deck — seat 0 100% vs seat 1
+  60% → **+40pp for seat 0**. Poseidon deck — seat 0 40% vs seat 1 0% →
+  **+40pp**. The mirror control (identical decks) gives seat 0 12/20 = 60%,
+  consistent with a first-seat edge. (12/20 alone is not significant —
+  two-sided binomial p ≈ 0.50 — but the +40pp pattern repeats in both deck
+  matchups and the 12:00 review flagged the same direction at n=31.)
+- **Combined:** Zeus wins 32/40 = **80%** (AI-070: 28/31 ≈ 90% — same
+  direction, tighter with n=60).
+
+### Revised conclusion
+
+The 12:00 review's caveat is confirmed and quantified: **both effects are
+real**. "Deck asymmetry is the main driver" holds — the Zeus starter adds
+~60pp regardless of seat — but "not first-player advantage" does not:
+seat 0 (which always moves first; there is no coin flip in
+`DemoMatchFactory` turn order) carries a ~40pp edge independent of deck.
+The golden sample's "coin flip: Player 1 starts" line is aspirational, not
+engine behavior.
+
+### Implications (balance flag for AI-012, strengthened)
+
+Under HERO bots the Zeus starter beats the Poseidon starter ~80% across
+seats, and the first seat wins ~40pp more than the second with either deck.
+Both factions are meant to be permanently free and viable, so this stays a
+balance flag for AI-012, not an emergency. Suggested follow-ups: a
+Poseidon-vs-Poseidon mirror, a turn-order coin-flip experiment (product
+decision), human/AI playtests. No rules change — analysis only.
+
+### Incidental defect found and fixed by this protocol
+
+The 60-seed run surfaced a real AI-062 contract defect: the wire format
+asserted `CHARACTER_MOVED` `amount == hex distance`, but the engine's cost
+is the step count along the shortest *legal* path —
+`MovementRules.shortestLegalPath` is a BFS that detours around
+occupied/blocked hexes (confirmed by decompiling the pinned jar:
+`GameEngine.moveCharacter` walks the BFS path, `cost++` per step). A real
+base-seed-20 move has hex distance 3 with cost 4. `validate.py` now
+enforces `amount >= distance` (a k-step walk covers at most k hexes);
+`board-events.md` §13 and the event-13 table row corrected; a detour
+regression test added to `test_validate.py` (6/6 pass).
