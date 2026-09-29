@@ -604,15 +604,15 @@ No release or full-match claim.
 `36640973532` on `1ab13f2` — **completed success**, including the new
 "AI-079 rules bridge protocol" step. Verify `36640973498` also green.
 
-## 2026-09-29 20:00 — Rune: AI-078 DELIVERED (reproducible jar)
+## 2026-09-29 20:15 — Rune: AI-076 DELIVERED (balance options memo)
 
-**What:** `build-release.sh` now builds a reproducible JAR:
-- Python zipfile with fixed timestamps (2026-01-01 00:00:00 UTC) for all
-  entries, sorted file order, deterministic metadata.
-- Two builds from the same classes give the same SHA-256 (verified).
+**What:** `docs/muse/sprint-02/balance-options-memo.md` — docs-only analysis
+for Mathew's HA-015 decision.
 
-**CHECKSUMS.sha256:** no longer copied to the tracked `$SCRIPT_DIR/` location
-during builds. The checksum stays in the staging area for verification; the
-tracked file is only updated intentionally, not by every build.
+**Content:** AI-072 numbers (Zeus 28/31 ≈ 90%; 21/21 base, 7/10 swap).
+Conclusion: deck asymmetry, not turn order, drives the skew.
+- Option A: coin flip for turn order (cheap, ~90% → ~75-80%, insufficient alone).
+- Option B: Poseidon starter tweaks (real fix, needs iteration + validation).
+- Option C (recommended): both — coin flip now, rebalance with data.
 
 **Status:** DELIVERED, awaiting Claude acceptance.
