@@ -66,7 +66,7 @@ y∈[0,5]; player 0 home is y<3). `animation`/`sfx` use the AI-049 vocabulary
 | 10 | `GP_SPENT` | same | `GameState.java:204` | `amount` | GP counter tick |
 | 11 | `CARDS_UNTAPPED` | same | `GameState.java:297` | `amount`=untapped count | ready glow |
 | 12 | `CARD_PLAYED` | same | `GameState.java:196` | `card_id`, `instance_id`, `to`, `stack_index` | see §12 |
-| 13 | `CHARACTER_MOVED` | same | `GameState.java:208` | `instance_id`, `from`, `to`, `amount`=distance | `move(320ms)` per step (§13) |
+| 13 | `CHARACTER_MOVED` | same | `GameState.java:208` | `instance_id`, `from`, `to`, `amount`=steps walked (≥ hex distance; > when the straight route was blocked, §13) | `move(320ms)` per step (§13) |
 | 14 | `ATTACK_RESOLVED` | same | `GameState.java:212` | `instance_id` (attacker), `to` + target `instance_id` in `detail` | `melee(360ms)`/`ranged_projectile`; SFX `MELEE/RANGED` |
 | 15 | `OPPORTUNITY_ATTACK` | same | `GameState.java:215` | `instance_id` (attacker), `to`=trigger hex | `melee(360ms)`; SFX `MELEE/RANGED` |
 | 16 | `CARD_DESTROYED` | same | `GameState.java:246` | `card_id`, `instance_id` | `destroy(320ms)`; SFX `DESTROY` |
@@ -91,11 +91,17 @@ The Java event carries only the instance id (`GameState.java:196`); the
 
 ### §13 — CHARACTER_MOVED is one event per move action
 `GameState.recordCharacterMoved` (`GameState.java:206`, emit at `:208`) emits **one**
-event per move action: `"<instanceId> <from> -> <to> cost <distance>"`.
-The per-step path is internal to `GameEngine.moveCharacter`. The adapter
+event per move action: `"<instanceId> <from> -> <to> cost <steps>"`.
+`cost` is the number of steps the engine actually walked along
+`MovementRules.shortestLegalPath` — a BFS over legal destinations that
+**detours around occupied/blocked hexes** — so `cost` is always ≥ the
+geometric hex distance, and strictly greater when the straight route was
+blocked (observed: distance 3, cost 4 in a real seeded match). The per-step
+path is internal to `GameEngine.moveCharacter`. The adapter
 **interpolates**: walk a hex-adjacent path from `from` to `to` in `amount`
 steps — odd-row offset adjacency per `BoardGeometry.HEX`
-(`HEX.distance(from, to) == amount`; never Chebyshev) — playing
+(`HEX.distance(from, to) <= amount`; never Chebyshev; when `amount` exceeds
+the distance the path detours around blockers) — playing
 `move(320ms)` per step. (Teleport/Blink also emit `CHARACTER_MOVED` with
 distance 0 — present as a dissolve, not a walk.)
 
