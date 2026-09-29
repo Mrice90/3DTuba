@@ -9,7 +9,7 @@ namespace InfiniteConquest.Proof {
     public sealed class MovementProof : MonoBehaviour {
         public Shader ProofShader;
         readonly MovementState state = new MovementState();
-        readonly Renderer[,] tiles = new Renderer[4,6];
+        readonly Renderer[,] tiles = new Renderer[BoardLayout.Width,BoardLayout.Height];
         Transform runner;
         GameObject wall;
         Camera boardCamera;
@@ -26,7 +26,7 @@ namespace InfiniteConquest.Proof {
             obj.GetComponent<Renderer>().sharedMaterial=material;
             return obj;
         }
-        static Vector3 Position(int x,int y) { return new Vector3((x-1.5f)*1.3f,0,(y-2.5f)*1.3f); }
+        static Vector3 Position(int x,int y) { return BoardLayout.CellCenter(x,y); }
         void Awake() {
             Application.runInBackground=true;
             Application.targetFrameRate=60;
@@ -46,13 +46,13 @@ namespace InfiniteConquest.Proof {
             sun.type=LightType.Directional; sun.intensity=2.2f;
             sun.transform.rotation=Quaternion.Euler(50,-35,0);
             RenderSettings.ambientLight=new Color(.45f,.49f,.58f);
-            for(int x=0;x<4;x++) for(int y=0;y<6;y++) {
-                var tile=Piece(PrimitiveType.Cube,$"Tile {x},{y}",Position(x,y),new Vector3(1.18f,.18f,1.18f),floor);
+            for(int x=0;x<BoardLayout.Width;x++) for(int y=0;y<BoardLayout.Height;y++) {
+                var tile=BoardLayout.CreateTile(x,y,floor);
                 var cell=tile.AddComponent<ProofCell>(); cell.X=x;cell.Y=y;
                 tiles[x,y]=tile.GetComponent<Renderer>();
             }
-            runner=Piece(PrimitiveType.Capsule,"Runner",Position(0,0)+Vector3.up*.67f,new Vector3(.48f,.58f,.48f),runnerMat).transform;
-            wall=Piece(PrimitiveType.Cube,"Enemy structure",Position(1,0)+Vector3.up*.55f,new Vector3(.78f,.95f,.78f),wallMat);
+            runner=Piece(PrimitiveType.Capsule,"Runner",Position(0,0)+Vector3.up*(BoardLayout.TileTop+.58f),new Vector3(.48f,.58f,.48f),runnerMat).transform;
+            wall=Piece(PrimitiveType.Cube,"Enemy structure",Position(1,0)+Vector3.up*(BoardLayout.TileTop+.475f),new Vector3(.78f,.95f,.78f),wallMat);
             // Pieces also route clicks to their board cell, including illegal moves.
             var rc=runner.gameObject.AddComponent<ProofCell>(); rc.X=0;rc.Y=0;
             var wc=wall.AddComponent<ProofCell>();wc.X=1;wc.Y=0;
@@ -65,9 +65,9 @@ namespace InfiniteConquest.Proof {
             Refresh();
         }
         void Refresh() {
-            runner.position=Position(state.X,state.Y)+Vector3.up*.67f;
+            runner.position=Position(state.X,state.Y)+Vector3.up*(BoardLayout.TileTop+.58f);
             var cell=runner.GetComponent<ProofCell>();cell.X=state.X;cell.Y=state.Y;
-            for(int x=0;x<4;x++) for(int y=0;y<6;y++)
+            for(int x=0;x<BoardLayout.Width;x++) for(int y=0;y<BoardLayout.Height;y++)
                 tiles[x,y].sharedMaterial=state.CanMove(x,y)?legal:(state.X==x&&state.Y==y?occupied:floor);
         }
         public bool Move(int x,int y) {
