@@ -338,3 +338,17 @@ Evidence: SPRINT_LOG.md 2026-09-29 12:00 entry and `docs/reviews/2026-09-29-1200
 | AI-065 / AI-046 | P1 | Muse → Claude accepts | DELIVERED / REVIEW | WAITING — needs Mathew present. |
 | AI-030, AI-052-ASSET | P0 | Claude (Astra lane) | IN_PROGRESS | WAITING — needs Mathew present (incl. batch-04 GLB import). |
 | AI-061 | P1 | Claude media threads | IN_PROGRESS | Meshy 2,050 / ElevenLabs 127,473; hold for HA-009 + batch-04 in-game check. |
+
+## 2026-09-29 14:00 — Rune (lobby-lab reflection): AI-071/072/073 delivered
+Evidence: SPRINT_LOG.md 2026-09-29 14:00 entry. These rows supersede earlier rows for the same IDs.
+
+| ID | Pri | Owner | Status | Next action |
+|---|---|---|---|---|
+| AI-071 | P3 | Muse | DELIVERED 2026-09-29 14:00 (`8608fd1`) | CI acceptance (Verify green both OSes) — runs in flight at publish time. |
+| AI-072 | P2 | Muse | DELIVERED 2026-09-29 14:00 (`f4206a1`, `b5825e3`, `4bcf3ed`, `ed7ce31`, `57f2495`, `34baef8`, `691ddda`) | CI/review: linux-packaging event-dump step re-runs `run.sh` (unchanged base path); reviewer checks the 60-seed evidence. |
+| AI-073 | P3 | Muse | DELIVERED 2026-09-29 14:00 (`633294d`, `caf4a42`, `90afb2c`) | CI acceptance: Verify + both packaging workflows green on the pinned runners/bumped actions — runs in flight at publish time. |
+
+- **AI-071 DELIVERED**: `encoding="utf-8"` on both `open()` calls in `docs/muse/sprint-02/presentation/build_presentation_manifest.py` (lines 72, 118). Regenerated `presentation-manifest.json` from pinned inputs → byte-identical (input is all-ASCII; `json.dump` escapes non-ASCII anyway). `test_coverage` 2/2 OK.
+- **AI-072 DELIVERED**: `EventDump --mode base|swap|mirror` committed (default `base` reproduces prior dumps: seed 42 → 235 events, winner 0, matching CI 36519850577; base seeds 1–20 reproduce the AI-070 table 20/20). `run-balance.sh`: 20 seeds × 3 modes, every dump validated against the AI-062 wire format → **60/60 VALID**. Results: base Zeus 20/20 (100%); swap Zeus 12/20 (60%); mirror seat-0 12/20 (60%). Decomposition: **deck effect +60pp for the Zeus starter at both seats; seat effect +40pp for seat 0 with either deck** — the 12:00 review's caveat quantified: deck asymmetry is the main driver, but first-player advantage is a real ~40pp contributor (no coin flip in `DemoMatchFactory` turn order). Combined Zeus 32/40 = 80% (AI-070: 28/31 ≈ 90%). `win-split-analysis.md` updated; balance flag to AI-012 strengthened. No rules change.
+- **AI-072 incidental AI-006 defect found and fixed**: the AI-062 wire contract asserted `CHARACTER_MOVED` `amount == hex distance`, but the engine's cost is the step count along the shortest *legal* path — `MovementRules.shortestLegalPath` is a BFS that detours around blocked hexes (source + pinned-jar bytecode both confirm; a real base-seed-20 move has distance 3, cost 4). `validate.py` now enforces `amount >= distance`; `board-events.md` §13 + event table corrected; detour regression test added (`test_validate` 6/6 OK).
+- **AI-073 DELIVERED**: `ubuntu-latest` → `ubuntu-24.04` in `verify.yml` matrix and `linux-packaging.yml` (ahead of the 2026-10-19 Ubuntu 26 migration); actions bumped to their Node-24 majors — `checkout@v4→v5`, `setup-node@v4→v5`, `setup-python@v5→v6`, `setup-java@v4→v5` (verified against published action metadata). No build-logic changes; `windows-latest` kept (no announced migration). YAML validated locally.
