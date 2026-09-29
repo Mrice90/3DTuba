@@ -17,13 +17,15 @@ MANIFEST = os.path.join(HERE, "presentation-manifest.json")
 
 def touch(path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w") as f:
+    with open(path, "w", encoding="utf-8") as f:
         f.write("fixture")
 
 
 class TestCoverage(unittest.TestCase):
     def test_fixture_tree(self):
-        with open(MANIFEST) as f:
+        # AI-069: every open() carries an explicit encoding — the test must
+        # also hold under a Windows-style cp1252 default locale.
+        with open(MANIFEST, encoding="utf-8") as f:
             cards = json.load(f)["cards"]
         cids = sorted(cards)[:2]
         full, partial = (cards[c] for c in cids)
@@ -47,7 +49,7 @@ class TestCoverage(unittest.TestCase):
                  MANIFEST, staging, out],
                 capture_output=True, text=True)
             self.assertEqual(r.returncode, 0, r.stderr)
-            report = open(out).read()
+            report = open(out, encoding="utf-8").read()
 
             # Full card: its model row is present.
             self.assertIn(f"`{full['model_path']}` | ✅", report)
@@ -58,7 +60,7 @@ class TestCoverage(unittest.TestCase):
             self.assertIn("| sfx |", report)
 
     def test_manifest_keys_use_card_id_cue(self):
-        with open(MANIFEST) as f:
+        with open(MANIFEST, encoding="utf-8") as f:
             cards = json.load(f)["cards"]
         for cid, c in cards.items():
             for s in c["sfx"]:
