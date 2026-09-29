@@ -116,7 +116,7 @@ AI-027/028/036 audit, handoff and movement fixture · AI-043 Java suite (169/169
 | HA-006 | First expansion roster | AI-024 |
 | HA-016 | Target architecture: C# rules core shared by the Unity client and the server; Java bridge as scaffold/oracle only (recommended). See "Long-term architecture goals". | AI-083, AI-087 |
 | HA-017 | Game-server hosting provider, monthly budget ceiling, region(s). | AI-085 |
-| HA-018 | PC store channel(s) (Steam / itch.io / direct) and Google Play developer account (one-time fee = purchase); Apple developer account timing later. | AI-013, AI-086 release |
+| HA-018 | PARTLY DECIDED 2026-09-29: PC store = itch.io primary (Steam possible later, not ruled out). Google Play: no account yet, Mathew sets it up closer to the Android release. Open: Steam yes/no + timing; Apple account timing. | AI-013, AI-086 release |
 
 ## Epics and requirements
 
@@ -456,3 +456,6 @@ P0 (long-term) | BACKLOG | Owner: Astra (from 2026-10-04) | Dependencies: AI-083
 - **UX parity:** the same board readability and actions on mouse and touch (no hover-only information; AI-014). Cross-play is on by default.
 - **Acceptance:** a Windows PC and an Android phone on different networks find each other through the queue, play a full ranked match on the authoritative server, and both record the same result exactly once. A version-mismatched client is refused cleanly. A mobile player who backgrounds the app for 60 s mid-turn reconnects to the same state. Repeat for Apple when it's added.
 
+
+### 2026-09-29 ~18:30 — Store channels (Product Owner)
+Mathew: **itch.io is the primary PC channel**. Steam is not ruled out for later. **Google Play:** there is no developer account yet; Mathew creates it closer to the Android release (a one-time fee, his purchase). Effects: AI-013 targets an itch.io release (a zip/installer build, uploaded with the butler CLI through a CI job once the account is linked; no Steam SDK dependency for now, and identity must not assume Steam). AI-086 keeps producing Android builds for internal testing (sideload APK/AAB) until the Play account exists. AI-091's platform logins start with our own account + Google Play Games; Steam login is added if Steam is adopted. HA-018 is updated.
