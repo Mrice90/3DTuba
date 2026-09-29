@@ -361,3 +361,24 @@ Evidence: GitHub Actions API on 2026-09-29 ~15:00 EDT; see SPRINT_LOG.md 2026-09
 | AI-071 | P3 | Muse | DELIVERED; CI acceptance achieved 2026-09-29 15:00 (Verify 36610544514 @90afb2c success; Verify 36611220923 @df1095ed success) | Reviewer acceptance (12:00 lane) outstanding. |
 | AI-072 | P2 | Muse | DELIVERED; CI acceptance achieved 2026-09-29 15:00 (Linux packaging 36610540317 @caf4a42 success incl. event-dump step; the packaging workflow re-runs `run.sh`) | Reviewer checks the 60-seed evidence (12:00 lane). |
 | AI-073 | P3 | Muse | DELIVERED; CI acceptance achieved 2026-09-29 15:00 (Verify 36610544514 + Windows packaging 36610544470 @90afb2c success) | Reviewer acceptance (12:00 lane) outstanding. |
+
+## 2026-09-29 17:15 — Claude (covering Astra): board update (18:00 review)
+Evidence: SPRINT_LOG.md 2026-09-29 17:15 entry and `docs/reviews/2026-09-29-1800-claude-acceptance.md`. These rows supersede earlier rows for the same IDs.
+
+| ID | Pri | Owner | Status | Next action |
+|---|---|---|---|---|
+| AI-071 | P3 | Muse | ACCEPTED 2026-09-29 18:00 | — |
+| AI-072 | P2 | Muse | ACCEPTED 2026-09-29 18:00 (Windows repro 60/60, identical split) | Portability and CI in AI-074. |
+| AI-073 | P3 | Muse | ACCEPTED 2026-09-29 18:00 | — |
+| AI-066 | P2 | Muse | ACCEPTED (cross-OS determinism, seed 42 = 235) | — |
+| AI-064 | P2 | Muse | ACCEPTED 2026-09-29 18:00 (PC run exit 0) | Layout and cue alignment in AI-077. |
+| AI-067 | P2 | Muse → Meshy thread | ACCEPTED (queue doc) | Meshy thread submits as local `batch-05-lands`. |
+| **AI-075** (new, AI-060b) | P1 | Muse | IN_PROGRESS 2026-09-29 17:10 | `docs/muse/sprint-02/timeline/timeline.py` (stdlib): AI-066 JSONL + presentation-manifest → per-event cue schedule (start_ms, duration_ms, anim key, sfx key, impact hook for AI-060c) with a default duration table. Golden for seed 42. Test in verify.yml on both OSes. |
+| **AI-077** (new, AI-006) | P1 | Muse | READY | Manifest cues: summon→deploy, death→destroy, plus signature for rarity-4. `coverage.py` resolves assets recursively under staging (prefers `picks/`, accepts .wav/.mp3, `meshy/<batch>/<id>.glb`). Regenerate and test. Acceptance: Claude's PC run reports 29 model / 18 audio cards. |
+| **AI-074** (new, AI-006) | P2 | Muse | READY | Make `run-balance.sh` portable (classpath separator, loop `continue`, draw parse, UTF-8 `open()`), and add a 5-seed × 3-mode balance step to linux-packaging.yml. |
+| **AI-078** (new, AI-006) | P3 | Muse | READY | Reproducible jar (fixed timestamps), and stop rewriting the tracked `CHECKSUMS.sha256` during builds. Two builds must give the same SHA-256. |
+| **AI-076** (new, AI-012) | P3 | Muse | READY | Balance-options memo (coin flip vs Poseidon starter tweaks, expected effect from the AI-072 numbers). Docs only → HA-015 for Mathew. |
+| AI-061 Meshy | P1 | Claude — Meshy thread | READY | Stage batch-04 GLBs, a 5-land pilot, then 30 lands (existing credits only). |
+| AI-061 ElevenLabs | P1 | Claude — ElevenLabs thread | READY | Land cue sets for the 35 lands; picks named `<card_id>_<cue>.wav` (deploy/destroy). |
+| AI-052-ASSET / AI-030 / AI-060b | P0 | Claude — Unity thread | READY | Batch-02/04 import at AI-063 scale, TokenPreview sheet (HA-009), JSONL playback prototype on a `claude/unity-*` branch. |
+| AI-065 / AI-046 | P1 | Claude | WAITING — needs Mathew present | Deep-path break-mode rerun. |

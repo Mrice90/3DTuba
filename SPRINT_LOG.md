@@ -508,3 +508,43 @@ Verification pass from a clean clone at df1095e, all green:
 - CI: Verify 36611220923 @df1095ed success; Verify 36610544514 + Windows packaging 36610544470 @90afb2c success; Linux packaging 36610540317 @caf4a42 success. All acceptance gates for AI-071/072/073 (CI side) are now closed; reviewer acceptance (12:00 lane) remains outstanding per the 14:00 log entry. Backlog rows updated accordingly.
 
 No code changes this run; only this books update. Standing gaps unchanged: browser UI visual check unverifiable from remote tooling (loopback unreachable); AI-064 PC coverage run, ElevenLabs cue names, AI-065/AI-046 break-mode reruns wait on Mathew's PC / the relevant threads; media lanes (AI-061, AI-067 batch submission) human/paid.
+
+## 2026-09-29 17:15 — Claude (covering Astra) review
+
+Review of record for 18:00 EDT (started 17:08). It covers `b88c496` → **`09b816f`** (19 Muse commits under the "Mathew Rice" author identity, via Rune/Thalia). All 30 Actions runs on the branch since 12:00 are completed/success; there were no red runs to log. Evidence: `docs/reviews/2026-09-29-1800-claude-acceptance.md`. There has been no Astra activity, so coverage continues.
+
+**Verdicts (delivery ≠ acceptance)**
+| ID | Verdict | Evidence |
+|---|---|---|
+| AI-071 | **ACCEPTED** | `8608fd1`: lines 72/118 carry `encoding="utf-8"`. Verify 36616350228 is green on ubuntu-24.04 and windows-latest. |
+| AI-073 | **ACCEPTED** | `633294d`/`caf4a42`/`90afb2c`: ubuntu-24.04 pinned; checkout@v5, setup-node@v5, setup-python@v6, setup-java@v5. Verify 36610544514, Linux pkg 36610540317 (runner label ubuntu-24.04, 6 break modes + event dump), Win pkg 36610544470 are all green. |
+| AI-072 | **ACCEPTED** | Independent Windows reproduction: pin 992bc95 fetched and built, EventDump 20 seeds × base/swap/mirror gives **60/60 VALID**, base Zeus 20/20, swap Zeus 12/20, mirror seat-0 12/20, seed 42 = 235 events. This is identical to Rune's figures. The balance flag stands for AI-012 (→ AI-076/HA-015). |
+| AI-066 | **ACCEPTED** (was CI-only) | Cross-OS determinism: Windows seed 42 = 235 events, matching Linux CI 36519850577. This answers Rune's open question. |
+| AI-064 | **ACCEPTED** | The first real PC coverage run exits 0 on Windows. It reports 0/139 because the manifest paths don't match the staging layout; the actual content is 29/139 cards with a GLB and 18/139 with audio. The cue-name check came back as a **mismatch** (ElevenLabs uses deploy/destroy/signature, the manifest uses summon/death) → AI-077. |
+| AI-067 | **ACCEPTED (queue doc)** | `df1095e`: 35 lands, AI-068 prompts, AI-063 budgets, Verify 36611220923 green. The Meshy thread submits it as local `batch-05-lands` (local `batch-03-rarity3-units` already exists). |
+
+**New findings and work (highest previous ID AI-073)**
+| ID | Pri | Finding / work | Owner |
+|---|---|---|---|
+| AI-074 | P2 | `run-balance.sh` works on Linux only. Problems: the `classes:$JAR` classpath breaks on Windows, `continue` inside `$(…)` is a no-op, a `draw` winner parses to empty, and python `open()` has no encoding. The 60-seed protocol is also not in CI (the event-dump step runs only `run.sh`). | Muse |
+| AI-075 | P1 | (AI-060b) Event→presentation timeline tool: dump + manifest → cue schedule, golden for seed 42, verify.yml on both OSes. | Muse |
+| AI-076 | P3 | (AI-012) Balance-options memo for Mathew (coin flip vs Poseidon starter tweaks). Docs only, → HA-015. | Muse |
+| AI-077 | P1 | The presentation manifest and real staging disagree. Cues: summon/death vs the ElevenLabs deploy/destroy (+signature). Paths: flat `meshy/<id>.glb` and `sfx/<key>.wav` vs `meshy/<batch>/<id>.glb` and `elevenlabs/<job>/picks/<id>_<cue>.wav`. Fix: adopt deploy/destroy (+signature for apex), and make `coverage.py` resolve recursively (with `picks/` preferred). The PC report must then show 29 models / 18 audio cards. | Muse |
+| AI-078 | P3 | The alpha jar is not byte-reproducible (three SHA-256s from the same pin: `f7d887e3…`, `728c3fc1…`, `f89d4ba3…`), and `build-release.bat/.sh` rewrites the tracked `CHECKSUMS.sha256`. Fix: set fixed entry timestamps (`jar --date`, or SOURCE_DATE_EPOCH) and write checksums under `build/`. | Muse |
+
+**Stand-up with Rune (Muse main chat, 17:10).** Done since 15:00: AI-067 and the 15:00/16:00 books; nothing running. Blockers: the Mathew-present items only. Queue acknowledged in the order AI-075 → AI-074 → AI-076, and Rune started AI-075. AI-077 and AI-078 are added via this board.
+
+**Media:** no credits spent by this review. The 11 batch-04 GLBs are still not in `assets/staging/meshy/batch-04-alpha-img2-3d/`.
+
+**Assignments (to 2026-09-30 09:00)**
+| Worker | ID | Pri | Next action |
+|---|---|---|---|
+| Muse (Rune) | AI-075 → AI-077 → AI-074 → AI-078 → AI-076 | P1/P1/P2/P3/P3 | As in the backlog board. One commit + SPRINT_LOG entry per item, every CI run logged, no self-acceptance. |
+| Claude — Meshy thread (new) | AI-061 / AI-067 | P1 | Stage the batch-04 GLBs. Then run a 5-land pilot from the AI-067 queue (existing credits only), remesh/texture, `check_glb.py --require-materials`, and check the AI-063 scale. Then the remaining 30 lands in `batch-05-lands`. Record IDs and credits in ASSET_QUEUE.md. |
+| Claude — ElevenLabs thread (new) | AI-061 / AI-077 | P1 | Land cue sets for the 35 AI-067 lands (6 apex unique + shared groups), picks as `<card_id>_<cue>.wav` with deploy/destroy naming. Record flow IDs and credits. |
+| Claude — Unity thread (new) | AI-052-ASSET / AI-030 / AI-060b | P0 | Own clone + `claude/unity-*` branch. Import batch-02/04 GLBs into UnityProof at AI-063 scale, add TokenPreview renders for the HA-009 sheet, and prototype a JSONL event playback of AI-066 seed 42. Ask Mathew before merging. |
+| Claude — meetings | AI-031 / AI-006 | P0 | 09:00 stand-up: accept AI-075/077 and triage new heads. |
+| Mathew | HA-009, HA-011, HA-012 | P1/P2 | Style verdict on the batch-02/04 renders; Skyline Seer likeness; ElevenLabs Explore sharing. Start the three thread chips from this run. |
+| Astra | — | — | Unavailable until 2026-10-04 08:12 EDT. |
+
+Next meeting 2026-09-30 09:00 EDT. No release or full-match claim.
