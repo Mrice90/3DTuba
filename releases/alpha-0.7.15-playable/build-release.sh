@@ -143,17 +143,46 @@ Main-Class: com.infiniteconquest.gui.GameShell
 Implementation-Title: Infinite Conquest (alpha)
 Implementation-Version: $VERSION
 EOF
-jar --create --file "$STAGE/release/$JAR" \
-    --manifest "$STAGE/manifest.txt" -C "$STAGE/classes" . || die_code 25 "jarring failed"
+# AI-078: reproducible JAR — fixed timestamps (2026-01-01 00:00:00 UTC) via
+# Python zipfile, so two builds give the same SHA-256.
+python3 - "$STAGE/release/$JAR" "$STAGE/manifest.txt" "$STAGE/classes" <<'PYEOF'
+import os, sys, zipfile
+jar_path, manifest_path, classes_dir = sys.argv[1], sys.argv[2], sys.argv[3]
+FIXED = (2026, 1, 1, 0, 0, 0)
+with zipfile.ZipFile(jar_path, "w", zipfile.ZIP_DEFLATED) as zf:
+    # manifest first, as jar --create does
+    zi = zipfile.ZipInfo("META-INF/MANIFEST.MF", date_time=FIXED)
+    zi.compress_type = zipfile.ZIP_DEFLATED
+    with open(manifest_path, "rb") as f:
+        data = f.read()
+    # jar manifests end with a newline; ensure exactly one
+    data = data.rstrip(b"\r\n") + b"\n"
+    zf.writestr(zi, data)
+    for root, dirs, files in os.walk(classes_dir):
+        dirs.sort()
+        for fn in sorted(files):
+            full = os.path.join(root, fn)
+            arc = os.path.relpath(full, classes_dir).replace(os.sep, "/")
+            zi = zipfile.ZipInfo(arc, date_time=FIXED)
+            zi.compress_type = zipfile.ZIP_DEFLATED
+            # preserve Unix executable bits if present (jars don't need them,
+            # but keep the metadata deterministic)
+            zi.external_attr = (os.stat(full).st_mode & 0o777) << 16
+            with open(full, "rb") as f:
+                zf.writestr(zi, f.read())
+print(f"reproducible jar -> {jar_path}")
+PYEOF
 
 echo "== checksum =="
 (cd "$STAGE/release" && sha256sum "$JAR" | tee CHECKSUMS.sha256)
 cp "$STAGE/release/$JAR" "$SCRIPT_DIR/$JAR"
-cp "$STAGE/release/CHECKSUMS.sha256" "$SCRIPT_DIR/CHECKSUMS.sha256"
-echo "copied $JAR + CHECKSUMS.sha256 next to the launchers"
+# AI-078: do NOT copy CHECKSUMS.sha256 to $SCRIPT_DIR/ — it is a tracked
+# file and must not be rewritten by every build. The checksum lives in the
+# staging area ($STAGE/release/CHECKSUMS.sha256) for verification.
+echo "copied $JAR next to the launchers (CHECKSUMS.sha256 stays in staging)"
 
 echo "== smoke =="
 JAR_PATH="$SCRIPT_DIR/$JAR" bash "$SCRIPT_DIR/smoke.sh" || die_code 26 "smoke test failed (smoke.sh)"
 
 echo "== done =="
-ls -la "$SCRIPT_DIR/$JAR" "$SCRIPT_DIR/CHECKSUMS.sha256"
+ls -la "$SCRIPT_DIR/$JAR"

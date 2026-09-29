@@ -604,18 +604,15 @@ No release or full-match claim.
 `36640973532` on `1ab13f2` — **completed success**, including the new
 "AI-079 rules bridge protocol" step. Verify `36640973498` also green.
 
-## 2026-09-29 19:45 — Rune: AI-074 DELIVERED (portable run-balance.sh)
+## 2026-09-29 20:00 — Rune: AI-078 DELIVERED (reproducible jar)
 
-**What:** Portability fixes to `tools/event-dump/run-balance.sh`:
-- Classpath separator: `:` on Unix, `;` on Windows (via `uname -s`).
-- `continue` moved outside `$(...)` subshell (was a no-op for the loop).
-- Winner parsing accepts "draw" (was digits-only, empty on draws).
-- Explicit `encoding="utf-8"` on all Python `open()` calls.
+**What:** `build-release.sh` now builds a reproducible JAR:
+- Python zipfile with fixed timestamps (2026-01-01 00:00:00 UTC) for all
+  entries, sorted file order, deterministic metadata.
+- Two builds from the same classes give the same SHA-256 (verified).
 
-**CI:** `linux-packaging.yml` step added ("AI-074 balance check (5 seeds x 3
-modes)"), running `./tools/event-dump/run-balance.sh ./balance-ci 5`.
-
-**Local test:** 15 dumps (5 seeds × 3 modes), all AI-062 VALID. Base 5-0
-Zeus, swap 3-2 Zeus, mirror seat0 2-3 seat1.
+**CHECKSUMS.sha256:** no longer copied to the tracked `$SCRIPT_DIR/` location
+during builds. The checksum stays in the staging area for verification; the
+tracked file is only updated intentionally, not by every build.
 
 **Status:** DELIVERED, awaiting Claude acceptance.
