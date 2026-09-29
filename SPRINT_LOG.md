@@ -328,3 +328,11 @@ Tests: new `test_asset_directory.py` (4 tests: non-spells have both fields, spel
 ## 2026-09-28 ~23:15 EDT — AI-064 per-card presentation manifest + coverage.py (Rune)
 
 AI-062 acceptance unblocked this. New `docs/muse/sprint-02/presentation/`: `build_presentation_manifest.py` generates `presentation-manifest.json` — 139 cards, 617 event mappings. Each card maps the AI-062 events it can emit to an animation clip key (from AI-049) and a unique SFX key `<card_id>_<cue>` using the ElevenLabs cue set (summon/move/attack/hit/death/ability/idle), plus model/texture paths. Events without a clip key (e.g. CHARACTER ability, CAPITAL passive) get animation=null so the gap is visible. `coverage.py` (stdlib) checks a staging root for model, textures, each animation file and each SFX file, and writes a per-card Markdown table with ✅/❌ plus totals. `test_coverage.py` (2 tests: fixture tree with full/partial cards, SFX key format) green. Wired into verify.yml.
+
+## 2026-09-28 ~23:10 EDT — AI-068 techno-futuristic myth style tune-up (Rune)
+
+Product Owner direction (via Claude 23:05): character design shifts to a techno-futuristic myth look — robotic parts, energy patterns, futuristic weapons only (energy blades, plasma/rail/arc); no bows or crossbows. Board stays HEX.
+
+Changed all 139 prompts: new STYLE_ANCHOR (techno-futuristic myth, robotic plating fused with mythic forms, glowing energy patterns/circuitry, futuristic-weapons-only). CHARACTER (48), STRUCTURE (34) and CAPITAL (6) framings retuned with type-specific techno-myth language. LAND (35) and SPELL (16) keep their framing under the new preamble. No bow/crossbow/arrow/quiver wording anywhere in the prompts (the old preamble had none; the new one uses positive-only weapon language so the word-boundary test passes, 'elbow' included). Hex wording and AI-063 board-scale budgets untouched.
+
+Tests: test_asset_directory.py gains test_no_bows_or_arrows (word-boundary) and test_techno_myth_style_tag (every non-spell prompt carries the tag) — 6/6 green, run in verify.yml. No Meshy generation submitted.

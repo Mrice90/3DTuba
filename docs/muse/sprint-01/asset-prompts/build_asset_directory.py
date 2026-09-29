@@ -51,9 +51,14 @@ ARCHETYPE_FLAVOR = {
 
 TYPE_FRAMING = {
     "CHARACTER": ("Single character miniature, rig-ready A-pose, clean limb separation for "
-                  "animation. Imply the full animation set in the sculpt: idle stance, "
+                  "animation. Techno-futuristic myth warrior: robotic limb plating, glowing "
+                  "energy-pattern seams, integrated futuristic weapon (energy blade, plasma "
+                  "caster, rail spike or arc projector). "
+                  "Imply the full animation set in the sculpt: idle stance, "
                   "attack windup, hit reaction, death collapse."),
-    "STRUCTURE": ("Fortified building miniature with a strong, instantly readable silhouette. "
+    "STRUCTURE": ("Fortified techno-futuristic building miniature with a strong, instantly "
+                  "readable silhouette. Robotic construction: armored plating, glowing energy "
+                  "conduits, automated defense hardpoints with arc/plasma emitters. "
                   "Sculpt implies construction staging: foundation, raising, complete."),
     "LAND": ("Hexagonal terrain tile; top face fully detailed, edges designed to blend "
              "seamlessly with neighboring tiles (no hard borders). Subtle animated accents "
@@ -61,8 +66,9 @@ TYPE_FRAMING = {
     "SPELL": ("Pure VFX presentation, NO character: capture the cast-gesture moment and the "
               "impact frame as a two-beat effect (windup -> detonation). Design as a "
               "loopable games-asset effect with a clear focal point."),
-    "CAPITAL": ("Monumental faction headquarters — the largest, most detailed silhouette on "
-                "the board. Layered architecture around a glowing core; unmistakable from "
+    "CAPITAL": ("Monumental techno-futuristic faction headquarters — the largest, most detailed "
+                "silhouette on the board. Layered robotic architecture around a glowing energy "
+                "core; plasma conduits, arc arrays and automated battlements; unmistakable from "
                 "across the table. Implies build-up staging: ground placement -> rising "
                 "structure -> completed citadel."),
 }
@@ -100,8 +106,15 @@ CUE_WORDS = {
     "DRAW": "card draw snap", "HEAL": "restorative chime", "ACTIVATE": "ability trigger",
 }
 
-STYLE_ANCHOR = ("Stylized dark-mythology 3D game miniature for a hex-based tactics board game. "
-                "Painterly detail, dramatic rim lighting, subtle glowing energy accents, "
+# AI-068 (Product Owner 2026-09-28): techno-futuristic myth look. Robotic parts
+# and energy patterns fused with mythic forms; futuristic weapons only
+# (energy blades, plasma/rail/arc weapons) — no bows, crossbows or arrows.
+TECHNO_MYTH_TAG = "techno-futuristic myth"
+STYLE_ANCHOR = ("Techno-futuristic myth 3D game miniature for a hex-based tactics board game. "
+                "Robotic plating and mechanical parts fused with mythic forms, glowing energy "
+                "patterns and circuitry traced across surfaces. Futuristic weapons only: "
+                "energy blades, plasma casters, rail spikes, arc projectors. "
+                "Painterly detail, dramatic rim lighting, "
                 "clean readable silhouette at tabletop distance, centered composition. "
                 "No background, no base scenery, no text, no watermark. Game-ready asset.")
 

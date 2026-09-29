@@ -1,4 +1,7 @@
-"""AI-063 regression test: board-scale contract on the asset prompt directory.
+"""AI-063/AI-068 regression tests: board-scale contract and techno-myth style.
+
+AI-063: every non-spell card has board_footprint/height_budget.
+AI-068: techno-futuristic myth style; no bows/crossbows/arrows/quivers.
 
 Every non-spell card must carry board_footprint and height_budget (sized for
 one hex tile per docs/muse/sprint-02/board-scale.md); spells must have neither.
@@ -6,6 +9,7 @@ Land prompts must state the tile carries a unit/token on top. Stdlib only.
 """
 import json
 import os
+import re
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -44,6 +48,21 @@ class TestBoardScale(unittest.TestCase):
                if "hex" not in c["meshy_prompt"].lower()]
         self.assertEqual(bad, [],
                          f"prompts must keep the hex wording: {bad}")
+
+    def test_no_bows_or_arrows(self):
+        # AI-068: word-boundary so 'elbow' passes.
+        pat = re.compile(r"\b(bow|crossbow|arrow|quiver)s?\b", re.I)
+        bad = [(c["id"], m.group(0)) for c in load_cards()
+               for m in pat.finditer(c["meshy_prompt"])]
+        self.assertEqual(bad, [], f"prompts must not contain bows/arrows: {bad}")
+
+    def test_techno_myth_style_tag(self):
+        # AI-068: every non-spell prompt carries the techno-myth style tag.
+        bad = [c["id"] for c in load_cards()
+               if c["type"] != "SPELL"
+               and "techno-futuristic myth" not in c["meshy_prompt"].lower()]
+        self.assertEqual(bad, [],
+                         f"non-spell prompts missing techno-myth tag: {bad}")
 
 
 if __name__ == "__main__":
