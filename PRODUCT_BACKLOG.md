@@ -118,6 +118,7 @@ AI-027/028/036 audit, handoff and movement fixture · AI-043 Java suite (169/169
 | HA-017 | Game-server hosting provider, monthly budget ceiling, region(s). | AI-085 |
 | HA-018 | PARTLY DECIDED 2026-09-29: PC store = itch.io primary (Steam possible later, not ruled out). Google Play: no account yet, Mathew sets it up closer to the Android release. Open: Steam yes/no + timing; Apple account timing. | AI-013, AI-086 release |
 | HA-019 | Payment processor(s) for in-app purchases: Stripe, PayPal, a merchant-of-record (Paddle / Lemon Squeezy / Xsolla) or others. Decide closer to release; see "Payments" note (store-billing rules, $0.99 fee math, tax). | AI-023, AI-092 |
+| HA-020 | Cosmetics economy: earn-only (achievements + login rewards) or also sold (packs/individual skins, and at what price)? Earned cosmetics are never removed. | AI-094, AI-092 |
 
 ## Epics and requirements
 
@@ -473,3 +474,28 @@ Things the decision must account for (verify against current primary sources at 
 ### AI-092 — Payment integration layer (child of AI-021/AI-023)
 P2 (long-term) | BACKLOG | Owner: Astra | Dependencies: AI-085 server, AI-021 entitlements, HA-019 processor, HA-004 prices, HA-018 stores.
 A server-side purchase service with one interface and pluggable providers: Google Play Billing (Android on Play), and Stripe and/or PayPal or a merchant-of-record for PC/web (Apple IAP later). Webhook/receipt verification, idempotent grants, refund/chargeback revocation, restore purchases, and an audit log. Sandbox/test mode only until release, with no real-money transactions without the Product Owner. Acceptance: in each provider's sandbox, a purchase grants the entitlement exactly once across PC and Android, a refund revokes it, a duplicate webhook is harmless, and a forged client unlock fails.
+
+## 2026-09-29 ~19:15 — Product Owner playtest feedback: board tiles + player cosmetics
+**Mathew watched the Unity playtest build (`claude/unity-playtest-20260929` @ `f38f5e1`) live:** he loves the assets and the overall look. The stand-in board tiles are too bland, and the game needs real tile textures. This opens a player-cosmetics line:
+- **Board tile styles:** the player picks a tile texture style. **Each player's style shows on their own half of the board only** (the 4×6 hex board splits into two 3-row home halves, one per seat). The opponent sees your style on your half.
+- **Coin-flip coin:** one 3D coin model with several texture variants. The player's chosen coin is used in the turn-order coin flip. There is no coin flip in the engine yet: AI-072 found that seat 0 always goes first. That's AI-076/HA-015, and it fits here.
+- **Card backs:** selectable designs, the same idea.
+- **Unlock sources:** achievements, login rewards (AI-022) and possibly purchases (HA-020). They're cosmetic only: no gameplay effect, ever.
+
+### AI-093 — Textured board tiles v1 for the playtest (child of AI-080/AI-060)
+P1 | READY → Claude Unity thread | Dependencies: none.
+Replace the bland stand-in tiles with 3–4 textured hex tile styles in the techno-futuristic myth look (e.g. Zeus storm-marble with glowing circuit inlays, Poseidon abyssal coral-metal, neutral obsidian grid, bronze-and-energy). Use procedural shaders/materials first (free); Meshy text-to-texture can refine later with existing credits. Add a per-seat tile style selection in the playtest build (each seat's 3-row home half uses that seat's style; the playtest menu lets you pick each side). Tiles must stay readable: hover/legal markers and stacks clear on every style, and land tokens (top ≤ 0.25) must still sit well on them. Acceptance: Mathew picks styles for each half in the Windows build, and screenshots go into the review sheet.
+
+### AI-094 — Player cosmetics system: tile styles, coins, card backs (epic; children AI-021, AI-022, AI-095)
+P2 (long-term) | BACKLOG | Owner: Astra (from 2026-10-04) | Dependencies: AI-021 entitlements, AI-085 server, AI-091 cross-play, HA-020.
+- **Content model:** cosmetic types TILE_STYLE, COIN, CARD_BACK (extensible later: board edge, capital skin, emotes). Each has an ID, rarity, a texture/material set on a **shared mesh** (one coin model, one hex tile mesh, one card-back mesh), and an unlock source (default / achievement / login reward / purchase / event).
+- **Loadout:** the player equips one of each. The loadout is stored on the account (AI-015) and synced across PC and Android (AI-091). At match start the server sends both loadouts; each client renders seat A's tiles on A's half and B's on B's, both coins in the coin flip, and card backs per player.
+- **Ownership:** cosmetics are entitlements (AI-021), granted server-side only. A client can't equip what it doesn't own, and it falls back to the default if the server doesn't confirm.
+- **Production:** textures from Meshy text-to-texture / Unity shaders on the shared meshes. A few default styles are free for everyone. There's a performance budget for mobile (AI-086): texture sizes and one material per half.
+- **Acceptance:** two accounts with different loadouts on PC vs Android each see the correct style on the correct half, the correct coins in the flip and the correct card backs. An unowned cosmetic can't be equipped via a tampered client.
+
+### AI-095 — Achievements (child of AI-094/AI-011)
+P2 (long-term) | BACKLOG | Owner: Astra/Muse | Dependencies: AI-085 (server-verified match results), AI-011.
+Server-evaluated achievements computed from the authoritative match event log (AI-062 events). Examples: win with each faction, destroy a capital with a spell, 10 matches, first ranked win. Rewards are cosmetics (AI-094). Progress is shown in the client and can't be granted by the client. Acceptance: an achievement unlocks exactly once from a real server-recorded match, and its cosmetic appears in the loadout on both platforms.
+
+Also linked: **AI-022** login rewards now include cosmetics as reward options (alongside the faction unlock), and **AI-076/HA-015** (the turn-order coin flip) becomes the in-game coin-flip moment that uses the COIN cosmetic.
