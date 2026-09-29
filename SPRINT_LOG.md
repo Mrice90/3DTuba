@@ -599,3 +599,41 @@ The Unity build, the smokes (`-playtestSmoke` 8/8) and the exe SHA-256 `96b492cb
 | Mathew | WAITING — needs Mathew present: AI-030 mouse acceptance, AI-065 deep-path break rerun. Decisions: HA-009 (steers, no longer blocks), HA-011, HA-012, HA-003 remainder, HA-015..020 |
 
 No release or full-match claim.
+
+## 2026-09-29 18:45 — Rune: AI-079 DELIVERED (rules bridge protocol v1.0.0)
+
+**Commit:** `1ab13f2` (8 files, +1305/-1) on `muse/sprint-01-content-audit`.
+
+**What:** `releases/alpha-0.7.15-playable/tools/rules-bridge/` — Java program
+against the pinned alpha JAR speaking line-delimited JSON over stdin/stdout.
+
+**Protocol v1.0.0** (stable, documented in README.md):
+- Requests: `{id, op: "new"|"legal"|"act", ...}`. `new` takes
+  `{seed, human_player, human_faction, bot_faction, difficulty}`.
+- Responses: `{id, ok, revision, ...}`. Success includes `events` (AI-062
+  wire format), `state` (redacted), `legal`.
+- Action ids: deterministic, revision-scoped `r<revision>-a<index>`.
+- Stale/fabricated ids → `INVALID_ACTION` with **no state/revision mutation**.
+- State redaction: opponent `hand` always `[]` (only `hand_count`); deck
+  identities never exposed (counts only).
+- Bot auto-plays until next human decision or GAME_OVER.
+- Stdout is JSONL-only; diagnostics to stderr.
+
+**Tests** (`test_bridge.py`, 8/8 properties PASS locally):
+1. Deterministic seed-42 output (two runs byte-identical)
+2. Valid act advances revision, returns events/state/legal
+3. Stale id → INVALID_ACTION; fabricated id → INVALID_ACTION
+4. No state/revision mutation on rejection (verified via snapshot compare)
+5. Bot auto-plays after human end turn (bot events present)
+6. Scripted GAME_OVER: 66 human turns, winner 0, 3490 events, GAME_OVER emitted
+7. Every event passes AI-062 `validate.py` (55 scripted + 3490 full-game)
+8. Opponent hand identities redacted; own hand fully visible
+
+**Files:** `RulesBridge.java`, `test_bridge.py`, `run.sh`/`run.bat`,
+`README.md`, `fixtures/golden-seed-42.jsonl` (4 responses).
+
+**CI:** `linux-packaging.yml` step added ("AI-079 rules bridge protocol").
+Awaiting green run.
+
+**Status:** DELIVERED, awaiting Claude acceptance (no self-acceptance).
+Unblocks AI-080 (Unity playtest build wiring).
