@@ -382,3 +382,16 @@ Evidence: SPRINT_LOG.md 2026-09-29 17:15 entry and `docs/reviews/2026-09-29-1800
 | AI-061 ElevenLabs | P1 | Claude — ElevenLabs thread | READY | Land cue sets for the 35 lands; picks named `<card_id>_<cue>.wav` (deploy/destroy). |
 | AI-052-ASSET / AI-030 / AI-060b | P0 | Claude — Unity thread | READY | Batch-02/04 import at AI-063 scale, TokenPreview sheet (HA-009), JSONL playback prototype on a `claude/unity-*` branch. |
 | AI-065 / AI-046 | P1 | Claude | WAITING — needs Mathew present | Deep-path break-mode rerun. |
+
+## 2026-09-29 ~17:45 — Product Owner direction: 3D playtest build (Claude, covering Astra)
+**Mathew, direct (2026-09-29 ~17:40 EDT):** start the Meshy, ElevenLabs and Unity threads. ElevenLabs work is **green-lit** and continues without a per-batch gate. Asset production continues on both animatable 3D models and their sound effects. The board must be ready, with stand-in assets for lands, structures, spells and characters, **so playtesting of the 3D playable version can start.** HA-009 steers batches but no longer blocks them. Existing credits only, no purchases (unchanged).
+
+**New sprint goal (supersedes the IC-S02 goal):** a Zeus-vs-Poseidon match playable in UnityProof on the hex board against the pinned alpha rules. Every card is shown (a real model where one is staged, a typed stand-in otherwise), with sound on deploy/move/attack/hit/destroy.
+
+| ID | Pri | Owner | Status | Next action / acceptance |
+|---|---|---|---|---|
+| **AI-079** (new, AI-003/AI-060) | P0 | Muse (Rune) | READY (sent 17:40) | Headless rules bridge `releases/alpha-0.7.15-playable/tools/rules-bridge/`: Java against the pinned jar, line-delimited JSON over stdin/stdout (`new` / `legal` / `act`), emits AI-062 wire events + state (hands, GP, per-hex stacks), bot seat auto-plays, illegal ids return an error. Scripted test validating every event, linux-packaging.yml step, protocol in README. **Ahead of AI-075.** |
+| **AI-080** (new, AI-060/AI-017) | P0 | Claude — Unity thread | IN_PROGRESS | Playtest build: hex board polished (tile highlight, legal-move markers, stack offsets), a stand-in catalog for all 139 cards by type (LAND hex slab with faction tint, STRUCTURE prism, CHARACTER capsule + faction color + name plate, CAPITAL tower, SPELL VFX burst), real GLBs swapped in where staged, SFX from `picks/`, and an event playback driver. Then it connects to the AI-079 bridge for real play. Acceptance: Mathew plays a full match in a Windows build. |
+| **AI-081** (new, AI-061/AI-019) | P1 | Claude — Meshy thread | IN_PROGRESS | Animatable models: rig humanoid CHARACTER models (Meshy auto-rig/animate) with idle/walk/attack/hit/death clips and export FBX/GLB with animations. Non-humanoids stay static (Unity tweens). Plus the AI-067 lands (local `batch-05-lands`), then the remaining structures. |
+| **AI-082** (new, AI-061/AI-020) | P1 | Claude — ElevenLabs thread | IN_PROGRESS (green-lit) | Full cue sets (deploy/move/attack/hit/destroy/ability/idle, + signature for apex) for every card that has a model or is in the lands batch, then the rest of the roster by SFX group. Picks go in `picks/<card_id>_<cue>.wav`. |
+| AI-075, AI-077, AI-074, AI-078, AI-076 | P1–P3 | Muse | READY / IN_PROGRESS | Unchanged, behind AI-079. |
