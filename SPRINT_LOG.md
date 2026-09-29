@@ -478,3 +478,13 @@ Verify + Linux/Windows packaging runs are in flight on the new commits (runs 366
 - Upstream SHA: 73bde885a6f7031b8ccaf07b076152b6efa5066bad17781ddbb824bbcef6f990 intact.
 
 Standing gaps unchanged: browser UI visual check unverifiable from remote tooling; AI-065/AI-046-WIN-ACCEPT local break-mode reruns wait on Mathew; AI-064 PC coverage run waits on Mathew; ElevenLabs cue names in the ElevenLabs thread; AI-030/031/052-ASSET/061 lanes human/paid.
+
+### CI results 2026-09-29 18:15 UTC (supplement to the 14:00 entry)
+All runs on the published commits are GREEN:
+- Verify development increments @90afb2c: success (run 36610544514)
+- Windows packaging @90afb2c: success (run 36610544470)
+- Verify development increments @caf4a42: success (run 36610540429)
+- Linux packaging @caf4a42: success (run 36610540317)
+- Verify @d51ce5b / @59298dd (book-only commits) still in flight at log time.
+
+This clears the CI half of AI-071 ("Verify green on both OSes") and AI-073 ("all three workflows green"). Reviewer acceptance (12:00 lane owner) remains outstanding.
