@@ -39,6 +39,9 @@ jobs:
       - name: Asset prompt board-scale contract (AI-063)
         working-directory: docs/muse/sprint-01/asset-prompts
         run: python -m unittest test_asset_directory
+      - name: Presentation manifest coverage (AI-064)
+        working-directory: docs/muse/sprint-02/presentation
+        run: python -m unittest test_coverage
       - name: Client integration example
         working-directory: prototypes/lobby-lab
         run: node examples/client-demo.js
