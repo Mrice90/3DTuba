@@ -33,7 +33,15 @@ import java.util.regex.Pattern;
  * real engine event stream as JSONL in the AI-062 board-events wire format
  * (docs/muse/sprint-02/board-events/event-schema.json).
  *
- * <p>Usage: {@code EventDump <seed> <out.jsonl>}
+ * <p>Usage: {@code EventDump <seed> <out.jsonl> [--mode base|swap|mirror]}
+ *
+ * <p>Modes (AI-072): {@code base} (default) seats Zeus at player 0 and
+ * Poseidon at player 1; {@code swap} reverses the seats (Poseidon at 0,
+ * Zeus at 1), which separates "which deck" from "which seat goes first";
+ * {@code mirror} seats the Zeus starter at both players, a control for
+ * hidden seat bias. All three run the same engine, bots and rules —
+ * only the harness deck assignment changes. Same seed and mode →
+ * byte-identical dump.
  *
  * <p>Compiled against the pinned alpha fat JAR
  * (releases/alpha-0.7.15-playable/infinite-conquest-alpha-0.7.15.jar) and run
@@ -76,20 +84,57 @@ public final class EventDump {
     private static final int MAX_DECISIONS = 200_000;
 
     public static void main(String[] args) throws Exception {
+        if (args.length < 2) {
+            System.err.println("usage: EventDump <seed> <out.jsonl> [--mode base|swap|mirror]");
+            System.exit(2);
+        }
         long seed = Long.parseLong(args[0]);
         Path out = Path.of(args[1]);
+        String mode = "base";
+        for (int i = 2; i < args.length; i++) {
+            if (args[i].startsWith("--mode=")) {
+                mode = args[i].substring("--mode=".length());
+            } else {
+                System.err.println("unknown argument: " + args[i]);
+                System.exit(2);
+            }
+        }
 
         PrototypeCardPool pool = new PrototypeCardPool();
         FactionDecks factions = new FactionDecks(pool);
         CapitalRoster capitals = new CapitalRoster();
         List<CardDefinition> zeus = factions.starter("ZEUS");
         List<CardDefinition> poseidon = factions.starter("POSEIDON");
-        DeckBuild zeusBuild = new DeckBuild("Zeus starter", "ZEUS", null,
-                capitals.defaultForDeck(zeus).orElseThrow(), zeus);
-        DeckBuild poseidonBuild = new DeckBuild("Poseidon starter", "POSEIDON", null,
-                capitals.defaultForDeck(poseidon).orElseThrow(), poseidon);
 
-        GameState state = new DemoMatchFactory().create(seed, zeusBuild, poseidonBuild,
+        // AI-072: seat/deck arrangements. The engine, bots and rules are the
+        // same in every mode — only the harness deck assignment changes.
+        List<CardDefinition> deck0, deck1;
+        String name0, name1, faction0, faction1;
+        switch (mode) {
+            case "base" -> {
+                deck0 = zeus; name0 = "Zeus starter"; faction0 = "ZEUS";
+                deck1 = poseidon; name1 = "Poseidon starter"; faction1 = "POSEIDON";
+            }
+            case "swap" -> {
+                deck0 = poseidon; name0 = "Poseidon starter"; faction0 = "POSEIDON";
+                deck1 = zeus; name1 = "Zeus starter"; faction1 = "ZEUS";
+            }
+            case "mirror" -> {
+                deck0 = zeus; name0 = "Zeus starter"; faction0 = "ZEUS";
+                deck1 = zeus; name1 = "Zeus starter"; faction1 = "ZEUS";
+            }
+            default -> {
+                System.err.println("unknown mode: " + mode + " (want base|swap|mirror)");
+                System.exit(2);
+                return;
+            }
+        }
+        DeckBuild build0 = new DeckBuild(name0, faction0, null,
+                capitals.defaultForDeck(deck0).orElseThrow(), deck0);
+        DeckBuild build1 = new DeckBuild(name1, faction1, null,
+                capitals.defaultForDeck(deck1).orElseThrow(), deck1);
+
+        GameState state = new DemoMatchFactory().create(seed, build0, build1,
                 new BoardPosition(1, 0), new BoardPosition(2, 5), BoardGeometry.HEX);
         CommandProcessor commands = new CommandProcessor(state);
         BotPlayer[] bots = {
@@ -132,7 +177,7 @@ public final class EventDump {
         }
         Files.writeString(out, sb.toString());
         System.out.println("wrote " + transcript.size() + " events to " + out
-                + " (winner: " + state.winner().stream().mapToObj(String::valueOf).findFirst().orElse("draw") + ")");
+                + " (mode: " + mode + ", winner: " + state.winner().stream().mapToObj(String::valueOf).findFirst().orElse("draw") + ")");
     }
 
     /** Adapts GameEvents to wire-format maps as the match runs. */
