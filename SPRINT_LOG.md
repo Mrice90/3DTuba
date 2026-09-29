@@ -443,3 +443,38 @@ Checkpoint of record for 12:00 EDT. It covers `3612631` → **`da5f299`** (5 Mus
 | HA-009, HA-011, HA-012 | Mathew | P1/P2 | Thunder Ram / batch-04 style verdict; Skyline Seer likeness; ElevenLabs Explore sharing. |
 
 Next checkpoint 2026-09-29 18:00 EDT. No release or full-match claim.
+
+## 2026-09-29 14:00 — Rune (job lobby-lab-reflection-1400): AI-071/072/073 delivered
+
+Branch tip at run start: `b88c496` (12:00 Claude acceptance review: AI-069/AI-070 accepted, AI-064 CI part accepted; new AI-071/072/073 assigned to Muse). New tip after run: published commits below.
+
+Upstream immutable copy SHA-256: 73bde885a6f7031b8ccaf07b076152b6efa5066bad17781ddbb824bbcef6f990 — verified intact, unchanged.
+
+### AI-071 (P3) DELIVERED — `8608fd1`
+`encoding="utf-8"` on both `open()` calls in `docs/muse/sprint-02/presentation/build_presentation_manifest.py` (72, 118) — closes the latent Windows cp1252 break AI-069 found in the sibling files. Regenerated `presentation-manifest.json` from pinned inputs → byte-identical; `test_coverage` 2/2 OK.
+
+### AI-072 (P2) DELIVERED — `f4206a1`, `b5825e3`, `4bcf3ed`, `ed7ce31`, `57f2495`, `34baef8`, `691ddda`
+- `EventDump --mode base|swap|mirror` (default base; swap reverses seats; mirror seats the Zeus starter at both players as a seat-bias control). Engine/bots/rules untouched. Reproducibility: base seed 42 → 235 events, winner 0 (matches CI 36519850577); base seeds 1–20 → 20/20 Zeus, exactly the AI-070 base table.
+- `run-balance.sh` (new): 20 seeds × 3 modes, validates every dump against the AI-062 wire format, prints the per-mode win summary. Local run: **60/60 dumps VALID**.
+- Results: base Zeus 20/20 (100%); swap Zeus 12/20 (60%); mirror seat-0 12/20 (60%). Decomposition: **deck effect +60pp for the Zeus starter at both seats; seat effect +40pp for seat 0 with either deck**. Combined Zeus 32/40 = 80% (AI-070: 28/31 ≈ 90%). The 12:00 review's caveat is quantified: deck asymmetry is the main driver, but first-player advantage is a real ~40pp contributor (no coin flip in `DemoMatchFactory` turn order). `win-split-analysis.md` carries the full section; balance flag to AI-012 strengthened. Analysis only, no rules change.
+- **Incidental AI-006 defect found by the protocol and fixed**: the AI-062 contract asserted `CHARACTER_MOVED` `amount == hex distance`, but the engine's cost is the step count along the shortest *legal* path — `MovementRules.shortestLegalPath` is a BFS that detours around blocked hexes (confirmed in TubaExperiment source and the pinned-jar bytecode; real base-seed-20 move: distance 3, cost 4). `validate.py` now enforces `amount >= distance`; `board-events.md` §13 + event-13 table corrected; detour regression test added. `test_validate` 6/6 OK (was 5/5).
+- Operational note: /tmp was wiped mid-run by the sandbox; all work redone in the durable goal-workspace clone with zero evidence loss (the two validation failures were captured in-run and re-confirmed). Working lesson: keep run artifacts under ~/workspace, never /tmp.
+
+### AI-073 (P3) DELIVERED — `633294d`, `caf4a42`, `90afb2c`
+`ubuntu-latest` → `ubuntu-24.04` in `verify.yml` matrix and `linux-packaging.yml` (ahead of the 2026-10-19 Ubuntu 26 migration); actions bumped to Node-24 majors: `checkout@v4→v5`, `setup-node@v4→v5`, `setup-python@v5→v6`, `setup-java@v4→v5` (verified against published action metadata; lowest majors declaring node24). No build-logic changes; `windows-latest` kept. YAML validated locally.
+
+### CI watch at publish time
+Verify + Linux/Windows packaging runs are in flight on the new commits (runs 36610544514/36610544470/36610540317/36610540429/36610536507, created 2026-09-29 18:13 UTC). Green confirmation is the reviewer's lane (12:00 assignment: "CI green", "log every run, red ones included").
+
+### Verification pass (clean clone at tip `90afb2c`)
+- `npm test` in prototypes/lobby-lab: 43/43 pass.
+- `python3 -m unittest test_validate_manifest` in docs/muse/sprint-01: MANIFEST VALID (391/391).
+- `python3 -m unittest discover -s asset-prompts`: 6/6 OK.
+- `python3 -m unittest test_coverage` in docs/muse/sprint-02/presentation: 2/2 OK.
+- `python3 -m unittest test_validate` in docs/muse/sprint-02/board-events: 6/6 OK.
+- `node --test smoke.test.js` in docs/muse/sprint-01/lobby-smoke: 1/1 pass.
+- `node demo.js` + `node examples/client-demo.js`: exit 0.
+- Deployed-worker drift probe (GETs only): `GET /lobbies` → 200; `GET /leaderboard?limit=5` → 200; `GET /rating/<uuid>` → 200 default `{"rating":1000,"wins":0,"losses":0,"name":"Player"}`. Matches pinned 992bc95 contract — no drift.
+- Upstream SHA: 73bde885a6f7031b8ccaf07b076152b6efa5066bad17781ddbb824bbcef6f990 intact.
+
+Standing gaps unchanged: browser UI visual check unverifiable from remote tooling; AI-065/AI-046-WIN-ACCEPT local break-mode reruns wait on Mathew; AI-064 PC coverage run waits on Mathew; ElevenLabs cue names in the ElevenLabs thread; AI-030/031/052-ASSET/061 lanes human/paid.
