@@ -65,3 +65,11 @@ jobs:
           ./fetch-source.sh
           ./build-release.sh
           ./tools/event-dump/run.sh
+      # AI-079: rules bridge protocol. Builds RulesBridge.java against the
+      # pinned alpha JAR and runs the protocol tests: deterministic seed-42
+      # output, valid act, stale/fabricated INVALID_ACTION rejection, no
+      # mutation on rejection, bot auto-play, scripted GAME_OVER, AI-062
+      # validation of every event, hidden-state redaction.
+      - name: AI-079 rules bridge protocol (JSONL stdin/stdout, validate)
+        working-directory: releases/alpha-0.7.15-playable
+        run: ./tools/rules-bridge/run.sh
