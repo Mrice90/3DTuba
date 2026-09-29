@@ -68,8 +68,8 @@ class TestCoverage(unittest.TestCase):
                     s["key"].startswith(cid + "_"),
                     f"sfx key {s['key']} not <card_id>_<cue>")
                 cue = s["key"][len(cid) + 1:]
-                self.assertIn(cue, ["summon", "move", "attack", "hit",
-                                    "death", "ability", "idle"])
+                self.assertIn(cue, ["deploy", "move", "attack", "hit",
+                                    "destroy", "ability", "idle", "signature"])
 
 
 if __name__ == "__main__":

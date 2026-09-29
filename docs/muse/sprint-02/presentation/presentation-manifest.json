@@ -1,19 +1,20 @@
 {
- "generated": "2026-09-28",
+ "generated": "2026-09-29",
  "cue_set": [
-  "summon",
+  "deploy",
   "move",
   "attack",
   "hit",
-  "death",
+  "destroy",
   "ability",
-  "idle"
+  "idle",
+  "signature"
  ],
  "staging_layout": {
-  "model": "meshy/<card_id>.glb",
+  "model": "meshy/<batch>/<card_id>.glb (recursive, or meshy/<card_id>.glb)",
   "textures": "meshy/<card_id>_textures/",
   "animations": "animations/<card_id>_<slug>.fbx",
-  "sfx": "sfx/<card_id>_<cue>.wav"
+  "sfx": "picks/<card_id>_<cue>.wav (preferred) or sfx/<card_id>_<cue>.wav/.mp3"
  },
  "cards": {
   "zeus_ability_stormfront": {
@@ -25,7 +26,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_ability_stormfront_summon"
+     "sfx": "zeus_ability_stormfront_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -33,7 +34,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_ability_stormfront_death"
+     "sfx": "zeus_ability_stormfront_destroy"
     }
    },
    "animations": [
@@ -56,16 +57,16 @@
      "file": "sfx/zeus_ability_stormfront_ability.wav"
     },
     {
-     "key": "zeus_ability_stormfront_death",
-     "file": "sfx/zeus_ability_stormfront_death.wav"
+     "key": "zeus_ability_stormfront_deploy",
+     "file": "sfx/zeus_ability_stormfront_deploy.wav"
+    },
+    {
+     "key": "zeus_ability_stormfront_destroy",
+     "file": "sfx/zeus_ability_stormfront_destroy.wav"
     },
     {
      "key": "zeus_ability_stormfront_idle",
      "file": "sfx/zeus_ability_stormfront_idle.wav"
-    },
-    {
-     "key": "zeus_ability_stormfront_summon",
-     "file": "sfx/zeus_ability_stormfront_summon.wav"
     }
    ]
   },
@@ -78,7 +79,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_ability_oracle_spire_summon"
+     "sfx": "zeus_ability_oracle_spire_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -90,7 +91,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_ability_oracle_spire_death"
+     "sfx": "zeus_ability_oracle_spire_destroy"
     }
    },
    "animations": [
@@ -113,16 +114,16 @@
      "file": "sfx/zeus_ability_oracle_spire_ability.wav"
     },
     {
-     "key": "zeus_ability_oracle_spire_death",
-     "file": "sfx/zeus_ability_oracle_spire_death.wav"
+     "key": "zeus_ability_oracle_spire_deploy",
+     "file": "sfx/zeus_ability_oracle_spire_deploy.wav"
+    },
+    {
+     "key": "zeus_ability_oracle_spire_destroy",
+     "file": "sfx/zeus_ability_oracle_spire_destroy.wav"
     },
     {
      "key": "zeus_ability_oracle_spire_idle",
      "file": "sfx/zeus_ability_oracle_spire_idle.wav"
-    },
-    {
-     "key": "zeus_ability_oracle_spire_summon",
-     "file": "sfx/zeus_ability_oracle_spire_summon.wav"
     }
    ]
   },
@@ -135,7 +136,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_ability_skyline_seer_summon"
+     "sfx": "zeus_ability_skyline_seer_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -159,7 +160,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_ability_skyline_seer_death"
+     "sfx": "zeus_ability_skyline_seer_destroy"
     }
    },
    "animations": [
@@ -194,8 +195,12 @@
      "file": "sfx/zeus_ability_skyline_seer_attack.wav"
     },
     {
-     "key": "zeus_ability_skyline_seer_death",
-     "file": "sfx/zeus_ability_skyline_seer_death.wav"
+     "key": "zeus_ability_skyline_seer_deploy",
+     "file": "sfx/zeus_ability_skyline_seer_deploy.wav"
+    },
+    {
+     "key": "zeus_ability_skyline_seer_destroy",
+     "file": "sfx/zeus_ability_skyline_seer_destroy.wav"
     },
     {
      "key": "zeus_ability_skyline_seer_hit",
@@ -208,10 +213,6 @@
     {
      "key": "zeus_ability_skyline_seer_move",
      "file": "sfx/zeus_ability_skyline_seer_move.wav"
-    },
-    {
-     "key": "zeus_ability_skyline_seer_summon",
-     "file": "sfx/zeus_ability_skyline_seer_summon.wav"
     }
    ]
   },
@@ -224,7 +225,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_ability_healing_shoal_summon"
+     "sfx": "poseidon_ability_healing_shoal_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -232,7 +233,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_ability_healing_shoal_death"
+     "sfx": "poseidon_ability_healing_shoal_destroy"
     }
    },
    "animations": [
@@ -255,16 +256,16 @@
      "file": "sfx/poseidon_ability_healing_shoal_ability.wav"
     },
     {
-     "key": "poseidon_ability_healing_shoal_death",
-     "file": "sfx/poseidon_ability_healing_shoal_death.wav"
+     "key": "poseidon_ability_healing_shoal_deploy",
+     "file": "sfx/poseidon_ability_healing_shoal_deploy.wav"
+    },
+    {
+     "key": "poseidon_ability_healing_shoal_destroy",
+     "file": "sfx/poseidon_ability_healing_shoal_destroy.wav"
     },
     {
      "key": "poseidon_ability_healing_shoal_idle",
      "file": "sfx/poseidon_ability_healing_shoal_idle.wav"
-    },
-    {
-     "key": "poseidon_ability_healing_shoal_summon",
-     "file": "sfx/poseidon_ability_healing_shoal_summon.wav"
     }
    ]
   },
@@ -277,7 +278,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_ability_tidewell_summon"
+     "sfx": "poseidon_ability_tidewell_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -289,7 +290,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_ability_tidewell_death"
+     "sfx": "poseidon_ability_tidewell_destroy"
     }
    },
    "animations": [
@@ -312,16 +313,16 @@
      "file": "sfx/poseidon_ability_tidewell_ability.wav"
     },
     {
-     "key": "poseidon_ability_tidewell_death",
-     "file": "sfx/poseidon_ability_tidewell_death.wav"
+     "key": "poseidon_ability_tidewell_deploy",
+     "file": "sfx/poseidon_ability_tidewell_deploy.wav"
+    },
+    {
+     "key": "poseidon_ability_tidewell_destroy",
+     "file": "sfx/poseidon_ability_tidewell_destroy.wav"
     },
     {
      "key": "poseidon_ability_tidewell_idle",
      "file": "sfx/poseidon_ability_tidewell_idle.wav"
-    },
-    {
-     "key": "poseidon_ability_tidewell_summon",
-     "file": "sfx/poseidon_ability_tidewell_summon.wav"
     }
    ]
   },
@@ -334,7 +335,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_ability_reefwarden_summon"
+     "sfx": "poseidon_ability_reefwarden_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -358,7 +359,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_ability_reefwarden_death"
+     "sfx": "poseidon_ability_reefwarden_destroy"
     }
    },
    "animations": [
@@ -393,8 +394,12 @@
      "file": "sfx/poseidon_ability_reefwarden_attack.wav"
     },
     {
-     "key": "poseidon_ability_reefwarden_death",
-     "file": "sfx/poseidon_ability_reefwarden_death.wav"
+     "key": "poseidon_ability_reefwarden_deploy",
+     "file": "sfx/poseidon_ability_reefwarden_deploy.wav"
+    },
+    {
+     "key": "poseidon_ability_reefwarden_destroy",
+     "file": "sfx/poseidon_ability_reefwarden_destroy.wav"
     },
     {
      "key": "poseidon_ability_reefwarden_hit",
@@ -407,10 +412,6 @@
     {
      "key": "poseidon_ability_reefwarden_move",
      "file": "sfx/poseidon_ability_reefwarden_move.wav"
-    },
-    {
-     "key": "poseidon_ability_reefwarden_summon",
-     "file": "sfx/poseidon_ability_reefwarden_summon.wav"
     }
    ]
   },
@@ -423,7 +424,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "zeus_apex_thunder_gods_verdict_summon"
+     "sfx": "zeus_apex_thunder_gods_verdict_deploy"
     }
    },
    "animations": [
@@ -434,8 +435,12 @@
    ],
    "sfx": [
     {
-     "key": "zeus_apex_thunder_gods_verdict_summon",
-     "file": "sfx/zeus_apex_thunder_gods_verdict_summon.wav"
+     "key": "zeus_apex_thunder_gods_verdict_deploy",
+     "file": "sfx/zeus_apex_thunder_gods_verdict_deploy.wav"
+    },
+    {
+     "key": "zeus_apex_thunder_gods_verdict_signature",
+     "file": "sfx/zeus_apex_thunder_gods_verdict_signature.wav"
     }
    ]
   },
@@ -448,7 +453,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "zeus_apex_wrath_of_olympus_summon"
+     "sfx": "zeus_apex_wrath_of_olympus_deploy"
     }
    },
    "animations": [
@@ -459,8 +464,12 @@
    ],
    "sfx": [
     {
-     "key": "zeus_apex_wrath_of_olympus_summon",
-     "file": "sfx/zeus_apex_wrath_of_olympus_summon.wav"
+     "key": "zeus_apex_wrath_of_olympus_deploy",
+     "file": "sfx/zeus_apex_wrath_of_olympus_deploy.wav"
+    },
+    {
+     "key": "zeus_apex_wrath_of_olympus_signature",
+     "file": "sfx/zeus_apex_wrath_of_olympus_signature.wav"
     }
    ]
   },
@@ -473,7 +482,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "zeus_apex_divine_tailwind_summon"
+     "sfx": "zeus_apex_divine_tailwind_deploy"
     }
    },
    "animations": [
@@ -484,8 +493,12 @@
    ],
    "sfx": [
     {
-     "key": "zeus_apex_divine_tailwind_summon",
-     "file": "sfx/zeus_apex_divine_tailwind_summon.wav"
+     "key": "zeus_apex_divine_tailwind_deploy",
+     "file": "sfx/zeus_apex_divine_tailwind_deploy.wav"
+    },
+    {
+     "key": "zeus_apex_divine_tailwind_signature",
+     "file": "sfx/zeus_apex_divine_tailwind_signature.wav"
     }
    ]
   },
@@ -498,7 +511,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "zeus_apex_crownstorm_ascendance_summon"
+     "sfx": "zeus_apex_crownstorm_ascendance_deploy"
     }
    },
    "animations": [
@@ -509,8 +522,12 @@
    ],
    "sfx": [
     {
-     "key": "zeus_apex_crownstorm_ascendance_summon",
-     "file": "sfx/zeus_apex_crownstorm_ascendance_summon.wav"
+     "key": "zeus_apex_crownstorm_ascendance_deploy",
+     "file": "sfx/zeus_apex_crownstorm_ascendance_deploy.wav"
+    },
+    {
+     "key": "zeus_apex_crownstorm_ascendance_signature",
+     "file": "sfx/zeus_apex_crownstorm_ascendance_signature.wav"
     }
    ]
   },
@@ -523,7 +540,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "zeus_apex_imperial_sky_aegis_summon"
+     "sfx": "zeus_apex_imperial_sky_aegis_deploy"
     }
    },
    "animations": [
@@ -534,8 +551,12 @@
    ],
    "sfx": [
     {
-     "key": "zeus_apex_imperial_sky_aegis_summon",
-     "file": "sfx/zeus_apex_imperial_sky_aegis_summon.wav"
+     "key": "zeus_apex_imperial_sky_aegis_deploy",
+     "file": "sfx/zeus_apex_imperial_sky_aegis_deploy.wav"
+    },
+    {
+     "key": "zeus_apex_imperial_sky_aegis_signature",
+     "file": "sfx/zeus_apex_imperial_sky_aegis_signature.wav"
     }
    ]
   },
@@ -548,7 +569,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_apex_skyfather_archon_summon"
+     "sfx": "zeus_apex_skyfather_archon_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -572,7 +593,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_apex_skyfather_archon_death"
+     "sfx": "zeus_apex_skyfather_archon_destroy"
     }
    },
    "animations": [
@@ -607,8 +628,12 @@
      "file": "sfx/zeus_apex_skyfather_archon_attack.wav"
     },
     {
-     "key": "zeus_apex_skyfather_archon_death",
-     "file": "sfx/zeus_apex_skyfather_archon_death.wav"
+     "key": "zeus_apex_skyfather_archon_deploy",
+     "file": "sfx/zeus_apex_skyfather_archon_deploy.wav"
+    },
+    {
+     "key": "zeus_apex_skyfather_archon_destroy",
+     "file": "sfx/zeus_apex_skyfather_archon_destroy.wav"
     },
     {
      "key": "zeus_apex_skyfather_archon_hit",
@@ -623,8 +648,8 @@
      "file": "sfx/zeus_apex_skyfather_archon_move.wav"
     },
     {
-     "key": "zeus_apex_skyfather_archon_summon",
-     "file": "sfx/zeus_apex_skyfather_archon_summon.wav"
+     "key": "zeus_apex_skyfather_archon_signature",
+     "file": "sfx/zeus_apex_skyfather_archon_signature.wav"
     }
    ]
   },
@@ -637,7 +662,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_apex_keraunos_seraph_summon"
+     "sfx": "zeus_apex_keraunos_seraph_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -661,7 +686,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_apex_keraunos_seraph_death"
+     "sfx": "zeus_apex_keraunos_seraph_destroy"
     }
    },
    "animations": [
@@ -696,8 +721,12 @@
      "file": "sfx/zeus_apex_keraunos_seraph_attack.wav"
     },
     {
-     "key": "zeus_apex_keraunos_seraph_death",
-     "file": "sfx/zeus_apex_keraunos_seraph_death.wav"
+     "key": "zeus_apex_keraunos_seraph_deploy",
+     "file": "sfx/zeus_apex_keraunos_seraph_deploy.wav"
+    },
+    {
+     "key": "zeus_apex_keraunos_seraph_destroy",
+     "file": "sfx/zeus_apex_keraunos_seraph_destroy.wav"
     },
     {
      "key": "zeus_apex_keraunos_seraph_hit",
@@ -712,8 +741,8 @@
      "file": "sfx/zeus_apex_keraunos_seraph_move.wav"
     },
     {
-     "key": "zeus_apex_keraunos_seraph_summon",
-     "file": "sfx/zeus_apex_keraunos_seraph_summon.wav"
+     "key": "zeus_apex_keraunos_seraph_signature",
+     "file": "sfx/zeus_apex_keraunos_seraph_signature.wav"
     }
    ]
   },
@@ -726,7 +755,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_apex_olympian_storm_titan_summon"
+     "sfx": "zeus_apex_olympian_storm_titan_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -750,7 +779,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_apex_olympian_storm_titan_death"
+     "sfx": "zeus_apex_olympian_storm_titan_destroy"
     }
    },
    "animations": [
@@ -785,8 +814,12 @@
      "file": "sfx/zeus_apex_olympian_storm_titan_attack.wav"
     },
     {
-     "key": "zeus_apex_olympian_storm_titan_death",
-     "file": "sfx/zeus_apex_olympian_storm_titan_death.wav"
+     "key": "zeus_apex_olympian_storm_titan_deploy",
+     "file": "sfx/zeus_apex_olympian_storm_titan_deploy.wav"
+    },
+    {
+     "key": "zeus_apex_olympian_storm_titan_destroy",
+     "file": "sfx/zeus_apex_olympian_storm_titan_destroy.wav"
     },
     {
      "key": "zeus_apex_olympian_storm_titan_hit",
@@ -801,8 +834,8 @@
      "file": "sfx/zeus_apex_olympian_storm_titan_move.wav"
     },
     {
-     "key": "zeus_apex_olympian_storm_titan_summon",
-     "file": "sfx/zeus_apex_olympian_storm_titan_summon.wav"
+     "key": "zeus_apex_olympian_storm_titan_signature",
+     "file": "sfx/zeus_apex_olympian_storm_titan_signature.wav"
     }
    ]
   },
@@ -815,7 +848,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_apex_celestial_throne_grid_summon"
+     "sfx": "zeus_apex_celestial_throne_grid_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -823,7 +856,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_apex_celestial_throne_grid_death"
+     "sfx": "zeus_apex_celestial_throne_grid_destroy"
     }
    },
    "animations": [
@@ -846,16 +879,20 @@
      "file": "sfx/zeus_apex_celestial_throne_grid_ability.wav"
     },
     {
-     "key": "zeus_apex_celestial_throne_grid_death",
-     "file": "sfx/zeus_apex_celestial_throne_grid_death.wav"
+     "key": "zeus_apex_celestial_throne_grid_deploy",
+     "file": "sfx/zeus_apex_celestial_throne_grid_deploy.wav"
+    },
+    {
+     "key": "zeus_apex_celestial_throne_grid_destroy",
+     "file": "sfx/zeus_apex_celestial_throne_grid_destroy.wav"
     },
     {
      "key": "zeus_apex_celestial_throne_grid_idle",
      "file": "sfx/zeus_apex_celestial_throne_grid_idle.wav"
     },
     {
-     "key": "zeus_apex_celestial_throne_grid_summon",
-     "file": "sfx/zeus_apex_celestial_throne_grid_summon.wav"
+     "key": "zeus_apex_celestial_throne_grid_signature",
+     "file": "sfx/zeus_apex_celestial_throne_grid_signature.wav"
     }
    ]
   },
@@ -868,7 +905,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_apex_worldstorm_spire_summon"
+     "sfx": "zeus_apex_worldstorm_spire_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -880,7 +917,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_apex_worldstorm_spire_death"
+     "sfx": "zeus_apex_worldstorm_spire_destroy"
     }
    },
    "animations": [
@@ -903,16 +940,20 @@
      "file": "sfx/zeus_apex_worldstorm_spire_ability.wav"
     },
     {
-     "key": "zeus_apex_worldstorm_spire_death",
-     "file": "sfx/zeus_apex_worldstorm_spire_death.wav"
+     "key": "zeus_apex_worldstorm_spire_deploy",
+     "file": "sfx/zeus_apex_worldstorm_spire_deploy.wav"
+    },
+    {
+     "key": "zeus_apex_worldstorm_spire_destroy",
+     "file": "sfx/zeus_apex_worldstorm_spire_destroy.wav"
     },
     {
      "key": "zeus_apex_worldstorm_spire_idle",
      "file": "sfx/zeus_apex_worldstorm_spire_idle.wav"
     },
     {
-     "key": "zeus_apex_worldstorm_spire_summon",
-     "file": "sfx/zeus_apex_worldstorm_spire_summon.wav"
+     "key": "zeus_apex_worldstorm_spire_signature",
+     "file": "sfx/zeus_apex_worldstorm_spire_signature.wav"
     }
    ]
   },
@@ -925,7 +966,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_apex_atlantis_crown_basin_summon"
+     "sfx": "poseidon_apex_atlantis_crown_basin_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -933,7 +974,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_apex_atlantis_crown_basin_death"
+     "sfx": "poseidon_apex_atlantis_crown_basin_destroy"
     }
    },
    "animations": [
@@ -956,16 +997,20 @@
      "file": "sfx/poseidon_apex_atlantis_crown_basin_ability.wav"
     },
     {
-     "key": "poseidon_apex_atlantis_crown_basin_death",
-     "file": "sfx/poseidon_apex_atlantis_crown_basin_death.wav"
+     "key": "poseidon_apex_atlantis_crown_basin_deploy",
+     "file": "sfx/poseidon_apex_atlantis_crown_basin_deploy.wav"
+    },
+    {
+     "key": "poseidon_apex_atlantis_crown_basin_destroy",
+     "file": "sfx/poseidon_apex_atlantis_crown_basin_destroy.wav"
     },
     {
      "key": "poseidon_apex_atlantis_crown_basin_idle",
      "file": "sfx/poseidon_apex_atlantis_crown_basin_idle.wav"
     },
     {
-     "key": "poseidon_apex_atlantis_crown_basin_summon",
-     "file": "sfx/poseidon_apex_atlantis_crown_basin_summon.wav"
+     "key": "poseidon_apex_atlantis_crown_basin_signature",
+     "file": "sfx/poseidon_apex_atlantis_crown_basin_signature.wav"
     }
    ]
   },
@@ -978,7 +1023,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_apex_oceanus_current_vault_summon"
+     "sfx": "poseidon_apex_oceanus_current_vault_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -986,7 +1031,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_apex_oceanus_current_vault_death"
+     "sfx": "poseidon_apex_oceanus_current_vault_destroy"
     }
    },
    "animations": [
@@ -1009,16 +1054,20 @@
      "file": "sfx/poseidon_apex_oceanus_current_vault_ability.wav"
     },
     {
-     "key": "poseidon_apex_oceanus_current_vault_death",
-     "file": "sfx/poseidon_apex_oceanus_current_vault_death.wav"
+     "key": "poseidon_apex_oceanus_current_vault_deploy",
+     "file": "sfx/poseidon_apex_oceanus_current_vault_deploy.wav"
+    },
+    {
+     "key": "poseidon_apex_oceanus_current_vault_destroy",
+     "file": "sfx/poseidon_apex_oceanus_current_vault_destroy.wav"
     },
     {
      "key": "poseidon_apex_oceanus_current_vault_idle",
      "file": "sfx/poseidon_apex_oceanus_current_vault_idle.wav"
     },
     {
-     "key": "poseidon_apex_oceanus_current_vault_summon",
-     "file": "sfx/poseidon_apex_oceanus_current_vault_summon.wav"
+     "key": "poseidon_apex_oceanus_current_vault_signature",
+     "file": "sfx/poseidon_apex_oceanus_current_vault_signature.wav"
     }
    ]
   },
@@ -1031,7 +1080,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_apex_leviathan_nursery_trench_summon"
+     "sfx": "poseidon_apex_leviathan_nursery_trench_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -1039,7 +1088,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_apex_leviathan_nursery_trench_death"
+     "sfx": "poseidon_apex_leviathan_nursery_trench_destroy"
     }
    },
    "animations": [
@@ -1062,16 +1111,20 @@
      "file": "sfx/poseidon_apex_leviathan_nursery_trench_ability.wav"
     },
     {
-     "key": "poseidon_apex_leviathan_nursery_trench_death",
-     "file": "sfx/poseidon_apex_leviathan_nursery_trench_death.wav"
+     "key": "poseidon_apex_leviathan_nursery_trench_deploy",
+     "file": "sfx/poseidon_apex_leviathan_nursery_trench_deploy.wav"
+    },
+    {
+     "key": "poseidon_apex_leviathan_nursery_trench_destroy",
+     "file": "sfx/poseidon_apex_leviathan_nursery_trench_destroy.wav"
     },
     {
      "key": "poseidon_apex_leviathan_nursery_trench_idle",
      "file": "sfx/poseidon_apex_leviathan_nursery_trench_idle.wav"
     },
     {
-     "key": "poseidon_apex_leviathan_nursery_trench_summon",
-     "file": "sfx/poseidon_apex_leviathan_nursery_trench_summon.wav"
+     "key": "poseidon_apex_leviathan_nursery_trench_signature",
+     "file": "sfx/poseidon_apex_leviathan_nursery_trench_signature.wav"
     }
    ]
   },
@@ -1084,7 +1137,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_apex_trident_confluence_summon"
+     "sfx": "poseidon_apex_trident_confluence_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -1092,7 +1145,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_apex_trident_confluence_death"
+     "sfx": "poseidon_apex_trident_confluence_destroy"
     }
    },
    "animations": [
@@ -1115,16 +1168,20 @@
      "file": "sfx/poseidon_apex_trident_confluence_ability.wav"
     },
     {
-     "key": "poseidon_apex_trident_confluence_death",
-     "file": "sfx/poseidon_apex_trident_confluence_death.wav"
+     "key": "poseidon_apex_trident_confluence_deploy",
+     "file": "sfx/poseidon_apex_trident_confluence_deploy.wav"
+    },
+    {
+     "key": "poseidon_apex_trident_confluence_destroy",
+     "file": "sfx/poseidon_apex_trident_confluence_destroy.wav"
     },
     {
      "key": "poseidon_apex_trident_confluence_idle",
      "file": "sfx/poseidon_apex_trident_confluence_idle.wav"
     },
     {
-     "key": "poseidon_apex_trident_confluence_summon",
-     "file": "sfx/poseidon_apex_trident_confluence_summon.wav"
+     "key": "poseidon_apex_trident_confluence_signature",
+     "file": "sfx/poseidon_apex_trident_confluence_signature.wav"
     }
    ]
   },
@@ -1137,7 +1194,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_apex_worldsea_platform_summon"
+     "sfx": "poseidon_apex_worldsea_platform_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -1145,7 +1202,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_apex_worldsea_platform_death"
+     "sfx": "poseidon_apex_worldsea_platform_destroy"
     }
    },
    "animations": [
@@ -1168,16 +1225,20 @@
      "file": "sfx/poseidon_apex_worldsea_platform_ability.wav"
     },
     {
-     "key": "poseidon_apex_worldsea_platform_death",
-     "file": "sfx/poseidon_apex_worldsea_platform_death.wav"
+     "key": "poseidon_apex_worldsea_platform_deploy",
+     "file": "sfx/poseidon_apex_worldsea_platform_deploy.wav"
+    },
+    {
+     "key": "poseidon_apex_worldsea_platform_destroy",
+     "file": "sfx/poseidon_apex_worldsea_platform_destroy.wav"
     },
     {
      "key": "poseidon_apex_worldsea_platform_idle",
      "file": "sfx/poseidon_apex_worldsea_platform_idle.wav"
     },
     {
-     "key": "poseidon_apex_worldsea_platform_summon",
-     "file": "sfx/poseidon_apex_worldsea_platform_summon.wav"
+     "key": "poseidon_apex_worldsea_platform_signature",
+     "file": "sfx/poseidon_apex_worldsea_platform_signature.wav"
     }
    ]
   },
@@ -1190,7 +1251,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_apex_atlantis_tide_sovereign_summon"
+     "sfx": "poseidon_apex_atlantis_tide_sovereign_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -1214,7 +1275,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_apex_atlantis_tide_sovereign_death"
+     "sfx": "poseidon_apex_atlantis_tide_sovereign_destroy"
     }
    },
    "animations": [
@@ -1249,8 +1310,12 @@
      "file": "sfx/poseidon_apex_atlantis_tide_sovereign_attack.wav"
     },
     {
-     "key": "poseidon_apex_atlantis_tide_sovereign_death",
-     "file": "sfx/poseidon_apex_atlantis_tide_sovereign_death.wav"
+     "key": "poseidon_apex_atlantis_tide_sovereign_deploy",
+     "file": "sfx/poseidon_apex_atlantis_tide_sovereign_deploy.wav"
+    },
+    {
+     "key": "poseidon_apex_atlantis_tide_sovereign_destroy",
+     "file": "sfx/poseidon_apex_atlantis_tide_sovereign_destroy.wav"
     },
     {
      "key": "poseidon_apex_atlantis_tide_sovereign_hit",
@@ -1265,8 +1330,8 @@
      "file": "sfx/poseidon_apex_atlantis_tide_sovereign_move.wav"
     },
     {
-     "key": "poseidon_apex_atlantis_tide_sovereign_summon",
-     "file": "sfx/poseidon_apex_atlantis_tide_sovereign_summon.wav"
+     "key": "poseidon_apex_atlantis_tide_sovereign_signature",
+     "file": "sfx/poseidon_apex_atlantis_tide_sovereign_signature.wav"
     }
    ]
   },
@@ -1279,7 +1344,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_apex_kraken_prime_avatar_summon"
+     "sfx": "poseidon_apex_kraken_prime_avatar_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -1303,7 +1368,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_apex_kraken_prime_avatar_death"
+     "sfx": "poseidon_apex_kraken_prime_avatar_destroy"
     }
    },
    "animations": [
@@ -1338,8 +1403,12 @@
      "file": "sfx/poseidon_apex_kraken_prime_avatar_attack.wav"
     },
     {
-     "key": "poseidon_apex_kraken_prime_avatar_death",
-     "file": "sfx/poseidon_apex_kraken_prime_avatar_death.wav"
+     "key": "poseidon_apex_kraken_prime_avatar_deploy",
+     "file": "sfx/poseidon_apex_kraken_prime_avatar_deploy.wav"
+    },
+    {
+     "key": "poseidon_apex_kraken_prime_avatar_destroy",
+     "file": "sfx/poseidon_apex_kraken_prime_avatar_destroy.wav"
     },
     {
      "key": "poseidon_apex_kraken_prime_avatar_hit",
@@ -1354,8 +1423,8 @@
      "file": "sfx/poseidon_apex_kraken_prime_avatar_move.wav"
     },
     {
-     "key": "poseidon_apex_kraken_prime_avatar_summon",
-     "file": "sfx/poseidon_apex_kraken_prime_avatar_summon.wav"
+     "key": "poseidon_apex_kraken_prime_avatar_signature",
+     "file": "sfx/poseidon_apex_kraken_prime_avatar_signature.wav"
     }
    ]
   },
@@ -1368,7 +1437,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_apex_abysswalker_nereid_summon"
+     "sfx": "poseidon_apex_abysswalker_nereid_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -1392,7 +1461,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_apex_abysswalker_nereid_death"
+     "sfx": "poseidon_apex_abysswalker_nereid_destroy"
     }
    },
    "animations": [
@@ -1427,8 +1496,12 @@
      "file": "sfx/poseidon_apex_abysswalker_nereid_attack.wav"
     },
     {
-     "key": "poseidon_apex_abysswalker_nereid_death",
-     "file": "sfx/poseidon_apex_abysswalker_nereid_death.wav"
+     "key": "poseidon_apex_abysswalker_nereid_deploy",
+     "file": "sfx/poseidon_apex_abysswalker_nereid_deploy.wav"
+    },
+    {
+     "key": "poseidon_apex_abysswalker_nereid_destroy",
+     "file": "sfx/poseidon_apex_abysswalker_nereid_destroy.wav"
     },
     {
      "key": "poseidon_apex_abysswalker_nereid_hit",
@@ -1443,8 +1516,8 @@
      "file": "sfx/poseidon_apex_abysswalker_nereid_move.wav"
     },
     {
-     "key": "poseidon_apex_abysswalker_nereid_summon",
-     "file": "sfx/poseidon_apex_abysswalker_nereid_summon.wav"
+     "key": "poseidon_apex_abysswalker_nereid_signature",
+     "file": "sfx/poseidon_apex_abysswalker_nereid_signature.wav"
     }
    ]
   },
@@ -1457,7 +1530,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "poseidon_apex_maelstrom_verdict_summon"
+     "sfx": "poseidon_apex_maelstrom_verdict_deploy"
     }
    },
    "animations": [
@@ -1468,8 +1541,12 @@
    ],
    "sfx": [
     {
-     "key": "poseidon_apex_maelstrom_verdict_summon",
-     "file": "sfx/poseidon_apex_maelstrom_verdict_summon.wav"
+     "key": "poseidon_apex_maelstrom_verdict_deploy",
+     "file": "sfx/poseidon_apex_maelstrom_verdict_deploy.wav"
+    },
+    {
+     "key": "poseidon_apex_maelstrom_verdict_signature",
+     "file": "sfx/poseidon_apex_maelstrom_verdict_signature.wav"
     }
    ]
   },
@@ -1482,7 +1559,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_apex_leviathan_gate_summon"
+     "sfx": "poseidon_apex_leviathan_gate_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -1494,7 +1571,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_apex_leviathan_gate_death"
+     "sfx": "poseidon_apex_leviathan_gate_destroy"
     }
    },
    "animations": [
@@ -1517,16 +1594,20 @@
      "file": "sfx/poseidon_apex_leviathan_gate_ability.wav"
     },
     {
-     "key": "poseidon_apex_leviathan_gate_death",
-     "file": "sfx/poseidon_apex_leviathan_gate_death.wav"
+     "key": "poseidon_apex_leviathan_gate_deploy",
+     "file": "sfx/poseidon_apex_leviathan_gate_deploy.wav"
+    },
+    {
+     "key": "poseidon_apex_leviathan_gate_destroy",
+     "file": "sfx/poseidon_apex_leviathan_gate_destroy.wav"
     },
     {
      "key": "poseidon_apex_leviathan_gate_idle",
      "file": "sfx/poseidon_apex_leviathan_gate_idle.wav"
     },
     {
-     "key": "poseidon_apex_leviathan_gate_summon",
-     "file": "sfx/poseidon_apex_leviathan_gate_summon.wav"
+     "key": "poseidon_apex_leviathan_gate_signature",
+     "file": "sfx/poseidon_apex_leviathan_gate_signature.wav"
     }
    ]
   },
@@ -1539,7 +1620,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_capital_olympus_citadel_summon"
+     "sfx": "zeus_capital_olympus_citadel_deploy"
     },
     "CAPITAL_PASSIVE_TRIGGERED": {
      "animation": null,
@@ -1551,7 +1632,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_capital_olympus_citadel_death"
+     "sfx": "zeus_capital_olympus_citadel_destroy"
     }
    },
    "animations": [
@@ -1574,8 +1655,12 @@
      "file": "sfx/zeus_capital_olympus_citadel_ability.wav"
     },
     {
-     "key": "zeus_capital_olympus_citadel_death",
-     "file": "sfx/zeus_capital_olympus_citadel_death.wav"
+     "key": "zeus_capital_olympus_citadel_deploy",
+     "file": "sfx/zeus_capital_olympus_citadel_deploy.wav"
+    },
+    {
+     "key": "zeus_capital_olympus_citadel_destroy",
+     "file": "sfx/zeus_capital_olympus_citadel_destroy.wav"
     },
     {
      "key": "zeus_capital_olympus_citadel_hit",
@@ -1586,8 +1671,8 @@
      "file": "sfx/zeus_capital_olympus_citadel_idle.wav"
     },
     {
-     "key": "zeus_capital_olympus_citadel_summon",
-     "file": "sfx/zeus_capital_olympus_citadel_summon.wav"
+     "key": "zeus_capital_olympus_citadel_signature",
+     "file": "sfx/zeus_capital_olympus_citadel_signature.wav"
     }
    ]
   },
@@ -1600,7 +1685,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_capital_keraunos_spire_summon"
+     "sfx": "zeus_capital_keraunos_spire_deploy"
     },
     "CAPITAL_PASSIVE_TRIGGERED": {
      "animation": null,
@@ -1612,7 +1697,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_capital_keraunos_spire_death"
+     "sfx": "zeus_capital_keraunos_spire_destroy"
     }
    },
    "animations": [
@@ -1635,8 +1720,12 @@
      "file": "sfx/zeus_capital_keraunos_spire_ability.wav"
     },
     {
-     "key": "zeus_capital_keraunos_spire_death",
-     "file": "sfx/zeus_capital_keraunos_spire_death.wav"
+     "key": "zeus_capital_keraunos_spire_deploy",
+     "file": "sfx/zeus_capital_keraunos_spire_deploy.wav"
+    },
+    {
+     "key": "zeus_capital_keraunos_spire_destroy",
+     "file": "sfx/zeus_capital_keraunos_spire_destroy.wav"
     },
     {
      "key": "zeus_capital_keraunos_spire_hit",
@@ -1647,8 +1736,8 @@
      "file": "sfx/zeus_capital_keraunos_spire_idle.wav"
     },
     {
-     "key": "zeus_capital_keraunos_spire_summon",
-     "file": "sfx/zeus_capital_keraunos_spire_summon.wav"
+     "key": "zeus_capital_keraunos_spire_signature",
+     "file": "sfx/zeus_capital_keraunos_spire_signature.wav"
     }
    ]
   },
@@ -1661,7 +1750,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_capital_cloud_throne_summon"
+     "sfx": "zeus_capital_cloud_throne_deploy"
     },
     "CAPITAL_PASSIVE_TRIGGERED": {
      "animation": null,
@@ -1673,7 +1762,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_capital_cloud_throne_death"
+     "sfx": "zeus_capital_cloud_throne_destroy"
     }
    },
    "animations": [
@@ -1696,8 +1785,12 @@
      "file": "sfx/zeus_capital_cloud_throne_ability.wav"
     },
     {
-     "key": "zeus_capital_cloud_throne_death",
-     "file": "sfx/zeus_capital_cloud_throne_death.wav"
+     "key": "zeus_capital_cloud_throne_deploy",
+     "file": "sfx/zeus_capital_cloud_throne_deploy.wav"
+    },
+    {
+     "key": "zeus_capital_cloud_throne_destroy",
+     "file": "sfx/zeus_capital_cloud_throne_destroy.wav"
     },
     {
      "key": "zeus_capital_cloud_throne_hit",
@@ -1708,8 +1801,8 @@
      "file": "sfx/zeus_capital_cloud_throne_idle.wav"
     },
     {
-     "key": "zeus_capital_cloud_throne_summon",
-     "file": "sfx/zeus_capital_cloud_throne_summon.wav"
+     "key": "zeus_capital_cloud_throne_signature",
+     "file": "sfx/zeus_capital_cloud_throne_signature.wav"
     }
    ]
   },
@@ -1722,7 +1815,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_capital_atlantis_nexus_summon"
+     "sfx": "poseidon_capital_atlantis_nexus_deploy"
     },
     "CAPITAL_PASSIVE_TRIGGERED": {
      "animation": null,
@@ -1734,7 +1827,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_capital_atlantis_nexus_death"
+     "sfx": "poseidon_capital_atlantis_nexus_destroy"
     }
    },
    "animations": [
@@ -1757,8 +1850,12 @@
      "file": "sfx/poseidon_capital_atlantis_nexus_ability.wav"
     },
     {
-     "key": "poseidon_capital_atlantis_nexus_death",
-     "file": "sfx/poseidon_capital_atlantis_nexus_death.wav"
+     "key": "poseidon_capital_atlantis_nexus_deploy",
+     "file": "sfx/poseidon_capital_atlantis_nexus_deploy.wav"
+    },
+    {
+     "key": "poseidon_capital_atlantis_nexus_destroy",
+     "file": "sfx/poseidon_capital_atlantis_nexus_destroy.wav"
     },
     {
      "key": "poseidon_capital_atlantis_nexus_hit",
@@ -1769,8 +1866,8 @@
      "file": "sfx/poseidon_capital_atlantis_nexus_idle.wav"
     },
     {
-     "key": "poseidon_capital_atlantis_nexus_summon",
-     "file": "sfx/poseidon_capital_atlantis_nexus_summon.wav"
+     "key": "poseidon_capital_atlantis_nexus_signature",
+     "file": "sfx/poseidon_capital_atlantis_nexus_signature.wav"
     }
    ]
   },
@@ -1783,7 +1880,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_capital_trident_bastion_summon"
+     "sfx": "poseidon_capital_trident_bastion_deploy"
     },
     "CAPITAL_PASSIVE_TRIGGERED": {
      "animation": null,
@@ -1795,7 +1892,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_capital_trident_bastion_death"
+     "sfx": "poseidon_capital_trident_bastion_destroy"
     }
    },
    "animations": [
@@ -1818,8 +1915,12 @@
      "file": "sfx/poseidon_capital_trident_bastion_ability.wav"
     },
     {
-     "key": "poseidon_capital_trident_bastion_death",
-     "file": "sfx/poseidon_capital_trident_bastion_death.wav"
+     "key": "poseidon_capital_trident_bastion_deploy",
+     "file": "sfx/poseidon_capital_trident_bastion_deploy.wav"
+    },
+    {
+     "key": "poseidon_capital_trident_bastion_destroy",
+     "file": "sfx/poseidon_capital_trident_bastion_destroy.wav"
     },
     {
      "key": "poseidon_capital_trident_bastion_hit",
@@ -1830,8 +1931,8 @@
      "file": "sfx/poseidon_capital_trident_bastion_idle.wav"
     },
     {
-     "key": "poseidon_capital_trident_bastion_summon",
-     "file": "sfx/poseidon_capital_trident_bastion_summon.wav"
+     "key": "poseidon_capital_trident_bastion_signature",
+     "file": "sfx/poseidon_capital_trident_bastion_signature.wav"
     }
    ]
   },
@@ -1844,7 +1945,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_capital_abyssal_court_summon"
+     "sfx": "poseidon_capital_abyssal_court_deploy"
     },
     "CAPITAL_PASSIVE_TRIGGERED": {
      "animation": null,
@@ -1856,7 +1957,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_capital_abyssal_court_death"
+     "sfx": "poseidon_capital_abyssal_court_destroy"
     }
    },
    "animations": [
@@ -1879,8 +1980,12 @@
      "file": "sfx/poseidon_capital_abyssal_court_ability.wav"
     },
     {
-     "key": "poseidon_capital_abyssal_court_death",
-     "file": "sfx/poseidon_capital_abyssal_court_death.wav"
+     "key": "poseidon_capital_abyssal_court_deploy",
+     "file": "sfx/poseidon_capital_abyssal_court_deploy.wav"
+    },
+    {
+     "key": "poseidon_capital_abyssal_court_destroy",
+     "file": "sfx/poseidon_capital_abyssal_court_destroy.wav"
     },
     {
      "key": "poseidon_capital_abyssal_court_hit",
@@ -1891,8 +1996,8 @@
      "file": "sfx/poseidon_capital_abyssal_court_idle.wav"
     },
     {
-     "key": "poseidon_capital_abyssal_court_summon",
-     "file": "sfx/poseidon_capital_abyssal_court_summon.wav"
+     "key": "poseidon_capital_abyssal_court_signature",
+     "file": "sfx/poseidon_capital_abyssal_court_signature.wav"
     }
    ]
   },
@@ -1905,7 +2010,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_cloudline_courier_summon"
+     "sfx": "zeus_cloudline_courier_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -1929,7 +2034,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_cloudline_courier_death"
+     "sfx": "zeus_cloudline_courier_destroy"
     }
    },
    "animations": [
@@ -1964,8 +2069,12 @@
      "file": "sfx/zeus_cloudline_courier_attack.wav"
     },
     {
-     "key": "zeus_cloudline_courier_death",
-     "file": "sfx/zeus_cloudline_courier_death.wav"
+     "key": "zeus_cloudline_courier_deploy",
+     "file": "sfx/zeus_cloudline_courier_deploy.wav"
+    },
+    {
+     "key": "zeus_cloudline_courier_destroy",
+     "file": "sfx/zeus_cloudline_courier_destroy.wav"
     },
     {
      "key": "zeus_cloudline_courier_hit",
@@ -1978,10 +2087,6 @@
     {
      "key": "zeus_cloudline_courier_move",
      "file": "sfx/zeus_cloudline_courier_move.wav"
-    },
-    {
-     "key": "zeus_cloudline_courier_summon",
-     "file": "sfx/zeus_cloudline_courier_summon.wav"
     }
    ]
   },
@@ -1994,7 +2099,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_arc_relay_scout_summon"
+     "sfx": "zeus_arc_relay_scout_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -2018,7 +2123,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_arc_relay_scout_death"
+     "sfx": "zeus_arc_relay_scout_destroy"
     }
    },
    "animations": [
@@ -2053,8 +2158,12 @@
      "file": "sfx/zeus_arc_relay_scout_attack.wav"
     },
     {
-     "key": "zeus_arc_relay_scout_death",
-     "file": "sfx/zeus_arc_relay_scout_death.wav"
+     "key": "zeus_arc_relay_scout_deploy",
+     "file": "sfx/zeus_arc_relay_scout_deploy.wav"
+    },
+    {
+     "key": "zeus_arc_relay_scout_destroy",
+     "file": "sfx/zeus_arc_relay_scout_destroy.wav"
     },
     {
      "key": "zeus_arc_relay_scout_hit",
@@ -2067,10 +2176,6 @@
     {
      "key": "zeus_arc_relay_scout_move",
      "file": "sfx/zeus_arc_relay_scout_move.wav"
-    },
-    {
-     "key": "zeus_arc_relay_scout_summon",
-     "file": "sfx/zeus_arc_relay_scout_summon.wav"
     }
    ]
   },
@@ -2083,7 +2188,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_thunderhead_skirmisher_summon"
+     "sfx": "zeus_thunderhead_skirmisher_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -2107,7 +2212,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_thunderhead_skirmisher_death"
+     "sfx": "zeus_thunderhead_skirmisher_destroy"
     }
    },
    "animations": [
@@ -2142,8 +2247,12 @@
      "file": "sfx/zeus_thunderhead_skirmisher_attack.wav"
     },
     {
-     "key": "zeus_thunderhead_skirmisher_death",
-     "file": "sfx/zeus_thunderhead_skirmisher_death.wav"
+     "key": "zeus_thunderhead_skirmisher_deploy",
+     "file": "sfx/zeus_thunderhead_skirmisher_deploy.wav"
+    },
+    {
+     "key": "zeus_thunderhead_skirmisher_destroy",
+     "file": "sfx/zeus_thunderhead_skirmisher_destroy.wav"
     },
     {
      "key": "zeus_thunderhead_skirmisher_hit",
@@ -2156,10 +2265,6 @@
     {
      "key": "zeus_thunderhead_skirmisher_move",
      "file": "sfx/zeus_thunderhead_skirmisher_move.wav"
-    },
-    {
-     "key": "zeus_thunderhead_skirmisher_summon",
-     "file": "sfx/zeus_thunderhead_skirmisher_summon.wav"
     }
    ]
   },
@@ -2172,7 +2277,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_iris_signal_runner_summon"
+     "sfx": "zeus_iris_signal_runner_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -2196,7 +2301,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_iris_signal_runner_death"
+     "sfx": "zeus_iris_signal_runner_destroy"
     }
    },
    "animations": [
@@ -2231,8 +2336,12 @@
      "file": "sfx/zeus_iris_signal_runner_attack.wav"
     },
     {
-     "key": "zeus_iris_signal_runner_death",
-     "file": "sfx/zeus_iris_signal_runner_death.wav"
+     "key": "zeus_iris_signal_runner_deploy",
+     "file": "sfx/zeus_iris_signal_runner_deploy.wav"
+    },
+    {
+     "key": "zeus_iris_signal_runner_destroy",
+     "file": "sfx/zeus_iris_signal_runner_destroy.wav"
     },
     {
      "key": "zeus_iris_signal_runner_hit",
@@ -2245,10 +2354,6 @@
     {
      "key": "zeus_iris_signal_runner_move",
      "file": "sfx/zeus_iris_signal_runner_move.wav"
-    },
-    {
-     "key": "zeus_iris_signal_runner_summon",
-     "file": "sfx/zeus_iris_signal_runner_summon.wav"
     }
    ]
   },
@@ -2261,7 +2366,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_aegis_airguard_summon"
+     "sfx": "zeus_aegis_airguard_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -2285,7 +2390,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_aegis_airguard_death"
+     "sfx": "zeus_aegis_airguard_destroy"
     }
    },
    "animations": [
@@ -2320,8 +2425,12 @@
      "file": "sfx/zeus_aegis_airguard_attack.wav"
     },
     {
-     "key": "zeus_aegis_airguard_death",
-     "file": "sfx/zeus_aegis_airguard_death.wav"
+     "key": "zeus_aegis_airguard_deploy",
+     "file": "sfx/zeus_aegis_airguard_deploy.wav"
+    },
+    {
+     "key": "zeus_aegis_airguard_destroy",
+     "file": "sfx/zeus_aegis_airguard_destroy.wav"
     },
     {
      "key": "zeus_aegis_airguard_hit",
@@ -2334,10 +2443,6 @@
     {
      "key": "zeus_aegis_airguard_move",
      "file": "sfx/zeus_aegis_airguard_move.wav"
-    },
-    {
-     "key": "zeus_aegis_airguard_summon",
-     "file": "sfx/zeus_aegis_airguard_summon.wav"
     }
    ]
   },
@@ -2350,7 +2455,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_cyclone_marksman_summon"
+     "sfx": "zeus_cyclone_marksman_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -2374,7 +2479,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_cyclone_marksman_death"
+     "sfx": "zeus_cyclone_marksman_destroy"
     }
    },
    "animations": [
@@ -2409,8 +2514,12 @@
      "file": "sfx/zeus_cyclone_marksman_attack.wav"
     },
     {
-     "key": "zeus_cyclone_marksman_death",
-     "file": "sfx/zeus_cyclone_marksman_death.wav"
+     "key": "zeus_cyclone_marksman_deploy",
+     "file": "sfx/zeus_cyclone_marksman_deploy.wav"
+    },
+    {
+     "key": "zeus_cyclone_marksman_destroy",
+     "file": "sfx/zeus_cyclone_marksman_destroy.wav"
     },
     {
      "key": "zeus_cyclone_marksman_hit",
@@ -2423,10 +2532,6 @@
     {
      "key": "zeus_cyclone_marksman_move",
      "file": "sfx/zeus_cyclone_marksman_move.wav"
-    },
-    {
-     "key": "zeus_cyclone_marksman_summon",
-     "file": "sfx/zeus_cyclone_marksman_summon.wav"
     }
    ]
   },
@@ -2439,7 +2544,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_boltwing_cavalier_summon"
+     "sfx": "zeus_boltwing_cavalier_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -2463,7 +2568,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_boltwing_cavalier_death"
+     "sfx": "zeus_boltwing_cavalier_destroy"
     }
    },
    "animations": [
@@ -2498,8 +2603,12 @@
      "file": "sfx/zeus_boltwing_cavalier_attack.wav"
     },
     {
-     "key": "zeus_boltwing_cavalier_death",
-     "file": "sfx/zeus_boltwing_cavalier_death.wav"
+     "key": "zeus_boltwing_cavalier_deploy",
+     "file": "sfx/zeus_boltwing_cavalier_deploy.wav"
+    },
+    {
+     "key": "zeus_boltwing_cavalier_destroy",
+     "file": "sfx/zeus_boltwing_cavalier_destroy.wav"
     },
     {
      "key": "zeus_boltwing_cavalier_hit",
@@ -2512,10 +2621,6 @@
     {
      "key": "zeus_boltwing_cavalier_move",
      "file": "sfx/zeus_boltwing_cavalier_move.wav"
-    },
-    {
-     "key": "zeus_boltwing_cavalier_summon",
-     "file": "sfx/zeus_boltwing_cavalier_summon.wav"
     }
    ]
   },
@@ -2528,7 +2633,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_tempest_oracle_summon"
+     "sfx": "zeus_tempest_oracle_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -2552,7 +2657,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_tempest_oracle_death"
+     "sfx": "zeus_tempest_oracle_destroy"
     }
    },
    "animations": [
@@ -2587,8 +2692,12 @@
      "file": "sfx/zeus_tempest_oracle_attack.wav"
     },
     {
-     "key": "zeus_tempest_oracle_death",
-     "file": "sfx/zeus_tempest_oracle_death.wav"
+     "key": "zeus_tempest_oracle_deploy",
+     "file": "sfx/zeus_tempest_oracle_deploy.wav"
+    },
+    {
+     "key": "zeus_tempest_oracle_destroy",
+     "file": "sfx/zeus_tempest_oracle_destroy.wav"
     },
     {
      "key": "zeus_tempest_oracle_hit",
@@ -2601,10 +2710,6 @@
     {
      "key": "zeus_tempest_oracle_move",
      "file": "sfx/zeus_tempest_oracle_move.wav"
-    },
-    {
-     "key": "zeus_tempest_oracle_summon",
-     "file": "sfx/zeus_tempest_oracle_summon.wav"
     }
    ]
   },
@@ -2617,7 +2722,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_hera_protocol_warden_summon"
+     "sfx": "zeus_hera_protocol_warden_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -2641,7 +2746,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_hera_protocol_warden_death"
+     "sfx": "zeus_hera_protocol_warden_destroy"
     }
    },
    "animations": [
@@ -2676,8 +2781,12 @@
      "file": "sfx/zeus_hera_protocol_warden_attack.wav"
     },
     {
-     "key": "zeus_hera_protocol_warden_death",
-     "file": "sfx/zeus_hera_protocol_warden_death.wav"
+     "key": "zeus_hera_protocol_warden_deploy",
+     "file": "sfx/zeus_hera_protocol_warden_deploy.wav"
+    },
+    {
+     "key": "zeus_hera_protocol_warden_destroy",
+     "file": "sfx/zeus_hera_protocol_warden_destroy.wav"
     },
     {
      "key": "zeus_hera_protocol_warden_hit",
@@ -2690,10 +2799,6 @@
     {
      "key": "zeus_hera_protocol_warden_move",
      "file": "sfx/zeus_hera_protocol_warden_move.wav"
-    },
-    {
-     "key": "zeus_hera_protocol_warden_summon",
-     "file": "sfx/zeus_hera_protocol_warden_summon.wav"
     }
    ]
   },
@@ -2706,7 +2811,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_stormgate_adept_summon"
+     "sfx": "zeus_stormgate_adept_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -2730,7 +2835,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_stormgate_adept_death"
+     "sfx": "zeus_stormgate_adept_destroy"
     }
    },
    "animations": [
@@ -2765,8 +2870,12 @@
      "file": "sfx/zeus_stormgate_adept_attack.wav"
     },
     {
-     "key": "zeus_stormgate_adept_death",
-     "file": "sfx/zeus_stormgate_adept_death.wav"
+     "key": "zeus_stormgate_adept_deploy",
+     "file": "sfx/zeus_stormgate_adept_deploy.wav"
+    },
+    {
+     "key": "zeus_stormgate_adept_destroy",
+     "file": "sfx/zeus_stormgate_adept_destroy.wav"
     },
     {
      "key": "zeus_stormgate_adept_hit",
@@ -2779,10 +2888,6 @@
     {
      "key": "zeus_stormgate_adept_move",
      "file": "sfx/zeus_stormgate_adept_move.wav"
-    },
-    {
-     "key": "zeus_stormgate_adept_summon",
-     "file": "sfx/zeus_stormgate_adept_summon.wav"
     }
    ]
   },
@@ -2795,7 +2900,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_eagle_of_the_high_grid_summon"
+     "sfx": "zeus_eagle_of_the_high_grid_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -2819,7 +2924,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_eagle_of_the_high_grid_death"
+     "sfx": "zeus_eagle_of_the_high_grid_destroy"
     }
    },
    "animations": [
@@ -2854,8 +2959,12 @@
      "file": "sfx/zeus_eagle_of_the_high_grid_attack.wav"
     },
     {
-     "key": "zeus_eagle_of_the_high_grid_death",
-     "file": "sfx/zeus_eagle_of_the_high_grid_death.wav"
+     "key": "zeus_eagle_of_the_high_grid_deploy",
+     "file": "sfx/zeus_eagle_of_the_high_grid_deploy.wav"
+    },
+    {
+     "key": "zeus_eagle_of_the_high_grid_destroy",
+     "file": "sfx/zeus_eagle_of_the_high_grid_destroy.wav"
     },
     {
      "key": "zeus_eagle_of_the_high_grid_hit",
@@ -2868,10 +2977,6 @@
     {
      "key": "zeus_eagle_of_the_high_grid_move",
      "file": "sfx/zeus_eagle_of_the_high_grid_move.wav"
-    },
-    {
-     "key": "zeus_eagle_of_the_high_grid_summon",
-     "file": "sfx/zeus_eagle_of_the_high_grid_summon.wav"
     }
    ]
   },
@@ -2884,7 +2989,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_keraunos_prime_summon"
+     "sfx": "zeus_keraunos_prime_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -2908,7 +3013,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_keraunos_prime_death"
+     "sfx": "zeus_keraunos_prime_destroy"
     }
    },
    "animations": [
@@ -2943,8 +3048,12 @@
      "file": "sfx/zeus_keraunos_prime_attack.wav"
     },
     {
-     "key": "zeus_keraunos_prime_death",
-     "file": "sfx/zeus_keraunos_prime_death.wav"
+     "key": "zeus_keraunos_prime_deploy",
+     "file": "sfx/zeus_keraunos_prime_deploy.wav"
+    },
+    {
+     "key": "zeus_keraunos_prime_destroy",
+     "file": "sfx/zeus_keraunos_prime_destroy.wav"
     },
     {
      "key": "zeus_keraunos_prime_hit",
@@ -2957,10 +3066,6 @@
     {
      "key": "zeus_keraunos_prime_move",
      "file": "sfx/zeus_keraunos_prime_move.wav"
-    },
-    {
-     "key": "zeus_keraunos_prime_summon",
-     "file": "sfx/zeus_keraunos_prime_summon.wav"
     }
    ]
   },
@@ -2973,7 +3078,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_olympian_cloudbank_summon"
+     "sfx": "zeus_olympian_cloudbank_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -2981,7 +3086,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_olympian_cloudbank_death"
+     "sfx": "zeus_olympian_cloudbank_destroy"
     }
    },
    "animations": [
@@ -3004,16 +3109,16 @@
      "file": "sfx/zeus_olympian_cloudbank_ability.wav"
     },
     {
-     "key": "zeus_olympian_cloudbank_death",
-     "file": "sfx/zeus_olympian_cloudbank_death.wav"
+     "key": "zeus_olympian_cloudbank_deploy",
+     "file": "sfx/zeus_olympian_cloudbank_deploy.wav"
+    },
+    {
+     "key": "zeus_olympian_cloudbank_destroy",
+     "file": "sfx/zeus_olympian_cloudbank_destroy.wav"
     },
     {
      "key": "zeus_olympian_cloudbank_idle",
      "file": "sfx/zeus_olympian_cloudbank_idle.wav"
-    },
-    {
-     "key": "zeus_olympian_cloudbank_summon",
-     "file": "sfx/zeus_olympian_cloudbank_summon.wav"
     }
    ]
   },
@@ -3026,7 +3131,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_ionized_skyway_summon"
+     "sfx": "zeus_ionized_skyway_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -3034,7 +3139,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_ionized_skyway_death"
+     "sfx": "zeus_ionized_skyway_destroy"
     }
    },
    "animations": [
@@ -3057,16 +3162,16 @@
      "file": "sfx/zeus_ionized_skyway_ability.wav"
     },
     {
-     "key": "zeus_ionized_skyway_death",
-     "file": "sfx/zeus_ionized_skyway_death.wav"
+     "key": "zeus_ionized_skyway_deploy",
+     "file": "sfx/zeus_ionized_skyway_deploy.wav"
+    },
+    {
+     "key": "zeus_ionized_skyway_destroy",
+     "file": "sfx/zeus_ionized_skyway_destroy.wav"
     },
     {
      "key": "zeus_ionized_skyway_idle",
      "file": "sfx/zeus_ionized_skyway_idle.wav"
-    },
-    {
-     "key": "zeus_ionized_skyway_summon",
-     "file": "sfx/zeus_ionized_skyway_summon.wav"
     }
    ]
   },
@@ -3079,7 +3184,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_eagles_perch_array_summon"
+     "sfx": "zeus_eagles_perch_array_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -3087,7 +3192,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_eagles_perch_array_death"
+     "sfx": "zeus_eagles_perch_array_destroy"
     }
    },
    "animations": [
@@ -3110,16 +3215,16 @@
      "file": "sfx/zeus_eagles_perch_array_ability.wav"
     },
     {
-     "key": "zeus_eagles_perch_array_death",
-     "file": "sfx/zeus_eagles_perch_array_death.wav"
+     "key": "zeus_eagles_perch_array_deploy",
+     "file": "sfx/zeus_eagles_perch_array_deploy.wav"
+    },
+    {
+     "key": "zeus_eagles_perch_array_destroy",
+     "file": "sfx/zeus_eagles_perch_array_destroy.wav"
     },
     {
      "key": "zeus_eagles_perch_array_idle",
      "file": "sfx/zeus_eagles_perch_array_idle.wav"
-    },
-    {
-     "key": "zeus_eagles_perch_array_summon",
-     "file": "sfx/zeus_eagles_perch_array_summon.wav"
     }
    ]
   },
@@ -3132,7 +3237,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_throneward_conduit_summon"
+     "sfx": "zeus_throneward_conduit_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -3140,7 +3245,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_throneward_conduit_death"
+     "sfx": "zeus_throneward_conduit_destroy"
     }
    },
    "animations": [
@@ -3163,16 +3268,16 @@
      "file": "sfx/zeus_throneward_conduit_ability.wav"
     },
     {
-     "key": "zeus_throneward_conduit_death",
-     "file": "sfx/zeus_throneward_conduit_death.wav"
+     "key": "zeus_throneward_conduit_deploy",
+     "file": "sfx/zeus_throneward_conduit_deploy.wav"
+    },
+    {
+     "key": "zeus_throneward_conduit_destroy",
+     "file": "sfx/zeus_throneward_conduit_destroy.wav"
     },
     {
      "key": "zeus_throneward_conduit_idle",
      "file": "sfx/zeus_throneward_conduit_idle.wav"
-    },
-    {
-     "key": "zeus_throneward_conduit_summon",
-     "file": "sfx/zeus_throneward_conduit_summon.wav"
     }
    ]
   },
@@ -3185,7 +3290,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_storm_relay_pylon_summon"
+     "sfx": "zeus_storm_relay_pylon_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -3197,7 +3302,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_storm_relay_pylon_death"
+     "sfx": "zeus_storm_relay_pylon_destroy"
     }
    },
    "animations": [
@@ -3220,16 +3325,16 @@
      "file": "sfx/zeus_storm_relay_pylon_ability.wav"
     },
     {
-     "key": "zeus_storm_relay_pylon_death",
-     "file": "sfx/zeus_storm_relay_pylon_death.wav"
+     "key": "zeus_storm_relay_pylon_deploy",
+     "file": "sfx/zeus_storm_relay_pylon_deploy.wav"
+    },
+    {
+     "key": "zeus_storm_relay_pylon_destroy",
+     "file": "sfx/zeus_storm_relay_pylon_destroy.wav"
     },
     {
      "key": "zeus_storm_relay_pylon_idle",
      "file": "sfx/zeus_storm_relay_pylon_idle.wav"
-    },
-    {
-     "key": "zeus_storm_relay_pylon_summon",
-     "file": "sfx/zeus_storm_relay_pylon_summon.wav"
     }
    ]
   },
@@ -3242,7 +3347,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_cloudwall_bastion_summon"
+     "sfx": "zeus_cloudwall_bastion_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -3254,7 +3359,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_cloudwall_bastion_death"
+     "sfx": "zeus_cloudwall_bastion_destroy"
     }
    },
    "animations": [
@@ -3277,16 +3382,16 @@
      "file": "sfx/zeus_cloudwall_bastion_ability.wav"
     },
     {
-     "key": "zeus_cloudwall_bastion_death",
-     "file": "sfx/zeus_cloudwall_bastion_death.wav"
+     "key": "zeus_cloudwall_bastion_deploy",
+     "file": "sfx/zeus_cloudwall_bastion_deploy.wav"
+    },
+    {
+     "key": "zeus_cloudwall_bastion_destroy",
+     "file": "sfx/zeus_cloudwall_bastion_destroy.wav"
     },
     {
      "key": "zeus_cloudwall_bastion_idle",
      "file": "sfx/zeus_cloudwall_bastion_idle.wav"
-    },
-    {
-     "key": "zeus_cloudwall_bastion_summon",
-     "file": "sfx/zeus_cloudwall_bastion_summon.wav"
     }
    ]
   },
@@ -3299,7 +3404,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_keraunos_charging_spire_summon"
+     "sfx": "zeus_keraunos_charging_spire_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -3311,7 +3416,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_keraunos_charging_spire_death"
+     "sfx": "zeus_keraunos_charging_spire_destroy"
     }
    },
    "animations": [
@@ -3334,16 +3439,16 @@
      "file": "sfx/zeus_keraunos_charging_spire_ability.wav"
     },
     {
-     "key": "zeus_keraunos_charging_spire_death",
-     "file": "sfx/zeus_keraunos_charging_spire_death.wav"
+     "key": "zeus_keraunos_charging_spire_deploy",
+     "file": "sfx/zeus_keraunos_charging_spire_deploy.wav"
+    },
+    {
+     "key": "zeus_keraunos_charging_spire_destroy",
+     "file": "sfx/zeus_keraunos_charging_spire_destroy.wav"
     },
     {
      "key": "zeus_keraunos_charging_spire_idle",
      "file": "sfx/zeus_keraunos_charging_spire_idle.wav"
-    },
-    {
-     "key": "zeus_keraunos_charging_spire_summon",
-     "file": "sfx/zeus_keraunos_charging_spire_summon.wav"
     }
    ]
   },
@@ -3356,7 +3461,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_zeus_command_nexus_summon"
+     "sfx": "zeus_zeus_command_nexus_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -3368,7 +3473,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_zeus_command_nexus_death"
+     "sfx": "zeus_zeus_command_nexus_destroy"
     }
    },
    "animations": [
@@ -3391,16 +3496,16 @@
      "file": "sfx/zeus_zeus_command_nexus_ability.wav"
     },
     {
-     "key": "zeus_zeus_command_nexus_death",
-     "file": "sfx/zeus_zeus_command_nexus_death.wav"
+     "key": "zeus_zeus_command_nexus_deploy",
+     "file": "sfx/zeus_zeus_command_nexus_deploy.wav"
+    },
+    {
+     "key": "zeus_zeus_command_nexus_destroy",
+     "file": "sfx/zeus_zeus_command_nexus_destroy.wav"
     },
     {
      "key": "zeus_zeus_command_nexus_idle",
      "file": "sfx/zeus_zeus_command_nexus_idle.wav"
-    },
-    {
-     "key": "zeus_zeus_command_nexus_summon",
-     "file": "sfx/zeus_zeus_command_nexus_summon.wav"
     }
    ]
   },
@@ -3413,7 +3518,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_tidepool_surveyor_summon"
+     "sfx": "poseidon_tidepool_surveyor_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -3437,7 +3542,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_tidepool_surveyor_death"
+     "sfx": "poseidon_tidepool_surveyor_destroy"
     }
    },
    "animations": [
@@ -3472,8 +3577,12 @@
      "file": "sfx/poseidon_tidepool_surveyor_attack.wav"
     },
     {
-     "key": "poseidon_tidepool_surveyor_death",
-     "file": "sfx/poseidon_tidepool_surveyor_death.wav"
+     "key": "poseidon_tidepool_surveyor_deploy",
+     "file": "sfx/poseidon_tidepool_surveyor_deploy.wav"
+    },
+    {
+     "key": "poseidon_tidepool_surveyor_destroy",
+     "file": "sfx/poseidon_tidepool_surveyor_destroy.wav"
     },
     {
      "key": "poseidon_tidepool_surveyor_hit",
@@ -3486,10 +3595,6 @@
     {
      "key": "poseidon_tidepool_surveyor_move",
      "file": "sfx/poseidon_tidepool_surveyor_move.wav"
-    },
-    {
-     "key": "poseidon_tidepool_surveyor_summon",
-     "file": "sfx/poseidon_tidepool_surveyor_summon.wav"
     }
    ]
   },
@@ -3502,7 +3607,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_nereid_current_rider_summon"
+     "sfx": "poseidon_nereid_current_rider_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -3526,7 +3631,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_nereid_current_rider_death"
+     "sfx": "poseidon_nereid_current_rider_destroy"
     }
    },
    "animations": [
@@ -3561,8 +3666,12 @@
      "file": "sfx/poseidon_nereid_current_rider_attack.wav"
     },
     {
-     "key": "poseidon_nereid_current_rider_death",
-     "file": "sfx/poseidon_nereid_current_rider_death.wav"
+     "key": "poseidon_nereid_current_rider_deploy",
+     "file": "sfx/poseidon_nereid_current_rider_deploy.wav"
+    },
+    {
+     "key": "poseidon_nereid_current_rider_destroy",
+     "file": "sfx/poseidon_nereid_current_rider_destroy.wav"
     },
     {
      "key": "poseidon_nereid_current_rider_hit",
@@ -3575,10 +3684,6 @@
     {
      "key": "poseidon_nereid_current_rider_move",
      "file": "sfx/poseidon_nereid_current_rider_move.wav"
-    },
-    {
-     "key": "poseidon_nereid_current_rider_summon",
-     "file": "sfx/poseidon_nereid_current_rider_summon.wav"
     }
    ]
   },
@@ -3591,7 +3696,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_reefline_defender_summon"
+     "sfx": "poseidon_reefline_defender_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -3615,7 +3720,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_reefline_defender_death"
+     "sfx": "poseidon_reefline_defender_destroy"
     }
    },
    "animations": [
@@ -3650,8 +3755,12 @@
      "file": "sfx/poseidon_reefline_defender_attack.wav"
     },
     {
-     "key": "poseidon_reefline_defender_death",
-     "file": "sfx/poseidon_reefline_defender_death.wav"
+     "key": "poseidon_reefline_defender_deploy",
+     "file": "sfx/poseidon_reefline_defender_deploy.wav"
+    },
+    {
+     "key": "poseidon_reefline_defender_destroy",
+     "file": "sfx/poseidon_reefline_defender_destroy.wav"
     },
     {
      "key": "poseidon_reefline_defender_hit",
@@ -3664,10 +3773,6 @@
     {
      "key": "poseidon_reefline_defender_move",
      "file": "sfx/poseidon_reefline_defender_move.wav"
-    },
-    {
-     "key": "poseidon_reefline_defender_summon",
-     "file": "sfx/poseidon_reefline_defender_summon.wav"
     }
    ]
   },
@@ -3680,7 +3785,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_undertow_stalker_summon"
+     "sfx": "poseidon_undertow_stalker_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -3704,7 +3809,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_undertow_stalker_death"
+     "sfx": "poseidon_undertow_stalker_destroy"
     }
    },
    "animations": [
@@ -3739,8 +3844,12 @@
      "file": "sfx/poseidon_undertow_stalker_attack.wav"
     },
     {
-     "key": "poseidon_undertow_stalker_death",
-     "file": "sfx/poseidon_undertow_stalker_death.wav"
+     "key": "poseidon_undertow_stalker_deploy",
+     "file": "sfx/poseidon_undertow_stalker_deploy.wav"
+    },
+    {
+     "key": "poseidon_undertow_stalker_destroy",
+     "file": "sfx/poseidon_undertow_stalker_destroy.wav"
     },
     {
      "key": "poseidon_undertow_stalker_hit",
@@ -3753,10 +3862,6 @@
     {
      "key": "poseidon_undertow_stalker_move",
      "file": "sfx/poseidon_undertow_stalker_move.wav"
-    },
-    {
-     "key": "poseidon_undertow_stalker_summon",
-     "file": "sfx/poseidon_undertow_stalker_summon.wav"
     }
    ]
   },
@@ -3769,7 +3874,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_triton_waveguard_summon"
+     "sfx": "poseidon_triton_waveguard_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -3793,7 +3898,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_triton_waveguard_death"
+     "sfx": "poseidon_triton_waveguard_destroy"
     }
    },
    "animations": [
@@ -3828,8 +3933,12 @@
      "file": "sfx/poseidon_triton_waveguard_attack.wav"
     },
     {
-     "key": "poseidon_triton_waveguard_death",
-     "file": "sfx/poseidon_triton_waveguard_death.wav"
+     "key": "poseidon_triton_waveguard_deploy",
+     "file": "sfx/poseidon_triton_waveguard_deploy.wav"
+    },
+    {
+     "key": "poseidon_triton_waveguard_destroy",
+     "file": "sfx/poseidon_triton_waveguard_destroy.wav"
     },
     {
      "key": "poseidon_triton_waveguard_hit",
@@ -3842,10 +3951,6 @@
     {
      "key": "poseidon_triton_waveguard_move",
      "file": "sfx/poseidon_triton_waveguard_move.wav"
-    },
-    {
-     "key": "poseidon_triton_waveguard_summon",
-     "file": "sfx/poseidon_triton_waveguard_summon.wav"
     }
    ]
   },
@@ -3858,7 +3963,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_delphic_sonar_adept_summon"
+     "sfx": "poseidon_delphic_sonar_adept_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -3882,7 +3987,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_delphic_sonar_adept_death"
+     "sfx": "poseidon_delphic_sonar_adept_destroy"
     }
    },
    "animations": [
@@ -3917,8 +4022,12 @@
      "file": "sfx/poseidon_delphic_sonar_adept_attack.wav"
     },
     {
-     "key": "poseidon_delphic_sonar_adept_death",
-     "file": "sfx/poseidon_delphic_sonar_adept_death.wav"
+     "key": "poseidon_delphic_sonar_adept_deploy",
+     "file": "sfx/poseidon_delphic_sonar_adept_deploy.wav"
+    },
+    {
+     "key": "poseidon_delphic_sonar_adept_destroy",
+     "file": "sfx/poseidon_delphic_sonar_adept_destroy.wav"
     },
     {
      "key": "poseidon_delphic_sonar_adept_hit",
@@ -3931,10 +4040,6 @@
     {
      "key": "poseidon_delphic_sonar_adept_move",
      "file": "sfx/poseidon_delphic_sonar_adept_move.wav"
-    },
-    {
-     "key": "poseidon_delphic_sonar_adept_summon",
-     "file": "sfx/poseidon_delphic_sonar_adept_summon.wav"
     }
    ]
   },
@@ -3947,7 +4052,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_kraken_tendril_drone_summon"
+     "sfx": "poseidon_kraken_tendril_drone_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -3971,7 +4076,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_kraken_tendril_drone_death"
+     "sfx": "poseidon_kraken_tendril_drone_destroy"
     }
    },
    "animations": [
@@ -4006,8 +4111,12 @@
      "file": "sfx/poseidon_kraken_tendril_drone_attack.wav"
     },
     {
-     "key": "poseidon_kraken_tendril_drone_death",
-     "file": "sfx/poseidon_kraken_tendril_drone_death.wav"
+     "key": "poseidon_kraken_tendril_drone_deploy",
+     "file": "sfx/poseidon_kraken_tendril_drone_deploy.wav"
+    },
+    {
+     "key": "poseidon_kraken_tendril_drone_destroy",
+     "file": "sfx/poseidon_kraken_tendril_drone_destroy.wav"
     },
     {
      "key": "poseidon_kraken_tendril_drone_hit",
@@ -4020,10 +4129,6 @@
     {
      "key": "poseidon_kraken_tendril_drone_move",
      "file": "sfx/poseidon_kraken_tendril_drone_move.wav"
-    },
-    {
-     "key": "poseidon_kraken_tendril_drone_summon",
-     "file": "sfx/poseidon_kraken_tendril_drone_summon.wav"
     }
    ]
   },
@@ -4036,7 +4141,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_naiad_flowshaper_summon"
+     "sfx": "poseidon_naiad_flowshaper_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -4060,7 +4165,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_naiad_flowshaper_death"
+     "sfx": "poseidon_naiad_flowshaper_destroy"
     }
    },
    "animations": [
@@ -4095,8 +4200,12 @@
      "file": "sfx/poseidon_naiad_flowshaper_attack.wav"
     },
     {
-     "key": "poseidon_naiad_flowshaper_death",
-     "file": "sfx/poseidon_naiad_flowshaper_death.wav"
+     "key": "poseidon_naiad_flowshaper_deploy",
+     "file": "sfx/poseidon_naiad_flowshaper_deploy.wav"
+    },
+    {
+     "key": "poseidon_naiad_flowshaper_destroy",
+     "file": "sfx/poseidon_naiad_flowshaper_destroy.wav"
     },
     {
      "key": "poseidon_naiad_flowshaper_hit",
@@ -4109,10 +4218,6 @@
     {
      "key": "poseidon_naiad_flowshaper_move",
      "file": "sfx/poseidon_naiad_flowshaper_move.wav"
-    },
-    {
-     "key": "poseidon_naiad_flowshaper_summon",
-     "file": "sfx/poseidon_naiad_flowshaper_summon.wav"
     }
    ]
   },
@@ -4125,7 +4230,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_abyssal_molecrab_summon"
+     "sfx": "poseidon_abyssal_molecrab_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -4149,7 +4254,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_abyssal_molecrab_death"
+     "sfx": "poseidon_abyssal_molecrab_destroy"
     }
    },
    "animations": [
@@ -4184,8 +4289,12 @@
      "file": "sfx/poseidon_abyssal_molecrab_attack.wav"
     },
     {
-     "key": "poseidon_abyssal_molecrab_death",
-     "file": "sfx/poseidon_abyssal_molecrab_death.wav"
+     "key": "poseidon_abyssal_molecrab_deploy",
+     "file": "sfx/poseidon_abyssal_molecrab_deploy.wav"
+    },
+    {
+     "key": "poseidon_abyssal_molecrab_destroy",
+     "file": "sfx/poseidon_abyssal_molecrab_destroy.wav"
     },
     {
      "key": "poseidon_abyssal_molecrab_hit",
@@ -4198,10 +4307,6 @@
     {
      "key": "poseidon_abyssal_molecrab_move",
      "file": "sfx/poseidon_abyssal_molecrab_move.wav"
-    },
-    {
-     "key": "poseidon_abyssal_molecrab_summon",
-     "file": "sfx/poseidon_abyssal_molecrab_summon.wav"
     }
    ]
   },
@@ -4214,7 +4319,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_oceanid_pressure_mage_summon"
+     "sfx": "poseidon_oceanid_pressure_mage_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -4238,7 +4343,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_oceanid_pressure_mage_death"
+     "sfx": "poseidon_oceanid_pressure_mage_destroy"
     }
    },
    "animations": [
@@ -4273,8 +4378,12 @@
      "file": "sfx/poseidon_oceanid_pressure_mage_attack.wav"
     },
     {
-     "key": "poseidon_oceanid_pressure_mage_death",
-     "file": "sfx/poseidon_oceanid_pressure_mage_death.wav"
+     "key": "poseidon_oceanid_pressure_mage_deploy",
+     "file": "sfx/poseidon_oceanid_pressure_mage_deploy.wav"
+    },
+    {
+     "key": "poseidon_oceanid_pressure_mage_destroy",
+     "file": "sfx/poseidon_oceanid_pressure_mage_destroy.wav"
     },
     {
      "key": "poseidon_oceanid_pressure_mage_hit",
@@ -4287,10 +4396,6 @@
     {
      "key": "poseidon_oceanid_pressure_mage_move",
      "file": "sfx/poseidon_oceanid_pressure_mage_move.wav"
-    },
-    {
-     "key": "poseidon_oceanid_pressure_mage_summon",
-     "file": "sfx/poseidon_oceanid_pressure_mage_summon.wav"
     }
    ]
   },
@@ -4303,7 +4408,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_leviathan_wakeborn_summon"
+     "sfx": "poseidon_leviathan_wakeborn_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -4327,7 +4432,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_leviathan_wakeborn_death"
+     "sfx": "poseidon_leviathan_wakeborn_destroy"
     }
    },
    "animations": [
@@ -4362,8 +4467,12 @@
      "file": "sfx/poseidon_leviathan_wakeborn_attack.wav"
     },
     {
-     "key": "poseidon_leviathan_wakeborn_death",
-     "file": "sfx/poseidon_leviathan_wakeborn_death.wav"
+     "key": "poseidon_leviathan_wakeborn_deploy",
+     "file": "sfx/poseidon_leviathan_wakeborn_deploy.wav"
+    },
+    {
+     "key": "poseidon_leviathan_wakeborn_destroy",
+     "file": "sfx/poseidon_leviathan_wakeborn_destroy.wav"
     },
     {
      "key": "poseidon_leviathan_wakeborn_hit",
@@ -4376,10 +4485,6 @@
     {
      "key": "poseidon_leviathan_wakeborn_move",
      "file": "sfx/poseidon_leviathan_wakeborn_move.wav"
-    },
-    {
-     "key": "poseidon_leviathan_wakeborn_summon",
-     "file": "sfx/poseidon_leviathan_wakeborn_summon.wav"
     }
    ]
   },
@@ -4392,7 +4497,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_poseidons_trident_core_summon"
+     "sfx": "poseidon_poseidons_trident_core_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -4416,7 +4521,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_poseidons_trident_core_death"
+     "sfx": "poseidon_poseidons_trident_core_destroy"
     }
    },
    "animations": [
@@ -4451,8 +4556,12 @@
      "file": "sfx/poseidon_poseidons_trident_core_attack.wav"
     },
     {
-     "key": "poseidon_poseidons_trident_core_death",
-     "file": "sfx/poseidon_poseidons_trident_core_death.wav"
+     "key": "poseidon_poseidons_trident_core_deploy",
+     "file": "sfx/poseidon_poseidons_trident_core_deploy.wav"
+    },
+    {
+     "key": "poseidon_poseidons_trident_core_destroy",
+     "file": "sfx/poseidon_poseidons_trident_core_destroy.wav"
     },
     {
      "key": "poseidon_poseidons_trident_core_hit",
@@ -4465,10 +4574,6 @@
     {
      "key": "poseidon_poseidons_trident_core_move",
      "file": "sfx/poseidon_poseidons_trident_core_move.wav"
-    },
-    {
-     "key": "poseidon_poseidons_trident_core_summon",
-     "file": "sfx/poseidon_poseidons_trident_core_summon.wav"
     }
    ]
   },
@@ -4481,7 +4586,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_neon_tidelands_summon"
+     "sfx": "poseidon_neon_tidelands_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -4489,7 +4594,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_neon_tidelands_death"
+     "sfx": "poseidon_neon_tidelands_destroy"
     }
    },
    "animations": [
@@ -4512,16 +4617,16 @@
      "file": "sfx/poseidon_neon_tidelands_ability.wav"
     },
     {
-     "key": "poseidon_neon_tidelands_death",
-     "file": "sfx/poseidon_neon_tidelands_death.wav"
+     "key": "poseidon_neon_tidelands_deploy",
+     "file": "sfx/poseidon_neon_tidelands_deploy.wav"
+    },
+    {
+     "key": "poseidon_neon_tidelands_destroy",
+     "file": "sfx/poseidon_neon_tidelands_destroy.wav"
     },
     {
      "key": "poseidon_neon_tidelands_idle",
      "file": "sfx/poseidon_neon_tidelands_idle.wav"
-    },
-    {
-     "key": "poseidon_neon_tidelands_summon",
-     "file": "sfx/poseidon_neon_tidelands_summon.wav"
     }
    ]
   },
@@ -4534,7 +4639,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_coral_data_reef_summon"
+     "sfx": "poseidon_coral_data_reef_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -4542,7 +4647,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_coral_data_reef_death"
+     "sfx": "poseidon_coral_data_reef_destroy"
     }
    },
    "animations": [
@@ -4565,16 +4670,16 @@
      "file": "sfx/poseidon_coral_data_reef_ability.wav"
     },
     {
-     "key": "poseidon_coral_data_reef_death",
-     "file": "sfx/poseidon_coral_data_reef_death.wav"
+     "key": "poseidon_coral_data_reef_deploy",
+     "file": "sfx/poseidon_coral_data_reef_deploy.wav"
+    },
+    {
+     "key": "poseidon_coral_data_reef_destroy",
+     "file": "sfx/poseidon_coral_data_reef_destroy.wav"
     },
     {
      "key": "poseidon_coral_data_reef_idle",
      "file": "sfx/poseidon_coral_data_reef_idle.wav"
-    },
-    {
-     "key": "poseidon_coral_data_reef_summon",
-     "file": "sfx/poseidon_coral_data_reef_summon.wav"
     }
    ]
   },
@@ -4587,7 +4692,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_abyssal_pressure_trench_summon"
+     "sfx": "poseidon_abyssal_pressure_trench_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -4595,7 +4700,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_abyssal_pressure_trench_death"
+     "sfx": "poseidon_abyssal_pressure_trench_destroy"
     }
    },
    "animations": [
@@ -4618,16 +4723,16 @@
      "file": "sfx/poseidon_abyssal_pressure_trench_ability.wav"
     },
     {
-     "key": "poseidon_abyssal_pressure_trench_death",
-     "file": "sfx/poseidon_abyssal_pressure_trench_death.wav"
+     "key": "poseidon_abyssal_pressure_trench_deploy",
+     "file": "sfx/poseidon_abyssal_pressure_trench_deploy.wav"
+    },
+    {
+     "key": "poseidon_abyssal_pressure_trench_destroy",
+     "file": "sfx/poseidon_abyssal_pressure_trench_destroy.wav"
     },
     {
      "key": "poseidon_abyssal_pressure_trench_idle",
      "file": "sfx/poseidon_abyssal_pressure_trench_idle.wav"
-    },
-    {
-     "key": "poseidon_abyssal_pressure_trench_summon",
-     "file": "sfx/poseidon_abyssal_pressure_trench_summon.wav"
     }
    ]
   },
@@ -4640,7 +4745,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_palace_of_tides_approach_summon"
+     "sfx": "poseidon_palace_of_tides_approach_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -4648,7 +4753,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_palace_of_tides_approach_death"
+     "sfx": "poseidon_palace_of_tides_approach_destroy"
     }
    },
    "animations": [
@@ -4671,16 +4776,16 @@
      "file": "sfx/poseidon_palace_of_tides_approach_ability.wav"
     },
     {
-     "key": "poseidon_palace_of_tides_approach_death",
-     "file": "sfx/poseidon_palace_of_tides_approach_death.wav"
+     "key": "poseidon_palace_of_tides_approach_deploy",
+     "file": "sfx/poseidon_palace_of_tides_approach_deploy.wav"
+    },
+    {
+     "key": "poseidon_palace_of_tides_approach_destroy",
+     "file": "sfx/poseidon_palace_of_tides_approach_destroy.wav"
     },
     {
      "key": "poseidon_palace_of_tides_approach_idle",
      "file": "sfx/poseidon_palace_of_tides_approach_idle.wav"
-    },
-    {
-     "key": "poseidon_palace_of_tides_approach_summon",
-     "file": "sfx/poseidon_palace_of_tides_approach_summon.wav"
     }
    ]
   },
@@ -4693,7 +4798,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_tidal_pump_station_summon"
+     "sfx": "poseidon_tidal_pump_station_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -4705,7 +4810,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_tidal_pump_station_death"
+     "sfx": "poseidon_tidal_pump_station_destroy"
     }
    },
    "animations": [
@@ -4728,16 +4833,16 @@
      "file": "sfx/poseidon_tidal_pump_station_ability.wav"
     },
     {
-     "key": "poseidon_tidal_pump_station_death",
-     "file": "sfx/poseidon_tidal_pump_station_death.wav"
+     "key": "poseidon_tidal_pump_station_deploy",
+     "file": "sfx/poseidon_tidal_pump_station_deploy.wav"
+    },
+    {
+     "key": "poseidon_tidal_pump_station_destroy",
+     "file": "sfx/poseidon_tidal_pump_station_destroy.wav"
     },
     {
      "key": "poseidon_tidal_pump_station_idle",
      "file": "sfx/poseidon_tidal_pump_station_idle.wav"
-    },
-    {
-     "key": "poseidon_tidal_pump_station_summon",
-     "file": "sfx/poseidon_tidal_pump_station_summon.wav"
     }
    ]
   },
@@ -4750,7 +4855,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_coral_bulwark_summon"
+     "sfx": "poseidon_coral_bulwark_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -4762,7 +4867,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_coral_bulwark_death"
+     "sfx": "poseidon_coral_bulwark_destroy"
     }
    },
    "animations": [
@@ -4785,16 +4890,16 @@
      "file": "sfx/poseidon_coral_bulwark_ability.wav"
     },
     {
-     "key": "poseidon_coral_bulwark_death",
-     "file": "sfx/poseidon_coral_bulwark_death.wav"
+     "key": "poseidon_coral_bulwark_deploy",
+     "file": "sfx/poseidon_coral_bulwark_deploy.wav"
+    },
+    {
+     "key": "poseidon_coral_bulwark_destroy",
+     "file": "sfx/poseidon_coral_bulwark_destroy.wav"
     },
     {
      "key": "poseidon_coral_bulwark_idle",
      "file": "sfx/poseidon_coral_bulwark_idle.wav"
-    },
-    {
-     "key": "poseidon_coral_bulwark_summon",
-     "file": "sfx/poseidon_coral_bulwark_summon.wav"
     }
    ]
   },
@@ -4807,7 +4912,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_sonar_beacon_summon"
+     "sfx": "poseidon_sonar_beacon_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -4819,7 +4924,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_sonar_beacon_death"
+     "sfx": "poseidon_sonar_beacon_destroy"
     }
    },
    "animations": [
@@ -4842,16 +4947,16 @@
      "file": "sfx/poseidon_sonar_beacon_ability.wav"
     },
     {
-     "key": "poseidon_sonar_beacon_death",
-     "file": "sfx/poseidon_sonar_beacon_death.wav"
+     "key": "poseidon_sonar_beacon_deploy",
+     "file": "sfx/poseidon_sonar_beacon_deploy.wav"
+    },
+    {
+     "key": "poseidon_sonar_beacon_destroy",
+     "file": "sfx/poseidon_sonar_beacon_destroy.wav"
     },
     {
      "key": "poseidon_sonar_beacon_idle",
      "file": "sfx/poseidon_sonar_beacon_idle.wav"
-    },
-    {
-     "key": "poseidon_sonar_beacon_summon",
-     "file": "sfx/poseidon_sonar_beacon_summon.wav"
     }
    ]
   },
@@ -4864,7 +4969,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_abyss_gate_summon"
+     "sfx": "poseidon_abyss_gate_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -4876,7 +4981,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_abyss_gate_death"
+     "sfx": "poseidon_abyss_gate_destroy"
     }
    },
    "animations": [
@@ -4899,16 +5004,16 @@
      "file": "sfx/poseidon_abyss_gate_ability.wav"
     },
     {
-     "key": "poseidon_abyss_gate_death",
-     "file": "sfx/poseidon_abyss_gate_death.wav"
+     "key": "poseidon_abyss_gate_deploy",
+     "file": "sfx/poseidon_abyss_gate_deploy.wav"
+    },
+    {
+     "key": "poseidon_abyss_gate_destroy",
+     "file": "sfx/poseidon_abyss_gate_destroy.wav"
     },
     {
      "key": "poseidon_abyss_gate_idle",
      "file": "sfx/poseidon_abyss_gate_idle.wav"
-    },
-    {
-     "key": "poseidon_abyss_gate_summon",
-     "file": "sfx/poseidon_abyss_gate_summon.wav"
     }
    ]
   },
@@ -4921,7 +5026,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_ion_storm_lattice_summon"
+     "sfx": "zeus_ion_storm_lattice_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -4933,7 +5038,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_ion_storm_lattice_death"
+     "sfx": "zeus_ion_storm_lattice_destroy"
     }
    },
    "animations": [
@@ -4956,16 +5061,16 @@
      "file": "sfx/zeus_ion_storm_lattice_ability.wav"
     },
     {
-     "key": "zeus_ion_storm_lattice_death",
-     "file": "sfx/zeus_ion_storm_lattice_death.wav"
+     "key": "zeus_ion_storm_lattice_deploy",
+     "file": "sfx/zeus_ion_storm_lattice_deploy.wav"
+    },
+    {
+     "key": "zeus_ion_storm_lattice_destroy",
+     "file": "sfx/zeus_ion_storm_lattice_destroy.wav"
     },
     {
      "key": "zeus_ion_storm_lattice_idle",
      "file": "sfx/zeus_ion_storm_lattice_idle.wav"
-    },
-    {
-     "key": "zeus_ion_storm_lattice_summon",
-     "file": "sfx/zeus_ion_storm_lattice_summon.wav"
     }
    ]
   },
@@ -4978,7 +5083,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_moonwell_tidegate_summon"
+     "sfx": "poseidon_moonwell_tidegate_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -4990,7 +5095,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_moonwell_tidegate_death"
+     "sfx": "poseidon_moonwell_tidegate_destroy"
     }
    },
    "animations": [
@@ -5013,16 +5118,16 @@
      "file": "sfx/poseidon_moonwell_tidegate_ability.wav"
     },
     {
-     "key": "poseidon_moonwell_tidegate_death",
-     "file": "sfx/poseidon_moonwell_tidegate_death.wav"
+     "key": "poseidon_moonwell_tidegate_deploy",
+     "file": "sfx/poseidon_moonwell_tidegate_deploy.wav"
+    },
+    {
+     "key": "poseidon_moonwell_tidegate_destroy",
+     "file": "sfx/poseidon_moonwell_tidegate_destroy.wav"
     },
     {
      "key": "poseidon_moonwell_tidegate_idle",
      "file": "sfx/poseidon_moonwell_tidegate_idle.wav"
-    },
-    {
-     "key": "poseidon_moonwell_tidegate_summon",
-     "file": "sfx/poseidon_moonwell_tidegate_summon.wav"
     }
    ]
   },
@@ -5035,7 +5140,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_drowned_archive_summon"
+     "sfx": "poseidon_drowned_archive_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -5043,7 +5148,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_drowned_archive_death"
+     "sfx": "poseidon_drowned_archive_destroy"
     }
    },
    "animations": [
@@ -5066,16 +5171,16 @@
      "file": "sfx/poseidon_drowned_archive_ability.wav"
     },
     {
-     "key": "poseidon_drowned_archive_death",
-     "file": "sfx/poseidon_drowned_archive_death.wav"
+     "key": "poseidon_drowned_archive_deploy",
+     "file": "sfx/poseidon_drowned_archive_deploy.wav"
+    },
+    {
+     "key": "poseidon_drowned_archive_destroy",
+     "file": "sfx/poseidon_drowned_archive_destroy.wav"
     },
     {
      "key": "poseidon_drowned_archive_idle",
      "file": "sfx/poseidon_drowned_archive_idle.wav"
-    },
-    {
-     "key": "poseidon_drowned_archive_summon",
-     "file": "sfx/poseidon_drowned_archive_summon.wav"
     }
    ]
   },
@@ -5088,7 +5193,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_zephyr_mooring_mast_summon"
+     "sfx": "zeus_zephyr_mooring_mast_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -5100,7 +5205,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_zephyr_mooring_mast_death"
+     "sfx": "zeus_zephyr_mooring_mast_destroy"
     }
    },
    "animations": [
@@ -5123,16 +5228,16 @@
      "file": "sfx/zeus_zephyr_mooring_mast_ability.wav"
     },
     {
-     "key": "zeus_zephyr_mooring_mast_death",
-     "file": "sfx/zeus_zephyr_mooring_mast_death.wav"
+     "key": "zeus_zephyr_mooring_mast_deploy",
+     "file": "sfx/zeus_zephyr_mooring_mast_deploy.wav"
+    },
+    {
+     "key": "zeus_zephyr_mooring_mast_destroy",
+     "file": "sfx/zeus_zephyr_mooring_mast_destroy.wav"
     },
     {
      "key": "zeus_zephyr_mooring_mast_idle",
      "file": "sfx/zeus_zephyr_mooring_mast_idle.wav"
-    },
-    {
-     "key": "zeus_zephyr_mooring_mast_summon",
-     "file": "sfx/zeus_zephyr_mooring_mast_summon.wav"
     }
    ]
   },
@@ -5145,7 +5250,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_driftwood_breakwater_summon"
+     "sfx": "poseidon_driftwood_breakwater_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -5157,7 +5262,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_driftwood_breakwater_death"
+     "sfx": "poseidon_driftwood_breakwater_destroy"
     }
    },
    "animations": [
@@ -5180,16 +5285,16 @@
      "file": "sfx/poseidon_driftwood_breakwater_ability.wav"
     },
     {
-     "key": "poseidon_driftwood_breakwater_death",
-     "file": "sfx/poseidon_driftwood_breakwater_death.wav"
+     "key": "poseidon_driftwood_breakwater_deploy",
+     "file": "sfx/poseidon_driftwood_breakwater_deploy.wav"
+    },
+    {
+     "key": "poseidon_driftwood_breakwater_destroy",
+     "file": "sfx/poseidon_driftwood_breakwater_destroy.wav"
     },
     {
      "key": "poseidon_driftwood_breakwater_idle",
      "file": "sfx/poseidon_driftwood_breakwater_idle.wav"
-    },
-    {
-     "key": "poseidon_driftwood_breakwater_summon",
-     "file": "sfx/poseidon_driftwood_breakwater_summon.wav"
     }
    ]
   },
@@ -5202,7 +5307,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_land_dawncloud_step_summon"
+     "sfx": "zeus_land_dawncloud_step_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -5210,7 +5315,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_land_dawncloud_step_death"
+     "sfx": "zeus_land_dawncloud_step_destroy"
     }
    },
    "animations": [
@@ -5233,16 +5338,16 @@
      "file": "sfx/zeus_land_dawncloud_step_ability.wav"
     },
     {
-     "key": "zeus_land_dawncloud_step_death",
-     "file": "sfx/zeus_land_dawncloud_step_death.wav"
+     "key": "zeus_land_dawncloud_step_deploy",
+     "file": "sfx/zeus_land_dawncloud_step_deploy.wav"
+    },
+    {
+     "key": "zeus_land_dawncloud_step_destroy",
+     "file": "sfx/zeus_land_dawncloud_step_destroy.wav"
     },
     {
      "key": "zeus_land_dawncloud_step_idle",
      "file": "sfx/zeus_land_dawncloud_step_idle.wav"
-    },
-    {
-     "key": "zeus_land_dawncloud_step_summon",
-     "file": "sfx/zeus_land_dawncloud_step_summon.wav"
     }
    ]
   },
@@ -5255,7 +5360,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_structure_aegis_conductor_summon"
+     "sfx": "zeus_structure_aegis_conductor_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -5267,7 +5372,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_structure_aegis_conductor_death"
+     "sfx": "zeus_structure_aegis_conductor_destroy"
     }
    },
    "animations": [
@@ -5290,16 +5395,16 @@
      "file": "sfx/zeus_structure_aegis_conductor_ability.wav"
     },
     {
-     "key": "zeus_structure_aegis_conductor_death",
-     "file": "sfx/zeus_structure_aegis_conductor_death.wav"
+     "key": "zeus_structure_aegis_conductor_deploy",
+     "file": "sfx/zeus_structure_aegis_conductor_deploy.wav"
+    },
+    {
+     "key": "zeus_structure_aegis_conductor_destroy",
+     "file": "sfx/zeus_structure_aegis_conductor_destroy.wav"
     },
     {
      "key": "zeus_structure_aegis_conductor_idle",
      "file": "sfx/zeus_structure_aegis_conductor_idle.wav"
-    },
-    {
-     "key": "zeus_structure_aegis_conductor_summon",
-     "file": "sfx/zeus_structure_aegis_conductor_summon.wav"
     }
    ]
   },
@@ -5312,7 +5417,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_land_empyrean_current_summon"
+     "sfx": "zeus_land_empyrean_current_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -5320,7 +5425,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_land_empyrean_current_death"
+     "sfx": "zeus_land_empyrean_current_destroy"
     }
    },
    "animations": [
@@ -5343,16 +5448,16 @@
      "file": "sfx/zeus_land_empyrean_current_ability.wav"
     },
     {
-     "key": "zeus_land_empyrean_current_death",
-     "file": "sfx/zeus_land_empyrean_current_death.wav"
+     "key": "zeus_land_empyrean_current_deploy",
+     "file": "sfx/zeus_land_empyrean_current_deploy.wav"
+    },
+    {
+     "key": "zeus_land_empyrean_current_destroy",
+     "file": "sfx/zeus_land_empyrean_current_destroy.wav"
     },
     {
      "key": "zeus_land_empyrean_current_idle",
      "file": "sfx/zeus_land_empyrean_current_idle.wav"
-    },
-    {
-     "key": "zeus_land_empyrean_current_summon",
-     "file": "sfx/zeus_land_empyrean_current_summon.wav"
     }
    ]
   },
@@ -5365,7 +5470,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_structure_oracle_of_storms_summon"
+     "sfx": "zeus_structure_oracle_of_storms_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -5377,7 +5482,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_structure_oracle_of_storms_death"
+     "sfx": "zeus_structure_oracle_of_storms_destroy"
     }
    },
    "animations": [
@@ -5400,16 +5505,20 @@
      "file": "sfx/zeus_structure_oracle_of_storms_ability.wav"
     },
     {
-     "key": "zeus_structure_oracle_of_storms_death",
-     "file": "sfx/zeus_structure_oracle_of_storms_death.wav"
+     "key": "zeus_structure_oracle_of_storms_deploy",
+     "file": "sfx/zeus_structure_oracle_of_storms_deploy.wav"
+    },
+    {
+     "key": "zeus_structure_oracle_of_storms_destroy",
+     "file": "sfx/zeus_structure_oracle_of_storms_destroy.wav"
     },
     {
      "key": "zeus_structure_oracle_of_storms_idle",
      "file": "sfx/zeus_structure_oracle_of_storms_idle.wav"
     },
     {
-     "key": "zeus_structure_oracle_of_storms_summon",
-     "file": "sfx/zeus_structure_oracle_of_storms_summon.wav"
+     "key": "zeus_structure_oracle_of_storms_signature",
+     "file": "sfx/zeus_structure_oracle_of_storms_signature.wav"
     }
    ]
   },
@@ -5422,7 +5531,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_land_saltmarsh_harbor_summon"
+     "sfx": "poseidon_land_saltmarsh_harbor_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -5430,7 +5539,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_land_saltmarsh_harbor_death"
+     "sfx": "poseidon_land_saltmarsh_harbor_destroy"
     }
    },
    "animations": [
@@ -5453,16 +5562,16 @@
      "file": "sfx/poseidon_land_saltmarsh_harbor_ability.wav"
     },
     {
-     "key": "poseidon_land_saltmarsh_harbor_death",
-     "file": "sfx/poseidon_land_saltmarsh_harbor_death.wav"
+     "key": "poseidon_land_saltmarsh_harbor_deploy",
+     "file": "sfx/poseidon_land_saltmarsh_harbor_deploy.wav"
+    },
+    {
+     "key": "poseidon_land_saltmarsh_harbor_destroy",
+     "file": "sfx/poseidon_land_saltmarsh_harbor_destroy.wav"
     },
     {
      "key": "poseidon_land_saltmarsh_harbor_idle",
      "file": "sfx/poseidon_land_saltmarsh_harbor_idle.wav"
-    },
-    {
-     "key": "poseidon_land_saltmarsh_harbor_summon",
-     "file": "sfx/poseidon_land_saltmarsh_harbor_summon.wav"
     }
    ]
   },
@@ -5475,7 +5584,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_structure_current_exchange_summon"
+     "sfx": "poseidon_structure_current_exchange_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -5487,7 +5596,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_structure_current_exchange_death"
+     "sfx": "poseidon_structure_current_exchange_destroy"
     }
    },
    "animations": [
@@ -5510,16 +5619,16 @@
      "file": "sfx/poseidon_structure_current_exchange_ability.wav"
     },
     {
-     "key": "poseidon_structure_current_exchange_death",
-     "file": "sfx/poseidon_structure_current_exchange_death.wav"
+     "key": "poseidon_structure_current_exchange_deploy",
+     "file": "sfx/poseidon_structure_current_exchange_deploy.wav"
+    },
+    {
+     "key": "poseidon_structure_current_exchange_destroy",
+     "file": "sfx/poseidon_structure_current_exchange_destroy.wav"
     },
     {
      "key": "poseidon_structure_current_exchange_idle",
      "file": "sfx/poseidon_structure_current_exchange_idle.wav"
-    },
-    {
-     "key": "poseidon_structure_current_exchange_summon",
-     "file": "sfx/poseidon_structure_current_exchange_summon.wav"
     }
    ]
   },
@@ -5532,7 +5641,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_land_pelagic_kingdom_summon"
+     "sfx": "poseidon_land_pelagic_kingdom_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -5540,7 +5649,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_land_pelagic_kingdom_death"
+     "sfx": "poseidon_land_pelagic_kingdom_destroy"
     }
    },
    "animations": [
@@ -5563,16 +5672,16 @@
      "file": "sfx/poseidon_land_pelagic_kingdom_ability.wav"
     },
     {
-     "key": "poseidon_land_pelagic_kingdom_death",
-     "file": "sfx/poseidon_land_pelagic_kingdom_death.wav"
+     "key": "poseidon_land_pelagic_kingdom_deploy",
+     "file": "sfx/poseidon_land_pelagic_kingdom_deploy.wav"
+    },
+    {
+     "key": "poseidon_land_pelagic_kingdom_destroy",
+     "file": "sfx/poseidon_land_pelagic_kingdom_destroy.wav"
     },
     {
      "key": "poseidon_land_pelagic_kingdom_idle",
      "file": "sfx/poseidon_land_pelagic_kingdom_idle.wav"
-    },
-    {
-     "key": "poseidon_land_pelagic_kingdom_summon",
-     "file": "sfx/poseidon_land_pelagic_kingdom_summon.wav"
     }
    ]
   },
@@ -5585,7 +5694,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_structure_ambrosial_spring_summon"
+     "sfx": "poseidon_structure_ambrosial_spring_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -5597,7 +5706,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_structure_ambrosial_spring_death"
+     "sfx": "poseidon_structure_ambrosial_spring_destroy"
     }
    },
    "animations": [
@@ -5620,16 +5729,20 @@
      "file": "sfx/poseidon_structure_ambrosial_spring_ability.wav"
     },
     {
-     "key": "poseidon_structure_ambrosial_spring_death",
-     "file": "sfx/poseidon_structure_ambrosial_spring_death.wav"
+     "key": "poseidon_structure_ambrosial_spring_deploy",
+     "file": "sfx/poseidon_structure_ambrosial_spring_deploy.wav"
+    },
+    {
+     "key": "poseidon_structure_ambrosial_spring_destroy",
+     "file": "sfx/poseidon_structure_ambrosial_spring_destroy.wav"
     },
     {
      "key": "poseidon_structure_ambrosial_spring_idle",
      "file": "sfx/poseidon_structure_ambrosial_spring_idle.wav"
     },
     {
-     "key": "poseidon_structure_ambrosial_spring_summon",
-     "file": "sfx/poseidon_structure_ambrosial_spring_summon.wav"
+     "key": "poseidon_structure_ambrosial_spring_signature",
+     "file": "sfx/poseidon_structure_ambrosial_spring_signature.wav"
     }
    ]
   },
@@ -5642,7 +5755,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_land_thunderstep_plateau_summon"
+     "sfx": "zeus_land_thunderstep_plateau_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -5650,7 +5763,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_land_thunderstep_plateau_death"
+     "sfx": "zeus_land_thunderstep_plateau_destroy"
     }
    },
    "animations": [
@@ -5673,16 +5786,16 @@
      "file": "sfx/zeus_land_thunderstep_plateau_ability.wav"
     },
     {
-     "key": "zeus_land_thunderstep_plateau_death",
-     "file": "sfx/zeus_land_thunderstep_plateau_death.wav"
+     "key": "zeus_land_thunderstep_plateau_deploy",
+     "file": "sfx/zeus_land_thunderstep_plateau_deploy.wav"
+    },
+    {
+     "key": "zeus_land_thunderstep_plateau_destroy",
+     "file": "sfx/zeus_land_thunderstep_plateau_destroy.wav"
     },
     {
      "key": "zeus_land_thunderstep_plateau_idle",
      "file": "sfx/zeus_land_thunderstep_plateau_idle.wav"
-    },
-    {
-     "key": "zeus_land_thunderstep_plateau_summon",
-     "file": "sfx/zeus_land_thunderstep_plateau_summon.wav"
     }
    ]
   },
@@ -5695,7 +5808,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_land_aurora_reach_summon"
+     "sfx": "zeus_land_aurora_reach_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -5703,7 +5816,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_land_aurora_reach_death"
+     "sfx": "zeus_land_aurora_reach_destroy"
     }
    },
    "animations": [
@@ -5726,16 +5839,16 @@
      "file": "sfx/zeus_land_aurora_reach_ability.wav"
     },
     {
-     "key": "zeus_land_aurora_reach_death",
-     "file": "sfx/zeus_land_aurora_reach_death.wav"
+     "key": "zeus_land_aurora_reach_deploy",
+     "file": "sfx/zeus_land_aurora_reach_deploy.wav"
+    },
+    {
+     "key": "zeus_land_aurora_reach_destroy",
+     "file": "sfx/zeus_land_aurora_reach_destroy.wav"
     },
     {
      "key": "zeus_land_aurora_reach_idle",
      "file": "sfx/zeus_land_aurora_reach_idle.wav"
-    },
-    {
-     "key": "zeus_land_aurora_reach_summon",
-     "file": "sfx/zeus_land_aurora_reach_summon.wav"
     }
    ]
   },
@@ -5748,7 +5861,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_structure_stormglass_relay_summon"
+     "sfx": "zeus_structure_stormglass_relay_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -5760,7 +5873,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_structure_stormglass_relay_death"
+     "sfx": "zeus_structure_stormglass_relay_destroy"
     }
    },
    "animations": [
@@ -5783,16 +5896,16 @@
      "file": "sfx/zeus_structure_stormglass_relay_ability.wav"
     },
     {
-     "key": "zeus_structure_stormglass_relay_death",
-     "file": "sfx/zeus_structure_stormglass_relay_death.wav"
+     "key": "zeus_structure_stormglass_relay_deploy",
+     "file": "sfx/zeus_structure_stormglass_relay_deploy.wav"
+    },
+    {
+     "key": "zeus_structure_stormglass_relay_destroy",
+     "file": "sfx/zeus_structure_stormglass_relay_destroy.wav"
     },
     {
      "key": "zeus_structure_stormglass_relay_idle",
      "file": "sfx/zeus_structure_stormglass_relay_idle.wav"
-    },
-    {
-     "key": "zeus_structure_stormglass_relay_summon",
-     "file": "sfx/zeus_structure_stormglass_relay_summon.wav"
     }
    ]
   },
@@ -5805,7 +5918,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_structure_cloud_archive_summon"
+     "sfx": "zeus_structure_cloud_archive_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -5817,7 +5930,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_structure_cloud_archive_death"
+     "sfx": "zeus_structure_cloud_archive_destroy"
     }
    },
    "animations": [
@@ -5840,16 +5953,20 @@
      "file": "sfx/zeus_structure_cloud_archive_ability.wav"
     },
     {
-     "key": "zeus_structure_cloud_archive_death",
-     "file": "sfx/zeus_structure_cloud_archive_death.wav"
+     "key": "zeus_structure_cloud_archive_deploy",
+     "file": "sfx/zeus_structure_cloud_archive_deploy.wav"
+    },
+    {
+     "key": "zeus_structure_cloud_archive_destroy",
+     "file": "sfx/zeus_structure_cloud_archive_destroy.wav"
     },
     {
      "key": "zeus_structure_cloud_archive_idle",
      "file": "sfx/zeus_structure_cloud_archive_idle.wav"
     },
     {
-     "key": "zeus_structure_cloud_archive_summon",
-     "file": "sfx/zeus_structure_cloud_archive_summon.wav"
+     "key": "zeus_structure_cloud_archive_signature",
+     "file": "sfx/zeus_structure_cloud_archive_signature.wav"
     }
    ]
   },
@@ -5862,7 +5979,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_land_coral_tributary_summon"
+     "sfx": "poseidon_land_coral_tributary_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -5870,7 +5987,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_land_coral_tributary_death"
+     "sfx": "poseidon_land_coral_tributary_destroy"
     }
    },
    "animations": [
@@ -5893,16 +6010,16 @@
      "file": "sfx/poseidon_land_coral_tributary_ability.wav"
     },
     {
-     "key": "poseidon_land_coral_tributary_death",
-     "file": "sfx/poseidon_land_coral_tributary_death.wav"
+     "key": "poseidon_land_coral_tributary_deploy",
+     "file": "sfx/poseidon_land_coral_tributary_deploy.wav"
+    },
+    {
+     "key": "poseidon_land_coral_tributary_destroy",
+     "file": "sfx/poseidon_land_coral_tributary_destroy.wav"
     },
     {
      "key": "poseidon_land_coral_tributary_idle",
      "file": "sfx/poseidon_land_coral_tributary_idle.wav"
-    },
-    {
-     "key": "poseidon_land_coral_tributary_summon",
-     "file": "sfx/poseidon_land_coral_tributary_summon.wav"
     }
    ]
   },
@@ -5915,7 +6032,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_land_leviathan_shelf_summon"
+     "sfx": "poseidon_land_leviathan_shelf_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -5923,7 +6040,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_land_leviathan_shelf_death"
+     "sfx": "poseidon_land_leviathan_shelf_destroy"
     }
    },
    "animations": [
@@ -5946,16 +6063,16 @@
      "file": "sfx/poseidon_land_leviathan_shelf_ability.wav"
     },
     {
-     "key": "poseidon_land_leviathan_shelf_death",
-     "file": "sfx/poseidon_land_leviathan_shelf_death.wav"
+     "key": "poseidon_land_leviathan_shelf_deploy",
+     "file": "sfx/poseidon_land_leviathan_shelf_deploy.wav"
+    },
+    {
+     "key": "poseidon_land_leviathan_shelf_destroy",
+     "file": "sfx/poseidon_land_leviathan_shelf_destroy.wav"
     },
     {
      "key": "poseidon_land_leviathan_shelf_idle",
      "file": "sfx/poseidon_land_leviathan_shelf_idle.wav"
-    },
-    {
-     "key": "poseidon_land_leviathan_shelf_summon",
-     "file": "sfx/poseidon_land_leviathan_shelf_summon.wav"
     }
    ]
   },
@@ -5968,7 +6085,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_structure_tidevault_summon"
+     "sfx": "poseidon_structure_tidevault_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -5980,7 +6097,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_structure_tidevault_death"
+     "sfx": "poseidon_structure_tidevault_destroy"
     }
    },
    "animations": [
@@ -6003,16 +6120,16 @@
      "file": "sfx/poseidon_structure_tidevault_ability.wav"
     },
     {
-     "key": "poseidon_structure_tidevault_death",
-     "file": "sfx/poseidon_structure_tidevault_death.wav"
+     "key": "poseidon_structure_tidevault_deploy",
+     "file": "sfx/poseidon_structure_tidevault_deploy.wav"
+    },
+    {
+     "key": "poseidon_structure_tidevault_destroy",
+     "file": "sfx/poseidon_structure_tidevault_destroy.wav"
     },
     {
      "key": "poseidon_structure_tidevault_idle",
      "file": "sfx/poseidon_structure_tidevault_idle.wav"
-    },
-    {
-     "key": "poseidon_structure_tidevault_summon",
-     "file": "sfx/poseidon_structure_tidevault_summon.wav"
     }
    ]
   },
@@ -6025,7 +6142,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_structure_pearl_infirmary_summon"
+     "sfx": "poseidon_structure_pearl_infirmary_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -6037,7 +6154,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_structure_pearl_infirmary_death"
+     "sfx": "poseidon_structure_pearl_infirmary_destroy"
     }
    },
    "animations": [
@@ -6060,16 +6177,20 @@
      "file": "sfx/poseidon_structure_pearl_infirmary_ability.wav"
     },
     {
-     "key": "poseidon_structure_pearl_infirmary_death",
-     "file": "sfx/poseidon_structure_pearl_infirmary_death.wav"
+     "key": "poseidon_structure_pearl_infirmary_deploy",
+     "file": "sfx/poseidon_structure_pearl_infirmary_deploy.wav"
+    },
+    {
+     "key": "poseidon_structure_pearl_infirmary_destroy",
+     "file": "sfx/poseidon_structure_pearl_infirmary_destroy.wav"
     },
     {
      "key": "poseidon_structure_pearl_infirmary_idle",
      "file": "sfx/poseidon_structure_pearl_infirmary_idle.wav"
     },
     {
-     "key": "poseidon_structure_pearl_infirmary_summon",
-     "file": "sfx/poseidon_structure_pearl_infirmary_summon.wav"
+     "key": "poseidon_structure_pearl_infirmary_signature",
+     "file": "sfx/poseidon_structure_pearl_infirmary_signature.wav"
     }
    ]
   },
@@ -6082,7 +6203,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_keyword_sparkstep_runner_summon"
+     "sfx": "zeus_keyword_sparkstep_runner_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -6106,7 +6227,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_keyword_sparkstep_runner_death"
+     "sfx": "zeus_keyword_sparkstep_runner_destroy"
     }
    },
    "animations": [
@@ -6141,8 +6262,12 @@
      "file": "sfx/zeus_keyword_sparkstep_runner_attack.wav"
     },
     {
-     "key": "zeus_keyword_sparkstep_runner_death",
-     "file": "sfx/zeus_keyword_sparkstep_runner_death.wav"
+     "key": "zeus_keyword_sparkstep_runner_deploy",
+     "file": "sfx/zeus_keyword_sparkstep_runner_deploy.wav"
+    },
+    {
+     "key": "zeus_keyword_sparkstep_runner_destroy",
+     "file": "sfx/zeus_keyword_sparkstep_runner_destroy.wav"
     },
     {
      "key": "zeus_keyword_sparkstep_runner_hit",
@@ -6155,10 +6280,6 @@
     {
      "key": "zeus_keyword_sparkstep_runner_move",
      "file": "sfx/zeus_keyword_sparkstep_runner_move.wav"
-    },
-    {
-     "key": "zeus_keyword_sparkstep_runner_summon",
-     "file": "sfx/zeus_keyword_sparkstep_runner_summon.wav"
     }
    ]
   },
@@ -6171,7 +6292,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_keyword_cloudline_raider_summon"
+     "sfx": "zeus_keyword_cloudline_raider_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -6195,7 +6316,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_keyword_cloudline_raider_death"
+     "sfx": "zeus_keyword_cloudline_raider_destroy"
     }
    },
    "animations": [
@@ -6230,8 +6351,12 @@
      "file": "sfx/zeus_keyword_cloudline_raider_attack.wav"
     },
     {
-     "key": "zeus_keyword_cloudline_raider_death",
-     "file": "sfx/zeus_keyword_cloudline_raider_death.wav"
+     "key": "zeus_keyword_cloudline_raider_deploy",
+     "file": "sfx/zeus_keyword_cloudline_raider_deploy.wav"
+    },
+    {
+     "key": "zeus_keyword_cloudline_raider_destroy",
+     "file": "sfx/zeus_keyword_cloudline_raider_destroy.wav"
     },
     {
      "key": "zeus_keyword_cloudline_raider_hit",
@@ -6244,10 +6369,6 @@
     {
      "key": "zeus_keyword_cloudline_raider_move",
      "file": "sfx/zeus_keyword_cloudline_raider_move.wav"
-    },
-    {
-     "key": "zeus_keyword_cloudline_raider_summon",
-     "file": "sfx/zeus_keyword_cloudline_raider_summon.wav"
     }
    ]
   },
@@ -6260,7 +6381,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_keyword_aetherbolt_avatar_summon"
+     "sfx": "zeus_keyword_aetherbolt_avatar_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -6284,7 +6405,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_keyword_aetherbolt_avatar_death"
+     "sfx": "zeus_keyword_aetherbolt_avatar_destroy"
     }
    },
    "animations": [
@@ -6319,8 +6440,12 @@
      "file": "sfx/zeus_keyword_aetherbolt_avatar_attack.wav"
     },
     {
-     "key": "zeus_keyword_aetherbolt_avatar_death",
-     "file": "sfx/zeus_keyword_aetherbolt_avatar_death.wav"
+     "key": "zeus_keyword_aetherbolt_avatar_deploy",
+     "file": "sfx/zeus_keyword_aetherbolt_avatar_deploy.wav"
+    },
+    {
+     "key": "zeus_keyword_aetherbolt_avatar_destroy",
+     "file": "sfx/zeus_keyword_aetherbolt_avatar_destroy.wav"
     },
     {
      "key": "zeus_keyword_aetherbolt_avatar_hit",
@@ -6335,8 +6460,8 @@
      "file": "sfx/zeus_keyword_aetherbolt_avatar_move.wav"
     },
     {
-     "key": "zeus_keyword_aetherbolt_avatar_summon",
-     "file": "sfx/zeus_keyword_aetherbolt_avatar_summon.wav"
+     "key": "zeus_keyword_aetherbolt_avatar_signature",
+     "file": "sfx/zeus_keyword_aetherbolt_avatar_signature.wav"
     }
    ]
   },
@@ -6349,7 +6474,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_keyword_stormgate_sentinel_summon"
+     "sfx": "zeus_keyword_stormgate_sentinel_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -6373,7 +6498,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_keyword_stormgate_sentinel_death"
+     "sfx": "zeus_keyword_stormgate_sentinel_destroy"
     }
    },
    "animations": [
@@ -6408,8 +6533,12 @@
      "file": "sfx/zeus_keyword_stormgate_sentinel_attack.wav"
     },
     {
-     "key": "zeus_keyword_stormgate_sentinel_death",
-     "file": "sfx/zeus_keyword_stormgate_sentinel_death.wav"
+     "key": "zeus_keyword_stormgate_sentinel_deploy",
+     "file": "sfx/zeus_keyword_stormgate_sentinel_deploy.wav"
+    },
+    {
+     "key": "zeus_keyword_stormgate_sentinel_destroy",
+     "file": "sfx/zeus_keyword_stormgate_sentinel_destroy.wav"
     },
     {
      "key": "zeus_keyword_stormgate_sentinel_hit",
@@ -6422,10 +6551,6 @@
     {
      "key": "zeus_keyword_stormgate_sentinel_move",
      "file": "sfx/zeus_keyword_stormgate_sentinel_move.wav"
-    },
-    {
-     "key": "zeus_keyword_stormgate_sentinel_summon",
-     "file": "sfx/zeus_keyword_stormgate_sentinel_summon.wav"
     }
    ]
   },
@@ -6438,7 +6563,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_keyword_thunderhead_guardian_summon"
+     "sfx": "zeus_keyword_thunderhead_guardian_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -6462,7 +6587,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_keyword_thunderhead_guardian_death"
+     "sfx": "zeus_keyword_thunderhead_guardian_destroy"
     }
    },
    "animations": [
@@ -6497,8 +6622,12 @@
      "file": "sfx/zeus_keyword_thunderhead_guardian_attack.wav"
     },
     {
-     "key": "zeus_keyword_thunderhead_guardian_death",
-     "file": "sfx/zeus_keyword_thunderhead_guardian_death.wav"
+     "key": "zeus_keyword_thunderhead_guardian_deploy",
+     "file": "sfx/zeus_keyword_thunderhead_guardian_deploy.wav"
+    },
+    {
+     "key": "zeus_keyword_thunderhead_guardian_destroy",
+     "file": "sfx/zeus_keyword_thunderhead_guardian_destroy.wav"
     },
     {
      "key": "zeus_keyword_thunderhead_guardian_hit",
@@ -6511,10 +6640,6 @@
     {
      "key": "zeus_keyword_thunderhead_guardian_move",
      "file": "sfx/zeus_keyword_thunderhead_guardian_move.wav"
-    },
-    {
-     "key": "zeus_keyword_thunderhead_guardian_summon",
-     "file": "sfx/zeus_keyword_thunderhead_guardian_summon.wav"
     }
    ]
   },
@@ -6527,7 +6652,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_keyword_reef_tunneler_summon"
+     "sfx": "poseidon_keyword_reef_tunneler_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -6551,7 +6676,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_keyword_reef_tunneler_death"
+     "sfx": "poseidon_keyword_reef_tunneler_destroy"
     }
    },
    "animations": [
@@ -6586,8 +6711,12 @@
      "file": "sfx/poseidon_keyword_reef_tunneler_attack.wav"
     },
     {
-     "key": "poseidon_keyword_reef_tunneler_death",
-     "file": "sfx/poseidon_keyword_reef_tunneler_death.wav"
+     "key": "poseidon_keyword_reef_tunneler_deploy",
+     "file": "sfx/poseidon_keyword_reef_tunneler_deploy.wav"
+    },
+    {
+     "key": "poseidon_keyword_reef_tunneler_destroy",
+     "file": "sfx/poseidon_keyword_reef_tunneler_destroy.wav"
     },
     {
      "key": "poseidon_keyword_reef_tunneler_hit",
@@ -6600,10 +6729,6 @@
     {
      "key": "poseidon_keyword_reef_tunneler_move",
      "file": "sfx/poseidon_keyword_reef_tunneler_move.wav"
-    },
-    {
-     "key": "poseidon_keyword_reef_tunneler_summon",
-     "file": "sfx/poseidon_keyword_reef_tunneler_summon.wav"
     }
    ]
   },
@@ -6616,7 +6741,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_keyword_trench_stalker_summon"
+     "sfx": "poseidon_keyword_trench_stalker_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -6640,7 +6765,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_keyword_trench_stalker_death"
+     "sfx": "poseidon_keyword_trench_stalker_destroy"
     }
    },
    "animations": [
@@ -6675,8 +6800,12 @@
      "file": "sfx/poseidon_keyword_trench_stalker_attack.wav"
     },
     {
-     "key": "poseidon_keyword_trench_stalker_death",
-     "file": "sfx/poseidon_keyword_trench_stalker_death.wav"
+     "key": "poseidon_keyword_trench_stalker_deploy",
+     "file": "sfx/poseidon_keyword_trench_stalker_deploy.wav"
+    },
+    {
+     "key": "poseidon_keyword_trench_stalker_destroy",
+     "file": "sfx/poseidon_keyword_trench_stalker_destroy.wav"
     },
     {
      "key": "poseidon_keyword_trench_stalker_hit",
@@ -6689,10 +6818,6 @@
     {
      "key": "poseidon_keyword_trench_stalker_move",
      "file": "sfx/poseidon_keyword_trench_stalker_move.wav"
-    },
-    {
-     "key": "poseidon_keyword_trench_stalker_summon",
-     "file": "sfx/poseidon_keyword_trench_stalker_summon.wav"
     }
    ]
   },
@@ -6705,7 +6830,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_keyword_abyssal_leviathan_summon"
+     "sfx": "poseidon_keyword_abyssal_leviathan_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -6729,7 +6854,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_keyword_abyssal_leviathan_death"
+     "sfx": "poseidon_keyword_abyssal_leviathan_destroy"
     }
    },
    "animations": [
@@ -6764,8 +6889,12 @@
      "file": "sfx/poseidon_keyword_abyssal_leviathan_attack.wav"
     },
     {
-     "key": "poseidon_keyword_abyssal_leviathan_death",
-     "file": "sfx/poseidon_keyword_abyssal_leviathan_death.wav"
+     "key": "poseidon_keyword_abyssal_leviathan_deploy",
+     "file": "sfx/poseidon_keyword_abyssal_leviathan_deploy.wav"
+    },
+    {
+     "key": "poseidon_keyword_abyssal_leviathan_destroy",
+     "file": "sfx/poseidon_keyword_abyssal_leviathan_destroy.wav"
     },
     {
      "key": "poseidon_keyword_abyssal_leviathan_hit",
@@ -6780,8 +6909,8 @@
      "file": "sfx/poseidon_keyword_abyssal_leviathan_move.wav"
     },
     {
-     "key": "poseidon_keyword_abyssal_leviathan_summon",
-     "file": "sfx/poseidon_keyword_abyssal_leviathan_summon.wav"
+     "key": "poseidon_keyword_abyssal_leviathan_signature",
+     "file": "sfx/poseidon_keyword_abyssal_leviathan_signature.wav"
     }
    ]
   },
@@ -6794,7 +6923,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_keyword_breakwater_hoplite_summon"
+     "sfx": "poseidon_keyword_breakwater_hoplite_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -6818,7 +6947,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_keyword_breakwater_hoplite_death"
+     "sfx": "poseidon_keyword_breakwater_hoplite_destroy"
     }
    },
    "animations": [
@@ -6853,8 +6982,12 @@
      "file": "sfx/poseidon_keyword_breakwater_hoplite_attack.wav"
     },
     {
-     "key": "poseidon_keyword_breakwater_hoplite_death",
-     "file": "sfx/poseidon_keyword_breakwater_hoplite_death.wav"
+     "key": "poseidon_keyword_breakwater_hoplite_deploy",
+     "file": "sfx/poseidon_keyword_breakwater_hoplite_deploy.wav"
+    },
+    {
+     "key": "poseidon_keyword_breakwater_hoplite_destroy",
+     "file": "sfx/poseidon_keyword_breakwater_hoplite_destroy.wav"
     },
     {
      "key": "poseidon_keyword_breakwater_hoplite_hit",
@@ -6867,10 +7000,6 @@
     {
      "key": "poseidon_keyword_breakwater_hoplite_move",
      "file": "sfx/poseidon_keyword_breakwater_hoplite_move.wav"
-    },
-    {
-     "key": "poseidon_keyword_breakwater_hoplite_summon",
-     "file": "sfx/poseidon_keyword_breakwater_hoplite_summon.wav"
     }
    ]
   },
@@ -6883,7 +7012,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_keyword_maelstrom_bulwark_summon"
+     "sfx": "poseidon_keyword_maelstrom_bulwark_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -6907,7 +7036,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_keyword_maelstrom_bulwark_death"
+     "sfx": "poseidon_keyword_maelstrom_bulwark_destroy"
     }
    },
    "animations": [
@@ -6942,8 +7071,12 @@
      "file": "sfx/poseidon_keyword_maelstrom_bulwark_attack.wav"
     },
     {
-     "key": "poseidon_keyword_maelstrom_bulwark_death",
-     "file": "sfx/poseidon_keyword_maelstrom_bulwark_death.wav"
+     "key": "poseidon_keyword_maelstrom_bulwark_deploy",
+     "file": "sfx/poseidon_keyword_maelstrom_bulwark_deploy.wav"
+    },
+    {
+     "key": "poseidon_keyword_maelstrom_bulwark_destroy",
+     "file": "sfx/poseidon_keyword_maelstrom_bulwark_destroy.wav"
     },
     {
      "key": "poseidon_keyword_maelstrom_bulwark_hit",
@@ -6956,10 +7089,6 @@
     {
      "key": "poseidon_keyword_maelstrom_bulwark_move",
      "file": "sfx/poseidon_keyword_maelstrom_bulwark_move.wav"
-    },
-    {
-     "key": "poseidon_keyword_maelstrom_bulwark_summon",
-     "file": "sfx/poseidon_keyword_maelstrom_bulwark_summon.wav"
     }
    ]
   },
@@ -6972,7 +7101,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "zeus_chain_lightning_summon"
+     "sfx": "zeus_chain_lightning_deploy"
     }
    },
    "animations": [
@@ -6983,8 +7112,8 @@
    ],
    "sfx": [
     {
-     "key": "zeus_chain_lightning_summon",
-     "file": "sfx/zeus_chain_lightning_summon.wav"
+     "key": "zeus_chain_lightning_deploy",
+     "file": "sfx/zeus_chain_lightning_deploy.wav"
     }
    ]
   },
@@ -6997,7 +7126,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "zeus_skybreaker_bolt_summon"
+     "sfx": "zeus_skybreaker_bolt_deploy"
     }
    },
    "animations": [
@@ -7008,8 +7137,8 @@
    ],
    "sfx": [
     {
-     "key": "zeus_skybreaker_bolt_summon",
-     "file": "sfx/zeus_skybreaker_bolt_summon.wav"
+     "key": "zeus_skybreaker_bolt_deploy",
+     "file": "sfx/zeus_skybreaker_bolt_deploy.wav"
     }
    ]
   },
@@ -7022,7 +7151,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "zeus_windstep_protocol_summon"
+     "sfx": "zeus_windstep_protocol_deploy"
     }
    },
    "animations": [
@@ -7033,8 +7162,8 @@
    ],
    "sfx": [
     {
-     "key": "zeus_windstep_protocol_summon",
-     "file": "sfx/zeus_windstep_protocol_summon.wav"
+     "key": "zeus_windstep_protocol_deploy",
+     "file": "sfx/zeus_windstep_protocol_deploy.wav"
     }
    ]
   },
@@ -7047,7 +7176,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "zeus_stormcharge_summon"
+     "sfx": "zeus_stormcharge_deploy"
     }
    },
    "animations": [
@@ -7058,8 +7187,8 @@
    ],
    "sfx": [
     {
-     "key": "zeus_stormcharge_summon",
-     "file": "sfx/zeus_stormcharge_summon.wav"
+     "key": "zeus_stormcharge_deploy",
+     "file": "sfx/zeus_stormcharge_deploy.wav"
     }
    ]
   },
@@ -7072,7 +7201,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "zeus_aegis_of_the_sky_summon"
+     "sfx": "zeus_aegis_of_the_sky_deploy"
     }
    },
    "animations": [
@@ -7083,8 +7212,8 @@
    ],
    "sfx": [
     {
-     "key": "zeus_aegis_of_the_sky_summon",
-     "file": "sfx/zeus_aegis_of_the_sky_summon.wav"
+     "key": "zeus_aegis_of_the_sky_deploy",
+     "file": "sfx/zeus_aegis_of_the_sky_deploy.wav"
     }
    ]
   },
@@ -7097,7 +7226,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "poseidon_crushing_depths_summon"
+     "sfx": "poseidon_crushing_depths_deploy"
     }
    },
    "animations": [
@@ -7108,8 +7237,8 @@
    ],
    "sfx": [
     {
-     "key": "poseidon_crushing_depths_summon",
-     "file": "sfx/poseidon_crushing_depths_summon.wav"
+     "key": "poseidon_crushing_depths_deploy",
+     "file": "sfx/poseidon_crushing_depths_deploy.wav"
     }
    ]
   },
@@ -7122,7 +7251,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "poseidon_erode_foundation_summon"
+     "sfx": "poseidon_erode_foundation_deploy"
     }
    },
    "animations": [
@@ -7133,8 +7262,8 @@
    ],
    "sfx": [
     {
-     "key": "poseidon_erode_foundation_summon",
-     "file": "sfx/poseidon_erode_foundation_summon.wav"
+     "key": "poseidon_erode_foundation_deploy",
+     "file": "sfx/poseidon_erode_foundation_deploy.wav"
     }
    ]
   },
@@ -7147,7 +7276,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "poseidon_restorative_tide_summon"
+     "sfx": "poseidon_restorative_tide_deploy"
     }
    },
    "animations": [
@@ -7158,8 +7287,8 @@
    ],
    "sfx": [
     {
-     "key": "poseidon_restorative_tide_summon",
-     "file": "sfx/poseidon_restorative_tide_summon.wav"
+     "key": "poseidon_restorative_tide_deploy",
+     "file": "sfx/poseidon_restorative_tide_deploy.wav"
     }
    ]
   },
@@ -7172,7 +7301,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "poseidon_undertow_recall_summon"
+     "sfx": "poseidon_undertow_recall_deploy"
     }
    },
    "animations": [
@@ -7183,8 +7312,8 @@
    ],
    "sfx": [
     {
-     "key": "poseidon_undertow_recall_summon",
-     "file": "sfx/poseidon_undertow_recall_summon.wav"
+     "key": "poseidon_undertow_recall_deploy",
+     "file": "sfx/poseidon_undertow_recall_deploy.wav"
     }
    ]
   },
@@ -7197,7 +7326,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "cast",
-     "sfx": "poseidon_tidal_armor_summon"
+     "sfx": "poseidon_tidal_armor_deploy"
     }
    },
    "animations": [
@@ -7208,8 +7337,8 @@
    ],
    "sfx": [
     {
-     "key": "poseidon_tidal_armor_summon",
-     "file": "sfx/poseidon_tidal_armor_summon.wav"
+     "key": "poseidon_tidal_armor_deploy",
+     "file": "sfx/poseidon_tidal_armor_deploy.wav"
     }
    ]
   },
@@ -7222,7 +7351,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_fast_tempest_duelist_summon"
+     "sfx": "zeus_fast_tempest_duelist_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -7246,7 +7375,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_fast_tempest_duelist_death"
+     "sfx": "zeus_fast_tempest_duelist_destroy"
     }
    },
    "animations": [
@@ -7281,8 +7410,12 @@
      "file": "sfx/zeus_fast_tempest_duelist_attack.wav"
     },
     {
-     "key": "zeus_fast_tempest_duelist_death",
-     "file": "sfx/zeus_fast_tempest_duelist_death.wav"
+     "key": "zeus_fast_tempest_duelist_deploy",
+     "file": "sfx/zeus_fast_tempest_duelist_deploy.wav"
+    },
+    {
+     "key": "zeus_fast_tempest_duelist_destroy",
+     "file": "sfx/zeus_fast_tempest_duelist_destroy.wav"
     },
     {
      "key": "zeus_fast_tempest_duelist_hit",
@@ -7295,10 +7428,6 @@
     {
      "key": "zeus_fast_tempest_duelist_move",
      "file": "sfx/zeus_fast_tempest_duelist_move.wav"
-    },
-    {
-     "key": "zeus_fast_tempest_duelist_summon",
-     "file": "sfx/zeus_fast_tempest_duelist_summon.wav"
     }
    ]
   },
@@ -7311,7 +7440,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_siege_thunder_ram_summon"
+     "sfx": "zeus_siege_thunder_ram_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -7335,7 +7464,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_siege_thunder_ram_death"
+     "sfx": "zeus_siege_thunder_ram_destroy"
     }
    },
    "animations": [
@@ -7370,8 +7499,12 @@
      "file": "sfx/zeus_siege_thunder_ram_attack.wav"
     },
     {
-     "key": "zeus_siege_thunder_ram_death",
-     "file": "sfx/zeus_siege_thunder_ram_death.wav"
+     "key": "zeus_siege_thunder_ram_deploy",
+     "file": "sfx/zeus_siege_thunder_ram_deploy.wav"
+    },
+    {
+     "key": "zeus_siege_thunder_ram_destroy",
+     "file": "sfx/zeus_siege_thunder_ram_destroy.wav"
     },
     {
      "key": "zeus_siege_thunder_ram_hit",
@@ -7384,10 +7517,6 @@
     {
      "key": "zeus_siege_thunder_ram_move",
      "file": "sfx/zeus_siege_thunder_ram_move.wav"
-    },
-    {
-     "key": "zeus_siege_thunder_ram_summon",
-     "file": "sfx/zeus_siege_thunder_ram_summon.wav"
     }
    ]
   },
@@ -7400,7 +7529,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "zeus_sharp_aether_spotter_summon"
+     "sfx": "zeus_sharp_aether_spotter_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -7424,7 +7553,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_sharp_aether_spotter_death"
+     "sfx": "zeus_sharp_aether_spotter_destroy"
     }
    },
    "animations": [
@@ -7459,8 +7588,12 @@
      "file": "sfx/zeus_sharp_aether_spotter_attack.wav"
     },
     {
-     "key": "zeus_sharp_aether_spotter_death",
-     "file": "sfx/zeus_sharp_aether_spotter_death.wav"
+     "key": "zeus_sharp_aether_spotter_deploy",
+     "file": "sfx/zeus_sharp_aether_spotter_deploy.wav"
+    },
+    {
+     "key": "zeus_sharp_aether_spotter_destroy",
+     "file": "sfx/zeus_sharp_aether_spotter_destroy.wav"
     },
     {
      "key": "zeus_sharp_aether_spotter_hit",
@@ -7473,10 +7606,6 @@
     {
      "key": "zeus_sharp_aether_spotter_move",
      "file": "sfx/zeus_sharp_aether_spotter_move.wav"
-    },
-    {
-     "key": "zeus_sharp_aether_spotter_summon",
-     "file": "sfx/zeus_sharp_aether_spotter_summon.wav"
     }
    ]
   },
@@ -7489,7 +7618,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_fast_razorfin_lancer_summon"
+     "sfx": "poseidon_fast_razorfin_lancer_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -7513,7 +7642,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_fast_razorfin_lancer_death"
+     "sfx": "poseidon_fast_razorfin_lancer_destroy"
     }
    },
    "animations": [
@@ -7548,8 +7677,12 @@
      "file": "sfx/poseidon_fast_razorfin_lancer_attack.wav"
     },
     {
-     "key": "poseidon_fast_razorfin_lancer_death",
-     "file": "sfx/poseidon_fast_razorfin_lancer_death.wav"
+     "key": "poseidon_fast_razorfin_lancer_deploy",
+     "file": "sfx/poseidon_fast_razorfin_lancer_deploy.wav"
+    },
+    {
+     "key": "poseidon_fast_razorfin_lancer_destroy",
+     "file": "sfx/poseidon_fast_razorfin_lancer_destroy.wav"
     },
     {
      "key": "poseidon_fast_razorfin_lancer_hit",
@@ -7562,10 +7695,6 @@
     {
      "key": "poseidon_fast_razorfin_lancer_move",
      "file": "sfx/poseidon_fast_razorfin_lancer_move.wav"
-    },
-    {
-     "key": "poseidon_fast_razorfin_lancer_summon",
-     "file": "sfx/poseidon_fast_razorfin_lancer_summon.wav"
     }
    ]
   },
@@ -7578,7 +7707,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_siege_kraken_sapper_summon"
+     "sfx": "poseidon_siege_kraken_sapper_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -7602,7 +7731,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_siege_kraken_sapper_death"
+     "sfx": "poseidon_siege_kraken_sapper_destroy"
     }
    },
    "animations": [
@@ -7637,8 +7766,12 @@
      "file": "sfx/poseidon_siege_kraken_sapper_attack.wav"
     },
     {
-     "key": "poseidon_siege_kraken_sapper_death",
-     "file": "sfx/poseidon_siege_kraken_sapper_death.wav"
+     "key": "poseidon_siege_kraken_sapper_deploy",
+     "file": "sfx/poseidon_siege_kraken_sapper_deploy.wav"
+    },
+    {
+     "key": "poseidon_siege_kraken_sapper_destroy",
+     "file": "sfx/poseidon_siege_kraken_sapper_destroy.wav"
     },
     {
      "key": "poseidon_siege_kraken_sapper_hit",
@@ -7651,10 +7784,6 @@
     {
      "key": "poseidon_siege_kraken_sapper_move",
      "file": "sfx/poseidon_siege_kraken_sapper_move.wav"
-    },
-    {
-     "key": "poseidon_siege_kraken_sapper_summon",
-     "file": "sfx/poseidon_siege_kraken_sapper_summon.wav"
     }
    ]
   },
@@ -7667,7 +7796,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy_flight(400ms)",
-     "sfx": "poseidon_sharp_tidewall_harpooner_summon"
+     "sfx": "poseidon_sharp_tidewall_harpooner_deploy"
     },
     "CHARACTER_MOVED": {
      "animation": "move(320ms)",
@@ -7691,7 +7820,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_sharp_tidewall_harpooner_death"
+     "sfx": "poseidon_sharp_tidewall_harpooner_destroy"
     }
    },
    "animations": [
@@ -7726,8 +7855,12 @@
      "file": "sfx/poseidon_sharp_tidewall_harpooner_attack.wav"
     },
     {
-     "key": "poseidon_sharp_tidewall_harpooner_death",
-     "file": "sfx/poseidon_sharp_tidewall_harpooner_death.wav"
+     "key": "poseidon_sharp_tidewall_harpooner_deploy",
+     "file": "sfx/poseidon_sharp_tidewall_harpooner_deploy.wav"
+    },
+    {
+     "key": "poseidon_sharp_tidewall_harpooner_destroy",
+     "file": "sfx/poseidon_sharp_tidewall_harpooner_destroy.wav"
     },
     {
      "key": "poseidon_sharp_tidewall_harpooner_hit",
@@ -7740,10 +7873,6 @@
     {
      "key": "poseidon_sharp_tidewall_harpooner_move",
      "file": "sfx/poseidon_sharp_tidewall_harpooner_move.wav"
-    },
-    {
-     "key": "poseidon_sharp_tidewall_harpooner_summon",
-     "file": "sfx/poseidon_sharp_tidewall_harpooner_summon.wav"
     }
    ]
   },
@@ -7756,7 +7885,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_tutor_land_1_summon"
+     "sfx": "poseidon_tutor_land_1_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -7764,7 +7893,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_tutor_land_1_death"
+     "sfx": "poseidon_tutor_land_1_destroy"
     }
    },
    "animations": [
@@ -7787,16 +7916,16 @@
      "file": "sfx/poseidon_tutor_land_1_ability.wav"
     },
     {
-     "key": "poseidon_tutor_land_1_death",
-     "file": "sfx/poseidon_tutor_land_1_death.wav"
+     "key": "poseidon_tutor_land_1_deploy",
+     "file": "sfx/poseidon_tutor_land_1_deploy.wav"
+    },
+    {
+     "key": "poseidon_tutor_land_1_destroy",
+     "file": "sfx/poseidon_tutor_land_1_destroy.wav"
     },
     {
      "key": "poseidon_tutor_land_1_idle",
      "file": "sfx/poseidon_tutor_land_1_idle.wav"
-    },
-    {
-     "key": "poseidon_tutor_land_1_summon",
-     "file": "sfx/poseidon_tutor_land_1_summon.wav"
     }
    ]
   },
@@ -7809,7 +7938,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_tutor_structure_1_summon"
+     "sfx": "poseidon_tutor_structure_1_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -7821,7 +7950,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_tutor_structure_1_death"
+     "sfx": "poseidon_tutor_structure_1_destroy"
     }
    },
    "animations": [
@@ -7844,16 +7973,16 @@
      "file": "sfx/poseidon_tutor_structure_1_ability.wav"
     },
     {
-     "key": "poseidon_tutor_structure_1_death",
-     "file": "sfx/poseidon_tutor_structure_1_death.wav"
+     "key": "poseidon_tutor_structure_1_deploy",
+     "file": "sfx/poseidon_tutor_structure_1_deploy.wav"
+    },
+    {
+     "key": "poseidon_tutor_structure_1_destroy",
+     "file": "sfx/poseidon_tutor_structure_1_destroy.wav"
     },
     {
      "key": "poseidon_tutor_structure_1_idle",
      "file": "sfx/poseidon_tutor_structure_1_idle.wav"
-    },
-    {
-     "key": "poseidon_tutor_structure_1_summon",
-     "file": "sfx/poseidon_tutor_structure_1_summon.wav"
     }
    ]
   },
@@ -7866,7 +7995,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_tutor_land_2_summon"
+     "sfx": "poseidon_tutor_land_2_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -7874,7 +8003,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_tutor_land_2_death"
+     "sfx": "poseidon_tutor_land_2_destroy"
     }
    },
    "animations": [
@@ -7897,16 +8026,16 @@
      "file": "sfx/poseidon_tutor_land_2_ability.wav"
     },
     {
-     "key": "poseidon_tutor_land_2_death",
-     "file": "sfx/poseidon_tutor_land_2_death.wav"
+     "key": "poseidon_tutor_land_2_deploy",
+     "file": "sfx/poseidon_tutor_land_2_deploy.wav"
+    },
+    {
+     "key": "poseidon_tutor_land_2_destroy",
+     "file": "sfx/poseidon_tutor_land_2_destroy.wav"
     },
     {
      "key": "poseidon_tutor_land_2_idle",
      "file": "sfx/poseidon_tutor_land_2_idle.wav"
-    },
-    {
-     "key": "poseidon_tutor_land_2_summon",
-     "file": "sfx/poseidon_tutor_land_2_summon.wav"
     }
    ]
   },
@@ -7919,7 +8048,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_tutor_structure_2_summon"
+     "sfx": "poseidon_tutor_structure_2_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -7931,7 +8060,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_tutor_structure_2_death"
+     "sfx": "poseidon_tutor_structure_2_destroy"
     }
    },
    "animations": [
@@ -7954,16 +8083,16 @@
      "file": "sfx/poseidon_tutor_structure_2_ability.wav"
     },
     {
-     "key": "poseidon_tutor_structure_2_death",
-     "file": "sfx/poseidon_tutor_structure_2_death.wav"
+     "key": "poseidon_tutor_structure_2_deploy",
+     "file": "sfx/poseidon_tutor_structure_2_deploy.wav"
+    },
+    {
+     "key": "poseidon_tutor_structure_2_destroy",
+     "file": "sfx/poseidon_tutor_structure_2_destroy.wav"
     },
     {
      "key": "poseidon_tutor_structure_2_idle",
      "file": "sfx/poseidon_tutor_structure_2_idle.wav"
-    },
-    {
-     "key": "poseidon_tutor_structure_2_summon",
-     "file": "sfx/poseidon_tutor_structure_2_summon.wav"
     }
    ]
   },
@@ -7976,7 +8105,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_tutor_land_3_summon"
+     "sfx": "poseidon_tutor_land_3_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -7984,7 +8113,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_tutor_land_3_death"
+     "sfx": "poseidon_tutor_land_3_destroy"
     }
    },
    "animations": [
@@ -8007,16 +8136,16 @@
      "file": "sfx/poseidon_tutor_land_3_ability.wav"
     },
     {
-     "key": "poseidon_tutor_land_3_death",
-     "file": "sfx/poseidon_tutor_land_3_death.wav"
+     "key": "poseidon_tutor_land_3_deploy",
+     "file": "sfx/poseidon_tutor_land_3_deploy.wav"
+    },
+    {
+     "key": "poseidon_tutor_land_3_destroy",
+     "file": "sfx/poseidon_tutor_land_3_destroy.wav"
     },
     {
      "key": "poseidon_tutor_land_3_idle",
      "file": "sfx/poseidon_tutor_land_3_idle.wav"
-    },
-    {
-     "key": "poseidon_tutor_land_3_summon",
-     "file": "sfx/poseidon_tutor_land_3_summon.wav"
     }
    ]
   },
@@ -8029,7 +8158,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_tutor_structure_3_summon"
+     "sfx": "poseidon_tutor_structure_3_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -8041,7 +8170,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_tutor_structure_3_death"
+     "sfx": "poseidon_tutor_structure_3_destroy"
     }
    },
    "animations": [
@@ -8064,16 +8193,16 @@
      "file": "sfx/poseidon_tutor_structure_3_ability.wav"
     },
     {
-     "key": "poseidon_tutor_structure_3_death",
-     "file": "sfx/poseidon_tutor_structure_3_death.wav"
+     "key": "poseidon_tutor_structure_3_deploy",
+     "file": "sfx/poseidon_tutor_structure_3_deploy.wav"
+    },
+    {
+     "key": "poseidon_tutor_structure_3_destroy",
+     "file": "sfx/poseidon_tutor_structure_3_destroy.wav"
     },
     {
      "key": "poseidon_tutor_structure_3_idle",
      "file": "sfx/poseidon_tutor_structure_3_idle.wav"
-    },
-    {
-     "key": "poseidon_tutor_structure_3_summon",
-     "file": "sfx/poseidon_tutor_structure_3_summon.wav"
     }
    ]
   },
@@ -8086,7 +8215,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_tutor_land_4_summon"
+     "sfx": "poseidon_tutor_land_4_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -8094,7 +8223,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_tutor_land_4_death"
+     "sfx": "poseidon_tutor_land_4_destroy"
     }
    },
    "animations": [
@@ -8117,16 +8246,16 @@
      "file": "sfx/poseidon_tutor_land_4_ability.wav"
     },
     {
-     "key": "poseidon_tutor_land_4_death",
-     "file": "sfx/poseidon_tutor_land_4_death.wav"
+     "key": "poseidon_tutor_land_4_deploy",
+     "file": "sfx/poseidon_tutor_land_4_deploy.wav"
+    },
+    {
+     "key": "poseidon_tutor_land_4_destroy",
+     "file": "sfx/poseidon_tutor_land_4_destroy.wav"
     },
     {
      "key": "poseidon_tutor_land_4_idle",
      "file": "sfx/poseidon_tutor_land_4_idle.wav"
-    },
-    {
-     "key": "poseidon_tutor_land_4_summon",
-     "file": "sfx/poseidon_tutor_land_4_summon.wav"
     }
    ]
   },
@@ -8139,7 +8268,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_tutor_structure_4_summon"
+     "sfx": "poseidon_tutor_structure_4_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -8151,7 +8280,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_tutor_structure_4_death"
+     "sfx": "poseidon_tutor_structure_4_destroy"
     }
    },
    "animations": [
@@ -8174,16 +8303,16 @@
      "file": "sfx/poseidon_tutor_structure_4_ability.wav"
     },
     {
-     "key": "poseidon_tutor_structure_4_death",
-     "file": "sfx/poseidon_tutor_structure_4_death.wav"
+     "key": "poseidon_tutor_structure_4_deploy",
+     "file": "sfx/poseidon_tutor_structure_4_deploy.wav"
+    },
+    {
+     "key": "poseidon_tutor_structure_4_destroy",
+     "file": "sfx/poseidon_tutor_structure_4_destroy.wav"
     },
     {
      "key": "poseidon_tutor_structure_4_idle",
      "file": "sfx/poseidon_tutor_structure_4_idle.wav"
-    },
-    {
-     "key": "poseidon_tutor_structure_4_summon",
-     "file": "sfx/poseidon_tutor_structure_4_summon.wav"
     }
    ]
   },
@@ -8196,7 +8325,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "poseidon_tutor_land_5_summon"
+     "sfx": "poseidon_tutor_land_5_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -8204,7 +8333,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_tutor_land_5_death"
+     "sfx": "poseidon_tutor_land_5_destroy"
     }
    },
    "animations": [
@@ -8227,16 +8356,16 @@
      "file": "sfx/poseidon_tutor_land_5_ability.wav"
     },
     {
-     "key": "poseidon_tutor_land_5_death",
-     "file": "sfx/poseidon_tutor_land_5_death.wav"
+     "key": "poseidon_tutor_land_5_deploy",
+     "file": "sfx/poseidon_tutor_land_5_deploy.wav"
+    },
+    {
+     "key": "poseidon_tutor_land_5_destroy",
+     "file": "sfx/poseidon_tutor_land_5_destroy.wav"
     },
     {
      "key": "poseidon_tutor_land_5_idle",
      "file": "sfx/poseidon_tutor_land_5_idle.wav"
-    },
-    {
-     "key": "poseidon_tutor_land_5_summon",
-     "file": "sfx/poseidon_tutor_land_5_summon.wav"
     }
    ]
   },
@@ -8249,7 +8378,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "poseidon_tutor_structure_5_summon"
+     "sfx": "poseidon_tutor_structure_5_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -8261,7 +8390,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "poseidon_tutor_structure_5_death"
+     "sfx": "poseidon_tutor_structure_5_destroy"
     }
    },
    "animations": [
@@ -8284,16 +8413,16 @@
      "file": "sfx/poseidon_tutor_structure_5_ability.wav"
     },
     {
-     "key": "poseidon_tutor_structure_5_death",
-     "file": "sfx/poseidon_tutor_structure_5_death.wav"
+     "key": "poseidon_tutor_structure_5_deploy",
+     "file": "sfx/poseidon_tutor_structure_5_deploy.wav"
+    },
+    {
+     "key": "poseidon_tutor_structure_5_destroy",
+     "file": "sfx/poseidon_tutor_structure_5_destroy.wav"
     },
     {
      "key": "poseidon_tutor_structure_5_idle",
      "file": "sfx/poseidon_tutor_structure_5_idle.wav"
-    },
-    {
-     "key": "poseidon_tutor_structure_5_summon",
-     "file": "sfx/poseidon_tutor_structure_5_summon.wav"
     }
    ]
   },
@@ -8306,7 +8435,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_tutor_land_1_summon"
+     "sfx": "zeus_tutor_land_1_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -8314,7 +8443,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_tutor_land_1_death"
+     "sfx": "zeus_tutor_land_1_destroy"
     }
    },
    "animations": [
@@ -8337,16 +8466,16 @@
      "file": "sfx/zeus_tutor_land_1_ability.wav"
     },
     {
-     "key": "zeus_tutor_land_1_death",
-     "file": "sfx/zeus_tutor_land_1_death.wav"
+     "key": "zeus_tutor_land_1_deploy",
+     "file": "sfx/zeus_tutor_land_1_deploy.wav"
+    },
+    {
+     "key": "zeus_tutor_land_1_destroy",
+     "file": "sfx/zeus_tutor_land_1_destroy.wav"
     },
     {
      "key": "zeus_tutor_land_1_idle",
      "file": "sfx/zeus_tutor_land_1_idle.wav"
-    },
-    {
-     "key": "zeus_tutor_land_1_summon",
-     "file": "sfx/zeus_tutor_land_1_summon.wav"
     }
    ]
   },
@@ -8359,7 +8488,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_tutor_structure_1_summon"
+     "sfx": "zeus_tutor_structure_1_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -8371,7 +8500,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_tutor_structure_1_death"
+     "sfx": "zeus_tutor_structure_1_destroy"
     }
    },
    "animations": [
@@ -8394,16 +8523,16 @@
      "file": "sfx/zeus_tutor_structure_1_ability.wav"
     },
     {
-     "key": "zeus_tutor_structure_1_death",
-     "file": "sfx/zeus_tutor_structure_1_death.wav"
+     "key": "zeus_tutor_structure_1_deploy",
+     "file": "sfx/zeus_tutor_structure_1_deploy.wav"
+    },
+    {
+     "key": "zeus_tutor_structure_1_destroy",
+     "file": "sfx/zeus_tutor_structure_1_destroy.wav"
     },
     {
      "key": "zeus_tutor_structure_1_idle",
      "file": "sfx/zeus_tutor_structure_1_idle.wav"
-    },
-    {
-     "key": "zeus_tutor_structure_1_summon",
-     "file": "sfx/zeus_tutor_structure_1_summon.wav"
     }
    ]
   },
@@ -8416,7 +8545,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_tutor_land_2_summon"
+     "sfx": "zeus_tutor_land_2_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -8424,7 +8553,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_tutor_land_2_death"
+     "sfx": "zeus_tutor_land_2_destroy"
     }
    },
    "animations": [
@@ -8447,16 +8576,16 @@
      "file": "sfx/zeus_tutor_land_2_ability.wav"
     },
     {
-     "key": "zeus_tutor_land_2_death",
-     "file": "sfx/zeus_tutor_land_2_death.wav"
+     "key": "zeus_tutor_land_2_deploy",
+     "file": "sfx/zeus_tutor_land_2_deploy.wav"
+    },
+    {
+     "key": "zeus_tutor_land_2_destroy",
+     "file": "sfx/zeus_tutor_land_2_destroy.wav"
     },
     {
      "key": "zeus_tutor_land_2_idle",
      "file": "sfx/zeus_tutor_land_2_idle.wav"
-    },
-    {
-     "key": "zeus_tutor_land_2_summon",
-     "file": "sfx/zeus_tutor_land_2_summon.wav"
     }
    ]
   },
@@ -8469,7 +8598,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_tutor_structure_2_summon"
+     "sfx": "zeus_tutor_structure_2_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -8481,7 +8610,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_tutor_structure_2_death"
+     "sfx": "zeus_tutor_structure_2_destroy"
     }
    },
    "animations": [
@@ -8504,16 +8633,16 @@
      "file": "sfx/zeus_tutor_structure_2_ability.wav"
     },
     {
-     "key": "zeus_tutor_structure_2_death",
-     "file": "sfx/zeus_tutor_structure_2_death.wav"
+     "key": "zeus_tutor_structure_2_deploy",
+     "file": "sfx/zeus_tutor_structure_2_deploy.wav"
+    },
+    {
+     "key": "zeus_tutor_structure_2_destroy",
+     "file": "sfx/zeus_tutor_structure_2_destroy.wav"
     },
     {
      "key": "zeus_tutor_structure_2_idle",
      "file": "sfx/zeus_tutor_structure_2_idle.wav"
-    },
-    {
-     "key": "zeus_tutor_structure_2_summon",
-     "file": "sfx/zeus_tutor_structure_2_summon.wav"
     }
    ]
   },
@@ -8526,7 +8655,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_tutor_land_3_summon"
+     "sfx": "zeus_tutor_land_3_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -8534,7 +8663,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_tutor_land_3_death"
+     "sfx": "zeus_tutor_land_3_destroy"
     }
    },
    "animations": [
@@ -8557,16 +8686,16 @@
      "file": "sfx/zeus_tutor_land_3_ability.wav"
     },
     {
-     "key": "zeus_tutor_land_3_death",
-     "file": "sfx/zeus_tutor_land_3_death.wav"
+     "key": "zeus_tutor_land_3_deploy",
+     "file": "sfx/zeus_tutor_land_3_deploy.wav"
+    },
+    {
+     "key": "zeus_tutor_land_3_destroy",
+     "file": "sfx/zeus_tutor_land_3_destroy.wav"
     },
     {
      "key": "zeus_tutor_land_3_idle",
      "file": "sfx/zeus_tutor_land_3_idle.wav"
-    },
-    {
-     "key": "zeus_tutor_land_3_summon",
-     "file": "sfx/zeus_tutor_land_3_summon.wav"
     }
    ]
   },
@@ -8579,7 +8708,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_tutor_structure_3_summon"
+     "sfx": "zeus_tutor_structure_3_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -8591,7 +8720,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_tutor_structure_3_death"
+     "sfx": "zeus_tutor_structure_3_destroy"
     }
    },
    "animations": [
@@ -8614,16 +8743,16 @@
      "file": "sfx/zeus_tutor_structure_3_ability.wav"
     },
     {
-     "key": "zeus_tutor_structure_3_death",
-     "file": "sfx/zeus_tutor_structure_3_death.wav"
+     "key": "zeus_tutor_structure_3_deploy",
+     "file": "sfx/zeus_tutor_structure_3_deploy.wav"
+    },
+    {
+     "key": "zeus_tutor_structure_3_destroy",
+     "file": "sfx/zeus_tutor_structure_3_destroy.wav"
     },
     {
      "key": "zeus_tutor_structure_3_idle",
      "file": "sfx/zeus_tutor_structure_3_idle.wav"
-    },
-    {
-     "key": "zeus_tutor_structure_3_summon",
-     "file": "sfx/zeus_tutor_structure_3_summon.wav"
     }
    ]
   },
@@ -8636,7 +8765,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_tutor_land_4_summon"
+     "sfx": "zeus_tutor_land_4_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -8644,7 +8773,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_tutor_land_4_death"
+     "sfx": "zeus_tutor_land_4_destroy"
     }
    },
    "animations": [
@@ -8667,16 +8796,16 @@
      "file": "sfx/zeus_tutor_land_4_ability.wav"
     },
     {
-     "key": "zeus_tutor_land_4_death",
-     "file": "sfx/zeus_tutor_land_4_death.wav"
+     "key": "zeus_tutor_land_4_deploy",
+     "file": "sfx/zeus_tutor_land_4_deploy.wav"
+    },
+    {
+     "key": "zeus_tutor_land_4_destroy",
+     "file": "sfx/zeus_tutor_land_4_destroy.wav"
     },
     {
      "key": "zeus_tutor_land_4_idle",
      "file": "sfx/zeus_tutor_land_4_idle.wav"
-    },
-    {
-     "key": "zeus_tutor_land_4_summon",
-     "file": "sfx/zeus_tutor_land_4_summon.wav"
     }
    ]
   },
@@ -8689,7 +8818,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_tutor_structure_4_summon"
+     "sfx": "zeus_tutor_structure_4_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -8701,7 +8830,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_tutor_structure_4_death"
+     "sfx": "zeus_tutor_structure_4_destroy"
     }
    },
    "animations": [
@@ -8724,16 +8853,16 @@
      "file": "sfx/zeus_tutor_structure_4_ability.wav"
     },
     {
-     "key": "zeus_tutor_structure_4_death",
-     "file": "sfx/zeus_tutor_structure_4_death.wav"
+     "key": "zeus_tutor_structure_4_deploy",
+     "file": "sfx/zeus_tutor_structure_4_deploy.wav"
+    },
+    {
+     "key": "zeus_tutor_structure_4_destroy",
+     "file": "sfx/zeus_tutor_structure_4_destroy.wav"
     },
     {
      "key": "zeus_tutor_structure_4_idle",
      "file": "sfx/zeus_tutor_structure_4_idle.wav"
-    },
-    {
-     "key": "zeus_tutor_structure_4_summon",
-     "file": "sfx/zeus_tutor_structure_4_summon.wav"
     }
    ]
   },
@@ -8746,7 +8875,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "land_pop(120ms)",
-     "sfx": "zeus_tutor_land_5_summon"
+     "sfx": "zeus_tutor_land_5_deploy"
     },
     "TERRAIN_TRIGGERED": {
      "animation": "activated_ability",
@@ -8754,7 +8883,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_tutor_land_5_death"
+     "sfx": "zeus_tutor_land_5_destroy"
     }
    },
    "animations": [
@@ -8777,16 +8906,16 @@
      "file": "sfx/zeus_tutor_land_5_ability.wav"
     },
     {
-     "key": "zeus_tutor_land_5_death",
-     "file": "sfx/zeus_tutor_land_5_death.wav"
+     "key": "zeus_tutor_land_5_deploy",
+     "file": "sfx/zeus_tutor_land_5_deploy.wav"
+    },
+    {
+     "key": "zeus_tutor_land_5_destroy",
+     "file": "sfx/zeus_tutor_land_5_destroy.wav"
     },
     {
      "key": "zeus_tutor_land_5_idle",
      "file": "sfx/zeus_tutor_land_5_idle.wav"
-    },
-    {
-     "key": "zeus_tutor_land_5_summon",
-     "file": "sfx/zeus_tutor_land_5_summon.wav"
     }
    ]
   },
@@ -8799,7 +8928,7 @@
    "events": {
     "CARD_PLAYED": {
      "animation": "deploy",
-     "sfx": "zeus_tutor_structure_5_summon"
+     "sfx": "zeus_tutor_structure_5_deploy"
     },
     "DEVELOPMENT_PASSIVE_TRIGGERED": {
      "animation": "activated_ability",
@@ -8811,7 +8940,7 @@
     },
     "CARD_DESTROYED": {
      "animation": "destroy(320ms)",
-     "sfx": "zeus_tutor_structure_5_death"
+     "sfx": "zeus_tutor_structure_5_destroy"
     }
    },
    "animations": [
@@ -8834,16 +8963,16 @@
      "file": "sfx/zeus_tutor_structure_5_ability.wav"
     },
     {
-     "key": "zeus_tutor_structure_5_death",
-     "file": "sfx/zeus_tutor_structure_5_death.wav"
+     "key": "zeus_tutor_structure_5_deploy",
+     "file": "sfx/zeus_tutor_structure_5_deploy.wav"
+    },
+    {
+     "key": "zeus_tutor_structure_5_destroy",
+     "file": "sfx/zeus_tutor_structure_5_destroy.wav"
     },
     {
      "key": "zeus_tutor_structure_5_idle",
      "file": "sfx/zeus_tutor_structure_5_idle.wav"
-    },
-    {
-     "key": "zeus_tutor_structure_5_summon",
-     "file": "sfx/zeus_tutor_structure_5_summon.wav"
     }
    ]
   }

@@ -604,20 +604,27 @@ No release or full-match claim.
 `36640973532` on `1ab13f2` — **completed success**, including the new
 "AI-079 rules bridge protocol" step. Verify `36640973498` also green.
 
-## 2026-09-29 19:15 — Rune: AI-075 DELIVERED (event-to-presentation timeline)
+## 2026-09-29 19:30 — Rune: AI-077 DELIVERED (manifest cues + coverage)
 
-**What:** `docs/muse/sprint-02/timeline/timeline.py` (stdlib only) — reads an
-AI-066 JSONL dump + `presentation-manifest.json`, emits a per-event cue
-schedule: `start_ms` (sequential), `duration_ms` (from manifest animation
-strings like `deploy(400ms)`, else default table), `anim_key`, `sfx_key`,
-`impact_hook` (`shake_small`/`flash`/`shake_large`/`none` for AI-060c).
+**What:** AI-077 updates to the presentation manifest and coverage tool.
 
-**Files:** `timeline.py`, `test_timeline.py` (3/3 PASS: deterministic, golden
-match, sequential schedule), `README.md`,
-`fixtures/dump-seed-42.jsonl` (235 events), `fixtures/golden-seed-42-timeline.json`
-(235 cues, 87.9 s total, 85 cues with manifest SFX).
+**Manifest** (`build_presentation_manifest.py`, regenerated
+`presentation-manifest.json`):
+- SFX cues renamed: `summon` → `deploy`, `death` → `destroy` (AI-077).
+- Rarity-4 cards (32) get a `signature` SFX cue.
+- cue_set: deploy, move, attack, hit, destroy, ability, idle, signature.
+- 139 cards, 617 event mappings.
 
-**CI:** `verify.yml` step added ("Event-to-presentation timeline (AI-075)"),
-runs on both OSes via the existing matrix.
+**Coverage** (`coverage.py`):
+- Models resolved recursively: `meshy/<batch>/<card_id>.glb` (or
+  `meshy/<card_id>.glb`).
+- SFX: `picks/<card_id>_<cue>.wav` preferred; `sfx/<card_id>_<cue>.wav`/`.mp3`
+  fallback.
+- `test_coverage.py` updated for new cue names; 2/2 PASS.
+
+**Timeline golden** regenerated for the renamed cues (235 cues, 87.9 s);
+`test_timeline.py` 3/3 PASS.
+
+**Acceptance:** Claude's PC run to report 29 model / 18 audio cards.
 
 **Status:** DELIVERED, awaiting Claude acceptance.

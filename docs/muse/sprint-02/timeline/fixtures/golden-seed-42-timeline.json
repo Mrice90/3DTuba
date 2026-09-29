@@ -256,7 +256,7 @@
   "start_ms": 6600,
   "duration_ms": 400,
   "anim_key": "deploy_flight",
-  "sfx_key": "poseidon_tidepool_surveyor_summon",
+  "sfx_key": "poseidon_tidepool_surveyor_deploy",
   "impact_hook": "none"
  },
  {
@@ -282,7 +282,7 @@
   "start_ms": 7200,
   "duration_ms": 400,
   "anim_key": "deploy_flight",
-  "sfx_key": "poseidon_tidepool_surveyor_summon",
+  "sfx_key": "poseidon_tidepool_surveyor_deploy",
   "impact_hook": "none"
  },
  {
@@ -464,7 +464,7 @@
   "start_ms": 12080,
   "duration_ms": 120,
   "anim_key": "land_pop",
-  "sfx_key": "zeus_eagles_perch_array_summon",
+  "sfx_key": "zeus_eagles_perch_array_deploy",
   "impact_hook": "none"
  },
  {
@@ -763,7 +763,7 @@
   "start_ms": 20120,
   "duration_ms": 120,
   "anim_key": "land_pop",
-  "sfx_key": "zeus_land_dawncloud_step_summon",
+  "sfx_key": "zeus_land_dawncloud_step_deploy",
   "impact_hook": "none"
  },
  {
@@ -776,7 +776,7 @@
   "start_ms": 20240,
   "duration_ms": 800,
   "anim_key": "deploy",
-  "sfx_key": "zeus_zephyr_mooring_mast_summon",
+  "sfx_key": "zeus_zephyr_mooring_mast_deploy",
   "impact_hook": "none"
  },
  {
@@ -802,7 +802,7 @@
   "start_ms": 21240,
   "duration_ms": 400,
   "anim_key": "deploy_flight",
-  "sfx_key": "zeus_arc_relay_scout_summon",
+  "sfx_key": "zeus_arc_relay_scout_deploy",
   "impact_hook": "none"
  },
  {
@@ -828,7 +828,7 @@
   "start_ms": 22000,
   "duration_ms": 320,
   "anim_key": "destroy",
-  "sfx_key": "zeus_arc_relay_scout_death",
+  "sfx_key": "zeus_arc_relay_scout_destroy",
   "impact_hook": "shake_small"
  },
  {
@@ -984,7 +984,7 @@
   "start_ms": 26190,
   "duration_ms": 800,
   "anim_key": "cast",
-  "sfx_key": "poseidon_tidal_armor_summon",
+  "sfx_key": "poseidon_tidal_armor_deploy",
   "impact_hook": "none"
  },
  {
@@ -1179,7 +1179,7 @@
   "start_ms": 32070,
   "duration_ms": 120,
   "anim_key": "land_pop",
-  "sfx_key": "zeus_tutor_land_1_summon",
+  "sfx_key": "zeus_tutor_land_1_deploy",
   "impact_hook": "none"
  },
  {
@@ -1205,7 +1205,7 @@
   "start_ms": 32390,
   "duration_ms": 800,
   "anim_key": "deploy",
-  "sfx_key": "zeus_structure_stormglass_relay_summon",
+  "sfx_key": "zeus_structure_stormglass_relay_deploy",
   "impact_hook": "none"
  },
  {
@@ -1322,7 +1322,7 @@
   "start_ms": 36190,
   "duration_ms": 120,
   "anim_key": "land_pop",
-  "sfx_key": "poseidon_palace_of_tides_approach_summon",
+  "sfx_key": "poseidon_palace_of_tides_approach_deploy",
   "impact_hook": "none"
  },
  {
@@ -1335,7 +1335,7 @@
   "start_ms": 36310,
   "duration_ms": 800,
   "anim_key": "deploy",
-  "sfx_key": "poseidon_driftwood_breakwater_summon",
+  "sfx_key": "poseidon_driftwood_breakwater_deploy",
   "impact_hook": "none"
  },
  {
@@ -1556,7 +1556,7 @@
   "start_ms": 42830,
   "duration_ms": 120,
   "anim_key": "land_pop",
-  "sfx_key": "zeus_throneward_conduit_summon",
+  "sfx_key": "zeus_throneward_conduit_deploy",
   "impact_hook": "none"
  },
  {
@@ -1582,7 +1582,7 @@
   "start_ms": 43150,
   "duration_ms": 800,
   "anim_key": "deploy",
-  "sfx_key": "zeus_structure_stormglass_relay_summon",
+  "sfx_key": "zeus_structure_stormglass_relay_deploy",
   "impact_hook": "none"
  },
  {
@@ -1712,7 +1712,7 @@
   "start_ms": 47150,
   "duration_ms": 400,
   "anim_key": "deploy_flight",
-  "sfx_key": "poseidon_delphic_sonar_adept_summon",
+  "sfx_key": "poseidon_delphic_sonar_adept_deploy",
   "impact_hook": "none"
  },
  {
@@ -1959,7 +1959,7 @@
   "start_ms": 53910,
   "duration_ms": 400,
   "anim_key": "deploy_flight",
-  "sfx_key": "zeus_ability_skyline_seer_summon",
+  "sfx_key": "zeus_ability_skyline_seer_deploy",
   "impact_hook": "none"
  },
  {
@@ -1985,7 +1985,7 @@
   "start_ms": 54670,
   "duration_ms": 320,
   "anim_key": "destroy",
-  "sfx_key": "poseidon_tidepool_surveyor_death",
+  "sfx_key": "poseidon_tidepool_surveyor_destroy",
   "impact_hook": "shake_small"
  },
  {
@@ -2037,7 +2037,7 @@
   "start_ms": 55890,
   "duration_ms": 800,
   "anim_key": "cast",
-  "sfx_key": "zeus_aegis_of_the_sky_summon",
+  "sfx_key": "zeus_aegis_of_the_sky_deploy",
   "impact_hook": "none"
  },
  {
@@ -2284,7 +2284,7 @@
   "start_ms": 62980,
   "duration_ms": 800,
   "anim_key": "cast",
-  "sfx_key": "poseidon_crushing_depths_summon",
+  "sfx_key": "poseidon_crushing_depths_deploy",
   "impact_hook": "none"
  },
  {
@@ -2297,7 +2297,7 @@
   "start_ms": 63780,
   "duration_ms": 120,
   "anim_key": "land_pop",
-  "sfx_key": "poseidon_neon_tidelands_summon",
+  "sfx_key": "poseidon_neon_tidelands_deploy",
   "impact_hook": "none"
  },
  {
@@ -2323,7 +2323,7 @@
   "start_ms": 64100,
   "duration_ms": 800,
   "anim_key": "deploy",
-  "sfx_key": "poseidon_coral_bulwark_summon",
+  "sfx_key": "poseidon_coral_bulwark_deploy",
   "impact_hook": "none"
  },
  {
@@ -2349,7 +2349,7 @@
   "start_ms": 65260,
   "duration_ms": 320,
   "anim_key": "destroy",
-  "sfx_key": "poseidon_tidepool_surveyor_death",
+  "sfx_key": "poseidon_tidepool_surveyor_destroy",
   "impact_hook": "shake_small"
  },
  {
@@ -2401,7 +2401,7 @@
   "start_ms": 66610,
   "duration_ms": 320,
   "anim_key": "destroy",
-  "sfx_key": "poseidon_delphic_sonar_adept_death",
+  "sfx_key": "poseidon_delphic_sonar_adept_destroy",
   "impact_hook": "shake_small"
  },
  {
@@ -2622,7 +2622,7 @@
   "start_ms": 73090,
   "duration_ms": 400,
   "anim_key": "deploy_flight",
-  "sfx_key": "zeus_keyword_stormgate_sentinel_summon",
+  "sfx_key": "zeus_keyword_stormgate_sentinel_deploy",
   "impact_hook": "none"
  },
  {
@@ -2843,7 +2843,7 @@
   "start_ms": 79430,
   "duration_ms": 400,
   "anim_key": "deploy_flight",
-  "sfx_key": "poseidon_reefline_defender_summon",
+  "sfx_key": "poseidon_reefline_defender_deploy",
   "impact_hook": "none"
  },
  {
@@ -2869,7 +2869,7 @@
   "start_ms": 80030,
   "duration_ms": 800,
   "anim_key": "cast",
-  "sfx_key": "zeus_chain_lightning_summon",
+  "sfx_key": "zeus_chain_lightning_deploy",
   "impact_hook": "none"
  },
  {
@@ -2882,7 +2882,7 @@
   "start_ms": 80830,
   "duration_ms": 320,
   "anim_key": "destroy",
-  "sfx_key": "poseidon_reefline_defender_death",
+  "sfx_key": "poseidon_reefline_defender_destroy",
   "impact_hook": "shake_small"
  },
  {
@@ -3025,7 +3025,7 @@
   "start_ms": 85110,
   "duration_ms": 320,
   "anim_key": "destroy",
-  "sfx_key": "poseidon_capital_atlantis_nexus_death",
+  "sfx_key": "poseidon_capital_atlantis_nexus_destroy",
   "impact_hook": "shake_small"
  },
  {
