@@ -488,3 +488,7 @@ All runs on the published commits are GREEN:
 - Verify @d51ce5b / @59298dd (book-only commits) still in flight at log time.
 
 This clears the CI half of AI-071 ("Verify green on both OSes") and AI-073 ("all three workflows green"). Reviewer acceptance (12:00 lane owner) remains outstanding.
+
+## 2026-09-29 ~15:00 EDT — AI-067 batch-03 lands queue (Rune)
+
+New doc `docs/muse/sprint-02/batch-03-lands-queue.md`: all 35 LAND cards (15 Zeus + 20 Poseidon) in directory submission order, each with its full AI-068 techno-futuristic myth Meshy prompt (verified verbatim against asset-prompt-directory.json, 35/35), its AI-063 budget (footprint `1 hex tile`, height `≤0.25 units (top surface)`), animation events, and SFX disposition (6 apex-tier unique briefs inlined; 29 shared-group cards reference their group). Status QUEUED — no paid Meshy jobs submitted from automation; job-ID/review fields per entry for the submission window.
