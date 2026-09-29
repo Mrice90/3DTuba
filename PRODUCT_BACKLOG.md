@@ -47,10 +47,21 @@ Work: add `docs/muse/sprint-02/board-scale.md` proposing a footprint and height 
 Acceptance: regenerated directory plus a changed-card summary in SPRINT_LOG.md; CI green; the meetings thread confirms the scale numbers before the next Meshy batch uses them. Batches 01 and 02 are not regenerated because of this item; that is the Meshy lane's call.
 
 ### AI-064 — Per-card presentation manifest and coverage report (child of AI-060, AI-018–020)
-P2 | READY after AI-062 | Owner: Muse (Rune) | Reviewer: Claude | Dependencies: AI-062 event vocabulary.
+P2 | DELIVERED 2026-09-28 ~23:15 EDT (commit `82cdd9b`); independently verified 2026-09-29 ~02:00 EDT (Rune) | Owner: Muse (Rune) | Reviewer: Claude | Dependencies: AI-062 event vocabulary (accepted — citation review verified cites at pin 992bc95, which unblocked this item).
 Why: the vision needs every token to have its own animations and sounds, but 107 of 139 cards currently share group SFX, and the cue names (DEPLOY, DESTROY, CLICK, MELEE/RANGED…) differ from the cue set the ElevenLabs lane now produces (summon, move, attack, hit, death, ability, idle). Nothing shows what each card still lacks.
 Work (under `docs/muse/sprint-02/presentation/`): `presentation-manifest.json` mapping every card to the AI-062 events it can emit, each with an animation clip key and a unique SFX key (`<card_id>_<cue>`), plus its model path. `coverage.py` (standard library) reads the manifest and a staging root and writes a Markdown table per card showing whether the model, textures, each animation and each SFX are present or missing. Test it against a small fixture tree and run it in verify.yml.
 Acceptance: CI green; Claude runs `coverage.py` on Mathew's PC against `assets/staging/` and posts the first real coverage report; the ElevenLabs thread confirms the cue names match what it produces.
+Delivered (2026-09-28 ~23:15 EDT, commit `82cdd9b`): `presentation-manifest.json` — 139 cards, 617 event mappings (48 CHARACTER / 35 LAND / 34 STRUCTURE / 16 SPELL / 6 CAPITAL); 54 events carry `animation: null` (visible gaps, by design); unique SFX keys `<card_id>_<cue>`; model/texture/animation/SFX file paths under `assets/staging/`-style layout. `test_coverage.py` 2/2 green, wired into `verify.yml`. Independent verification 2026-09-29 ~02:00 EDT: regenerated from pinned inputs → byte-identical JSON; fixture coverage run marks present/missing correctly; no Meshy/ElevenLabs submissions (those lanes are queued separately).
+
+### AI-066 — Real-engine event dump tool (child of AI-062/AI-046)
+P2 | DELIVERED 2026-09-28 ~23:45 EDT (commit `a121593`; CI fixes `7735895`, `863d62a`) | Owner: Muse (Rune) | Dependencies: AI-062 wire format, AI-046 release recipe.
+Why: golden transcripts were hand-written; a real-engine dump proves the AI-062 wire format against actual matches and gives the Unity lane realistic event streams to consume.
+Work (`releases/alpha-0.7.15-playable/tools/event-dump/`): `EventDump.java` runs headless seeded Zeus-vs-Poseidon AI matches against the pinned alpha and writes AI-062 wire-format JSONL (deterministic: same seed → byte-identical dump; `validate.py` passes on all dumped seeds). `run.sh` compiles against the release JAR. Wired into `linux-packaging.yml` after the build step.
+Acceptance: CI green — Linux packaging run **36519850577** (all regress steps + the event-dump step success); local rerun by later reflection optional since CI covers it.
+
+### AI-068 — Techno-futuristic myth style tune-up for asset prompts (child of AI-049)
+P1 | DELIVERED 2026-09-28 ~23:10 EDT (commit `84de370`) | Owner: Muse (Rune) | Product direction via Claude 23:05 (Mathew): character design shifts to techno-futuristic myth — robotic plating, energy patterns, futuristic weapons only (no bows/crossbows).
+Work: all 139 prompts retuned with a new STYLE_ANCHOR; CHARACTER (48), STRUCTURE (34), CAPITAL (6) framings rewritten in type-specific techno-myth language; LAND/SPELL keep framing under the new preamble. Hex wording and AI-063 board-scale budgets untouched. `test_asset_directory.py` gains `test_no_bows_or_arrows` and `test_techno_myth_style_tag` — 6/6 green, run in `verify.yml`. No Meshy generation submitted.
 
 ## Team and lanes (verified 2026-09-28)
 | Worker | How reached | Lane | Availability |
@@ -84,10 +95,12 @@ Acceptance: CI green; Claude runs `coverage.py` on Mathew's PC against `assets/s
 | ElevenLabs media (AI-061) | P1 | Claude (ElevenLabs sound assets thread) | IN_PROGRESS | Capital SFX 6×4 takes (flow `S5OTgpVd2nqHXp3u7pQd`) and apex-unit SFX 8×4 takes (flow `GvmEQ8CxxWdrwkB1JQbL`). Next: stage and pick takes, full cue sets per unit. | PO listen-through. |
 | AI-062 | P1 | Muse (Rune) | DELIVERED 2026-09-28 ~19:35 EDT | Board event contract v1 (commit `ca90b06`): 23 wire events adopted 1:1 from GameEvent.java with file:line citations at pin 992bc95; JSON schema; 16-event golden transcript; stdlib validator + test in verify.yml. Claude checks the citations. | CI green on both OSes; Claude checks the citations. |
 | AI-063 | P1 | Muse (Rune) | DELIVERED 2026-09-28 ~20:00 EDT (Rune reconciliation; implementation at `036acef` 19:37 EDT) | Hex wording kept in all 139 prompts; per-type footprint + height budget for one hex tile and stack role added to every `meshy_prompt`; `board_footprint`/`height_budget` on all cards (123 non-spells non-null, 16 spells null); regenerated `.json`/`.md` via `build_asset_directory.py`; new `test_asset_directory.py` (4 tests) green and wired into verify.yml. CI green at tip `036acef` (verify.yml run 36498944450, success). Scale numbers still await meetings-thread confirmation before the land batch (Meshy lane's call). | CI green; the meetings thread confirms the scale before the land batch. |
-| AI-064 | P2 | Muse (Rune) | READY after AI-062 | Per-card presentation manifest (events → animation key + unique SFX key) and a coverage report script. | CI green; Claude posts the first real coverage report. |
+| AI-064 | P2 | Muse (Rune) | DELIVERED 2026-09-28 ~23:15 EDT (commit `82cdd9b`) | `docs/muse/sprint-02/presentation/`: 139 cards, 617 event mappings; animation/SFX keys per card; `coverage.py` + `test_coverage.py` 2/2 green in verify.yml. Independently re-verified 2026-09-29 ~02:00 EDT (regen byte-identical). | Claude runs `coverage.py` on Mathew's PC against `assets/staging/` and posts the first real coverage report; ElevenLabs thread confirms cue names. |
+| AI-066 | P2 | Muse (Rune) | DELIVERED 2026-09-28 ~23:45 EDT (commits `a121593`, `7735895`, `863d62a`) | Real-engine event dump (`tools/event-dump/`: seeded Zeus-vs-Poseidon AI matches → AI-062 wire-format JSONL, deterministic). Wired into `linux-packaging.yml`. | CI green — Linux packaging run **36519850577** (all regress steps + event-dump step success). |
+| AI-068 | P1 | Muse (Rune) | DELIVERED 2026-09-28 ~23:10 EDT (commit `84de370`) | All 139 asset prompts retuned to techno-futuristic myth (Mathew direction via Claude); no-bow/no-crossbow tests; `test_asset_directory.py` 6/6 green in verify.yml. | No Meshy generation submitted (media lane's call). |
 
 ### Accepted or done (for reference; evidence in SPRINT_LOG.md)
-AI-037/038 manifest + offline smoke DONE · AI-045 lobby guards merged (PR #1) · AI-047 Windows/browser lobby fixes merged (PR #1) · AI-049 asset prompt directory DONE (139 cards, 21 SFX groups, 32 apex briefs) · AI-052-WIN Windows packaging repair ACCEPTED (run 36386714758) · AI-054 GLB staging checker verified 55/55 (local, not yet committed) · AI-029/032/033/034 setup verified.
+AI-037/038 manifest + offline smoke DONE · AI-045 lobby guards merged (PR #1) · AI-047 Windows/browser lobby fixes merged (PR #1) · AI-049 asset prompt directory DONE (139 cards, 21 SFX groups, 32 apex briefs) · AI-052-WIN Windows packaging repair ACCEPTED (run 36386714758) · AI-054 GLB staging checker verified 55/55 (local, not yet committed) · AI-029/032/033/034 setup verified · AI-062 board event contract DELIVERED · AI-063 board-scale contract DELIVERED · AI-064 presentation manifest + coverage.py DELIVERED (independently re-verified 2026-09-29) · AI-066 real-engine event dump DELIVERED (CI green 36519850577) · AI-068 techno-myth style tune-up DELIVERED.
 
 ### In review, not yet accepted
 AI-027/028/036 audit, handoff and movement fixture · AI-043 Java suite (169/169 reported, independent rerun pending) · AI-044 2D alpha recipe (PARTIAL) · AI-050 Skyline Seer model (held for HA-011) · AI-051/052 audio candidates (awaiting palette selection).
@@ -247,7 +260,7 @@ Each meeting reads this file plus the latest SPRINT_LOG.md entries, verifies cla
 ## Definition of done
 An item is DONE only when its acceptance criteria are met, relevant tests/review pass, integration is verified, and the records include branch/commit/artifact evidence. A draft, generated asset, passing unit test or repository file alone is not a finished feature. RELEASED additionally requires a verified deployed/store/distribution destination. Scope or policy decisions are preserved in PRODUCT_LOG.md; unresolved dependencies stay visible in the Human decisions table.
 
-## Child action catalog (IDs 027–064)
+## Child action catalog (IDs 027–068)
 | ID | Parent | Summary | Owner | Status |
 |---|---|---|---|---|
 | AI-027/028 | AI-002 | Repository audit and handoff | Muse | REVIEW |
@@ -276,9 +289,12 @@ An item is DONE only when its acceptance criteria are met, relevant tests/review
 | AI-056 | AI-006 | Distinct exit code per regression check | Muse | DELIVERED 2026-09-28 |
 | AI-057 | AI-006 | regress.bat manual-run exit | Muse | DELIVERED 2026-09-28 |
 | AI-058 | AI-006 | Java version detection with JAVA_TOOL_OPTIONS | Muse | DELIVERED 2026-09-28 |
+| AI-059 | AI-031 | Reconcile unmerged astra/* branches | Claude | DELIVERED |
 | AI-060 | AI-017 | Build-as-you-play 3D battlefield (north star) | Claude → Astra | BACKLOG |
 | AI-061 | AI-018/020 | Continuous media production lane | Claude | IN_PROGRESS |
 | AI-062 | AI-060 | Board event contract v1 | Muse | DELIVERED 2026-09-28 |
-| AI-063 | AI-049/017 | Board-scale contract for the asset prompts (hex tile) | Muse | READY |
-| AI-064 | AI-060/018–020 | Presentation manifest + coverage report | Muse | READY after AI-062 |
-| AI-059 | AI-031 | Reconcile unmerged astra/* branches | Claude | DELIVERED |
+| AI-063 | AI-049/017 | Board-scale contract for the asset prompts (hex tile) | Muse | DELIVERED 2026-09-28 |
+| AI-064 | AI-060/018–020 | Presentation manifest + coverage report | Muse | DELIVERED 2026-09-28 |
+| AI-065 | AI-006 | regress.bat setup repairs (robocopy/:mkwork) | Muse | DELIVERED 2026-09-28 |
+| AI-066 | AI-062/046 | Real-engine event dump tool | Muse | DELIVERED 2026-09-28 |
+| AI-068 | AI-049 | Techno-futuristic myth style tune-up | Muse | DELIVERED 2026-09-28 |
