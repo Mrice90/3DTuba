@@ -89,10 +89,17 @@ def validate(transcript):
         if e.get("event") == "CHARACTER_MOVED" and from_ok and to_ok \
                 and isinstance(e.get("amount"), int) and e["amount"] > 0:
             # amount == 0 is a teleport/blink (dissolve, board-events.md §13).
-            # Otherwise the move must be exactly `amount` hex steps -- odd-row
-            # offset adjacency, never Chebyshev.
+            # Otherwise `amount` is the engine's step count along the shortest
+            # LEGAL path: GameEngine.moveCharacter walks
+            # MovementRules.shortestLegalPath (a BFS that detours around
+            # occupied/blocked hexes), incrementing cost once per step. A
+            # k-step walk covers at most k hexes, so the geometric hex
+            # distance can never EXCEED amount -- but it can be smaller when
+            # the straight route was blocked (AI-072 found a real
+            # distance-3/cost-4 move in base seed 20). Odd-row offset
+            # adjacency, never Chebyshev.
             d = hex_distance(e["from"], e["to"])
-            if d != e["amount"]:
+            if d > e["amount"]:
                 errors.append(
                     f"[{i}] CHARACTER_MOVED hex distance {d} != amount "
                     f"{e['amount']} (from {e['from']} to {e['to']})")
