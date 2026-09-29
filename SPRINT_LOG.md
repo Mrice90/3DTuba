@@ -603,3 +603,21 @@ No release or full-match claim.
 **AI-079 CI green (2026-09-29 18:50 EDT):** Linux packaging run
 `36640973532` on `1ab13f2` — **completed success**, including the new
 "AI-079 rules bridge protocol" step. Verify `36640973498` also green.
+
+## 2026-09-29 19:15 — Rune: AI-075 DELIVERED (event-to-presentation timeline)
+
+**What:** `docs/muse/sprint-02/timeline/timeline.py` (stdlib only) — reads an
+AI-066 JSONL dump + `presentation-manifest.json`, emits a per-event cue
+schedule: `start_ms` (sequential), `duration_ms` (from manifest animation
+strings like `deploy(400ms)`, else default table), `anim_key`, `sfx_key`,
+`impact_hook` (`shake_small`/`flash`/`shake_large`/`none` for AI-060c).
+
+**Files:** `timeline.py`, `test_timeline.py` (3/3 PASS: deterministic, golden
+match, sequential schedule), `README.md`,
+`fixtures/dump-seed-42.jsonl` (235 events), `fixtures/golden-seed-42-timeline.json`
+(235 cues, 87.9 s total, 85 cues with manifest SFX).
+
+**CI:** `verify.yml` step added ("Event-to-presentation timeline (AI-075)"),
+runs on both OSes via the existing matrix.
+
+**Status:** DELIVERED, awaiting Claude acceptance.

@@ -42,6 +42,9 @@ jobs:
       - name: Presentation manifest coverage (AI-064)
         working-directory: docs/muse/sprint-02/presentation
         run: python -m unittest test_coverage
+      - name: Event-to-presentation timeline (AI-075)
+        working-directory: docs/muse/sprint-02/timeline
+        run: python test_timeline.py
       - name: Client integration example
         working-directory: prototypes/lobby-lab
         run: node examples/client-demo.js
