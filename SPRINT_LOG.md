@@ -548,3 +548,26 @@ Review of record for 18:00 EDT (started 17:08). It covers `b88c496` → **`09b81
 | Astra | — | — | Unavailable until 2026-10-04 08:12 EDT. |
 
 Next meeting 2026-09-30 09:00 EDT. No release or full-match claim.
+
+## 2026-09-29 17:55 EDT — Claude Unity thread
+
+AI-080 (P0), AI-052-ASSET and AI-030. Work is on branch **`claude/unity-playtest-20260929`** at `f38f5e1`, pushed and not merged, with no PR (Mathew decides). Evidence and the HA-009 review sheet are on that branch in `docs/reviews/2026-09-29-unity-playtest/`.
+
+- **Board ready.** The UnityProof `Playtest` scene is the first scene in the build. It has:
+  - the 4×6 hex board with a plinth, rims, hover highlight and pulsing legal-target markers
+  - land → structure/character stack offsets
+  - an orbit/zoom/pan camera
+  - a HUD for turn, phase, GP, hand, capital HP, the event log and playback controls
+- **All 139 cards have a token.** Typed stand-ins: LAND slab (faction + terrain tint), STRUCTURE tower, CHARACTER robot + name plate, CAPITAL spire, SPELL VFX burst.
+  - Staged Meshy GLBs replace the stand-ins at the AI-063 budget after `check_glb.py` (0 rejections): **29 real models (22 CHARACTER, 6 CAPITAL, 1 STRUCTURE)** and 110 stand-ins.
+  - Model preference is rigged, then textured, then newest batch. Two rigged batch-04 models were used, as static meshes.
+  - SFX: 94 `picks/` WAVs cover 14 cards. Every other card gets a generic cue for each cue type.
+  - `SFX_INDEX.json` did not exist yet; it is picked up automatically once written.
+- **Playback.** The AI-066 seed-42 dump (regenerated on Windows: 235 events, winner 0) replays with tweens, energy bolts, damage numbers and sounds.
+- **Live play is blocked on AI-079.** The rules bridge is not on `muse/sprint-01-content-audit` as of `22fbd06`. `BridgeClient` is written against the backlog protocol (new/legal/act), sits behind `-bridgeCmd`, and passes 5 canned-line editor checks. Once the bridge lands, the human seat needs the protocol field names confirmed.
+- **Build.** `%TEMP%\claude\ic-playtest-build\InfiniteConquestPlaytest.exe`, 264 MB.
+  - exe SHA-256 `96b492cb271111251fe42b8646e65370a1b7b566773a1e35b34c3f2d1ae70873`
+  - `_Data` tree `7874b411…7d00`
+- **Smokes.** `-proofSmoke` exits 0 with legal=true and blocked=true. The new `-playtestSmoke` exits 0 with 8/8 checks. Editor validation passes, including the 14 AI-036 assertions.
+- **To playtest:** run the exe. The match plays itself. Use Pause/Step/speed, click pieces to see markers, and press G for the card gallery (all / real / stand-ins).
+- No Meshy/ElevenLabs credits spent. The local 3DTuba checkout was only read (`assets/staging`).
