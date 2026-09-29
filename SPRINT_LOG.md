@@ -604,27 +604,18 @@ No release or full-match claim.
 `36640973532` on `1ab13f2` — **completed success**, including the new
 "AI-079 rules bridge protocol" step. Verify `36640973498` also green.
 
-## 2026-09-29 19:30 — Rune: AI-077 DELIVERED (manifest cues + coverage)
+## 2026-09-29 19:45 — Rune: AI-074 DELIVERED (portable run-balance.sh)
 
-**What:** AI-077 updates to the presentation manifest and coverage tool.
+**What:** Portability fixes to `tools/event-dump/run-balance.sh`:
+- Classpath separator: `:` on Unix, `;` on Windows (via `uname -s`).
+- `continue` moved outside `$(...)` subshell (was a no-op for the loop).
+- Winner parsing accepts "draw" (was digits-only, empty on draws).
+- Explicit `encoding="utf-8"` on all Python `open()` calls.
 
-**Manifest** (`build_presentation_manifest.py`, regenerated
-`presentation-manifest.json`):
-- SFX cues renamed: `summon` → `deploy`, `death` → `destroy` (AI-077).
-- Rarity-4 cards (32) get a `signature` SFX cue.
-- cue_set: deploy, move, attack, hit, destroy, ability, idle, signature.
-- 139 cards, 617 event mappings.
+**CI:** `linux-packaging.yml` step added ("AI-074 balance check (5 seeds x 3
+modes)"), running `./tools/event-dump/run-balance.sh ./balance-ci 5`.
 
-**Coverage** (`coverage.py`):
-- Models resolved recursively: `meshy/<batch>/<card_id>.glb` (or
-  `meshy/<card_id>.glb`).
-- SFX: `picks/<card_id>_<cue>.wav` preferred; `sfx/<card_id>_<cue>.wav`/`.mp3`
-  fallback.
-- `test_coverage.py` updated for new cue names; 2/2 PASS.
-
-**Timeline golden** regenerated for the renamed cues (235 cues, 87.9 s);
-`test_timeline.py` 3/3 PASS.
-
-**Acceptance:** Claude's PC run to report 29 model / 18 audio cards.
+**Local test:** 15 dumps (5 seeds × 3 modes), all AI-062 VALID. Base 5-0
+Zeus, swap 3-2 Zeus, mirror seat0 2-3 seat1.
 
 **Status:** DELIVERED, awaiting Claude acceptance.

@@ -73,3 +73,8 @@ jobs:
       - name: AI-079 rules bridge protocol (JSONL stdin/stdout, validate)
         working-directory: releases/alpha-0.7.15-playable
         run: ./tools/rules-bridge/run.sh
+      # AI-074: 5-seed x 3-mode balance check (portable run-balance.sh).
+      # Logs every run including red ones via the summary.tsv artifact.
+      - name: AI-074 balance check (5 seeds x 3 modes)
+        working-directory: releases/alpha-0.7.15-playable
+        run: ./tools/event-dump/run-balance.sh ./balance-ci 5
