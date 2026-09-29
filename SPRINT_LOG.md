@@ -414,3 +414,32 @@ Mathew confirmed that the Meshy spend of 2,720 → 2,140 (580 credits) after 202
 - Remaining lanes (not mine): Claude to re-review AI-064; Claude runs coverage.py on Mathew's PC against `assets/staging/` (first real coverage report); ElevenLabs thread confirms cue names; AI-065/AI-046-WIN-ACCEPT local break-mode reruns wait on Mathew; AI-030/AI-052-ASSET/AI-061 media lanes; HA-009/HA-011/HA-012.
 - Standing gaps unchanged: browser UI visual check unverifiable from remote tooling (loopback unreachable); generation batches in human/paid lanes.
 - This run delivered two assigned backlog items (AI-069 fix + AI-070 analysis): a chat message is warranted per reporting rules.
+
+## 2026-09-29 12:00 — Claude (covering Astra)
+
+Checkpoint of record for 12:00 EDT. It covers `3612631` → **`da5f299`** (5 Muse commits, lobby-lab reflection 08:30). There has been no Astra-authored activity since 2026-09-28 10:45, so coverage continues. astra/* and claude/* branches are unchanged. Review: `docs/reviews/2026-09-29-1200-claude-acceptance.md`.
+
+**Verdicts (delivery ≠ acceptance)**
+| ID | Verdict | Evidence |
+|---|---|---|
+| AI-069 | **ACCEPTED** | `f7e1167`/`c540163`. Verify 36565491824 is green on both OSes. At tip 36565877747, windows step 11 "Presentation manifest coverage (AI-064)" and step 12 are success. Local `test_coverage` 2/2. Not logged by Muse: intermediate run **36565485114 (`f7e1167`) FAILED on Windows**. Record red intermediate runs. |
+| AI-064 | Rejection lifted; **CI part ACCEPTED** | Stays DELIVERED until the PC coverage run (WAITING — needs Mathew present) and the ElevenLabs cue-name confirmation. |
+| AI-070 | **ACCEPTED (analysis)** | `b1a193d`. Seed 42 = 235 events, matching CI 36519850577. Caveats: the swap harness is uncommitted (10/31 results not reproducible), and seat is not neutral (Zeus 21/21 in seat 0 vs 7/10 in seat 1). Deck asymmetry is the main driver. Balance flag passed to AI-012. |
+
+**New findings (AI-006):** AI-071 (P3) `build_presentation_manifest.py:72,118` `open()` without encoding. AI-072 (P2) commit the deck-swap/mirror options in EventDump and re-run ≥20 seeds per arrangement. AI-073 (P3) CI drift: `ubuntu-latest` → Ubuntu 26 on 2026-10-19 plus Node 20 actions; pin the runner and bump the actions.
+
+**Media:** Meshy **2,050**. The 90 credits since 06:00 were batch-04 textures (Claude media session ~07:00, Mathew direct; local `assets/staging/meshy/batch-04-alpha-img2-3d/MANIFEST.md`). ElevenLabs **127,473**, unchanged. This checkpoint spent 0 credits: everything is gated on HA-009 or the batch-04 import check.
+
+**Assignments (to 2026-09-29 18:00)**
+| ID | Owner | Pri | Next action |
+|---|---|---|---|
+| AI-072 | Muse | P2 | Commit `--swap-decks` (+ mirror if supported) in `releases/alpha-0.7.15-playable/tools/event-dump/`. Run ≥20 seeds × base/swap/mirror, update `win-split-analysis.md` with the seat effect stated separately, CI green. |
+| AI-071 | Muse | P3 | `encoding="utf-8"` on both `open()` calls in `build_presentation_manifest.py`; regen stays byte-identical; Verify green on both OSes. |
+| AI-073 | Muse | P3 | Pin `ubuntu-24.04` in verify/linux-packaging, bump actions to Node-24 majors, all three workflows green. Log every run, red ones included. |
+| AI-065 / AI-046-WIN-ACCEPT | Claude Code | P1 | WAITING — needs Mathew present (6 break modes from a deep path, fresh clone of `da5f299`). |
+| AI-064 coverage report | Claude (Astra lane) | P2 | WAITING — needs Mathew present (run `coverage.py` on the PC against `assets/staging/`; now unblocked by AI-069). |
+| AI-030 / AI-052-ASSET / batch-04 import | Claude (Astra lane) | P0 | WAITING — needs Mathew present (mouse acceptance; move 11 GLBs from Downloads to staging, `check_glb.py --require-materials`, Unity import). |
+| AI-061 | Meshy / ElevenLabs | P1 | Hold. Next spend follows HA-009 and the batch-04 in-game check, using AI-068 prompts. Techno review of the batch-02 audio prompts before more cues. |
+| HA-009, HA-011, HA-012 | Mathew | P1/P2 | Thunder Ram / batch-04 style verdict; Skyline Seer likeness; ElevenLabs Explore sharing. |
+
+Next checkpoint 2026-09-29 18:00 EDT. No release or full-match claim.
