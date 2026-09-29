@@ -53,6 +53,14 @@ class TestValidator(unittest.TestCase):
         r = self._run_inline(self._moved(1, 1, 2, 3, 2))
         self.assertEqual(r.returncode, 0, r.stderr)
 
+    def test_hex_move_detour_amount_greater_than_distance_passes(self):
+        # AI-072: the engine's cost is the step count along the shortest
+        # LEGAL path (BFS detours around blockers), so amount may exceed the
+        # geometric hex distance. (0,0)->(1,1) is hex distance 2; a 3-step
+        # detour is legal engine output and must validate.
+        r = self._run_inline(self._moved(0, 0, 1, 1, 3))
+        self.assertEqual(r.returncode, 0, r.stderr)
+
     def test_teleport_amount_zero_skips_hex_distance(self):
         # amount=0 is a teleport/blink dissolve (§13); hex distance is
         # not enforced for it.
