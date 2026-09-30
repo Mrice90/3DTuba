@@ -32,9 +32,16 @@ jobs:
           java-version: '17'
       # AI-099: build-release.bat packs the jar with tools/make-repro-jar.py
       # (same bytes as the Linux build); needs Python on PATH.
-      - uses: actions/setup-python@v5
+      # AI-102: setup-python@v6 (v5 warns "Node.js 20 is deprecated").
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
+      # AI-100 rework: record the exact toolchain — a JDK patch-level
+      # difference between runners is a remaining cross-OS suspect.
+      - name: Toolchain versions (AI-100 diagnosis)
+        run: |
+          java -version
+          javac -version
       - name: Fetch pinned source
         working-directory: releases/alpha-0.7.15-playable
         run: call fetch-source.bat
@@ -50,6 +57,16 @@ jobs:
       - name: Smoke standalone re-run (expect 5/5)
         working-directory: releases/alpha-0.7.15-playable
         run: call smoke.bat
+      # AI-100 rework: keep the built jar for the per-entry cross-OS diff
+      # (tools/diff-jar-entries.py). Uploaded right after the build so the
+      # jar is available even when the asserting step below fails.
+      - name: Upload built jar (AI-100 diagnosis)
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-jar
+          path: releases/alpha-0.7.15-playable/infinite-conquest-alpha-0.7.15.jar
+          if-no-files-found: error
+          retention-days: 7
       # AI-100: the Windows-built jar must EQUAL the canonical tracked hash —
       # printing it was not enough (04:00 printed 18998415… and claimed
       # cross-OS comparison without comparing). Fail the step on mismatch.
