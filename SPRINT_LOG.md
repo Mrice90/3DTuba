@@ -726,3 +726,17 @@ Scheduled checkpoint, run 23:52 EDT. Coverage continues: there are no Astra-auth
 | Mathew | WAITING — needs Mathew present: AI-030 mouse acceptance, AI-065 deep-path break rerun, AI-080 full-match playtest once the bridge is wired. Decisions: HA-015 (AI-076 memo ready), HA-011, HA-012, HA-009, HA-003 remainder, HA-018..020. |
 
 No release or full-match claim.
+
+## 2026-09-30 02:00 — Muse (Rune): AI-099 + AI-098 delivered (acceptance pending 06:00)
+
+Commit range `9c67fec`..`3723fd6` (14 commits, one file each, prefix `lobby-lab reflection:`).
+
+**AI-099 (P1) — AI-078 regression fixed.** `tools/make-repro-jar.py` (new, shared): reproducible jar packer — fixed zip timestamps (2026-01-01 UTC), sorted entries, fixed mode bits, LF-normalized manifest, forward-slash names; also skips jackson's duplicate `META-INF/MANIFEST.MF`. `build-release.sh` uses it and leaves tracked `CHECKSUMS.sha256` untouched (AI-078); `build-release.bat` calls it when Python is on PATH (setup-python added to windows-packaging.yml), falls back to `jar --create` with a WARNING when Python is absent, and no longer copies the staging checksum over the tracked file. `regress.sh`/`.bat` exclude the tracked checksum from the temp copy and verify the jar against **this build's** generated `build/stage/release/CHECKSUMS.sha256` — `--break=checksum` now fails with its own expected-vs-got detail. Tracked `CHECKSUMS.sha256` **deliberately updated** to the proven reproducible hash (documented in `PROVENANCE.md` + `README.md`; `play.bat` hint updated; obsolete byte-identity claim in `alpha-build-handoff.md` annotated). `linux-packaging.yml` gained an AI-099 step: two builds from the pin must agree and match the tracked file. `windows-packaging.yml` prints the jar hash for cross-OS comparison.
+
+Local evidence (Temurin JDK 17.0.20.1, sandbox): full `regress.sh` clean **REGRESSION: PASS** (pin 992bc95 verified, 118 sources, smoke 5/5, verify OK); two builds byte-identical, SHA-256 `2db3a12c92dbd2acf0de251535b58bb13ab869eaae3075f07a6abaa63fbae86b`, no zip warnings; tracked file updated to that hash, working-tree jar verifies against it, `play.sh` accepts; `--break=checksum` → `REGRESSION: intentional break correctly detected at stage 'verify' (jar hash mismatch — expected 2db3a12c… (this build's generated checksum), got f4901a5e…)`. Old canonical `728c3fc1…` was the AI-044 pre-reproducible handoff jar (Mathew's copy).
+
+**AI-098 (P1) — Windows Verify fix.** `coverage.py` `find_model()`/`find_sfx()` now return `os.path.relpath(...).replace(os.sep, "/")` — POSIX paths on Windows, no-op on Linux. Local `test_coverage` 2/2. Windows Verify step 11 + Linux/Windows packaging green pending CI.
+
+**AI-076 memo (P3):** the two 00:00 corrections applied (swap-mode Poseidon goes first, loses 7/10; shipped engine is the pinned Java jar — coin flip bridge-side, deck changes need TubaExperiment or a bridge-side override).
+
+**Pending (not mine to close):** Linux packaging all 13 steps green incl. the new AI-099 step; Windows packaging green with matching jar hash; Verify windows-latest step 11 green. Claude acceptance for AI-098/AI-099 at the 06:00 review. Next: AI-096 Worker v2 (P0).
