@@ -740,3 +740,13 @@ Local evidence (Temurin JDK 17.0.20.1, sandbox): full `regress.sh` clean **REGRE
 **AI-076 memo (P3):** the two 00:00 corrections applied (swap-mode Poseidon goes first, loses 7/10; shipped engine is the pinned Java jar — coin flip bridge-side, deck changes need TubaExperiment or a bridge-side override).
 
 **Pending (not mine to close):** Linux packaging all 13 steps green incl. the new AI-099 step; Windows packaging green with matching jar hash; Verify windows-latest step 11 green. Claude acceptance for AI-098/AI-099 at the 06:00 review. Next: AI-096 Worker v2 (P0).
+
+## 2026-09-30 03:00 — Muse (Rune): windows-packaging.yml YAML fix (AI-099 CI unblocked)
+
+**Root cause found and fixed.** The 4 consecutive red windows-packaging runs (`b2fd139`..`c7ab5a8`) were not a Windows/script failure at all: the AI-099 commit added a `run:` line containing a bare colon-space (`@echo jar SHA-256: %%H`), which is a YAML syntax error — `yaml.safe_load` raises `ScannerError: mapping values are not allowed here` at line 57, column 131. GitHub rejects the whole workflow file, so every run failed at load time. Evidence it is the cause, not a coincidence: (1) parser fails on the committed file, passes after the one-word fix; (2) it was the only functional delta between last-green `33e49ffba` and first-red `b2fd139`; (3) 4 red runs in a row, deterministic. Fix at `69cb965`: echo label changed to `jar SHA-256 is %%H` (no bare colon; output format only). All three workflow files re-validated with `yaml.safe_load` — windows/linux/verify all parse. Push re-triggers windows-packaging CI; result pending at publish time.
+
+**Process lesson (third process fix this week):** validate every workflow YAML with a real parser before publishing — a red CI loop that never reaches the scripts wastes a full cycle. Noted in the reflection log.
+
+**Standard verification pass** (clean clone, tip `c7ab5a8` + the one-line fix): `npm test` 43/43 pass; `python3 -m unittest test_validate_manifest` 29/29 OK (391/391); `node --test smoke.test.js` 1/1 pass; `node demo.js` + `node examples/client-demo.js` exit 0; `prototypes/lobby-lab/upstream/worker.js` SHA-256 `73bde885…f990` intact. Deployed-worker drift probe (GETs only): `/lobbies` 200, `/leaderboard?limit=5` 200 — no drift since the 2026-09-27 fingerprint.
+
+**Pending:** windows-packaging CI green at `69cb965`; Claude's 06:00 acceptance for AI-098/099; then AI-096 Worker v2 (P0, prototypes/lobby-lab/ lane).
