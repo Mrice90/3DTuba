@@ -111,9 +111,14 @@ AI-027/028/036 audit, handoff and movement fixture · AI-043 Java suite (169/169
 | HA-009 | Review the first textured in-game sample (Thunder Ram) once Claude imports it. | All further Meshy/ElevenLabs batches |
 | HA-011 | Skyline Seer: its cowl resembles a well-known comic character. Reject and regenerate (open helm/laurel), or accept? | AI-050 |
 | HA-012 | ElevenLabs "Generations may be shared to Explore page" is ON. Turn it off for unreleased audio? | Asset confidentiality |
-| HA-003 | Desktop/mobile targets, release order, cross-play | AI-013/014/015 final scope |
+| HA-003 | PARTLY DECIDED 2026-09-29: PC + Android first, Apple later, cross-play YES (see AI-091). Still open: min Android version/devices, store channels, Apple timing | AI-013/014/015 final scope |
 | HA-004 | Currency and login-reward calendar/eligibility | AI-021/022/023 |
 | HA-006 | First expansion roster | AI-024 |
+| HA-016 | DECIDED 2026-09-29 (PO delegated "fastest path to full release"): release on a server-authoritative JAVA rules server + Unity thin client (PC + Android); C# port deferred to post-release. See "Release path decision". | AI-083, AI-085, AI-087 |
+| HA-017 | DECIDED 2026-09-29: no paid server hosting until the game proves profitable; v1.0 stays on Cloudflare (free tier). | AI-085 |
+| HA-018 | PARTLY DECIDED 2026-09-29: PC store = itch.io primary (Steam possible later, not ruled out). Google Play: no account yet, Mathew sets it up closer to the Android release. Open: Steam yes/no + timing; Apple account timing. | AI-013, AI-086 release |
+| HA-019 | Payment processor(s) for in-app purchases: Stripe, PayPal, a merchant-of-record (Paddle / Lemon Squeezy / Xsolla) or others. Decide closer to release; see "Payments" note (store-billing rules, $0.99 fee math, tax). | AI-023, AI-092 |
+| HA-020 | Cosmetics economy: earn-only (achievements + login rewards) or also sold (packs/individual skins, and at what price)? Earned cosmetics are never removed. | AI-094, AI-092 |
 
 ## Epics and requirements
 
@@ -373,11 +378,11 @@ Evidence: SPRINT_LOG.md 2026-09-29 17:15 entry and `docs/reviews/2026-09-29-1800
 | AI-066 | P2 | Muse | ACCEPTED (cross-OS determinism, seed 42 = 235) | — |
 | AI-064 | P2 | Muse | ACCEPTED 2026-09-29 18:00 (PC run exit 0) | Layout and cue alignment in AI-077. |
 | AI-067 | P2 | Muse → Meshy thread | ACCEPTED (queue doc) | Meshy thread submits as local `batch-05-lands`. |
-| **AI-075** (new, AI-060b) | P1 | Muse | IN_PROGRESS 2026-09-29 17:10 | `docs/muse/sprint-02/timeline/timeline.py` (stdlib): AI-066 JSONL + presentation-manifest → per-event cue schedule (start_ms, duration_ms, anim key, sfx key, impact hook for AI-060c) with a default duration table. Golden for seed 42. Test in verify.yml on both OSes. |
-| **AI-077** (new, AI-006) | P1 | Muse | READY | Manifest cues: summon→deploy, death→destroy, plus signature for rarity-4. `coverage.py` resolves assets recursively under staging (prefers `picks/`, accepts .wav/.mp3, `meshy/<batch>/<id>.glb`). Regenerate and test. Acceptance: Claude's PC run reports 29 model / 18 audio cards. |
-| **AI-074** (new, AI-006) | P2 | Muse | READY | Make `run-balance.sh` portable (classpath separator, loop `continue`, draw parse, UTF-8 `open()`), and add a 5-seed × 3-mode balance step to linux-packaging.yml. |
-| **AI-078** (new, AI-006) | P3 | Muse | READY | Reproducible jar (fixed timestamps), and stop rewriting the tracked `CHECKSUMS.sha256` during builds. Two builds must give the same SHA-256. |
-| **AI-076** (new, AI-012) | P3 | Muse | READY | Balance-options memo (coin flip vs Poseidon starter tweaks, expected effect from the AI-072 numbers). Docs only → HA-015 for Mathew. |
+| **AI-075** (new, AI-060b) | P1 | Muse | DELIVERED (awaiting Claude acceptance) | `docs/muse/sprint-02/timeline/timeline.py` (stdlib): AI-066 JSONL + presentation-manifest → per-event cue schedule (start_ms, duration_ms, anim key, sfx key, impact hook for AI-060c) with a default duration table. Golden for seed 42 (235 cues, 87.9 s). Test in verify.yml on both OSes. Commit `a5e159c`. Independent QA 2026-09-29 20:00: `test_timeline.py` 3/3 PASS locally (deterministic, golden match, sequential). CI green for the tip commits not yet recorded. |
+| **AI-077** (new, AI-006) | P1 | Muse | DELIVERED (awaiting Claude acceptance) | Manifest cues: summon→deploy, death→destroy, plus signature for rarity-4. `coverage.py` resolves assets recursively under staging (prefers `picks/`, accepts .wav/.mp3, `meshy/<batch>/<id>.glb`). Regenerated: 139 cards, 617 event mappings; cue_set deploy/move/attack/hit/destroy/ability/idle/signature. Commit `55557ae`. Independent QA 2026-09-29 20:00: `test_coverage.py` 2/2 OK; manifest structure sane. Acceptance: Claude's PC run reports 29 model / 18 audio cards. |
+| **AI-074** (new, AI-006) | P2 | Muse | DELIVERED (awaiting Claude acceptance) | Make `run-balance.sh` portable (classpath separator, loop `continue`, draw parse, UTF-8 `open()`), and add a 5-seed × 3-mode balance step to linux-packaging.yml. Commit `fb4b57c`. Local: 15 dumps (5 seeds × 3 modes), all AI-062 VALID (base 5-0 Zeus, swap 3-2 Zeus, mirror 2-3). Independent QA 2026-09-29 20:00: diff reviewed — PATH_SEP via uname, `continue` outside `$(...)` with explicit seed increment, draw-safe winner regex, explicit UTF-8 opens; all four fixes correct. |
+| **AI-078** (new, AI-006) | P3 | Muse | DELIVERED (awaiting Claude acceptance) | Reproducible jar (fixed timestamps), and stop rewriting the tracked `CHECKSUMS.sha256` during builds. Two builds must give the same SHA-256. Commit `0eed0dd`. build-release.sh: Python zipfile with fixed 2026-01-01 timestamps, sorted entries, deterministic metadata; CHECKSUMS.sha256 no longer copied to tracked dir. Independent QA 2026-09-29 20:00: jarring step re-executed twice on a sample tree → byte-identical SHA-256 (MATCH). Full two-build CI evidence pending. |
+| **AI-076** (new, AI-012) | P3 | Muse | DELIVERED (awaiting Claude acceptance) | Balance-options memo (coin flip vs Poseidon starter tweaks, expected effect from the AI-072 numbers). Docs only → HA-015 for Mathew. |
 | AI-061 Meshy | P1 | Claude — Meshy thread | READY | Stage batch-04 GLBs, a 5-land pilot, then 30 lands (existing credits only). |
 | AI-061 ElevenLabs | P1 | Claude — ElevenLabs thread | READY | Land cue sets for the 35 lands; picks named `<card_id>_<cue>.wav` (deploy/destroy). |
 | AI-052-ASSET / AI-030 / AI-060b | P0 | Claude — Unity thread | READY | Batch-02/04 import at AI-063 scale, TokenPreview sheet (HA-009), JSONL playback prototype on a `claude/unity-*` branch. |
@@ -390,8 +395,186 @@ Evidence: SPRINT_LOG.md 2026-09-29 17:15 entry and `docs/reviews/2026-09-29-1800
 
 | ID | Pri | Owner | Status | Next action / acceptance |
 |---|---|---|---|---|
-| **AI-079** (new, AI-003/AI-060) | P0 | Muse (Rune) | READY (sent 17:40) | Headless rules bridge `releases/alpha-0.7.15-playable/tools/rules-bridge/`: Java against the pinned jar, line-delimited JSON over stdin/stdout (`new` / `legal` / `act`), emits AI-062 wire events + state (hands, GP, per-hex stacks), bot seat auto-plays, illegal ids return an error. Scripted test validating every event, linux-packaging.yml step, protocol in README. **Ahead of AI-075.** |
+| **AI-079** (new, AI-003/AI-060) | P0 | Muse (Rune) | DELIVERED (awaiting Claude acceptance) | Headless rules bridge `releases/alpha-0.7.15-playable/tools/rules-bridge/`: Java against the pinned jar, line-delimited JSON over stdin/stdout (`new` / `legal` / `act`), emits AI-062 wire events + state (hands, GP, per-hex stacks), bot seat auto-plays, illegal ids return an error. Scripted test validating every event, linux-packaging.yml step, protocol in README. **Ahead of AI-075.** Protocol v1.0.0: id/op requests, id/ok/revision responses, revision-scoped action ids (rN-aM), INVALID_ACTION without mutation, redacted state (opponent hand/deck counts only), bot auto-play, JSONL-only stdout. |
 | **AI-080** (new, AI-060/AI-017) | P0 | Claude — Unity thread | IN_PROGRESS | Playtest build: hex board polished (tile highlight, legal-move markers, stack offsets), a stand-in catalog for all 139 cards by type (LAND hex slab with faction tint, STRUCTURE prism, CHARACTER capsule + faction color + name plate, CAPITAL tower, SPELL VFX burst), real GLBs swapped in where staged, SFX from `picks/`, and an event playback driver. Then it connects to the AI-079 bridge for real play. Acceptance: Mathew plays a full match in a Windows build. |
 | **AI-081** (new, AI-061/AI-019) | P1 | Claude — Meshy thread | IN_PROGRESS | Animatable models: rig humanoid CHARACTER models (Meshy auto-rig/animate) with idle/walk/attack/hit/death clips and export FBX/GLB with animations. Non-humanoids stay static (Unity tweens). Plus the AI-067 lands (local `batch-05-lands`), then the remaining structures. |
 | **AI-082** (new, AI-061/AI-020) | P1 | Claude — ElevenLabs thread | IN_PROGRESS (green-lit) | Full cue sets (deploy/move/attack/hit/destroy/ability/idle, + signature for apex) for every card that has a model or is in the lands batch, then the rest of the roster by SFX group. Picks go in `picks/<card_id>_<cue>.wav`. |
-| AI-075, AI-077, AI-074, AI-078, AI-076 | P1–P3 | Muse | READY / IN_PROGRESS | Unchanged, behind AI-079. |
+| AI-075, AI-077, AI-074, AI-078, AI-076 | P1–P3 | Muse | DELIVERED (awaiting Claude acceptance) | Queue complete 2026-09-29 ~18:40–18:49 (commits `a5e159c`/`55557ae`/`fb4b57c`/`0eed0dd`/`45ea213`). AI-079 CI green on `1ab13f2` (Linux packaging `36640973532`, Verify `36640973498`); CI runs for the later tip commits not yet recorded. |
+
+## Long-term architecture goals (Product Owner, 2026-09-29 ~18:10 EDT)
+Captured at Mathew's request after the AI-079 discussion. **Direction:** the Java rules bridge (AI-079) is a playtest scaffold, not the shipping architecture. The target is one rules core in C# that runs inside Unity (offline play, mobile, AI opponents) and, unchanged, on an authoritative server for ranked/online play. TubaExperiment stays the rules source of truth until the C# core passes conformance; from then on the C# core is the runtime. Hosting is not "in git": GitHub keeps the code and runs CI, and a live game server needs separate hosting (cost → HA-017). The final architecture call remains AI-003 (Astra, from 2026-10-04) and HA-003/HA-016 (Mathew).
+
+**Milestones:** (1) 3D playtest on the Java bridge (AI-079/AI-080, this sprint) → (2) C# core at event-for-event parity on the golden seeds (AI-083/AI-084) → (3) Unity runs on the C# core, and the bridge is retired from the client (AI-087) → (4) mobile builds on target devices (AI-086) → (5) authoritative server for ranked/online (AI-085).
+
+### AI-083 — Rules core ported to a C# library (child of AI-003/AI-007)
+P1 | BACKLOG (starts after the AI-080 playtest) | Owner: Astra (Unity/integration) with Claude until 2026-10-04; Muse for test tooling | Dependencies: AI-079, AI-084, HA-016.
+A pure .NET Standard 2.1 / C# library (`rules-core/`, no UnityEngine references) that implements the pinned alpha rules (TubaExperiment `992bc95`): HEX geometry, stacking, deploy/move/attack/ability/spell resolution, GP, turn structure, victory and the HERO bot. It emits AI-062 wire events natively. It is deterministic: seeded RNG, no wall-clock or hash-order dependence. Port it module by module, each gated by AI-084 conformance. Acceptance: 100% event-for-event parity with the Java engine on the golden seed corpus (all three EventDump modes, ≥ 60 seeds) and on bridge-scripted human games, and it runs headless in `dotnet test` on Linux and Windows CI.
+
+### AI-084 — Java↔C# differential conformance harness (child of AI-004/AI-083)
+P1 | BACKLOG | Owner: Muse (Rune) | Dependencies: AI-066, AI-079.
+The golden corpus is the AI-066/AI-072 EventDump outputs plus AI-079 bridge transcripts (scripted human actions). A comparison tool runs the same seed and action script through both engines and reports the first diverging event (seq, field, both values). It runs in CI on every commit that touches `rules-core/`, and a divergence fails the build. It also covers the AI-078 reproducible-jar work, so the Java oracle itself is stable. Acceptance: the harness catches an intentionally broken C# rule, and parity is reported as n/N seeds.
+
+### AI-085 — Authoritative game server for ranked and online play (child of AI-008/AI-010/AI-011)
+P1 | BACKLOG | Owner: Astra | Dependencies: AI-083, AI-005, HA-017 (hosting and cost).
+The server runs the same C# rules core. Clients send intents; the server validates, resolves and broadcasts events with redacted hidden state (hands, deck order). Ranked results come only from the server, never from client agreement. Reconnect and resume use the event log (AI-009). The existing lobby worker stays for discovery, or is folded in. Acceptance: two clients on separate networks complete a match. Forged, duplicate or replayed intents are rejected in tests. Hidden state is never sent to the opponent. Results are written exactly once (AI-011).
+
+### AI-086 — Mobile build pipeline and device budgets (child of AI-014/AI-060d)
+P1 | BACKLOG | Owner: Astra | Dependencies: AI-083 (no JVM on device), HA-003 (platforms).
+Unity Android (and iOS if HA-003 confirms it) builds in CI, touch input (no hover or right-click dependence), safe areas, and asset LOD/texture variants for the Meshy models (2K → 1K/512 mobile). Budgets: 60 fps on the reference phone, memory, thermals, download size. Acceptance: a full match on a real device within budget.
+
+### AI-087 — Unity client on the C# core; retire the client-side Java bridge (child of AI-003)
+P2 | BACKLOG | Owner: Astra | Dependencies: AI-083 parity.
+Swap the AI-080 BridgeClient for an in-process C# core behind the same interface, so the presentation layer (board, stand-ins, timeline AI-075, audio) does not change. The Java bridge stays only as the conformance oracle in AI-084. The shipping desktop build then carries no Java runtime. Acceptance: the playtest build runs with no Java installed and gives the same match as the bridge on the golden seeds.
+
+### AI-088 — Single card-data source (child of AI-016/AI-024)
+P2 | BACKLOG | Owner: Muse (tooling) → Astra (runtime) | Dependencies: AI-083.
+Card definitions (stats, costs, keywords, abilities as data where possible) are exported once from the pinned alpha into a versioned `cards.json` that the C# core, the presentation manifest (AI-064), the asset directory (AI-049) and the expansion work (AI-024) all read. This removes hand-copied card lists. Acceptance: all 139 cards load from the file in both engines with identical conformance results, and a schema test runs in CI.
+
+### AI-089 — Replays, spectating and bug-report capture (child of AI-006/AI-009)
+P3 | BACKLOG | Owner: Astra/Muse | Dependencies: AI-083.
+Every match stores seed + intents (a few KB). Any match can be replayed deterministically in the Unity client, which gives bug reports with exact reproduction, a spectator mode and a highlight-reel base for marketing. Acceptance: a saved playtest match replays identically after an app restart and on another machine.
+
+### AI-090 — Balance simulation at scale (child of AI-012)
+P2 | BACKLOG | Owner: Muse | Dependencies: AI-083 (fast in-process sims), AI-076.
+Headless C# bot-vs-bot runs over thousands of seeds per deck/seat/mode (extending AI-072), with a win-rate report per card and per matchup. It runs on each balance change and before every expansion release. Acceptance: the report reproduces the AI-072 numbers on the same seeds and flags any matchup outside 45–55% after the AI-012 tuning.
+
+
+## Long-term goal: PC + Android with seamless cross-play matchmaking (Product Owner, 2026-09-29 ~18:20 EDT)
+**Mathew, direct:** a major long-term goal is for Infinite Conquest to be playable on **PC and Android**, with **Apple (iOS, possibly macOS) later**. Every platform must be able to **matchmake seamlessly with every other**: one player pool, and a PC player can be matched against an Android player without noticing any difference.
+
+This partly settles **HA-003**: the platform order is PC (Windows) first with Android alongside, then Apple later, and cross-play is **yes**. Still open under HA-003: minimum Android version and reference devices, the store channels (Steam / itch / direct for PC; Google Play), and the Apple timing.
+
+What it means for existing items:
+- **AI-083/AI-085** (C# rules core shared by client and server) are now **required**, not just recommended. A JVM can't run on Android or iOS, and cross-play needs one authoritative rules engine that every client matches exactly.
+- **AI-086** mobile targets **Android first**; iOS becomes a later child (AI-086-IOS) once an Apple developer account exists (a purchase → Product Owner).
+- **AI-008/AI-015** matchmaking and cross-device identity must be platform-neutral from the start. Nothing in the protocol, identity or deck format may be tied to one OS.
+
+### AI-091 — Cross-platform matchmaking and cross-play (epic; children AI-008, AI-010, AI-015, AI-085, AI-086)
+P0 (long-term) | BACKLOG | Owner: Astra (from 2026-10-04) | Dependencies: AI-083 parity, AI-085 server, HA-003 remainder, HA-017 hosting.
+- **One pool:** a single matchmaking queue across PC and Android (later Apple), with ranked and casual queues and a skill rating from AI-011. Platform is metadata only, never a queue split. Optional input-based filtering can come later if touch vs mouse turns out to matter competitively.
+- **Version gate:** client and server share a protocol version and a content hash (cards.json, AI-088). Mismatched clients get a clear "update required" message rather than a desync. The rules release cadence is identical across platforms.
+- **Identity:** one account across devices (AI-015). Guest play is upgradeable to a linked account. Decks, ownership (AI-021) and ratings follow the player, not the device. Platform logins (Google Play Games; Steam; Apple later) link to the same account.
+- **Fairness:** all rules run server-side (AI-085), and hidden state is redacted per player. Turn timers suit touch play, and reconnect/resume (AI-009) covers mobile backgrounding and network changes.
+- **UX parity:** the same board readability and actions on mouse and touch (no hover-only information; AI-014). Cross-play is on by default.
+- **Acceptance:** a Windows PC and an Android phone on different networks find each other through the queue, play a full ranked match on the authoritative server, and both record the same result exactly once. A version-mismatched client is refused cleanly. A mobile player who backgrounds the app for 60 s mid-turn reconnects to the same state. Repeat for Apple when it's added.
+
+
+### 2026-09-29 ~18:30 — Store channels (Product Owner)
+Mathew: **itch.io is the primary PC channel**. Steam is not ruled out for later. **Google Play:** there is no developer account yet; Mathew creates it closer to the Android release (a one-time fee, his purchase). Effects: AI-013 targets an itch.io release (a zip/installer build, uploaded with the butler CLI through a CI job once the account is linked; no Steam SDK dependency for now, and identity must not assume Steam). AI-086 keeps producing Android builds for internal testing (sideload APK/AAB) until the Play account exists. AI-091's platform logins start with our own account + Google Play Games; Steam login is added if Steam is adopted. HA-018 is updated.
+
+### 2026-09-29 ~18:40 — Payments for a free-to-play game (Product Owner consideration)
+Mathew: the game is free, so in-app purchases (the AI-023 $0.99 four-faction unlock and later packs) need a payment processor. Candidates: **Stripe, PayPal**, or others chosen closer to release (HA-019). Not a current-sprint item. Captured so the architecture leaves room for it.
+
+Things the decision must account for (verify against current primary sources at decision time; policies change):
+- **Store billing rules:** apps distributed through Google Play (and Apple's App Store later) are generally required to use the store's own billing for digital goods. Alternative/external payment options exist only in some regions and under specific programs. So the Android build most likely needs **Google Play Billing** on Play, and Stripe/PayPal covers PC (itch.io/direct) and web. itch.io provides no in-game purchase API of its own.
+- **Micro-price fees:** on $0.99, a typical card rate of ~2.9% + $0.30 takes about a third. PayPal's micropayment pricing or a merchant-of-record may net more; compare the net-per-sale at decision time. Bundling (e.g. a full four-faction pack at a higher price) also changes the math (HA-004).
+- **Sales tax / VAT:** selling worldwide means collecting and remitting VAT/GST. A **merchant of record** (Paddle, Lemon Squeezy, Xsolla, or similar) takes that on for a higher fee. Direct Stripe/PayPal leaves it with Mathew (Stripe Tax helps but doesn't remit everywhere).
+- **Processor-agnostic entitlements:** whatever the processor, purchases are verified **server-side** (webhook or receipt validation) and granted as durable entitlements on the player's account (AI-021). This way a purchase made on PC is owned on Android and vice versa (AI-091 cross-play), refunds/chargebacks revoke cleanly, and no client can unlock factions itself.
+
+### AI-092 — Payment integration layer (child of AI-021/AI-023)
+P2 (long-term) | BACKLOG | Owner: Astra | Dependencies: AI-085 server, AI-021 entitlements, HA-019 processor, HA-004 prices, HA-018 stores.
+A server-side purchase service with one interface and pluggable providers: Google Play Billing (Android on Play), and Stripe and/or PayPal or a merchant-of-record for PC/web (Apple IAP later). Webhook/receipt verification, idempotent grants, refund/chargeback revocation, restore purchases, and an audit log. Sandbox/test mode only until release, with no real-money transactions without the Product Owner. Acceptance: in each provider's sandbox, a purchase grants the entitlement exactly once across PC and Android, a refund revokes it, a duplicate webhook is harmless, and a forged client unlock fails.
+
+## 2026-09-29 ~19:15 — Product Owner playtest feedback: board tiles + player cosmetics
+**Mathew watched the Unity playtest build (`claude/unity-playtest-20260929` @ `f38f5e1`) live:** he loves the assets and the overall look. The stand-in board tiles are too bland, and the game needs real tile textures. This opens a player-cosmetics line:
+- **Board tile styles:** the player picks a tile texture style. **Each player's style shows on their own half of the board only** (the 4×6 hex board splits into two 3-row home halves, one per seat). The opponent sees your style on your half.
+- **Coin-flip coin:** one 3D coin model with several texture variants. The player's chosen coin is used in the turn-order coin flip. There is no coin flip in the engine yet: AI-072 found that seat 0 always goes first. That's AI-076/HA-015, and it fits here.
+- **Card backs:** selectable designs, the same idea.
+- **Unlock sources:** achievements, login rewards (AI-022) and possibly purchases (HA-020). They're cosmetic only: no gameplay effect, ever.
+
+### AI-093 — Textured board tiles v1 for the playtest (child of AI-080/AI-060)
+P1 | READY → Claude Unity thread | Dependencies: none.
+Replace the bland stand-in tiles with 3–4 textured hex tile styles in the techno-futuristic myth look (e.g. Zeus storm-marble with glowing circuit inlays, Poseidon abyssal coral-metal, neutral obsidian grid, bronze-and-energy). Use procedural shaders/materials first (free); Meshy text-to-texture can refine later with existing credits. Add a per-seat tile style selection in the playtest build (each seat's 3-row home half uses that seat's style; the playtest menu lets you pick each side). Tiles must stay readable: hover/legal markers and stacks clear on every style, and land tokens (top ≤ 0.25) must still sit well on them. Acceptance: Mathew picks styles for each half in the Windows build, and screenshots go into the review sheet.
+
+### AI-094 — Player cosmetics system: tile styles, coins, card backs (epic; children AI-021, AI-022, AI-095)
+P2 (long-term) | BACKLOG | Owner: Astra (from 2026-10-04) | Dependencies: AI-021 entitlements, AI-085 server, AI-091 cross-play, HA-020.
+- **Content model:** cosmetic types TILE_STYLE, COIN, CARD_BACK (extensible later: board edge, capital skin, emotes). Each has an ID, rarity, a texture/material set on a **shared mesh** (one coin model, one hex tile mesh, one card-back mesh), and an unlock source (default / achievement / login reward / purchase / event).
+- **Loadout:** the player equips one of each. The loadout is stored on the account (AI-015) and synced across PC and Android (AI-091). At match start the server sends both loadouts; each client renders seat A's tiles on A's half and B's on B's, both coins in the coin flip, and card backs per player.
+- **Ownership:** cosmetics are entitlements (AI-021), granted server-side only. A client can't equip what it doesn't own, and it falls back to the default if the server doesn't confirm.
+- **Production:** textures from Meshy text-to-texture / Unity shaders on the shared meshes. A few default styles are free for everyone. There's a performance budget for mobile (AI-086): texture sizes and one material per half.
+- **Acceptance:** two accounts with different loadouts on PC vs Android each see the correct style on the correct half, the correct coins in the flip and the correct card backs. An unowned cosmetic can't be equipped via a tampered client.
+
+### AI-095 — Achievements (child of AI-094/AI-011)
+P2 (long-term) | BACKLOG | Owner: Astra/Muse | Dependencies: AI-085 (server-verified match results), AI-011.
+Server-evaluated achievements computed from the authoritative match event log (AI-062 events). Examples: win with each faction, destroy a capital with a spell, 10 matches, first ranked win. Rewards are cosmetics (AI-094). Progress is shown in the client and can't be granted by the client. Acceptance: an achievement unlocks exactly once from a real server-recorded match, and its cosmetic appears in the loadout on both platforms.
+
+Also linked: **AI-022** login rewards now include cosmetics as reward options (alongside the faction unlock), and **AI-076/HA-015** (the turn-order coin flip) becomes the in-game coin-flip moment that uses the COIN cosmetic.
+
+## 2026-09-29 ~19:25 — Release path decision (Product Owner delegated: "choose the path that gets us to full release fastest")
+**Decision (Claude, under Mathew's delegation; Astra reviews on 2026-10-04):** ship v1.0 as a **server-authoritative Java rules server + Unity thin client** on PC (itch.io) and Android. **Don't port the rules to C# before release.**
+
+Why this is faster than the "Long-term architecture goals" plan written at ~18:10 (which it supersedes on ordering):
+- The rules already exist, tested and pinned in Java (TubaExperiment 992bc95; AI-066/072/079). A C# port plus event-for-event conformance is weeks of work that ships no new player-visible value.
+- Cross-play needs an authoritative server anyway (AI-085/AI-091). If the server runs the Java engine, **no client runs rules at all**. The Unity client only sends intents and renders events, so Android needs no JVM and PC and Android are identical by construction.
+- The AI-079 bridge protocol (new/legal/act → AI-062 events + state) *is* the thin-client protocol. Moving it from stdin/stdout to a WebSocket with auth and hidden-state redaction is the server, which removes a whole integration layer.
+- Bots run on the server too, so practice vs AI works on every platform.
+
+Trade-offs accepted: v1.0 needs a connection for every mode (no offline play) and hosting from launch (HA-017, a small JVM service; turn-based traffic is light). Offline play, on-device AI and the C# core move post-release.
+
+**Re-sequenced critical path to v1.0:**
+1. **AI-079** bridge (Muse, in progress) → **AI-080** live human seat in Unity via the bridge (local playtests).
+2. **AI-085 (now P0)** game server: the Java engine behind a WebSocket, using the same message shapes as AI-079. It adds auth, hidden-state redaction, turn timers, reconnect (AI-009) and server-side bots. Owner: Muse (server code in its lane under `releases/`/`server/`) with Claude/Astra integration.
+3. **AI-091/AI-008** one cross-play queue (casual + ranked) + **AI-010/AI-011** trusted results and leaderboards on that server.
+4. **AI-086** Android build (Unity, touch UI, mobile LOD) + **AI-013** PC itch.io build. Sideload testing until the Play account exists.
+5. Content: AI-061 models + SFX for all Zeus/Poseidon cards (stand-ins stay only until each card's real asset lands), AI-093 textured tiles, AI-060 impact polish.
+6. Monetization for v1.0 kept minimal: AI-021 entitlements + AI-023 unlock via **Google Play Billing (Android)** and **one merchant-of-record for PC** (fastest: it handles global VAT/tax; final pick HA-019). AI-094 cosmetics at launch = a few free default tile styles/coins/card backs plus the loadout. Achievements (AI-095), login-reward cosmetics (AI-022) and cosmetic sales ship in a post-launch update.
+7. AI-005/AI-006 security and release gates, AI-026 release validation, then v1.0.
+
+**Post-release (re-prioritized to P3):** AI-083 C# core, AI-084 conformance harness, AI-087 in-process client core (offline mode), AI-090 large-scale sims (the Java EventDump harness covers balance until then), iOS/Apple.
+
+**Other delegated calls made now:** (a) HA-009 first question: **keep batch-04** for Zeus units present in both batches (the newest style, some rigged); batch-02 stays as an alternative. (b) The Unity playtest branch is merged into the working branch once AI-093 lands and CI is green (Claude does it; no PR to main). (c) The playtest build is kept at `Infinite Conquest\playtest\unity-build-<date>\`.
+
+### 2026-09-29 ~19:40 — Reuse the alpha matchmaking service (Product Owner question → release path)
+The alpha's online service (`prototypes/lobby-lab/upstream/worker.js`, deployed Cloudflare Worker + KV, free tier; drift probe 200 OK at 15:00) is a **rendezvous + Elo service only**: lobbies (`/lobbies`), a quick-match queue (`/queue`, `/queue/poll`, `/pair`), results (`/report`, applied only when both clients agree) and `/leaderboard`, `/rating/:uuid`. Matches themselves are **player-hosted**: the host's game exposes a `wss://` tunnel URL, and the Worker never sees game traffic.
+
+**Decision: keep the Worker as v1.0's matchmaking front door** (saves building AI-008 from scratch, costs $0, already live), with these changes:
+1. **Pairing hands out a game-server room, not a player tunnel.** When two tickets pair, the Worker asks the AI-085 game server for a room (or mints a signed room token) and gives both players that `wssUrl`. No player hosts, so Android-vs-Android works and nobody runs the authority on their own machine.
+2. **Results come from the game server, not client agreement.** `/report` accepts only a server-signed result (shared secret/HMAC), and the two-client agreement path is retired for ranked (AI-010).
+3. **Identity:** random UUIDs are replaced/linked to real accounts (AI-015) before ranked launches.
+4. **Scale watch:** KV is eventually consistent, and the list-based queue scan can double-pair under load. That's fine for launch-scale traffic. Move the queue to a Durable Object (still Cloudflare) if concurrent queue size or double pairings show up in monitoring (AI-025).
+5. The Java game server itself can't run on Cloudflare Workers. It needs a small JVM host (HA-017).
+New child **AI-096** (P0, Muse lane `prototypes/lobby-lab/` → deploy with Mathew): Worker v2 with room assignment, signed results and a `dataVersion` gate, keeping the existing endpoints backward compatible for the 2D alpha during transition. Tests in lobby-lab (`npm test`).
+
+## 2026-09-29 ~20:00 — Product Owner decision: desktop-first on Cloudflare, no paid server until profitable
+**Mathew, direct:** paid server hosting isn't affordable yet. v1.0 **stays online on Cloudflare (free tier), desktop only** (itch.io), until the game proves profitable. **Then** invest in a real game server and **release the Android app after that.** This supersedes the ~19:25 "Release path decision" on hosting and platform order. Its other calls (batch-04 kept, merge the playtest branch after CI, minimal monetization at launch) stand.
+
+**Architecture for v1.0 (zero hosting cost): deterministic lockstep, relayed by Cloudflare.**
+- **Each player's PC runs the rules.** The desktop build bundles the pinned Java engine behind the AI-079 rules bridge (a trimmed Java runtime via `jlink`, about 40–60 MB, invisible to the player). The engine is deterministic (AI-066/AI-072: same seed → byte-identical events on Linux and Windows).
+- **Only intents travel.** Both clients start from the same match seed and send each other the chosen action ids. Each applies them locally and gets the same state. After every turn the clients exchange a **state hash**; a mismatch flags the match (desync or tampering).
+- **Relay, not tunnels.** A Cloudflare Worker + **Durable Object** per match room relays intent messages over WebSockets. There's no player hosting, no port forwarding and no tunnel setup, and it stays inside Cloudflare's free tier at launch scale (verify current free-tier limits for Workers/Durable Objects at build time). This replaces the alpha's player-hosted `wss://` tunnel model.
+- **Matchmaking:** the existing alpha Worker (AI-096) pairs players and hands both the relay room. **Results** use the existing two-client agreement plus matching final state hashes. Disagreements are flagged, as today.
+- **Known trade-off (accepted for v1.0):** in lockstep every client holds the full match state, so a modified client could reveal the opponent's hand or deck order. Mitigations for launch: hands are dealt from a shared seed commit-reveal so neither side can pick its draws, the state-hash checks catch rule-breaking, flagged matches don't count toward ranked, and ranked is labelled "beta" until the server phase. True hidden information needs the authoritative server (AI-085) in phase 2.
+- Bots (practice vs AI) run locally on the player's PC. **Offline practice mode comes free** with this design.
+
+**Phases:**
+1. **v1.0 desktop (itch.io), $0 hosting:** Unity client + bundled Java engine, Cloudflare matchmaking (AI-096) + lockstep relay (**AI-097**), casual + beta-ranked, the full Zeus/Poseidon asset set, textured tiles (AI-093), default cosmetics, Stripe/PayPal/merchant-of-record purchases for PC (HA-019; a Cloudflare Worker can receive the payment webhooks and record entitlements in KV/D1, keeping this free).
+2. **When revenue justifies it (profitability gate, Mathew's call):** authoritative game server (AI-085) running the same Java engine, which gives real hidden information, trusted ranked and accounts (AI-010/AI-015).
+3. **Android app (AI-086)** as a thin client of that server, with cross-play via one pool (AI-091), Google Play account + Play Billing then. Apple later.
+4. **C# core (AI-083 ff.):** only if on-device rules for mobile/offline become worth it. It stays post-release.
+
+Re-prioritized: **AI-097 (new) P0**, AI-096 P0, AI-080/AI-093 P0/P1 for v1.0. AI-085 and AI-086 move to phase 2/3 (P2). AI-091 stays the long-term goal (phase 3).
+
+### AI-097 — Lockstep match relay on Cloudflare + client lockstep (child of AI-008/AI-091)
+P0 | READY | Owner: Muse (Worker/Durable Object in `prototypes/lobby-lab/`, plus the bridge protocol additions) with the Claude Unity thread (client side) | Dependencies: AI-079 (delivered, pending acceptance), AI-096.
+- **Worker:** `GET /rooms/:id/ws` upgrades to a WebSocket held by one Durable Object per room. It relays `{seq, seat, actionId}` messages in order, persists the intent log (enabling reconnect and replays, AI-089), handles turn timers/forfeit on timeout and exchanges per-turn state hashes. Room tokens come from the AI-096 pairing.
+- **Bridge:** add `{"cmd":"hash"}` (a canonical state hash) and seeded match setup that both clients share (a seed commit-reveal, so neither player controls the shuffle).
+- **Unity:** a match mode where the local seat's actions go to both the local bridge and the relay, and remote actions from the relay are applied to the local bridge.
+- **Acceptance:** two Windows PCs on different networks play a full match through the relay with matching hashes every turn. A tampered client is detected at the next hash. A client that disconnects for 60 s reconnects and resumes from the intent log. Everything runs on the Cloudflare free tier.
+
+## 2026-09-30 00:00 — Claude (covering Astra): board update
+Review: `docs/reviews/2026-09-30-0000-claude-acceptance.md`. This section supersedes the AI-074..079 rows above.
+
+| ID | Pri | Owner | Status | Next action / acceptance |
+|---|---|---|---|---|
+| AI-079 | P0 | Muse | **ACCEPTED** 2026-09-30 00:00 (protocol v1.0.0; CI 36640973532 / 36641738516 step 12) | Integration: Claude Unity thread wires BridgeClient (AI-080). |
+| AI-075 | P1 | Muse | **ACCEPTED** (Verify 36641390414, both OSes) | — |
+| AI-074 | P2 | Muse | **ACCEPTED** (Linux packaging 36641738516 step 13) | — |
+| AI-076 | P3 | Muse | **ACCEPTED** (docs) → HA-015 | Optional: fix the swap-mode wording and the C#-core assumption (the shipped engine is the Java jar; a coin flip can be done bridge-side). |
+| AI-077 | P1 | Muse | **REJECTED** — Windows Verify red since `55557ae` | Fix via AI-098. |
+| AI-078 | P3 | Muse | **REJECTED** — Linux clean regress red (36641800847) | Fix via AI-099. |
+| **AI-099** (new, AI-006) | P1 | Muse | **DELIVERED** 2026-09-30 02:00 (commits `9c67fec`..`b2fd139`) — acceptance pending 06:00 review | Shared `tools/make-repro-jar.py` (fixed timestamps/sorted entries/fixed mode bits/LF manifest/forward slashes, deduped manifest); both build scripts use it, both regress scripts verify against this build's staging checksum, tracked `CHECKSUMS.sha256` deliberately updated to proven hash `2db3a12c…bae86b` (two local builds byte-identical; `--break=checksum` fails with own detail). Linux/Windows packaging green pending CI. |
+| **AI-098** (new, AI-006) | P1 | Muse | **DELIVERED** 2026-09-30 02:00 (commit `3723fd6`) — acceptance pending 06:00 review | `find_model()`/`find_sfx()` now return `os.path.relpath(...).replace(os.sep, "/")` — POSIX on Windows, no-op on Linux. Local test_coverage 2/2. Verify windows-latest green pending CI. |
+| AI-096 | P0 | Muse | READY, after AI-099/098 | Worker v2 per the ~19:40 section. |
+| AI-097 | P0 | Muse + Claude Unity thread | READY, after AI-096 | Per the 20:00 PO section. |
+
+Process: record every CI run ID with its conclusion; fetch before each root-record edit (third stale overwrite on 2026-09-29).

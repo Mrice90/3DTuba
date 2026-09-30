@@ -32,6 +32,12 @@ echo "run-balance: using $JAR"
 command -v javac >/dev/null || { echo "run-balance: javac not found (need JDK 17+)" >&2; exit 1; }
 command -v python3 >/dev/null || { echo "run-balance: python3 not found" >&2; exit 1; }
 
+# AI-074: classpath separator — ':' on Unix, ';' on Windows (Git Bash/MSYS).
+case "$(uname -s)" in
+  MINGW*|MSYS*|CYGWIN*) PATH_SEP=";" ;;
+  *) PATH_SEP=":" ;;
+esac
+
 case "$NSEEDS" in
   ''|*[!0-9]*) echo "run-balance: seeds must be a positive integer" >&2; exit 1;;
 esac
@@ -48,18 +54,25 @@ for mode in base swap mirror; do
   seed=1
   while [ "$seed" -le "$NSEEDS" ]; do
     dump="$OUT_DIR/dump-$mode-$seed.jsonl"
-    line="$(java -cp "$SCRIPT_DIR/classes:$JAR" EventDump "$seed" "$dump" "--mode=$mode" \
-      || { echo "run-balance: FAILED mode=$mode seed=$seed" >&2; fail=1; continue; })"
-    winner="$(printf '%s' "$line" | sed -n 's/.*winner: \([0-9]*\).*/\1/p')"
+    # AI-074: run java outside $(...) so `continue` affects the loop, not a subshell.
+    if ! line="$(java -cp "$SCRIPT_DIR/classes$PATH_SEP$JAR" EventDump "$seed" "$dump" "--mode=$mode")"; then
+      echo "run-balance: FAILED mode=$mode seed=$seed" >&2
+      fail=1
+      seed=$((seed + 1))
+      continue
+    fi
+    # AI-074: winner may be "draw"; parse the number or the word.
+    winner="$(printf '%s' "$line" | sed -n 's/.*winner: \([0-9a-z]*\).*/\1/p')"
     events="$(wc -l < "$dump" | tr -d ' ')"
     # fold the JSONL into a JSON array for validate.py
     as_json="$OUT_DIR/dump-$mode-$seed.json"
-    python3 -c "import json,sys; json.dump([json.loads(l) for l in open(sys.argv[1]) if l.strip()], open(sys.argv[2],'w'))" \
+    # AI-074: explicit UTF-8 encoding for the output file.
+    python3 -c "import json,sys; json.dump([json.loads(l) for l in open(sys.argv[1], encoding='utf-8') if l.strip()], open(sys.argv[2],'w',encoding='utf-8'))" \
       "$dump" "$as_json"
     python3 "$BOARD_EVENTS/validate.py" "$BOARD_EVENTS/event-schema.json" "$as_json" >/dev/null \
       || { echo "run-balance: VALIDATION FAILED mode=$mode seed=$seed" >&2; fail=1; }
     # wire 'turn' is 1-based clamped; max turn in the dump
-    turns="$(python3 -c "import json;print(max(e['turn'] for e in json.load(open('$as_json'))))")"
+    turns="$(python3 -c "import json;print(max(e['turn'] for e in json.load(open('$as_json', encoding='utf-8'))))")"
     rm -f "$as_json"
     printf '%s\t%s\t%s\t%s\t%s\n' "$mode" "$seed" "$winner" "$events" "$turns" >> "$SUMMARY"
     seed=$((seed + 1))

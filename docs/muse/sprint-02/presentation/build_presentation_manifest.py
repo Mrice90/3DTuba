@@ -6,16 +6,18 @@ docs/muse/sprint-02/presentation/presentation-manifest.json:
   every card -> the AI-062 events it can emit, each with an animation clip
   key and a unique SFX key (<card_id>_<cue>), plus model/texture paths.
 
-SFX cue set (ElevenLabs lane): summon, move, attack, hit, death, ability, idle.
-Animation keys come from the card's AI-049 animation_events; events without a
-matching clip get animation=null (coverage.py reports them as missing — that
-is the point: nothing shows what each card still lacks).
+SFX cue set (ElevenLabs lane): deploy, move, attack, hit, destroy, ability,
+idle, plus signature for rarity-4. Animation keys come from the card's
+AI-049 animation_events; events without a matching clip get
+animation=null (coverage.py reports them as missing — that is the point:
+nothing shows what each card still lacks).
 
 Staging layout assumed by coverage.py (relative to the staging root):
-  meshy/<card_id>.glb                  model
+  meshy/<batch>/<card_id>.glb  (recursive search; meshy/<card_id>.glb also ok)
   meshy/<card_id>_textures/            textures dir
   animations/<card_id>_<slug>.fbx      one per animation key
-  sfx/<card_id>_<cue>.wav              one per SFX key
+  picks/<card_id>_<cue>.wav            preferred SFX location
+  sfx/<card_id>_<cue>.wav or .mp3      fallback SFX location
 """
 import json
 import os
@@ -26,35 +28,36 @@ ASSET_DIR = os.path.join(HERE, "..", "..", "sprint-01", "asset-prompts",
                          "asset-prompt-directory.json")
 
 # AI-062 event -> (animation key or None, SFX cue), per card type.
+# Cue names: deploy (was summon), destroy (was death) — AI-077.
 EVENT_MAP = {
     "CHARACTER": [
-        ("CARD_PLAYED", "deploy_flight(400ms)", "summon"),
+        ("CARD_PLAYED", "deploy_flight(400ms)", "deploy"),
         ("CHARACTER_MOVED", "move(320ms)", "move"),
         ("ATTACK_RESOLVED", "melee(360ms)/ranged_projectile", "attack"),
         ("OPPORTUNITY_ATTACK", "melee(360ms)/ranged_projectile", "attack"),
         ("DAMAGE_DEALT", "hit_flash(350ms)", "hit"),
         ("CARD_ABILITY_TRIGGERED", None, "ability"),
-        ("CARD_DESTROYED", "destroy(320ms)", "death"),
+        ("CARD_DESTROYED", "destroy(320ms)", "destroy"),
     ],
     "LAND": [
-        ("CARD_PLAYED", "land_pop(120ms)", "summon"),
+        ("CARD_PLAYED", "land_pop(120ms)", "deploy"),
         ("TERRAIN_TRIGGERED", "activated_ability", "ability"),
-        ("CARD_DESTROYED", "destroy(320ms)", "death"),
+        ("CARD_DESTROYED", "destroy(320ms)", "destroy"),
     ],
     "STRUCTURE": [
-        ("CARD_PLAYED", "deploy", "summon"),
+        ("CARD_PLAYED", "deploy", "deploy"),
         ("DEVELOPMENT_PASSIVE_TRIGGERED", "activated_ability", "ability"),
         ("CARD_ABILITY_TRIGGERED", "activated_ability", "ability"),
-        ("CARD_DESTROYED", "destroy(320ms)", "death"),
+        ("CARD_DESTROYED", "destroy(320ms)", "destroy"),
     ],
     "CAPITAL": [
-        ("CARD_PLAYED", "deploy", "summon"),
+        ("CARD_PLAYED", "deploy", "deploy"),
         ("CAPITAL_PASSIVE_TRIGGERED", None, "ability"),
         ("CAPITAL_HIT", "capital_hit_flash", "hit"),
-        ("CARD_DESTROYED", "destroy(320ms)", "death"),
+        ("CARD_DESTROYED", "destroy(320ms)", "destroy"),
     ],
     "SPELL": [
-        ("CARD_PLAYED", "cast", "summon"),
+        ("CARD_PLAYED", "cast", "deploy"),
     ],
 }
 
@@ -86,6 +89,9 @@ def main():
             sfx_keys.add(sfx_key)
         if ctype in IDLE_CUE_TYPES:
             sfx_keys.add(f"{cid}_idle")
+        # AI-077: rarity-4 cards get a signature SFX cue.
+        if c.get("rarity") == 4:
+            sfx_keys.add(f"{cid}_signature")
 
         manifest[cid] = {
             "name": c["name"],
@@ -104,13 +110,14 @@ def main():
         }
 
     out = {
-        "generated": "2026-09-28",
-        "cue_set": ["summon", "move", "attack", "hit", "death", "ability", "idle"],
+        "generated": "2026-09-29",
+        "cue_set": ["deploy", "move", "attack", "hit", "destroy", "ability",
+                    "idle", "signature"],
         "staging_layout": {
-            "model": "meshy/<card_id>.glb",
+            "model": "meshy/<batch>/<card_id>.glb (recursive, or meshy/<card_id>.glb)",
             "textures": "meshy/<card_id>_textures/",
             "animations": "animations/<card_id>_<slug>.fbx",
-            "sfx": "sfx/<card_id>_<cue>.wav",
+            "sfx": "picks/<card_id>_<cue>.wav (preferred) or sfx/<card_id>_<cue>.wav/.mp3",
         },
         "cards": manifest,
     }

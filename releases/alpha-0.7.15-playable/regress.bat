@@ -3,9 +3,10 @@ rem regress.bat -- packaging regression harness (Windows mirror of regress.sh).
 rem
 rem Runs fetch-source.bat -^> build-release.bat (which auto-runs smoke.bat) inside
 rem an isolated temporary copy of this directory, so the working tree is never
-rem polluted. Then verifies the fresh JAR against its OWN freshly generated
-rem CHECKSUMS.sha256 (rebuilds are not byte-identical, so an unrelated reference
-rem artifact must not be used).
+rem polluted. Then verifies the fresh JAR against the checksum THIS BUILD generated
+rem (build\stage\release\CHECKSUMS.sha256). The tracked CHECKSUMS.sha256 is the
+rem canonical release hash -- deliberately updated, never rewritten per build
+rem (AI-099) -- so it is excluded from the temp copy and never used here.
 rem
 rem Usage: regress.bat [--break=pin ^| --break=dep ^| --break=depswap ^| --break=compile ^| --break=checksum ^| --break=smoke]
 rem   (no flag)        clean run: every stage must succeed; prints REGRESSION: PASS.
@@ -94,8 +95,11 @@ if not exist "%WORK%" (
 rem AI-065: robocopy is long-path aware; xcopy hits MAX_PATH (260) when the
 rem source tree is deep (e.g. build\alpha-src under a deep %TEMP%).
 rem /XD build + /XF *.jar: build output is rebuilt anyway, so don't copy it.
+rem AI-099: also exclude the tracked CHECKSUMS.sha256 -- it is the canonical
+rem release hash, deliberately updated, never rewritten per build. The verify
+rem stage must use the checksum this build generated, never a stale copy.
 rem Robocopy exit codes 0-7 mean success; 8+ means failure.
-robocopy "%HERE%." "%WORK%" /E /XD build /XF infinite-conquest-alpha-*.jar >nul
+robocopy "%HERE%." "%WORK%" /E /XD build /XF infinite-conquest-alpha-*.jar CHECKSUMS.sha256 >nul
 if errorlevel 8 (
   set "FAIL_STAGE=setup"
   set "FAIL_DETAIL=copy failed"
@@ -201,9 +205,13 @@ if not defined JAR (
   set "FAIL_DETAIL=no built jar found"
   call :fail
 )
-if not exist CHECKSUMS.sha256 (
+rem AI-099: verify the final jar against the checksum THIS BUILD generated
+rem (build\stage\release\CHECKSUMS.sha256) -- never the tracked
+rem CHECKSUMS.sha256, which is excluded from the temp copy above. This catches
+rem post-build tampering of the jar (--break=checksum) with its own detail.
+if not exist "build\stage\release\CHECKSUMS.sha256" (
   set "FAIL_STAGE=verify"
-  set "FAIL_DETAIL=CHECKSUMS.sha256 missing after build"
+  set "FAIL_DETAIL=build-generated build\stage\release\CHECKSUMS.sha256 missing after build"
   call :fail
 )
 
@@ -215,8 +223,9 @@ if "%BREAK_MODE%"=="checksum" (
 rem AI-052-WIN: read the expected hash from the FILE (usebackq), and take the
 rem actual hash from certutil's only colon-free line. The old code iterated the
 rem literal string "CHECKSUMS.sha256" and regex-matched certutil output.
+rem AI-099: the FILE is the checksum this build generated in the staging area.
 set "EXPECTED="
-for /f "usebackq tokens=1" %%H in ("%WORK%\CHECKSUMS.sha256") do set "EXPECTED=%%H"
+for /f "usebackq tokens=1" %%H in ("%WORK%\build\stage\release\CHECKSUMS.sha256") do set "EXPECTED=%%H"
 set "ACTUAL="
 for /f %%H in ('certutil -hashfile "%JAR%" SHA256 ^| findstr /v ":"') do (
   set "ACTUAL=%%H"
@@ -225,7 +234,7 @@ for /f %%H in ('certutil -hashfile "%JAR%" SHA256 ^| findstr /v ":"') do (
 :got_actual
 if not defined EXPECTED (
   set "FAIL_STAGE=verify"
-  set "FAIL_DETAIL=could not read expected hash from CHECKSUMS.sha256"
+  set "FAIL_DETAIL=could not read expected hash from the build-generated CHECKSUMS.sha256"
   call :fail
 )
 if not defined ACTUAL (
@@ -242,10 +251,10 @@ if "!ACTUAL:~-1!"==" " (
 :trimactualdone
 if /i not "%EXPECTED%"=="!ACTUAL!" (
   set "FAIL_STAGE=verify"
-  set "FAIL_DETAIL=jar does not match its own generated checksum"
+  set "FAIL_DETAIL=jar hash mismatch: expected !EXPECTED! (this build generated), got !ACTUAL!"
   call :fail
 )
-echo stage verify: OK (%JAR% matches its own generated checksum)
+echo stage verify: OK (%JAR% matches this build generated checksum, sha256=!ACTUAL!)
 
 call :pass
 

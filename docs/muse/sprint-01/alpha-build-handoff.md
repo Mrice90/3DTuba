@@ -93,6 +93,11 @@ automatically before launch.
   `728c3fc1…5149029523` — zip timestamps/ordering differ per run). Each
   rebuild regenerates its own `CHECKSUMS.sha256`; verify the jar you hold
   against the checksums file next to it.
+  - **AI-099 (2026-09-30): superseded.** Builds are now byte-identical
+    (shared `tools/make-repro-jar.py`: fixed timestamps, sorted entries,
+    fixed mode bits; tracked `CHECKSUMS.sha256` deliberately updated to the
+    reproducible hash `2db3a12c…bae86b`). `regress.sh`/`.bat` verify the jar
+    against the checksum *this build generated*, never the tracked file.
 - `play.sh` verified under dash: missing-java and missing-jar paths print
   plain-English errors (the missing-jar message is honest about the jar not
   being in the repo); checksum-OK jar proceeds to launch; tampered jar is

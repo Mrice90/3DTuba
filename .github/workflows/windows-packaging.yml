@@ -30,6 +30,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      # AI-099: build-release.bat packs the jar with tools/make-repro-jar.py
+      # (same bytes as the Linux build); needs Python on PATH.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Fetch pinned source
         working-directory: releases/alpha-0.7.15-playable
         run: call fetch-source.bat
@@ -45,6 +50,11 @@ jobs:
       - name: Smoke standalone re-run (expect 5/5)
         working-directory: releases/alpha-0.7.15-playable
         run: call smoke.bat
+      # AI-099: cross-OS reproducibility evidence — print this build's jar
+      # SHA-256 for comparison with the Linux workflow's two-build hashes.
+      - name: AI-099 jar hash (cross-OS reproducibility evidence)
+        working-directory: releases/alpha-0.7.15-playable
+        run: for /f %%H in ('certutil -hashfile infinite-conquest-alpha-0.7.15.jar SHA256 ^| findstr /v ":"') do @echo jar SHA-256 is %%H
       - name: Regression harness clean (expect REGRESSION PASS)
         working-directory: releases/alpha-0.7.15-playable
         run: call regress.bat

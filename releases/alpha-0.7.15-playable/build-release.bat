@@ -115,7 +115,18 @@ echo == jarring ==
   echo Implementation-Title: Infinite Conquest ^(alpha^)
   echo Implementation-Version: %VERSION%
 ) > "%STAGE_DIR%\manifest.txt"
-jar --create --file "%STAGE_DIR%\release\%JARNAME%" --manifest "%STAGE_DIR%\manifest.txt" -C "%STAGE_DIR%\classes" . || exit /b 28
+rem AI-099: reproducible JAR via the shared Python packer (tools\make-repro-jar.py)
+rem -- same bytes as build-release.sh on Linux: fixed timestamps, sorted entries,
+rem fixed mode bits, LF-normalized manifest. Falls back to jar --create when
+rem Python is absent (the build still works; the jar just won't match the
+rem canonical checksum, and play.bat will refuse it -- fail-closed).
+where python >nul 2>nul
+if errorlevel 1 (
+  echo WARNING: python not found -- jar --create fallback, jar will NOT be byte-reproducible.
+  jar --create --file "%STAGE_DIR%\release\%JARNAME%" --manifest "%STAGE_DIR%\manifest.txt" -C "%STAGE_DIR%\classes" . || exit /b 28
+) else (
+  python "%HERE%tools\make-repro-jar.py" "%STAGE_DIR%\release\%JARNAME%" "%STAGE_DIR%\manifest.txt" "%STAGE_DIR%\classes" || exit /b 28
+)
 
 echo == checksum ==
 rem AI-052-WIN: certutil prints the hash on the only colon-free line. The old
@@ -133,14 +144,17 @@ if not defined HASH (
 echo !HASH!  %JARNAME%> "%STAGE_DIR%\release\CHECKSUMS.sha256"
 type "%STAGE_DIR%\release\CHECKSUMS.sha256"
 copy /Y "%STAGE_DIR%\release\%JARNAME%" "%HERE%%JARNAME%" >nul
-copy /Y "%STAGE_DIR%\release\CHECKSUMS.sha256" "%HERE%CHECKSUMS.sha256" >nul
-echo copied %JARNAME% + CHECKSUMS.sha256 next to the launchers
+rem AI-099: do NOT copy CHECKSUMS.sha256 next to the launchers -- the tracked
+rem file is the canonical release checksum, updated deliberately (see
+rem PROVENANCE.md), never rewritten per build. This build's checksum stays in
+rem the staging area for regress.bat to verify against.
+echo copied %JARNAME% next to the launchers ^(this build's CHECKSUMS.sha256 stays in the staging area^)
 
 echo == smoke ==
 call "%HERE%smoke.bat" "%HERE%%JARNAME%" || exit /b 29
 
 echo == done ==
-dir "%HERE%%JARNAME%" "%HERE%CHECKSUMS.sha256"
+dir "%HERE%%JARNAME%" "%STAGE_DIR%\release\CHECKSUMS.sha256"
 
 exit /b 0
 

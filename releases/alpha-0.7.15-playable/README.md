@@ -65,8 +65,10 @@ sha256sum -c CHECKSUMS.sha256        # Linux / macOS
 certutil -hashfile infinite-conquest-alpha-0.7.15.jar SHA256   # Windows
 ```
 
-Expected: `728c3fc1…5149029523` (full hash in `CHECKSUMS.sha256`;
-provenance in `PROVENANCE.md`).
+Expected: the canonical reproducible hash in `CHECKSUMS.sha256` (full hash;
+provenance in `PROVENANCE.md`). Two builds from the pinned source are
+byte-identical (AI-078/AI-099 reproducible jar), so a rebuilt jar verifies
+against the same file.
 
 ## Rebuild it yourself (fetch → build → smoke → play)
 
@@ -101,10 +103,10 @@ was verified on which OS: `docs/muse/sprint-01/alpha-build-handoff.md`.
 `regress.sh` / `regress.bat` re-runs the whole pipeline (fetch → build →
 smoke) inside an isolated temp copy of this directory and reports
 `REGRESSION: PASS` or `REGRESSION: FAIL at <stage>`. After the build it
-verifies the fresh jar against its **own** freshly generated
-`CHECKSUMS.sha256` — rebuilds are content-equivalent, not byte-identical
-(JAR timestamps/ordering vary), so an unrelated reference artifact is never
-used for comparison.
+verifies the fresh jar against the checksum **this build generated**
+(`build/stage/release/CHECKSUMS.sha256`) — never against the tracked
+`CHECKSUMS.sha256`, which is the canonical release hash: deliberately updated,
+never rewritten per build (AI-099).
 
 ```
 ./regress.sh                 # full clean regression, expect REGRESSION: PASS

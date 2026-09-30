@@ -143,17 +143,24 @@ Main-Class: com.infiniteconquest.gui.GameShell
 Implementation-Title: Infinite Conquest (alpha)
 Implementation-Version: $VERSION
 EOF
-jar --create --file "$STAGE/release/$JAR" \
-    --manifest "$STAGE/manifest.txt" -C "$STAGE/classes" . || die_code 25 "jarring failed"
+# AI-078/AI-099: reproducible JAR via tools/make-repro-jar.py — fixed timestamps
+# (2026-01-01 00:00:00 UTC), sorted entries, fixed mode bits and an
+# LF-normalized manifest, so two builds give the same SHA-256 on any OS.
+python3 "$SCRIPT_DIR/tools/make-repro-jar.py" "$STAGE/release/$JAR" "$STAGE/manifest.txt" "$STAGE/classes" \
+    || die_code 25 "reproducible jarring failed"
 
 echo "== checksum =="
 (cd "$STAGE/release" && sha256sum "$JAR" | tee CHECKSUMS.sha256)
 cp "$STAGE/release/$JAR" "$SCRIPT_DIR/$JAR"
-cp "$STAGE/release/CHECKSUMS.sha256" "$SCRIPT_DIR/CHECKSUMS.sha256"
-echo "copied $JAR + CHECKSUMS.sha256 next to the launchers"
+# AI-078/AI-099: the build no longer rewrites the tracked CHECKSUMS.sha256 —
+# it is the canonical release checksum, updated deliberately (see
+# PROVENANCE.md), never per build. The checksum of THIS build lives in the
+# staging area ($STAGE/release/CHECKSUMS.sha256) for verification; regress.sh
+# verifies the final jar against it.
+echo "copied $JAR next to the launchers (this build's CHECKSUMS.sha256 stays in $STAGE/release/)"
 
 echo "== smoke =="
 JAR_PATH="$SCRIPT_DIR/$JAR" bash "$SCRIPT_DIR/smoke.sh" || die_code 26 "smoke test failed (smoke.sh)"
 
 echo "== done =="
-ls -la "$SCRIPT_DIR/$JAR" "$SCRIPT_DIR/CHECKSUMS.sha256"
+ls -la "$SCRIPT_DIR/$JAR"
