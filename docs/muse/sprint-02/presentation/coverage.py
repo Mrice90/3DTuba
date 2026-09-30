@@ -30,7 +30,10 @@ def find_model(staging, card_id):
     target = f"{card_id}.glb"
     for root, _dirs, files in os.walk(meshy):
         if target in files:
-            return os.path.relpath(os.path.join(root, target), staging)
+            # AI-098: always emit POSIX-style paths. os.path.relpath uses the
+            # OS separator, so on Windows the report wrote `meshy\\...` while
+            # the manifest (and the tests) use `meshy/...`.
+            return os.path.relpath(os.path.join(root, target), staging).replace(os.sep, "/")
     return None
 
 
@@ -38,11 +41,12 @@ def find_sfx(staging, sfx_key):
     """Prefer picks/<key>.wav; accept sfx/<key>.wav or .mp3."""
     picks = os.path.join(staging, "picks", f"{sfx_key}.wav")
     if os.path.isfile(picks):
-        return os.path.relpath(picks, staging)
+        # AI-098: POSIX-style paths (see find_model).
+        return os.path.relpath(picks, staging).replace(os.sep, "/")
     for ext in (".wav", ".mp3"):
         cand = os.path.join(staging, "sfx", f"{sfx_key}{ext}")
         if os.path.isfile(cand):
-            return os.path.relpath(cand, staging)
+            return os.path.relpath(cand, staging).replace(os.sep, "/")
     return None
 
 
