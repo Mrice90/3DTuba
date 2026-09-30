@@ -34,6 +34,12 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      # AI-100 rework: record the exact toolchain — a JDK patch-level
+      # difference between runners is a remaining cross-OS suspect.
+      - name: Toolchain versions (AI-100 diagnosis)
+        run: |
+          java -version
+          javac -version
       - name: Regression harness clean (expect REGRESSION PASS)
         working-directory: releases/alpha-0.7.15-playable
         run: ./regress.sh
@@ -99,3 +105,12 @@ jobs:
           echo "tracked canonical: $CANON"
           [ "$H1" = "$CANON" ] || { echo "::error::AI-099 build hash does not match tracked CHECKSUMS.sha256"; exit 1; }
           echo "AI-099: two builds agree and match the canonical checksum"
+      # AI-100 rework: keep the built jar for the per-entry cross-OS diff
+      # (tools/diff-jar-entries.py), mirroring windows-packaging.yml.
+      - name: Upload built jar (AI-100 diagnosis)
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-jar
+          path: releases/alpha-0.7.15-playable/infinite-conquest-alpha-0.7.15.jar
+          if-no-files-found: error
+          retention-days: 7
