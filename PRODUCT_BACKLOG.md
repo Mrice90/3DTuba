@@ -115,7 +115,7 @@ AI-027/028/036 audit, handoff and movement fixture · AI-043 Java suite (169/169
 | HA-004 | Currency and login-reward calendar/eligibility | AI-021/022/023 |
 | HA-006 | First expansion roster | AI-024 |
 | HA-016 | DECIDED 2026-09-29 (PO delegated "fastest path to full release"): release on a server-authoritative JAVA rules server + Unity thin client (PC + Android); C# port deferred to post-release. See "Release path decision". | AI-083, AI-085, AI-087 |
-| HA-017 | Game-server hosting provider, monthly budget ceiling, region(s). | AI-085 |
+| HA-017 | DECIDED 2026-09-29: no paid server hosting until the game proves profitable; v1.0 stays on Cloudflare (free tier). | AI-085 |
 | HA-018 | PARTLY DECIDED 2026-09-29: PC store = itch.io primary (Steam possible later, not ruled out). Google Play: no account yet, Mathew sets it up closer to the Android release. Open: Steam yes/no + timing; Apple account timing. | AI-013, AI-086 release |
 | HA-019 | Payment processor(s) for in-app purchases: Stripe, PayPal, a merchant-of-record (Paddle / Lemon Squeezy / Xsolla) or others. Decide closer to release; see "Payments" note (store-billing rules, $0.99 fee math, tax). | AI-023, AI-092 |
 | HA-020 | Cosmetics economy: earn-only (achievements + login rewards) or also sold (packs/individual skins, and at what price)? Earned cosmetics are never removed. | AI-094, AI-092 |
@@ -534,3 +534,29 @@ The alpha's online service (`prototypes/lobby-lab/upstream/worker.js`, deployed 
 4. **Scale watch:** KV is eventually consistent, and the list-based queue scan can double-pair under load. That's fine for launch-scale traffic. Move the queue to a Durable Object (still Cloudflare) if concurrent queue size or double pairings show up in monitoring (AI-025).
 5. The Java game server itself can't run on Cloudflare Workers. It needs a small JVM host (HA-017).
 New child **AI-096** (P0, Muse lane `prototypes/lobby-lab/` → deploy with Mathew): Worker v2 with room assignment, signed results and a `dataVersion` gate, keeping the existing endpoints backward compatible for the 2D alpha during transition. Tests in lobby-lab (`npm test`).
+
+## 2026-09-29 ~20:00 — Product Owner decision: desktop-first on Cloudflare, no paid server until profitable
+**Mathew, direct:** paid server hosting isn't affordable yet. v1.0 **stays online on Cloudflare (free tier), desktop only** (itch.io), until the game proves profitable. **Then** invest in a real game server and **release the Android app after that.** This supersedes the ~19:25 "Release path decision" on hosting and platform order. Its other calls (batch-04 kept, merge the playtest branch after CI, minimal monetization at launch) stand.
+
+**Architecture for v1.0 (zero hosting cost): deterministic lockstep, relayed by Cloudflare.**
+- **Each player's PC runs the rules.** The desktop build bundles the pinned Java engine behind the AI-079 rules bridge (a trimmed Java runtime via `jlink`, about 40–60 MB, invisible to the player). The engine is deterministic (AI-066/AI-072: same seed → byte-identical events on Linux and Windows).
+- **Only intents travel.** Both clients start from the same match seed and send each other the chosen action ids. Each applies them locally and gets the same state. After every turn the clients exchange a **state hash**; a mismatch flags the match (desync or tampering).
+- **Relay, not tunnels.** A Cloudflare Worker + **Durable Object** per match room relays intent messages over WebSockets. There's no player hosting, no port forwarding and no tunnel setup, and it stays inside Cloudflare's free tier at launch scale (verify current free-tier limits for Workers/Durable Objects at build time). This replaces the alpha's player-hosted `wss://` tunnel model.
+- **Matchmaking:** the existing alpha Worker (AI-096) pairs players and hands both the relay room. **Results** use the existing two-client agreement plus matching final state hashes. Disagreements are flagged, as today.
+- **Known trade-off (accepted for v1.0):** in lockstep every client holds the full match state, so a modified client could reveal the opponent's hand or deck order. Mitigations for launch: hands are dealt from a shared seed commit-reveal so neither side can pick its draws, the state-hash checks catch rule-breaking, flagged matches don't count toward ranked, and ranked is labelled "beta" until the server phase. True hidden information needs the authoritative server (AI-085) in phase 2.
+- Bots (practice vs AI) run locally on the player's PC. **Offline practice mode comes free** with this design.
+
+**Phases:**
+1. **v1.0 desktop (itch.io), $0 hosting:** Unity client + bundled Java engine, Cloudflare matchmaking (AI-096) + lockstep relay (**AI-097**), casual + beta-ranked, the full Zeus/Poseidon asset set, textured tiles (AI-093), default cosmetics, Stripe/PayPal/merchant-of-record purchases for PC (HA-019; a Cloudflare Worker can receive the payment webhooks and record entitlements in KV/D1, keeping this free).
+2. **When revenue justifies it (profitability gate, Mathew's call):** authoritative game server (AI-085) running the same Java engine, which gives real hidden information, trusted ranked and accounts (AI-010/AI-015).
+3. **Android app (AI-086)** as a thin client of that server, with cross-play via one pool (AI-091), Google Play account + Play Billing then. Apple later.
+4. **C# core (AI-083 ff.):** only if on-device rules for mobile/offline become worth it. It stays post-release.
+
+Re-prioritized: **AI-097 (new) P0**, AI-096 P0, AI-080/AI-093 P0/P1 for v1.0. AI-085 and AI-086 move to phase 2/3 (P2). AI-091 stays the long-term goal (phase 3).
+
+### AI-097 — Lockstep match relay on Cloudflare + client lockstep (child of AI-008/AI-091)
+P0 | READY | Owner: Muse (Worker/Durable Object in `prototypes/lobby-lab/`, plus the bridge protocol additions) with the Claude Unity thread (client side) | Dependencies: AI-079 (delivered, pending acceptance), AI-096.
+- **Worker:** `GET /rooms/:id/ws` upgrades to a WebSocket held by one Durable Object per room. It relays `{seq, seat, actionId}` messages in order, persists the intent log (enabling reconnect and replays, AI-089), handles turn timers/forfeit on timeout and exchanges per-turn state hashes. Room tokens come from the AI-096 pairing.
+- **Bridge:** add `{"cmd":"hash"}` (a canonical state hash) and seeded match setup that both clients share (a seed commit-reveal, so neither player controls the shuffle).
+- **Unity:** a match mode where the local seat's actions go to both the local bridge and the relay, and remote actions from the relay are applied to the local bridge.
+- **Acceptance:** two Windows PCs on different networks play a full match through the relay with matching hashes every turn. A tampered client is detected at the next hash. A client that disconnects for 60 s reconnects and resumes from the intent log. Everything runs on the Cloudflare free tier.
