@@ -886,3 +886,30 @@ substitute).
 - CI at tip `a04a0a4` (all green): Verify #218 `36776423251` success (both OSes), Linux packaging #39 `36776423099` success (two-builds-agree + canonical assertion), Windows packaging #72 `36776423170` success (`AI-100 jar hash asserts canonical checksum` + `play.bat --check-only` green). Full ledger (AI-101): `docs/muse/sprint-02/ai-100-ci-ledger.md` now lists every run at every tested head including this section.
 - Full suite at tip (clean clone): npm test 43/43; manifest 391/391 valid; asset-prompts 6/6; board-events 6/6; presentation 2/2; timeline 3/3; `test_make_repro_jar` 7/7; `test_diff_jar_entries` 5/5; smoke 1/1; demos exit 0; upstream `worker.js` SHA `73bde885…f990` intact; deployed worker `/lobbies`+`/leaderboard` 200 — no drift.
 - Next work (action items): (1) reconcile Claude's 18:00 acceptances for AI-100/101/102 against the board rows (acceptance is Claude's lane — no self-acceptance); (2) if AI-100 accepted, start AI-096 Worker v2 design in prototypes/lobby-lab/ (AI-005/AI-010-aware: room assignment + signed results + dataVersion gate; no auth theater; backward-compatible endpoints during transition); (3) Mathew-present items unchanged (AI-030 mouse acceptance, AI-065 deep-path rerun, AI-080 playtest; decisions HA-015/011/012/009/003/018-020).
+
+## 2026-09-30 18:00 — Claude (covering Astra)
+Scheduled checkpoint, run at 17:52 EDT. Coverage continues: there are no Astra-authored entries since 2026-09-28 10:45. Review: `docs/reviews/2026-09-30-1800-claude-acceptance.md`. Scope: `ae094d7..e6c519e`.
+
+**Verdicts**
+- **AI-100 ACCEPTED.** The Windows and Linux jars both equal canonical `2db3a12c…` at the same head.
+  - Muse runs @ `a04a0a4`: Windows #72 `36776423170` (assert + `play.bat --check-only` green); Linux #39 `36776423099`; Verify #218 `36776423251`.
+  - Independent Claude dispatch runs @ `e6c519e`: Windows #73 `36782436578` and Linux #40 `36782526494`, both success.
+  - Fix at source (`create_system=3`, `b1199b6`). The tracked checksum is unchanged since `434c923`, so the assertion is not tautological. Local jar-tool tests 12/12.
+  - Integration: the local Windows run (AI-046-WIN-ACCEPT) is still WAITING — needs Mathew present.
+- **AI-101 ACCEPTED** with two record corrections: run `36759079743` is Verify #215, not #214; and Verify #214 `36758717297` @ `7bae8ac` is missing from the ledger.
+- **AI-102 ACCEPTED.** setup-python@v6 in both workflows that use it.
+- **New AI-103** (P3, Muse): `upload-artifact@v4`, added by the rework, re-triggers the Node 20 deprecation warning (#72 annotation). Bump it and apply the AI-101 corrections.
+- Process note: the 14:00 and 15:00 Muse runs duplicated the whole rework. Only one run should own an in-progress item.
+
+**Media:** Meshy **1,369**, which is −365 since the 14:15 reconciliation (1,734). There are 10 new Zeus-themed model groups (Tempest Marksman … Tempest Spire), and a job was in progress at 17:55. The spend is unattributed and conflicts with the 13:45 "no new paid Meshy generation" guardrail unless Mathew ran these jobs himself. ElevenLabs **123,239** (unchanged). This run spent 0 credits and $0.
+
+**Assignments**
+| Owner | Next |
+|---|---|
+| Muse (Rune) | **AI-096 Worker v2 (P0)** is now unblocked. Then AI-103 (P3), then AI-097. Independently review `chatgpt/unity-playable-20260930` once it is on GitHub, and the Claude Seraph import proof once it exists. Keep the AI-030/AI-080 human-test checklist. AI-055 and AI-056 are still open. |
+| ChatGPT (Unity + sound) | Push `chatgpt/unity-playable-20260930` to GitHub (still absent at 17:52). AI-082: continue unique cues using existing credits only. |
+| Claude Meshy thread / Claude Code (AI-081) | HOLD all new Meshy jobs. Name and attribute the 365 credits and the 10 new groups in ASSET_QUEUE.md. The Seraph `unity-ready` import + `TokenPreview.Render` proof is WAITING — needs Mathew present (local Unity). |
+| Claude (covering Astra) | 00:00: review AI-096 design/progress and AI-103. |
+| Mathew | WAITING — needs Mathew present: the AI-046-WIN-ACCEPT local `play.bat` run (now unblocked by AI-100), the AI-080/AI-030 mouse-driven full match, the AI-065 deep-path rerun, and the Seraph Unity import. Decisions: **confirm or deny the 365-credit Meshy spend (HA-022, new)**, HA-015, HA-011, HA-012, HA-009, HA-003 remainder, HA-018..020. |
+
+No release or full-match claim.
