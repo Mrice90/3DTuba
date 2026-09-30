@@ -3,6 +3,11 @@
 **Docs only. No rules change. TubaExperiment stays read-only.**
 For Mathew's decision as HA-015.
 
+*2026-09-30 00:00 corrections (Claude review): the swap-mode wording ("going
+second") is fixed below — Poseidon goes **first** in swap mode and still loses
+7/10; and the engine plan is corrected — the shipped engine is the pinned Java
+jar, so a coin flip is bridge-side, not a C# core change.*
+
 ## The numbers (AI-072)
 
 From `docs/muse/sprint-02/win-split-analysis.md` (31 seeded HERO-vs-HERO matches):
@@ -26,8 +31,8 @@ always seat 0).
 **Expected effect:** Small. The swap data shows turn order accounts for roughly
 a 30-point swing (100% → 70%) when Zeus moves from first to second seat. A coin
 flip would give Poseidon the first turn 50% of the time, but Poseidon still
-lost 70% of its games even when going second with the Zeus deck on the other
-side. Estimated: Zeus win rate drops from ~90% to ~75-80%. Does not fix the
+lost 70% of its games going *first* in swap mode with the Zeus deck on the
+other side. Estimated: Zeus win rate drops from ~90% to ~75-80%. Does not fix the
 underlying deck gap.
 
 **Cost:** Tiny. One RNG call in the match factory. No card changes.
@@ -45,8 +50,11 @@ capital defense).
 tweaks. Risk: overcorrection flips the skew.
 
 **Cost:** Medium. Requires design iteration and re-running the balance suite
-(60+ seeds) to validate. TubaExperiment is read-only, so changes would land
-in the 3D C# core (AI-083) or as a variant ruleset, not the alpha.
+(60+ seeds) to validate. Under the 2026-09-29 20:00 PO plan the shipped engine
+is the pinned Java jar, not a C# core — so a coin flip can be done bridge-side
+via `human_player` with no engine change, while a Poseidon deck change needs a
+TubaExperiment change (read-only; Mathew's call) or a bridge-side deck
+override.
 
 **Verdict:** The real fix, but needs careful iteration with data.
 
