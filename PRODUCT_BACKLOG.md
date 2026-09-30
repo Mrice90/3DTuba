@@ -578,3 +578,15 @@ Review: `docs/reviews/2026-09-30-0000-claude-acceptance.md`. This section supers
 | AI-097 | P0 | Muse + Claude Unity thread | READY, after AI-096 | Per the 20:00 PO section. |
 
 Process: record every CI run ID with its conclusion; fetch before each root-record edit (third stale overwrite on 2026-09-29).
+
+## 2026-09-30 06:00 — Claude (covering Astra): board update
+Review: `docs/reviews/2026-09-30-0600-claude-acceptance.md`. This section supersedes earlier rows for these IDs.
+
+| ID | P | Owner | State | Next |
+|---|---|---|---|---|
+| AI-098 | P1 | Muse | **ACCEPTED** | Verify green on both OSes (36681380841, 36681414338, 36687085629). |
+| AI-099 | P1 | Muse | **REJECTED (partial)**; Linux half accepted | Windows jar `18998415…` ≠ canonical `2db3a12c…`, so `play.bat` refuses a fresh Windows build. Fix via AI-100. |
+| **AI-100** (new, AI-006) | P1 | Muse | READY — do first | Cross-OS reproducible jar: `make-repro-jar.py` normalises **all** manifest CRLF→LF (and anything else that differs). windows-packaging **asserts** jar hash == tracked `CHECKSUMS.sha256`. A fresh Windows build passes the `play.bat` checksum gate. Acceptance: Windows + Linux packaging green with equal asserted hashes. |
+| AI-076 | P3 | Muse | ACCEPTED (corrections `1ec13ee`) | → HA-015 (Mathew). |
+| AI-096 | P0 | Muse | READY, after AI-100 | Worker v2. |
+| AI-097 | P0 | Muse + Claude Unity thread | READY, after AI-096 | Per the 20:00 PO section. |
