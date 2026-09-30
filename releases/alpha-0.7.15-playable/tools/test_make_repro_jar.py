@@ -58,6 +58,47 @@ def read_entry(jar_bytes, name):
         os.unlink(path)
 
 
+def entry_infos(jar_bytes):
+    fd, path = tempfile.mkstemp(suffix=".jar", prefix="reprojar-")
+    try:
+        with os.fdopen(fd, "wb") as f:
+            f.write(jar_bytes)
+        with zipfile.ZipFile(path) as zf:
+            return {i.filename: i for i in zf.infolist()}
+    finally:
+        os.unlink(path)
+
+
+def rewrite_with_create_system(jar_bytes, create_system):
+    """Repack a jar changing ONLY the create_system field of each entry.
+
+    Simulates what CPython's zipfile does on another OS (0 on Windows,
+    3 on POSIX) while keeping every content byte identical.
+    """
+    fd, path = tempfile.mkstemp(suffix=".jar", prefix="reprojar-")
+    try:
+        with os.fdopen(fd, "wb") as f:
+            f.write(jar_bytes)
+        out_fd, out_path = tempfile.mkstemp(suffix=".jar", prefix="reprojar-")
+        try:
+            with zipfile.ZipFile(path) as zin, \
+                    zipfile.ZipFile(out_path, "w", zipfile.ZIP_DEFLATED) as zout:
+                for info in zin.infolist():
+                    data = zin.read(info.filename)
+                    ni = zipfile.ZipInfo(info.filename, date_time=info.date_time)
+                    ni.compress_type = info.compress_type
+                    ni.external_attr = info.external_attr
+                    ni.create_system = create_system
+                    ni.flag_bits = info.flag_bits
+                    zout.writestr(ni, data)
+            with open(out_path, "rb") as f:
+                return f.read()
+        finally:
+            os.unlink(out_path)
+    finally:
+        os.unlink(path)
+
+
 CLASS_BLOB = b"\xca\xfe\xba\xbe" + bytes(range(256)) * 4  # has 0x0D 0x0A runs
 
 
@@ -101,6 +142,31 @@ class TestReproJar(unittest.TestCase):
         a = build_jar(b"Manifest-Version: 1.0\r\n", files)
         b = build_jar(b"Manifest-Version: 1.0\r\n", files)
         self.assertEqual(a, b)
+
+    def test_create_system_pinned_to_unix(self):
+        # AI-100 rework: CPython defaults ZipInfo.create_system to 0 on
+        # Windows and 3 on POSIX — an OS fingerprint in every entry header
+        # that made the Windows jar hash differ from the Linux jar
+        # (7796b68e vs 2db3a12c). The packer must pin it to 3 everywhere.
+        jar = build_jar(b"Manifest-Version: 1.0\r\n",
+                        {"a/A.class": CLASS_BLOB,
+                         "cards/d.json": b'{"k": "v"}\r\n'})
+        infos = entry_infos(jar)
+        self.assertTrue(infos)
+        for name, info in infos.items():
+            self.assertEqual(info.create_system, 3, name)
+
+    def test_create_system_flip_changes_jar_hash(self):
+        # Mechanism guard: flipping ONLY create_system (the Windows default
+        # of 0) on an otherwise identical jar changes the jar SHA-256.
+        # This is the exact residue the 12:00 review found.
+        jar = build_jar(b"Manifest-Version: 1.0\n",
+                        {"a/A.class": CLASS_BLOB})
+        windows_sim = rewrite_with_create_system(jar, 0)
+        self.assertNotEqual(sha(jar), sha(windows_sim))
+        # ...and content is untouched by the flip.
+        self.assertEqual(read_entry(jar, "a/A.class"),
+                         read_entry(windows_sim, "a/A.class"))
 
 
 if __name__ == "__main__":
