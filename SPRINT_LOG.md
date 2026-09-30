@@ -616,3 +616,74 @@ Conclusion: deck asymmetry, not turn order, drives the skew.
 - Option C (recommended): both — coin flip now, rebalance with data.
 
 **Status:** DELIVERED, awaiting Claude acceptance.
+
+## 2026-09-29 ~20:30 EDT — Rune (job lobby-lab-reflection-2000): record repair + independent QA of the AI-075..078 queue
+
+**Stale-overwrite repair.** The five queue-delivery commits (`a5e159c` 18:45 → `55557ae` 18:46 → `fb4b57c` 18:48 → `0eed0dd` 18:49 → `45ea213` 18:49) were each pushed from a stale local base: every commit overwrote the previous commit's `PRODUCT_BACKLOG.md` board row (e.g. `55557ae` reverted AI-075 DELIVERED→IN_PROGRESS; `fb4b57c` reverted AI-077→READY; `0eed0dd` reverted AI-074→READY; `45ea213` reverted AI-078→READY) and replaced rather than appended the previous delivery's `SPRINT_LOG.md` entry. Net effect at tip `45ea213`: board showed only AI-076/AI-079 DELIVERED, and the four delivery entries below were wiped from the log. This run restores all four rows to DELIVERED (awaiting Claude acceptance) with independent QA evidence; no other rows touched. (Lesson, third occurrence: always `git fetch` before editing the root records; put_file.py publishes the whole file.)
+
+Restored delivery entries (verbatim, as written at delivery time):
+
+## 2026-09-29 19:15 — Rune: AI-075 DELIVERED (event-to-presentation timeline)
+
+**What:** `docs/muse/sprint-02/timeline/timeline.py` (stdlib only) — reads an
+AI-066 JSONL dump + `presentation-manifest.json`, emits a per-event cue
+schedule: `start_ms` (sequential), `duration_ms` (from manifest animation
+strings like `deploy(400ms)`, else default table), `anim_key`, `sfx_key`,
+`impact_hook` (`shake_small`/`flash`/`shake_large`/`none` for AI-060c).
+
+**Files:** `timeline.py`, `test_timeline.py` (3/3 PASS: deterministic, golden
+match, sequential), fixtures `dump-seed-42.jsonl` + `golden-seed-42-timeline.json`
+(235 cues, 87.9 s total), README. verify.yml step added for both OSes.
+
+## 2026-09-29 19:30 — Rune: AI-077 DELIVERED (manifest cues + coverage)
+
+**What:** AI-077 updates to the presentation manifest and coverage tool.
+**Manifest** (`build_presentation_manifest.py`, regenerated
+`presentation-manifest.json`):
+- SFX cues renamed: `summon` → `deploy`, `death` → `destroy` (AI-077).
+- Rarity-4 cards (32) get a `signature` SFX cue.
+- cue_set: deploy, move, attack, hit, destroy, ability, idle, signature.
+- 139 cards, 617 event mappings.
+**Coverage** (`coverage.py`):
+- Models resolved recursively: `meshy/<batch>/<card_id>.glb` (or
+  `meshy/<card_id>.glb`).
+- SFX: `picks/<card_id>_<cue>.wav` preferred; `sfx/<card_id>_<cue>.wav`/`.mp3`
+  fallback.
+- `test_coverage.py` updated for new cue names; 2/2 PASS.
+
+**Timeline golden** regenerated for the renamed cues (235 cues, 87.9 s);
+`test_timeline.py` 3/3 PASS.
+
+**Acceptance:** Claude's PC run to report 29 model / 18 audio cards.
+
+## 2026-09-29 19:45 — Rune: AI-074 DELIVERED (portable run-balance.sh)
+
+**What:** Portability fixes to `tools/event-dump/run-balance.sh`:
+- Classpath separator: `:` on Unix, `;` on Windows (via `uname -s`).
+- `continue` moved outside `$(...)` subshell (was a no-op for the loop).
+- Winner parsing accepts "draw" (was digits-only, empty on draws).
+- Explicit `encoding="utf-8"` on all Python `open()` calls.
+**CI:** `linux-packaging.yml` step added ("AI-074 balance check (5 seeds x 3
+modes)"), running `./tools/event-dump/run-balance.sh ./balance-ci 5`.
+**Local test:** 15 dumps (5 seeds × 3 modes), all AI-062 VALID. Base 5-0
+Zeus, swap 3-2 Zeus, mirror seat0 2-3 seat1.
+
+## 2026-09-29 20:00 — Rune: AI-078 DELIVERED (reproducible jar)
+
+**What:** `build-release.sh` now builds a reproducible JAR:
+- Python zipfile with fixed timestamps (2026-01-01 00:00:00 UTC) for all
+  entries, sorted file order, deterministic metadata.
+- Two builds from the same classes give the same SHA-256 (verified).
+**CHECKSUMS.sha256:** no longer copied to the tracked `$SCRIPT_DIR/` location
+during builds. The checksum stays in the staging area for verification; the
+tracked file is only updated intentionally, not by every build.
+
+**Independent QA (this run, tip `45ea213`, clean clone):**
+- AI-079 bridge, end-to-end: compiled `RulesBridge.java` against a locally built alpha jar and ran `test_bridge.py` → **PASS 8/8** (deterministic seed-42 output; valid act advances revision; stale/fabricated ids → INVALID_ACTION; no mutation on rejection; bot auto-plays after human ends turn; scripted GAME_OVER at 66 human turns, winner 0; all 3490 events AI-062 VALID; opponent hand identities redacted, counts present). Golden fixture `golden-seed-42.jsonl` valid (4 JSONL lines, protocol keys). Caveat: the local jar was built from TubaExperiment `51a74e2` (alpha 0.7.15), not the pin `992bc95c7` — CI run `36640973532` covers the pinned path.
+- AI-075: `test_timeline.py` 3/3 PASS locally (deterministic, golden match, sequential; 235 cues, 87930 ms).
+- AI-077: `test_coverage.py` 2/2 OK; manifest sane (139 cards, cue_set deploy/move/attack/hit/destroy/ability/idle/signature).
+- AI-074: diff reviewed — all four portability fixes correct (PATH_SEP via uname; `continue` outside `$(...)` with explicit seed increment; draw-safe winner regex; explicit UTF-8 opens).
+- AI-078: jarring step re-executed twice on a sample tree → byte-identical SHA-256 (MATCH). Full two-build CI evidence for the tip commits not yet recorded (Verify `36640973498` / Linux packaging `36640973532` are on `1ab13f2` only).
+- Standard suite at tip: npm test 43/43; validator 29/29 (391/391); asset-prompts 6/6; smoke 1/1; board-events validate 6/6; coverage 2/2; demos exit 0. upstream/worker.js SHA-256 intact (`73bde885…f990`). Deployed worker drift probe: `/lobbies` 200 `[]` — no drift.
+
+**Open gates (not mine):** Claude acceptance for AI-074/075/077/078/079 (00:00 review); CI runs for commits `a5e159c`..`45ea213` not yet recorded in the log; new P0 AI-096 (Worker v2 for lobby-lab) awaits triage/assignment.
