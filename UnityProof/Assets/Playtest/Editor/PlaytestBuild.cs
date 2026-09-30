@@ -142,10 +142,11 @@ public static class PlaytestBuild {
     // BridgeClient against canned AI-079 v1.0.0 lines.
     static void BridgeSelfTest() {
         var sentWriter = new StringWriter();
+        var transcriptWriter = new StringWriter();
         var canned = "{\"id\":\"unity-1\",\"ok\":true,\"revision\":0,\"events\":[{\"turn\":1,\"player\":0,\"event\":\"CARD_PLAYED\",\"card_id\":\"zeus_arc_relay_scout\",\"instance_id\":\"i1\",\"to\":{\"x\":1,\"y\":1},\"seq\":0}],\"legal\":[{\"id\":\"r0-a1\",\"type\":\"move\",\"instance_id\":\"i1\",\"card_id\":\"zeus_arc_relay_scout\",\"to\":{\"x\":1,\"y\":2}},{\"id\":\"r0-a2\",\"type\":\"end_turn\"}],\"state\":{\"turn\":1,\"active_player\":0,\"winner\":null,\"phase\":\"PLAY\",\"players\":[{\"gp\":2,\"hand\":[{\"instance_id\":\"i2\",\"card_id\":\"zeus_arc_relay_scout\"}]},{\"gp\":0,\"hand_count\":6}],\"board\":[{\"x\":1,\"y\":1,\"stack\":[{\"instance_id\":\"i1\",\"card_id\":\"zeus_arc_relay_scout\",\"owner\":0}]}]}}\n"
                    + "{\"id\":\"unity-2\",\"ok\":true,\"revision\":0,\"events\":[],\"legal\":[{\"id\":\"r0-a1\",\"type\":\"move\",\"instance_id\":\"i1\",\"card_id\":\"zeus_arc_relay_scout\",\"to\":{\"x\":1,\"y\":2}},{\"id\":\"r0-a2\",\"type\":\"end_turn\"}]}\n"
                    + "{\"id\":\"unity-3\",\"ok\":false,\"revision\":0,\"error_code\":\"INVALID_ACTION\",\"error\":\"unknown or stale action id: zz\"}\n";
-        var client = new BridgeClient(null, sentWriter, new StringReader(canned));
+        var client = new BridgeClient(null, sentWriter, new StringReader(canned), null, transcriptWriter);
         client.New(42, 0); client.Legal(); client.Act("zz");
         var got = new List<BridgeResponse>();
         var until = DateTime.Now.AddSeconds(5);
@@ -156,6 +157,10 @@ public static class PlaytestBuild {
         Check(got[0].ok && got[0].events.Length == 1 && got[0].events[0].hasTo && got[0].events[0].to.y == 1 && got[0].state.players[0].hand.Length == 1 && got[0].state.board[0].stack[0].owner == 0, "bridge response: events + state parsed");
         Check(got[1].legal.Length == 2 && got[1].legal[0].to.y == 2 && got[1].legal[1].type == "end_turn", "bridge response: legal actions parsed");
         Check(!got[2].ok && got[2].error_code == "INVALID_ACTION" && got[2].error.Contains("stale"), "bridge response: illegal id error surfaced");
+        var transcript = transcriptWriter.ToString().Split('\n').Select(s => s.Trim()).Where(s => s.Length > 0).ToArray();
+        Check(transcript.Length == 6 && transcript.Count(s => s.Contains("\"direction\":\"request\"")) == 3
+              && transcript.Count(s => s.Contains("\"direction\":\"response\"")) == 3,
+              "bridge transcript records exact request/response lines without changing protocol streams");
     }
 }
 

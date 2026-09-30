@@ -40,31 +40,42 @@ namespace InfiniteConquest.Playtest {
         readonly Process process;
         readonly ConcurrentQueue<string> lines = new ConcurrentQueue<string>();
         readonly ConcurrentQueue<string> errors = new ConcurrentQueue<string>();
+        readonly TextWriter transcript;
+        readonly bool ownsTranscript;
+        readonly object transcriptLock = new object();
         Thread reader, errReader;
-        int requestId;
+        int requestId, transcriptSequence;
         public string LastError;
         public bool Alive => process == null || !process.HasExited;
 
         // Spawns the bridge. commandLine = "java -cp ... RulesBridge" (the first token is the executable).
-        public static BridgeClient Spawn(string commandLine, string workingDir) {
+        public static BridgeClient Spawn(string commandLine, string workingDir, string transcriptPath = null) {
             SplitCommand(commandLine, out var exe, out var args);
             var psi = new ProcessStartInfo(exe, args) {
                 UseShellExecute = false, RedirectStandardInput = true, RedirectStandardOutput = true, RedirectStandardError = true,
                 CreateNoWindow = true, WorkingDirectory = string.IsNullOrEmpty(workingDir) ? Environment.CurrentDirectory : workingDir,
             };
             var p = Process.Start(psi);
-            return new BridgeClient(p, p.StandardInput, p.StandardOutput, p.StandardError);
+            TextWriter transcript = null;
+            if (!string.IsNullOrEmpty(transcriptPath)) {
+                var fullPath = Path.GetFullPath(transcriptPath);
+                var directory = Path.GetDirectoryName(fullPath);
+                if (!string.IsNullOrEmpty(directory)) Directory.CreateDirectory(directory);
+                transcript = new StreamWriter(fullPath, false) { AutoFlush = true };
+            }
+            return new BridgeClient(p, p.StandardInput, p.StandardOutput, p.StandardError, transcript, transcript != null);
         }
 
         // Also used by the editor self-test with in-memory streams.
-        public BridgeClient(Process process, TextWriter input, TextReader output, TextReader error = null) {
-            this.process = process; this.input = input;
-            reader = new Thread(() => { try { string l; while ((l = output.ReadLine()) != null) if (l.Trim().StartsWith("{")) lines.Enqueue(l); } catch { } }) { IsBackground = true };
+        public BridgeClient(Process process, TextWriter input, TextReader output, TextReader error = null,
+                            TextWriter transcript = null, bool ownsTranscript = false) {
+            this.process = process; this.input = input; this.transcript = transcript; this.ownsTranscript = ownsTranscript;
+            reader = new Thread(() => { try { string l; while ((l = output.ReadLine()) != null) if (l.Trim().StartsWith("{")) { WriteTranscript("response", l); lines.Enqueue(l); } } catch { } }) { IsBackground = true };
             reader.Start();
             if (error != null) { errReader = new Thread(() => { try { string l; while ((l = error.ReadLine()) != null) errors.Enqueue(l); } catch { } }) { IsBackground = true }; errReader.Start(); }
         }
 
-        public void Send(string json) { input.WriteLine(json); input.Flush(); }
+        public void Send(string json) { WriteTranscript("request", json); input.WriteLine(json); input.Flush(); }
         string NextId() => "unity-" + Interlocked.Increment(ref requestId);
         public void New(int seed, int humanSeat) => Send("{\"id\":\"" + NextId() + "\",\"op\":\"new\",\"seed\":" + seed
             + ",\"human_player\":" + humanSeat + ",\"human_faction\":\"" + (humanSeat == 0 ? "ZEUS" : "POSEIDON")
@@ -93,6 +104,24 @@ namespace InfiniteConquest.Playtest {
 
         public void Dispose() {
             try { if (process != null && !process.HasExited) { input.Close(); if (!process.WaitForExit(1500)) process.Kill(); } } catch { }
+            if (ownsTranscript) { try { lock (transcriptLock) transcript.Dispose(); } catch { } }
+        }
+
+        // Ordered JSONL envelope containing the exact AI-079 line in each direction. Logging is
+        // deliberately outside the protocol streams and never changes requests or responses.
+        void WriteTranscript(string direction, string line) {
+            if (transcript == null) return;
+            lock (transcriptLock) {
+                int sequence = ++transcriptSequence;
+                transcript.WriteLine("{\"sequence\":" + sequence + ",\"direction\":\"" + direction
+                    + "\",\"line\":\"" + EscapeJson(line) + "\"}");
+                transcript.Flush();
+            }
+        }
+
+        static string EscapeJson(string value) {
+            if (value == null) return "";
+            return value.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r", "\\r").Replace("\n", "\\n");
         }
 
         static void SplitCommand(string cmd, out string exe, out string args) {

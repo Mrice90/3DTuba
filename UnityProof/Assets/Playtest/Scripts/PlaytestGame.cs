@@ -71,7 +71,7 @@ namespace InfiniteConquest.Playtest {
             var shots = Arg("-playtestShots");
             if (shots != null) { StartCoroutine(Screenshots(shots)); return; }
             var bridgeCmd = Arg("-bridgeCmd") ?? Environment.GetEnvironmentVariable("IC_BRIDGE_CMD");
-            if (!string.IsNullOrEmpty(bridgeCmd)) StartLive(bridgeCmd, Arg("-bridgeCwd"));
+            if (!string.IsNullOrEmpty(bridgeCmd)) StartLive(bridgeCmd, Arg("-bridgeCwd"), Arg("-bridgeTranscript"));
             else RestartPlayback();
         }
 
@@ -282,10 +282,10 @@ namespace InfiniteConquest.Playtest {
         void Banner(string text, float seconds) { banner = text; bannerUntil = Time.time + Mathf.Max(.2f, seconds / Mathf.Max(1, speed)); if (seconds > 100) bannerUntil = float.MaxValue; }
 
         // ------------------------------------------------------------------ live play (AI-079 bridge)
-        void StartLive(string cmd, string cwd) {
+        void StartLive(string cmd, string cwd, string transcriptPath) {
             ClearMatch(); mode = Mode.Live;
             try {
-                bridge = BridgeClient.Spawn(cmd, cwd);
+                bridge = BridgeClient.Spawn(cmd, cwd, transcriptPath);
                 int seed = int.TryParse(Arg("-seed"), out var s) ? s : 42;
                 humanSeat = int.TryParse(Arg("-humanSeat"), out var h) ? h : 0;
                 bridge.New(seed, humanSeat); waiting = true; liveStatus = "Starting rules bridge…";
