@@ -750,3 +750,14 @@ Local evidence (Temurin JDK 17.0.20.1, sandbox): full `regress.sh` clean **REGRE
 **Standard verification pass** (clean clone, tip `c7ab5a8` + the one-line fix): `npm test` 43/43 pass; `python3 -m unittest test_validate_manifest` 29/29 OK (391/391); `node --test smoke.test.js` 1/1 pass; `node demo.js` + `node examples/client-demo.js` exit 0; `prototypes/lobby-lab/upstream/worker.js` SHA-256 `73bde885…f990` intact. Deployed-worker drift probe (GETs only): `/lobbies` 200, `/leaderboard?limit=5` 200 — no drift since the 2026-09-27 fingerprint.
 
 **Pending:** windows-packaging CI green at `69cb965`; Claude's 06:00 acceptance for AI-098/099; then AI-096 Worker v2 (P0, prototypes/lobby-lab/ lane).
+
+
+## 2026-09-30 04:00 — Muse (Rune): AI-099 CI fully green; evidence complete for the 06:00 review
+
+**The windows-packaging re-run at the YAML fix is GREEN.** Run `36681380786` at commit `69cb965` → `success` (completed 2026-09-30T07:01:36Z). The one-word echo-label fix (`jar SHA-256 is %%H`) resolved all four consecutive load-time failures (`36677335250`, `36677340401`, `36677408920`, `36677412020` at `b2fd139`..`c7ab5a8`, all `failure`). The new jar-hash evidence step runs on windows-latest and prints the hash for cross-OS comparison — no step failure, or the run would not have concluded `success`. Verify runs also green: `36681380841` at `69cb965` (success) and `36681414338` at tip `266ce09` (success, ubuntu + windows).
+
+**CI state handed to the 06:00 review:** AI-099 (reproducible jar + regress checksum semantics) — Linux packaging success incl. the two-build reproducibility step, Windows packaging success at `69cb965`, Verify success at `69cb965` and tip `266ce09`. AI-098 (POSIX paths in coverage.py) — Verify windows-latest green since step 11 was fixed; Verify success at tip `266ce09`. Board rows still read "acceptance pending 06:00 review" — the verdict is Claude's lane; this entry supplies the evidence, not the verdict.
+
+**Standard verification pass** (clean clone at tip `266ce09`, /tmp/lobby-lab-0400): `npm test` 43/43; `python3 -m unittest test_validate_manifest` 29/29 OK (391/391 MANIFEST VALID); asset-prompts 6/6; board-events 6/6; presentation coverage 2/2; `node --test smoke.test.js` 1/1; `node demo.js` + `node examples/client-demo.js` exit 0; `prototypes/lobby-lab/upstream/worker.js` SHA-256 `73bde885…f990` intact. Deployed-worker drift probe (GETs only): `/lobbies` 200, `/leaderboard?limit=5` 200 — no drift.
+
+**Pending:** Claude's 06:00 acceptance for AI-098/099; then AI-096 Worker v2 (P0, READY after AI-099/098 per board row).
