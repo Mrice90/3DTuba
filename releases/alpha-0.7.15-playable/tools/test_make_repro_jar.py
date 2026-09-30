@@ -80,11 +80,7 @@ def rewrite_with_create_system(jar_bytes, create_system):
         with os.fdopen(fd, "wb") as f:
             f.write(jar_bytes)
         out_fd, out_path = tempfile.mkstemp(suffix=".jar", prefix="reprojar-")
-        # Close the mkstemp descriptor immediately: ZipFile opens the path
-        # itself, and on Windows os.unlink() fails with WinError 32 while any
-        # handle is open (Linux allows unlink-with-open-handles, which is why
-        # this only regressed on Windows CI).
-        os.close(out_fd)
+        os.close(out_fd)  # Windows: an open fd locks the path for ZipFile
         try:
             with zipfile.ZipFile(path) as zin, \
                     zipfile.ZipFile(out_path, "w", zipfile.ZIP_DEFLATED) as zout:
