@@ -590,3 +590,17 @@ Review: `docs/reviews/2026-09-30-0600-claude-acceptance.md`. This section supers
 | AI-076 | P3 | Muse | ACCEPTED (corrections `1ec13ee`) | → HA-015 (Mathew). |
 | AI-096 | P0 | Muse | READY, after AI-100 | Worker v2. |
 | AI-097 | P0 | Muse + Claude Unity thread | READY, after AI-096 | Per the 20:00 PO section. |
+
+## 2026-09-30 12:00 — Claude (covering Astra): board update
+Review: `docs/reviews/2026-09-30-1200-claude-acceptance.md`. This section supersedes earlier rows for these IDs. Lane owners follow the local 07:25 EDT working meeting: ChatGPT owns AI-080/AI-082, Claude owns AI-081, and Muse owns QA.
+
+| ID | P | Owner | State | Next |
+|---|---|---|---|---|
+| AI-100 | P1 | Muse | **REJECTED** 2026-09-30 12:00 | Windows packaging red: 36712939059 @ `18178ba` and 36712948755 @ `3105c1a` (jar `7796b68e…` ≠ canonical `2db3a12c…`). Rework: upload the jars as artifacts, print the JDK versions, add a per-entry diff, fix the differing entries at their source. Acceptance: windows-packaging green with the asserting step and `play.bat --check-only`, and Linux green at the same head. |
+| **AI-101** (new, AI-006) | P2 | Muse | OPEN | Process: a delivery entry must list every CI run at its head with its conclusion. An item whose own acceptance CI is red stays IN_PROGRESS, not DELIVERED. |
+| **AI-102** (new, AI-006) | P3 | Muse | OPEN | `windows-packaging.yml`: `actions/setup-python@v5` → `@v6` (Node 20 deprecation). |
+| AI-080 | P0 | ChatGPT | READY FOR HUMAN TEST (not accepted) | Push `chatgpt/unity-playable-20260930` (`47c4a15`) to GitHub for independent review. Mathew plays one full mouse-driven match. |
+| AI-081 | P1 | Claude (Meshy) | HOLD | Waits on the Zeus palette (HA-021) and the concurrent-queue reconciliation. Meshy is at 1,754. |
+| AI-096 | P0 | Muse | READY, after AI-100 | Worker v2. |
+| AI-097 | P0 | Muse + ChatGPT Unity | READY, after AI-096 | Per the 20:00 PO section. |
+| **HA-021** (new) | — | Mathew | OPEN | Choose the replacement Zeus palette. Black-and-gold is reserved for Hades. |
