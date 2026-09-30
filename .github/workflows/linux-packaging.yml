@@ -78,3 +78,24 @@ jobs:
       - name: AI-074 balance check (5 seeds x 3 modes)
         working-directory: releases/alpha-0.7.15-playable
         run: ./tools/event-dump/run-balance.sh ./balance-ci 5
+      # AI-099: reproducibility proof. Two fresh builds from the pinned
+      # source must produce byte-identical jars (same SHA-256), and that hash
+      # must equal the tracked canonical CHECKSUMS.sha256 — which is updated
+      # deliberately (see PROVENANCE.md), never rewritten per build.
+      - name: AI-099 reproducibility check (two builds, same SHA-256)
+        working-directory: releases/alpha-0.7.15-playable
+        run: |
+          ./fetch-source.sh
+          rm -rf build/stage
+          STAGE="$PWD/build/stage-repro-1" ./build-release.sh > build/ai099-build1.log 2>&1
+          H1=$(sha256sum infinite-conquest-alpha-0.7.15.jar | awk '{print $1}')
+          echo "build 1 SHA-256: $H1"
+          rm -rf build/stage
+          STAGE="$PWD/build/stage-repro-2" ./build-release.sh > build/ai099-build2.log 2>&1
+          H2=$(sha256sum infinite-conquest-alpha-0.7.15.jar | awk '{print $1}')
+          echo "build 2 SHA-256: $H2"
+          [ "$H1" = "$H2" ] || { echo "::error::AI-099 two builds produced different SHA-256"; exit 1; }
+          CANON=$(awk '{print $1}' CHECKSUMS.sha256)
+          echo "tracked canonical: $CANON"
+          [ "$H1" = "$CANON" ] || { echo "::error::AI-099 build hash does not match tracked CHECKSUMS.sha256"; exit 1; }
+          echo "AI-099: two builds agree and match the canonical checksum"
