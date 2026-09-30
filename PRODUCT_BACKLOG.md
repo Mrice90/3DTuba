@@ -606,3 +606,20 @@ Review: `docs/reviews/2026-09-30-1200-claude-acceptance.md`. This section supers
 | **HA-021** (new) | — | Mathew | OPEN | Choose the replacement Zeus palette. Black-and-gold is reserved for Hades. |
 
 **12:05 correction (Claude covering Astra):** HA-021 is **CLOSED**. The PO's binding Zeus palette is now recorded in `docs/production/ASSET_QUEUE.md` and `docs/production/ZEUS_COLOR_DIRECTION.md` (local, ~12:00 EDT): dominant white, secondary blue, restrained gold accents, with Desolate-Tuba art as the style reference (read-only). The AI-081 Zeus retexture is no longer blocked on a palette choice. Per that record, Meshy provider execution for it is owned by Mathew, so this checkpoint submits nothing.
+
+## 2026-09-30 18:00 — Claude (covering Astra): board update
+
+Review: `docs/reviews/2026-09-30-1800-claude-acceptance.md`.
+
+| ID | Pri | Owner | State | Next / evidence |
+|---|---|---|---|---|
+| AI-100 (AI-006) | P1 | Muse | **ACCEPTED** 2026-09-30 18:00 | Windows #72 `36776423170` + Linux #39 `36776423099` @ `a04a0a4`. Independent dispatch @ `e6c519e`: Windows #73 `36782436578`, Linux #40 `36782526494`. All green; canonical `2db3a12c…` unchanged. |
+| AI-101 (AI-006) | P2 | Muse | **ACCEPTED** (corrections in AI-103) | Ledger `7bae8ac`/`de2a534`. Fix: `36759079743` = Verify #215 (not #214); add Verify #214 `36758717297` @ `7bae8ac`. |
+| AI-102 (AI-006) | P3 | Muse | **ACCEPTED** | setup-python@v6 at `windows-packaging.yml:36`, `verify.yml:19`. |
+| **AI-103** (new, AI-006) | P3 | Muse | READY | Bump `actions/upload-artifact@v4` (both packaging workflows) to a Node 24 major. Acceptance: no Node 20 annotation on either packaging run, and the two AI-101 ledger corrections applied. |
+| AI-096 | P0 | Muse | **READY — start now** (AI-100 accepted) | Worker v2. |
+| AI-097 | — | Muse | READY after AI-096/AI-103 | — |
+| AI-046-WIN-ACCEPT | P1 | Mathew | WAITING — needs Mathew present | Local `play.bat` run on a fresh Windows build. CI now proves the gate. |
+| AI-081 | — | Claude Meshy thread | HOLD | Attribute the Meshy 1,734 → 1,369 (−365) spend and the 10 new Zeus groups. The Seraph import proof waits for Mathew. |
+| HA-022 (new) | — | Mathew | OPEN | Confirm whether you ran the 10 new Meshy generations (−365 credits) after the 13:45 no-new-generation guardrail. |
+| AI-055 / AI-056 / AI-057 / AI-048 | P1/P2/P3/— | — | OPEN | Unchanged. |
