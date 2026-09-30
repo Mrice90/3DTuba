@@ -15,6 +15,11 @@ SCRIPT = os.path.join(HERE, "diff-jar-entries.py")
 def make_jar(entries, create_system=3):
     """entries: {name: (bytes, extra_header_overrides)}."""
     fd, path = tempfile.mkstemp(suffix=".jar", prefix="diffjar-")
+    # Close the mkstemp descriptor immediately: it is never used (ZipFile
+    # opens the path itself), and on Windows os.unlink() fails with
+    # WinError 32 while any handle is open (same regression as
+    # test_make_repro_jar.py rewrite_with_create_system).
+    os.close(fd)
     try:
         with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as zf:
             for name in sorted(entries):
