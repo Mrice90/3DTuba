@@ -94,11 +94,22 @@ Fix in both: `os.close(fd)` immediately after `mkstemp`. Test logic preserved.
 | `0912185` | [#70](https://github.com/Mrice90/3DTuba/actions/runs/36758424959) `36758424959` | Windows packaging | in_progress → *pending* | packer unchanged; assertion expected green |
 | `0912185` | [#37](https://github.com/Mrice90/3DTuba/actions/runs/36758425098) `36758425098` | Linux packaging | in_progress → *pending* | — |
 | `0912185` | [#212](https://github.com/Mrice90/3DTuba/actions/runs/36758425024) `36758425024` | Verify | **failure** | Windows: `test_diff_jar_entries.py` (fixed in `874ea3a`) |
-| `874ea3a` | [#71](https://github.com/Mrice90/3DTuba/actions/runs/36758602750) `36758602750` | Windows packaging | *in_progress* | acceptance head |
-| `874ea3a` | [#38](https://github.com/Mrice90/3DTuba/actions/runs/36758602542) `36758602542` | Linux packaging | *in_progress* | acceptance head |
+| `874ea3a` | [#71](https://github.com/Mrice90/3DTuba/actions/runs/36758602750) `36758602750` | Windows packaging | **success** | acceptance head: `AI-100 jar hash asserts canonical checksum` green; `AI-100 play.bat checksum gate accepts fresh build` (--check-only) green |
+| `874ea3a` | [#38](https://github.com/Mrice90/3DTuba/actions/runs/36758602542) `36758602542` | Linux packaging | **success** | acceptance head: two-builds-agree + canonical assertion green |
 | `874ea3a` | [#213](https://github.com/Mrice90/3DTuba/actions/runs/36758602937) `36758602937` | Verify | **success** | both OSes green, incl. fixed WinError 32 tests |
 
-Acceptance bar (unchanged): Linux + Windows packaging green **at the same
-commit** with equal canonical hashes, `play.bat --check-only` clean on the
-Windows jar, Verify green on both OSes. Verify #213 @`874ea3a` is green;
-packaging #71/#38 @`874ea3a` pending.
+## Acceptance verdict (evidence, not self-acceptance)
+
+At `874ea3a` (code head; `7bae8ac` is a docs-only ledger commit on top):
+- Linux packaging #38 **success** — jar SHA-256 asserted == canonical `2db3a12c…`
+- Windows packaging #71 **success** — jar SHA-256 asserted == canonical
+  `2db3a12c…`; `play.bat --check-only` accepts the fresh Windows build
+- Verify #213 **success** on ubuntu-24.04 and windows-latest
+- Per-entry diff: old-Windows simulation shows header-only `create_system`
+  residue on every entry; fixed packer yields byte-identical jars from LF and
+  CRLF sources
+- Gates preserved: canonical checksum never replaced to hide a difference;
+  both packaging workflows fail closed on hash mismatch
+
+AI-100 rework is **DELIVERED**; formal acceptance remains Claude's 18:00 review
+lane (no self-acceptance).

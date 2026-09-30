@@ -826,3 +826,45 @@ Scheduled checkpoint, run at 11:53 EDT. Coverage continues: there are no Astra-a
 | Mathew | WAITING — needs Mathew present: the AI-080/AI-030 full mouse-driven match from `playtest/unity-build-2026-09-30/PLAY-INFINITE-CONQUEST.bat`, and the AI-065 deep-path rerun. Decisions: **HA-021 Zeus replacement palette** (new), HA-015, HA-011, HA-012, HA-009, HA-003 remainder, HA-018..020. |
 
 No release or full-match claim.
+
+## 2026-09-30 ~14:45 EDT — AI-100 rework DELIVERED (Muse/Rune)
+
+**AI-100 rework complete; acceptance pending Claude's 18:00 review (no self-acceptance).**
+
+Root cause of the 12:00 rejection (`7796b68e…` vs canonical `2db3a12c…`):
+CPython's `zipfile.ZipInfo.create_system` defaults to 0 on Windows and 3 on
+POSIX — a 2-byte OS fingerprint in every entry header. Fixed by pinning
+`create_system=3` in `make-repro-jar.py` (`b1199b6`, published 14:01 EDT).
+New per-entry diff tool `diff-jar-entries.py` (`61dc6ee`) proves the residue:
+a simulated old-Windows jar shows `HEADER DIFFERS (content identical):
+create_system: a=3 b=0` on every entry; the fixed packer yields byte-identical
+jars from LF and CRLF sources (`IDENTICAL`).
+
+Two WinError 32 regressions in test helpers fixed this session (unclosed
+`tempfile.mkstemp()` descriptor; Linux tolerates unlink-with-open-handles,
+Windows raises `PermissionError`):
+- `0912185`: `test_make_repro_jar.py::rewrite_with_create_system` (failed in
+  Verify #212 @`7798f32`, job 110024829251). Local 7/7 pass; fd-leak 1/call → 0.
+- `874ea3a`: `test_diff_jar_entries.py::make_jar` (same pattern; failed in
+  Verify #212 @`0912185`). Local 5/5 pass; fd-leak 1/call → 0.
+
+**Acceptance evidence at `874ea3a`** (code head; `7bae8ac` is docs-only):
+- Linux packaging [#38](https://github.com/Mrice90/3DTuba/actions/runs/36758602542) `36758602542` — **success** (two-builds-agree + asserts jar == canonical `2db3a12c…`)
+- Windows packaging [#71](https://github.com/Mrice90/3DTuba/actions/runs/36758602750) `36758602750` — **success** (`AI-100 jar hash asserts canonical checksum` green; `AI-100 play.bat checksum gate accepts fresh build` green)
+- Verify [#213](https://github.com/Mrice90/3DTuba/actions/runs/36758602937) `36758602937` — **success** (ubuntu-24.04 + windows-latest)
+
+Gates preserved: canonical checksum never replaced to hide a difference; both
+packaging workflows fail closed on hash mismatch. Full CI ledger (AI-101):
+`docs/muse/sprint-02/ai-100-ci-ledger.md` — every run at every tested head
+with URL/ID/workflow/SHA/conclusion, including red and in-progress runs.
+Artifact blob download returns HTTP 401 from this environment; byte-equality
+is proven by the asserting CI steps (both green against the same canonical)
+plus the local per-entry diff run.
+
+**Blockers / notes:** `chatgpt/unity-playable-20260930` still not on GitHub
+(verified 14:10 EDT) — Unity review remains a dependency blocker, not started
+per the 13:45 directive (AI-100 only until evidence complete). AI-102
+`setup-python@v6` already present from the 14:01 commits; no further AI-102
+work undertaken while AI-100 was red. AI-080/AI-030 human mouse-driven
+full-match checklist maintained (Mathew's acceptance; automated tests do not
+substitute).
