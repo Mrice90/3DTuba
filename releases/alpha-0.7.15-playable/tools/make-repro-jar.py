@@ -2,12 +2,14 @@
 """Build a reproducible JAR (zip) from a classes directory (AI-078, AI-099, AI-100).
 
 Fixed entry order (manifest first, then sorted paths), fixed timestamps
-(2026-01-01 00:00:00 UTC), fixed Unix mode bits (0o644), an LF-normalized
-manifest, and CRLF->LF-normalized text resources — so two builds from the
-same sources produce byte-identical output on any OS, even when the source
-checkout uses Windows CRLF line endings (git core.autocrlf). Shared by
-build-release.sh and build-release.bat (Windows parity: the .bat used to call
-`jar --create`, whose timestamps/ordering vary per run).
+(2026-01-01 00:00:00 UTC), fixed Unix mode bits (0o644), a pinned
+create_system (3 = Unix, overriding CPython's os-dependent default of 0 on
+Windows), an LF-normalized manifest, and CRLF->LF-normalized text resources
+— so two builds from the same sources produce byte-identical output on any
+OS, even when the source checkout uses Windows CRLF line endings (git
+core.autocrlf). Shared by build-release.sh and build-release.bat (Windows
+parity: the .bat used to call `jar --create`, whose timestamps/ordering vary
+per run).
 
 Usage: make-repro-jar.py <out.jar> <manifest.txt> <classes-dir>
 Stdlib only.
@@ -20,6 +22,12 @@ FIXED_DT = (2026, 1, 1, 0, 0, 0)
 # AI-099: fixed mode bits. The old code preserved os.stat() bits, which differ
 # between Linux (0o644) and Windows (0o666) and broke cross-OS byte-identity.
 FIXED_MODE = 0o644
+# AI-100 rework: CPython's zipfile.ZipInfo defaults create_system to 3 on
+# POSIX and 0 on Windows ("version made by" OS field). The packer never set
+# it, so every entry header carried a 2-byte OS fingerprint and the Windows
+# jar could never equal the Linux jar (7796b68e vs 2db3a12c at the 12:00
+# review) no matter how much content normalization was added. Pin it to 3.
+FIXED_CREATE_SYSTEM = 3
 
 # AI-100: text extensions whose line endings are normalized CRLF -> LF before
 # being written into the jar. The alpha's card JSONs, LICENSE.txt and
@@ -38,15 +46,24 @@ def normalize_text(data):
     return data.replace(b"\r\n", b"\n")
 
 
+def new_entry(name):
+    """One ZipInfo with every OS-varying field pinned (AI-078/099/100)."""
+    zi = zipfile.ZipInfo(name, date_time=FIXED_DT)
+    zi.compress_type = zipfile.ZIP_DEFLATED
+    zi.external_attr = FIXED_MODE << 16
+    # AI-100 rework: pin create_system — CPython defaults it to 0 on
+    # Windows and 3 on POSIX, an OS fingerprint in every entry header.
+    zi.create_system = FIXED_CREATE_SYSTEM
+    return zi
+
+
 def main():
     if len(sys.argv) != 4:
         sys.exit("usage: make-repro-jar.py <out.jar> <manifest.txt> <classes-dir>")
     jar_path, manifest_path, classes_dir = sys.argv[1], sys.argv[2], sys.argv[3]
     with zipfile.ZipFile(jar_path, "w", zipfile.ZIP_DEFLATED) as zf:
         # Manifest first, as `jar --create` does.
-        zi = zipfile.ZipInfo("META-INF/MANIFEST.MF", date_time=FIXED_DT)
-        zi.compress_type = zipfile.ZIP_DEFLATED
-        zi.external_attr = FIXED_MODE << 16
+        zi = new_entry("META-INF/MANIFEST.MF")
         with open(manifest_path, "rb") as f:
             data = f.read()
         # AI-100: normalize *every* line ending, not just the trailing one.
@@ -68,9 +85,7 @@ def main():
                 # carries a duplicate manifest entry.)
                 if arc == "META-INF/MANIFEST.MF":
                     continue
-                zi = zipfile.ZipInfo(arc, date_time=FIXED_DT)
-                zi.compress_type = zipfile.ZIP_DEFLATED
-                zi.external_attr = FIXED_MODE << 16
+                zi = new_entry(arc)
                 with open(full, "rb") as f:
                     content = f.read()
                 # AI-100: normalize text-resource line endings; binaries pass
