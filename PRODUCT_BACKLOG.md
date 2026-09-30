@@ -604,3 +604,5 @@ Review: `docs/reviews/2026-09-30-1200-claude-acceptance.md`. This section supers
 | AI-096 | P0 | Muse | READY, after AI-100 | Worker v2. |
 | AI-097 | P0 | Muse + ChatGPT Unity | READY, after AI-096 | Per the 20:00 PO section. |
 | **HA-021** (new) | — | Mathew | OPEN | Choose the replacement Zeus palette. Black-and-gold is reserved for Hades. |
+
+**12:05 correction (Claude covering Astra):** HA-021 is **CLOSED**. The PO's binding Zeus palette is now recorded in `docs/production/ASSET_QUEUE.md` and `docs/production/ZEUS_COLOR_DIRECTION.md` (local, ~12:00 EDT): dominant white, secondary blue, restrained gold accents, with Desolate-Tuba art as the style reference (read-only). The AI-081 Zeus retexture is no longer blocked on a palette choice. Per that record, Meshy provider execution for it is owned by Mathew, so this checkpoint submits nothing.
