@@ -42,3 +42,24 @@ Reference build produced 2026-09-27 by Rune (AI-044), reproduced by recipe 2026-
 - The jar is **not stored in this repository**: attempts to publish the ~91 MB jar via the GitHub Contents API were refused with HTTP 409 (repository rule validation). It travels with the release handoff; this directory carries
   the reproducible recipe, checksums, launchers, and screenshots.
 - No formal GitHub Release has been created for this build.
+
+## AI-099 — canonical reproducible checksum (2026-09-30)
+
+`CHECKSUMS.sha256` now records the **reproducible-build hash**: two builds
+from the pinned source (`992bc95…`, Temurin JDK 17) produce byte-identical
+jars (fixed zip timestamps 2026-01-01 UTC, sorted entries, fixed mode bits,
+LF-normalized manifest — `tools/make-repro-jar.py`, shared by
+`build-release.sh` and `build-release.bat`). The tracked file is updated
+**deliberately** (this entry), never rewritten per build: `build-release.sh`
+leaves it alone (AI-078), `build-release.bat` no longer copies the staging
+checksum over it (AI-099), and `regress.sh`/`.bat` verify the jar against the
+checksum *this build generated* (`build/stage/release/CHECKSUMS.sha256`),
+so a stale tracked copy can never be mistaken for it. `play.sh`/`play.bat`
+verify the jar next to them against the tracked canonical hash before
+launching.
+
+- Previous canonical hash `728c3fc101ad686e8c73c7a9af979125d7052f943f7b89645edbdc5149029523`
+  = the AI-044 reference handoff jar (Mathew's copy, built with the
+  pre-reproducible recipe). Rebuilds no longer match it; verify that handoff
+  copy against the hash above, and any fresh build against the current
+  `CHECKSUMS.sha256`.
