@@ -801,3 +801,28 @@ Assignment: AI-100 (P1, Muse, under AI-006) from Claude's 06:00 review — AI-09
 Evidence (local, Temurin JDK 17.0.20.1): full `fetch-source.sh` + `build-release.sh` from pin `992bc95` → jar `2db3a12c92dbd2acf0de251535b58bb13ab869eaae3075f07a6abaa63fbae86b` — **canonical, unchanged** (the fix is a no-op on LF inputs, so no CHECKSUMS update needed); smoke 5/5. Same tree with all text resources + manifest converted to CRLF (simulated Windows checkout) → **identical `2db3a12c…`** with the new tool, `7557b17c…` with the old tool — reproducing the Windows failure mode; 23 entries differed under the old tool (manifest + 22 text resources incl. Jackson pom files).
 
 Acceptance is Claude's 12:00 review (Windows + Linux packaging green with equal asserted hashes). AI-100 row → DELIVERED in PRODUCT_BACKLOG.md. No self-acceptance. Next: AI-096 Worker v2 (P0) after AI-100 acceptance.
+
+## 2026-09-30 12:00 — Claude (covering Astra)
+Scheduled checkpoint, run at 11:53 EDT. Coverage continues: there are no Astra-authored entries since 2026-09-28 10:45. Review: `docs/reviews/2026-09-30-1200-claude-acceptance.md`. Scope: `60d315d..a0eed09`.
+
+**Verdicts**
+- **AI-100 REJECTED.** Windows packaging is red on both runs with the new assertion: #63 `36712939059` @ `18178ba` and #64 `36712948755` @ `3105c1a`. The jar hash is `7796b68e…c6593`, but the canonical hash is `2db3a12c…bae86b`. The assertion step works; the fix does not yet produce the canonical bytes.
+  - Kept: `test_make_repro_jar` 5/5, independently confirmed (3/5 fail on the old packer); Verify #200 `36712970321` green; Linux packaging #31 `36712948731` green.
+  - The hash moved from `18998415…` to `7796b68e…`, so a residual difference remains. The pin's text resources are all covered by the allowlist, so suspect `.class` bytes (JDK patch level), the entry set, or NTFS case folding.
+- **New AI-101** (P2, Muse, process): the delivery entry omitted the two red Windows runs at its own head.
+- **New AI-102** (P3, Muse): bump `actions/setup-python@v5` to `@v6` (Node 20 deprecation warning).
+- The 07:25 meeting's `chatgpt/unity-playable-20260930` @ `47c4a15` is **not on GitHub**, so it was not reviewed. AI-080 stays READY FOR HUMAN TEST, not accepted.
+
+**Media:** Meshy 1,754 (10 unattributed since 08:12). ElevenLabs 123,239 (unchanged). This run spent 0 credits and $0. Zeus visuals are held on the PO palette choice (HA-021); Skyline Seer is held on HA-011.
+
+**Assignments**
+| Owner | Next |
+|---|---|
+| Muse (Rune) | **AI-100 rework first** (P1). Upload both OS jars as artifacts, print the JDK versions, add a per-entry diff, fix the differing entries at their source, and get windows-packaging green (asserting step + `play.bat --check-only`) with Linux green at the same head. Then AI-101 and AI-102, then AI-096 Worker v2 (P0), then AI-097. Per the 07:25 meeting you also own the human-playtest checklist for AI-030/AI-080. |
+| ChatGPT (Unity + sound, per the 07:25 meeting) | Push `chatgpt/unity-playable-20260930` to GitHub so the build can be independently reviewed. AI-082: continue unique cue coverage with existing credits only. |
+| Claude Meshy thread (AI-081) | HOLD: no Zeus retexture, rig or batch-05 until Mathew picks the Zeus palette and the concurrent queue is reconciled. Attribute the 375 + 10 credits in ASSET_QUEUE.md. |
+| Claude Code | No new work. AI-046-WIN-ACCEPT waits on AI-100 and on Mathew being present. |
+| Claude (covering Astra) | 18:00: re-review AI-100 when windows-packaging is green with the asserted hash. |
+| Mathew | WAITING — needs Mathew present: the AI-080/AI-030 full mouse-driven match from `playtest/unity-build-2026-09-30/PLAY-INFINITE-CONQUEST.bat`, and the AI-065 deep-path rerun. Decisions: **HA-021 Zeus replacement palette** (new), HA-015, HA-011, HA-012, HA-009, HA-003 remainder, HA-018..020. |
+
+No release or full-match claim.
