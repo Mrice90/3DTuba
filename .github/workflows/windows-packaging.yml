@@ -50,11 +50,29 @@ jobs:
       - name: Smoke standalone re-run (expect 5/5)
         working-directory: releases/alpha-0.7.15-playable
         run: call smoke.bat
-      # AI-099: cross-OS reproducibility evidence — print this build's jar
-      # SHA-256 for comparison with the Linux workflow's two-build hashes.
-      - name: AI-099 jar hash (cross-OS reproducibility evidence)
+      # AI-100: the Windows-built jar must EQUAL the canonical tracked hash —
+      # printing it was not enough (04:00 printed 18998415… and claimed
+      # cross-OS comparison without comparing). Fail the step on mismatch.
+      - name: AI-100 jar hash asserts canonical checksum
         working-directory: releases/alpha-0.7.15-playable
-        run: for /f %%H in ('certutil -hashfile infinite-conquest-alpha-0.7.15.jar SHA256 ^| findstr /v ":"') do @echo jar SHA-256 is %%H
+        run: |
+          for /f %%H in ('certutil -hashfile infinite-conquest-alpha-0.7.15.jar SHA256 ^| findstr /v ":"') do set JARHASH=%%H
+          if not defined JARHASH (echo ERROR: could not hash the jar with certutil & exit /b 1)
+          for /f "tokens=1" %%E in (CHECKSUMS.sha256) do set EXPECTED=%%E
+          if not defined EXPECTED (echo ERROR: could not read CHECKSUMS.sha256 & exit /b 1)
+          if /i "%JARHASH%"=="%EXPECTED%" (
+            echo OK: Windows jar hash matches canonical CHECKSUMS.sha256
+          ) else (
+            echo ERROR: Windows jar hash does not match canonical CHECKSUMS.sha256
+            echo   built:    %JARHASH%
+            echo   expected: %EXPECTED%
+            exit /b 1
+          )
+      # AI-100: prove the play.bat checksum gate accepts a fresh Windows
+      # build without launching the GUI.
+      - name: AI-100 play.bat checksum gate accepts fresh build
+        working-directory: releases/alpha-0.7.15-playable
+        run: call play.bat --check-only
       - name: Regression harness clean (expect REGRESSION PASS)
         working-directory: releases/alpha-0.7.15-playable
         run: call regress.bat
