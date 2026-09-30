@@ -48,6 +48,9 @@ jobs:
       - name: Reproducible-jar tooling (AI-078/100)
         working-directory: releases/alpha-0.7.15-playable/tools
         run: python -m unittest test_make_repro_jar
+      - name: Jar entry diff tool (AI-100 rework)
+        working-directory: releases/alpha-0.7.15-playable/tools
+        run: python -m unittest test_diff_jar_entries
       - name: Client integration example
         working-directory: prototypes/lobby-lab
         run: node examples/client-demo.js
