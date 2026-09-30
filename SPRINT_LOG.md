@@ -761,3 +761,31 @@ Local evidence (Temurin JDK 17.0.20.1, sandbox): full `regress.sh` clean **REGRE
 **Standard verification pass** (clean clone at tip `266ce09`, /tmp/lobby-lab-0400): `npm test` 43/43; `python3 -m unittest test_validate_manifest` 29/29 OK (391/391 MANIFEST VALID); asset-prompts 6/6; board-events 6/6; presentation coverage 2/2; `node --test smoke.test.js` 1/1; `node demo.js` + `node examples/client-demo.js` exit 0; `prototypes/lobby-lab/upstream/worker.js` SHA-256 `73bde885…f990` intact. Deployed-worker drift probe (GETs only): `/lobbies` 200, `/leaderboard?limit=5` 200 — no drift.
 
 **Pending:** Claude's 06:00 acceptance for AI-098/099; then AI-096 Worker v2 (P0, READY after AI-099/098 per board row).
+
+## 2026-09-30 06:00 — Claude (covering Astra)
+This is the scheduled checkpoint, run at 06:53 EDT. Coverage continues: there are no Astra-authored entries since 2026-09-28 10:45. Review: `docs/reviews/2026-09-30-0600-claude-acceptance.md`. Scope: `880cf57..f48b4ce`.
+
+**Verdicts**
+- **AI-098 ACCEPTED.** `3723fd6`; Verify green on both OSes at `69cb965` (36681380841), `266ce09` (36681414338) and `f48b4ce` (36687085629).
+- **AI-099 REJECTED (partial).**
+  - Linux half accepted: 36677332060 shows two builds = tracked = `2db3a12c…`, and `--break=checksum` fails at verify.
+  - Windows packaging 36681380786 is green, **but its jar hash is `18998415…`, not the canonical hash**. `play.bat` checks a fresh Windows build against the tracked `2db3a12c…` and refuses it.
+  - → **AI-100** (P1, Muse).
+  - Probable cause, demonstrated: `make-repro-jar.py` strips only the trailing CRLF, but the `.bat`-written manifest has CRLF between lines.
+- **AI-076** memo corrections accepted (`1ec13ee`).
+- The YAML root cause for the 4 red Windows runs is confirmed; all workflows parse at the tip.
+- Independent Linux packaging dispatch 36705499991 @ `f48b4ce`: **success**, all 14 steps (including the AI-099 two-build + canonical-hash assertion step).
+
+**Media:** Meshy 2,064 (75 spent since 00:00 by the Meshy thread; 12 generations dated 09/30, 1 in progress at 06:55). ElevenLabs 123,239 (unchanged). This run spent 0 credits and $0.
+
+**Assignments**
+| Owner | Next |
+|---|---|
+| Muse (Rune) | **AI-100 first** (P1): normalise all manifest line endings; make windows-packaging **assert** the jar hash equals the tracked `CHECKSUMS.sha256`; show a fresh Windows build passes the `play.bat` checksum gate in CI. Then AI-096 Worker v2 (P0), then AI-097. Read the evidence you print before claiming it. |
+| Claude Unity thread | AI-080 BridgeClient ↔ AI-079 v1.0.0, then AI-093. No commits since `f38f5e1`. |
+| Claude Meshy thread | AI-081; record the 75-credit spend and the in-progress job in ASSET_QUEUE.md. Existing credits only. |
+| Claude ElevenLabs thread | AI-082; no spend since 00:00. Existing credits only. |
+| Claude (covering Astra) | 12:00: accept AI-100 if its CI asserts cross-OS hash equality. |
+| Mathew | WAITING — needs Mathew present: AI-030 mouse acceptance, AI-065 deep-path rerun, AI-080 full-match playtest. Decisions: HA-015, HA-011, HA-012, HA-009, HA-003 remainder, HA-018..020. |
+
+No release or full-match claim.
