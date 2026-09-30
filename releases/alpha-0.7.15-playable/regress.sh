@@ -3,10 +3,12 @@
 #
 # Runs the full packaging pipeline (fetch-source.sh -> build-release.sh, which
 # auto-runs smoke.sh) inside an isolated temp copy of this directory, then
-# verifies the freshly built JAR against its OWN freshly generated
-# CHECKSUMS.sha256. Rebuilds are content-equivalent, not byte-identical
-# (JAR timestamps/ordering vary), so comparing against an unrelated reference
-# artifact is wrong — each build is checked against itself.
+# verifies the freshly built JAR against the checksum THIS BUILD generated
+# ($WORK/build/stage/release/CHECKSUMS.sha256). The tracked CHECKSUMS.sha256
+# is the canonical release hash — deliberately updated, never rewritten per
+# build (AI-099) — so it is excluded from the temp copy and never used for
+# verification here. Two builds from the pinned source are byte-identical
+# (AI-078/AI-099 reproducible jar), which the packaging workflow also checks.
 #
 # Stages and failure detection: every stage's exit status is checked and the
 # stage is named on failure. Final verdict:
@@ -64,9 +66,12 @@ cleanup() {
 trap cleanup EXIT
 
 # Fresh copy of the packaging dir, with any previous build output removed so
-# the regression always starts clean.
+# the regression always starts clean. The tracked CHECKSUMS.sha256 is also
+# excluded (AI-099): it is the canonical release hash, deliberately updated,
+# never rewritten per build — the verify stage must use the checksum this
+# build generated, never a stale tracked copy.
 cp -a "$SCRIPT_DIR"/. "$WORK"/
-rm -rf "$WORK/build" "$WORK"/*.jar
+rm -rf "$WORK/build" "$WORK"/*.jar "$WORK/CHECKSUMS.sha256"
 # A pristine clone may not carry the exec bit (e.g. archives); ensure the
 # recipe scripts are runnable in the isolated copy.
 chmod +x "$WORK"/*.sh 2>/dev/null || true
@@ -160,16 +165,24 @@ echo "stage build: OK"
 echo "== stage: verify =="
 JAR="$(ls infinite-conquest-alpha-*.jar 2>/dev/null | head -1)"
 [ -n "$JAR" ] || fail verify "no built jar found"
-[ -f CHECKSUMS.sha256 ] || fail verify "CHECKSUMS.sha256 missing after build"
+# AI-099: verify the final jar against the checksum THIS BUILD generated
+# (build/stage/release/CHECKSUMS.sha256), never against the tracked
+# CHECKSUMS.sha256 (excluded from the temp copy above). This is a
+# self-referential check: it catches post-build tampering of the jar
+# (--break=checksum) with its own detail, independent of any canonical hash.
+STAGE_SUM="build/stage/release/CHECKSUMS.sha256"
+[ -f "$STAGE_SUM" ] || fail verify "build-generated $STAGE_SUM missing after build"
 
 if [ "$BREAK_MODE" = "checksum" ]; then
   printf 'x' >> "$JAR"
   echo "regress: intentional break — corrupted $JAR"
 fi
 
-if ! sha256sum -c CHECKSUMS.sha256 >/dev/null 2>&1; then
-  fail verify "sha256sum -c CHECKSUMS.sha256 failed against this build's own generated checksum"
+exp="$(awk '{print $1}' "$STAGE_SUM")"
+got="$(sha256sum "$JAR" | awk '{print $1}')"
+if [ -z "$exp" ] || [ -z "$got" ] || [ "$exp" != "$got" ]; then
+  fail verify "jar hash mismatch — expected $exp (this build's generated checksum), got $got"
 fi
-echo "stage verify: OK ($JAR matches its own generated checksum)"
+echo "stage verify: OK ($JAR matches this build's generated checksum, sha256=$got)"
 
 pass
