@@ -5,6 +5,22 @@ setlocal
 set DIR=%~dp0
 set JAR=%DIR%infinite-conquest-alpha-0.7.15.jar
 
+rem AI-100: --check-only verifies the checksum gate without launching the GUI,
+rem so CI can prove a fresh Windows build passes the gate.
+if /i "%~1"=="--check-only" (
+  if not exist "%JAR%" (
+    echo ERROR: %JAR% not found -- build it first: fetch-source.bat ^&^& build-release.bat
+    exit /b 1
+  )
+  if not exist "%DIR%CHECKSUMS.sha256" (
+    echo ERROR: CHECKSUMS.sha256 not found next to play.bat -- cannot check the gate.
+    exit /b 1
+  )
+  call :verify || exit /b 1
+  echo OK: checksum gate accepts this build ^(--check-only; not launching^)
+  exit /b 0
+)
+
 where java >nul 2>nul || (
   echo ERROR: java not found on PATH -- install JDK 17+ ^(Temurin/Adoptium^), then re-run.
   exit /b 1
