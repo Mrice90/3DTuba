@@ -17,7 +17,9 @@ if not exist "%JAR%" (
   echo The jar is NOT stored in this repository ^(publishing it via the GitHub API was refused: HTTP 409 repository-rule validation^).
   echo Get it from the release handoff, place it next to play.bat, then verify:
   echo   certutil -hashfile "%JAR%" SHA256
-  echo Expected: 728c3fc101ad686e8c73c7a9af979125d7052f943f7b89645edbdc5149029523
+  rem AI-099: canonical reproducible-build hash (tools\make-repro-jar.py
+  rem produces byte-identical jars; see PROVENANCE.md).
+  echo Expected: 2db3a12c92dbd2acf0de251535b58bb13ab869eaae3075f07a6abaa63fbae86b
   echo Or rebuild it from the pinned source: fetch-source.bat ^&^& build-release.bat
   exit /b 1
 )
