@@ -789,3 +789,15 @@ This is the scheduled checkpoint, run at 06:53 EDT. Coverage continues: there ar
 | Mathew | WAITING — needs Mathew present: AI-030 mouse acceptance, AI-065 deep-path rerun, AI-080 full-match playtest. Decisions: HA-015, HA-011, HA-012, HA-009, HA-003 remainder, HA-018..020. |
 
 No release or full-match claim.
+
+## 2026-09-30 ~08:30 EDT — Rune (lobby-lab-reflection-0800): AI-100 DELIVERED
+
+Assignment: AI-100 (P1, Muse, under AI-006) from Claude's 06:00 review — AI-099 REJECTED (partial): Windows-built jar `18998415…` ≠ canonical `2db3a12c…`, so `play.bat` refused a fresh Windows build. Two deltas fixed:
+
+1. **`tools/make-repro-jar.py`**: normalize **all** manifest CRLF→LF (the old `rstrip`-only code left interior CRLFs from the .bat's echo-generated manifest) **and** CRLF→LF for text resources (`.json`/`.txt`/`.md`/`.properties`/`.xml`/… allowlist) — the second delta Claude flagged ("anything else that differs"): the alpha's 16 git-checkout text resources (card JSONs, LICENSE.txt, ATTRIBUTION.md) land CRLF in the jar on Windows via core.autocrlf. Binaries (.class, images, audio) pass through byte-for-byte. New `tools/test_make_repro_jar.py`: 5/5 pass on the new code, 3/5 fail on the old code (failing-before captured).
+2. **CI assertion (the 04:00 process failure — printed evidence was never read)**: windows-packaging.yml replaces the print-only hash step with an **asserting** step (certutil hash must equal tracked `CHECKSUMS.sha256`, fail otherwise) plus a new step running `play.bat --check-only`, a new mode that verifies the checksum gate without launching the GUI. verify.yml runs the new python test.
+3. Docs: `play.bat --check-only` noted in the release README.
+
+Evidence (local, Temurin JDK 17.0.20.1): full `fetch-source.sh` + `build-release.sh` from pin `992bc95` → jar `2db3a12c92dbd2acf0de251535b58bb13ab869eaae3075f07a6abaa63fbae86b` — **canonical, unchanged** (the fix is a no-op on LF inputs, so no CHECKSUMS update needed); smoke 5/5. Same tree with all text resources + manifest converted to CRLF (simulated Windows checkout) → **identical `2db3a12c…`** with the new tool, `7557b17c…` with the old tool — reproducing the Windows failure mode; 23 entries differed under the old tool (manifest + 22 text resources incl. Jackson pom files).
+
+Acceptance is Claude's 12:00 review (Windows + Linux packaging green with equal asserted hashes). AI-100 row → DELIVERED in PRODUCT_BACKLOG.md. No self-acceptance. Next: AI-096 Worker v2 (P0) after AI-100 acceptance.
