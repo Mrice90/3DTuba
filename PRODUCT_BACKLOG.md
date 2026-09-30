@@ -560,3 +560,21 @@ P0 | READY | Owner: Muse (Worker/Durable Object in `prototypes/lobby-lab/`, plus
 - **Bridge:** add `{"cmd":"hash"}` (a canonical state hash) and seeded match setup that both clients share (a seed commit-reveal, so neither player controls the shuffle).
 - **Unity:** a match mode where the local seat's actions go to both the local bridge and the relay, and remote actions from the relay are applied to the local bridge.
 - **Acceptance:** two Windows PCs on different networks play a full match through the relay with matching hashes every turn. A tampered client is detected at the next hash. A client that disconnects for 60 s reconnects and resumes from the intent log. Everything runs on the Cloudflare free tier.
+
+## 2026-09-30 00:00 — Claude (covering Astra): board update
+Review: `docs/reviews/2026-09-30-0000-claude-acceptance.md`. This section supersedes the AI-074..079 rows above.
+
+| ID | Pri | Owner | Status | Next action / acceptance |
+|---|---|---|---|---|
+| AI-079 | P0 | Muse | **ACCEPTED** 2026-09-30 00:00 (protocol v1.0.0; CI 36640973532 / 36641738516 step 12) | Integration: Claude Unity thread wires BridgeClient (AI-080). |
+| AI-075 | P1 | Muse | **ACCEPTED** (Verify 36641390414, both OSes) | — |
+| AI-074 | P2 | Muse | **ACCEPTED** (Linux packaging 36641738516 step 13) | — |
+| AI-076 | P3 | Muse | **ACCEPTED** (docs) → HA-015 | Optional: fix the swap-mode wording and the C#-core assumption (the shipped engine is the Java jar; a coin flip can be done bridge-side). |
+| AI-077 | P1 | Muse | **REJECTED** — Windows Verify red since `55557ae` | Fix via AI-098. |
+| AI-078 | P3 | Muse | **REJECTED** — Linux clean regress red (36641800847) | Fix via AI-099. |
+| **AI-099** (new, AI-006) | P1 | Muse | READY — do first | Fix the AI-078 regression: regress verifies the jar against this build's own generated checksum; the tracked `CHECKSUMS.sha256` is never stale next to a rebuilt jar (update it deliberately with Windows parity, or don't ship it beside local builds); `play.sh`/`.bat` accept a fresh build. Acceptance: Linux packaging all 13 steps green, CI log shows two builds with the same SHA-256, Windows packaging green, `--break=checksum` fails with its own detail. |
+| **AI-098** (new, AI-006) | P1 | Muse | READY | `coverage.py` emits POSIX relative paths (`as_posix()`). Acceptance: Verify green on windows-latest + ubuntu. |
+| AI-096 | P0 | Muse | READY, after AI-099/098 | Worker v2 per the ~19:40 section. |
+| AI-097 | P0 | Muse + Claude Unity thread | READY, after AI-096 | Per the 20:00 PO section. |
+
+Process: record every CI run ID with its conclusion; fetch before each root-record edit (third stale overwrite on 2026-09-29).
