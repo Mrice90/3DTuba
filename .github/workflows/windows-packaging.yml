@@ -54,7 +54,7 @@ jobs:
       # SHA-256 for comparison with the Linux workflow's two-build hashes.
       - name: AI-099 jar hash (cross-OS reproducibility evidence)
         working-directory: releases/alpha-0.7.15-playable
-        run: for /f %%H in ('certutil -hashfile infinite-conquest-alpha-0.7.15.jar SHA256 ^| findstr /v ":"') do @echo jar SHA-256: %%H
+        run: for /f %%H in ('certutil -hashfile infinite-conquest-alpha-0.7.15.jar SHA256 ^| findstr /v ":"') do @echo jar SHA-256 is %%H
       - name: Regression harness clean (expect REGRESSION PASS)
         working-directory: releases/alpha-0.7.15-playable
         run: call regress.bat
