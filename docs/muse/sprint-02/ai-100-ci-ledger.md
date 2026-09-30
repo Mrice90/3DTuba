@@ -113,3 +113,42 @@ At `874ea3a` (code head; `7bae8ac` is a docs-only ledger commit on top):
 
 AI-100 rework is **DELIVERED**; formal acceptance remains Claude's 18:00 review
 lane (no self-acceptance).
+
+## 2026-09-30 ~15:00–17:00 EDT — parallel-run convergence + CI-jar artifact cross-check (14:00 run)
+
+The 14:00 and 15:00 reflection runs executed the same AI-100 rework in
+parallel and converged: identical root cause (`ZipInfo.create_system` pin),
+identical WinError 32 fixes (`0912185`'s fix and `a04a0a4`'s fix are the same
+one-liner — comment wording only differs), no merge conflicts; the branch
+tip `a04a0a4` chains on `4e144e7`. Runs since the acceptance section above:
+
+| Head | Run | Workflow | Conclusion | Notes |
+|------|-----|----------|------------|-------|
+| `3bf9641` | [#214](https://github.com/Mrice90/3DTuba/actions/runs/36759079743) `36759079743` | Verify | success | AI-102 verification head (setup-python@v6), both OSes |
+| `95024eb` | [#216](https://github.com/Mrice90/3DTuba/actions/runs/36762842508) `36762842508` | Verify | success | docs-only (AI-101/AI-102 delivery entry) |
+| `4e144e7` | [#217](https://github.com/Mrice90/3DTuba/actions/runs/36762850162) `36762850162` | Verify | success | docs-only (independent QA entry) |
+| `a04a0a4` | [#218](https://github.com/Mrice90/3DTuba/actions/runs/36776423251) `36776423251` | Verify | success | both OSes, incl. WinError 32 regression tests |
+| `a04a0a4` | [#39](https://github.com/Mrice90/3DTuba/actions/runs/36776423099) `36776423099` | Linux packaging | success | two-builds-agree + canonical assertion; Temurin 17.0.20.1+1 |
+| `a04a0a4` | [#72](https://github.com/Mrice90/3DTuba/actions/runs/36776423170) `36776423170` | Windows packaging | success | `AI-100 jar hash asserts canonical checksum` green; `play.bat --check-only` green; Temurin 17.0.20.1+1 |
+
+### Decisive CI-jar cross-check (closes the ledger's open artifact item)
+
+The HTTP 401 on artifact blob download was a redirect-auth issue, not a
+permissions issue: fixed by following the 302 to blob storage without the API
+surrogate (workspace `download_artifact.py`). Downloaded both jars:
+
+- `linux-jar` (run `36776423099`, 90,770,367 B) and `windows-jar` (run
+  `36776423170`, 90,770,367 B).
+- SHA-256 of **both** = `2db3a12c92dbd2acf0de251535b58bb13ab869eaae3075f07a6abaa63fbae86b`
+  = tracked canonical `CHECKSUMS.sha256`.
+- Shipped `diff-jar-entries.py` (run `36776423099` jar vs run `36776423170`
+  jar): **IDENTICAL: same entry set, same content, same header fields** —
+  zero differing entries. (Earlier ledger said 90,579,277 B from the zip
+  wrapper; the extracted jars are 90,770,367 B on both OSes.)
+- Toolchain versions (new AI-100 diagnosis step): **both** runners report
+  Temurin `openjdk version "17.0.20.1"` — the JDK patch-level suspect is
+  eliminated; the `create_system` pin was the entire residue.
+
+AI-100 rework remains **DELIVERED**; formal acceptance stays in Claude's
+18:00 review lane (no self-acceptance). Corroborating runs above are all
+green — no red acceptance CI since `874ea3a`.
