@@ -303,9 +303,9 @@ namespace InfiniteConquest.Playtest {
                     if (r.events != null) foreach (var e in r.events) liveQueue.Enqueue(e);
                     while (liveQueue.Count > 0) yield return Apply(liveQueue.Dequeue());
                     if (r.state != null) { liveState = r.state; SyncState(r.state); }
-                    if (r.actions != null) { liveActions = r.actions; liveStatus = liveActions.Length + " legal actions — pick a card or piece."; }
-                    else if (r.ok && liveState != null && liveState.winner < 0 && liveState.active == humanSeat) { bridge.Legal(); waiting = true; }
-                    else if (r.ok && liveState != null && liveState.winner < 0) { liveStatus = "Opponent (bot) is playing…"; }
+                    if (r.legal != null) { liveActions = r.legal; liveStatus = liveActions.Length + " legal actions — pick a card or piece."; }
+                    else if (r.ok && liveState != null && !liveState.GameOver && liveState.active_player == humanSeat) { bridge.Legal(); waiting = true; }
+                    else if (r.ok && liveState != null && !liveState.GameOver) { liveStatus = "Opponent (bot) is playing…"; }
                 }
                 if (!bridge.Alive) { liveStatus = "Bridge exited. " + bridge.LastError; yield break; }
                 yield return null;
@@ -314,10 +314,10 @@ namespace InfiniteConquest.Playtest {
         // Reconcile pieces with the bridge's per-hex stacks, and HUD numbers with its players block.
         void SyncState(BridgeState s) {
             if (s.players != null) for (int i = 0; i < Mathf.Min(2, s.players.Length); i++) {
-                model.Gp[i] = s.players[i].gp; model.CapitalHp[i] = s.players[i].capital_hp;
+                model.Gp[i] = s.players[i].gp;
                 model.Hand[i] = s.players[i].hand != null ? s.players[i].hand.Length : s.players[i].hand_count;
             }
-            model.Turn = s.turn; model.Active = s.active; model.Phase = s.phase; if (s.winner >= 0) model.Winner = s.winner;
+            model.Turn = s.turn; model.Active = s.active_player; model.Phase = s.phase; if (s.GameOver) model.Winner = s.winner;
             if (s.board == null) return;
             var seen = new HashSet<string>();
             foreach (var hex in s.board) {
@@ -331,17 +331,19 @@ namespace InfiniteConquest.Playtest {
             }
             foreach (var p in pieces.Values.ToList()) if (p != null && !seen.Contains(p.InstanceId)) Despawn(p);
         }
-        IEnumerable<BridgeAction> ActionsFor(string instanceId) => liveActions.Where(a => a.instance_id == instanceId && a.to != null);
+        static WireHex TargetOf(BridgeAction a) => a.to ?? a.target ?? a.at ?? a.destination;
+        IEnumerable<BridgeAction> ActionsFor(string instanceId) => liveActions.Where(a => a.instance_id == instanceId && TargetOf(a) != null);
         void SelectLive(string instanceId) {
             liveSelected = instanceId;
             var acts = ActionsFor(instanceId).ToList();
-            board.SetLegal(acts.Where(a => !IsAttack(a)).Select(a => new Vector2Int(a.to.x, a.to.y)), acts.Where(IsAttack).Select(a => new Vector2Int(a.to.x, a.to.y)));
+            board.SetLegal(acts.Where(a => !IsAttack(a)).Select(a => TargetOf(a)).Select(h => new Vector2Int(h.x, h.y)),
+                           acts.Where(IsAttack).Select(a => TargetOf(a)).Select(h => new Vector2Int(h.x, h.y)));
             sfx.PlayUi("click");
         }
-        static bool IsAttack(BridgeAction a) => a.kind != null && a.kind.ToUpperInvariant().Contains("ATTACK");
+        static bool IsAttack(BridgeAction a) => a.type != null && a.type.Equals("attack", StringComparison.OrdinalIgnoreCase);
         void ActLive(BridgeAction a) {
             if (a == null || bridge == null || waiting) return;
-            bridge.Act(a.id); waiting = true; liveStatus = "Resolving " + (a.label ?? a.kind) + "…";
+            bridge.Act(a.id); waiting = true; liveStatus = "Resolving " + (a.card_name ?? a.type) + "…";
             liveActions = new BridgeAction[0]; liveSelected = null; board.SetLegal(null);
         }
 
@@ -426,7 +428,7 @@ namespace InfiniteConquest.Playtest {
         void Click(Vector2Int h, Piece hp) {
             if (mode == Mode.Live) {
                 if (BoardView.InBounds(h.x, h.y) && liveSelected != null && board.IsLegal(h)) {
-                    var acts = ActionsFor(liveSelected).Where(a => a.to.x == h.x && a.to.y == h.y).ToList();
+                    var acts = ActionsFor(liveSelected).Where(a => TargetOf(a).x == h.x && TargetOf(a).y == h.y).ToList();
                     ActLive(acts.FirstOrDefault(IsAttack) ?? acts.FirstOrDefault());
                     return;
                 }
@@ -491,7 +493,7 @@ namespace InfiniteConquest.Playtest {
                 foreach (var s in new[] { 1f, 2f, 4f }) { if (GUI.Toggle(new Rect(x, y, 50, 32), Mathf.Approximately(speed, s), s + "x", buttonStyle)) speed = s; x += 54; }
                 x += 10;
             } else if (mode == Mode.Live) {
-                var end = liveActions.FirstOrDefault(a => a.kind != null && a.kind.ToUpperInvariant().Contains("END"));
+                var end = liveActions.FirstOrDefault(a => a.type != null && a.type.Equals("end_turn", StringComparison.OrdinalIgnoreCase));
                 GUI.enabled = end != null && !waiting;
                 if (GUI.Button(new Rect(x, y, 110, 32), "End turn", buttonStyle)) ActLive(end); x += 116;
                 GUI.enabled = true;

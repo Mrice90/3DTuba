@@ -26,7 +26,15 @@
    "type": "CHARACTER",
    "model": "Tokens/zeus_ability_skyline_seer/zeus_ability_skyline_seer",
    "modelSource": "meshy/AI-050-skyline-seer/zeus_ability_skyline_seer.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_ability_healing_shoal",
@@ -53,7 +61,15 @@
    "type": "CHARACTER",
    "model": "Tokens/poseidon_ability_reefwarden/poseidon_ability_reefwarden",
    "modelSource": "meshy/batch-03-rarity3-units/poseidon_ability_reefwarden.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_apex_thunder_gods_verdict",
@@ -161,7 +177,13 @@
    "type": "LAND",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
   },
   {
    "id": "zeus_apex_worldstorm_spire",
@@ -179,7 +201,13 @@
    "type": "LAND",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_apex_oceanus_current_vault",
@@ -188,7 +216,13 @@
    "type": "LAND",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_apex_leviathan_nursery_trench",
@@ -197,7 +231,13 @@
    "type": "LAND",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_apex_trident_confluence",
@@ -206,7 +246,13 @@
    "type": "LAND",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_apex_worldsea_platform",
@@ -215,7 +261,13 @@
    "type": "LAND",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "destroy",
+    "ability",
+    "signature",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_apex_atlantis_tide_sovereign",
@@ -386,7 +438,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_arc_relay_scout",
@@ -395,7 +455,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_thunderhead_skirmisher",
@@ -404,7 +472,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_iris_signal_runner",
@@ -413,7 +489,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_aegis_airguard",
@@ -422,7 +506,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_cyclone_marksman",
@@ -431,7 +523,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_boltwing_cavalier",
@@ -440,7 +540,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_tempest_oracle",
@@ -449,7 +557,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_hera_protocol_warden",
@@ -458,7 +574,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_stormgate_adept",
@@ -467,7 +591,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_eagle_of_the_high_grid",
@@ -476,7 +608,15 @@
    "type": "CHARACTER",
    "model": "Tokens/zeus_eagle_of_the_high_grid/zeus_eagle_of_the_high_grid",
    "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_eagle_of_the_high_grid.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_keraunos_prime",
@@ -485,7 +625,15 @@
    "type": "CHARACTER",
    "model": "Tokens/zeus_keraunos_prime/zeus_keraunos_prime",
    "modelSource": "meshy/batch-04-alpha-img2-3d/rigged/zeus_keraunos_prime.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_olympian_cloudbank",
@@ -566,7 +714,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_nereid_current_rider",
@@ -575,7 +731,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_reefline_defender",
@@ -584,7 +748,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_undertow_stalker",
@@ -593,7 +765,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_triton_waveguard",
@@ -602,7 +782,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_delphic_sonar_adept",
@@ -656,7 +844,15 @@
    "type": "CHARACTER",
    "model": "Tokens/poseidon_leviathan_wakeborn/poseidon_leviathan_wakeborn",
    "modelSource": "meshy/AI-052-poseidon_leviathan_wakeborn/textured/poseidon_leviathan_wakeborn_textured.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_poseidons_trident_core",
@@ -664,8 +860,16 @@
    "faction": "POSEIDON",
    "type": "CHARACTER",
    "model": "Tokens/poseidon_poseidons_trident_core/poseidon_poseidons_trident_core",
-   "modelSource": "meshy/batch-03-rarity3-units/poseidon_poseidons_trident_core.glb",
-   "sfx": []
+   "modelSource": "meshy/batch-03-rarity3-units/rigged/poseidon_poseidons_trident_core.glb",
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_neon_tidelands",
@@ -737,7 +941,14 @@
    "type": "STRUCTURE",
    "model": "Tokens/poseidon_abyss_gate/poseidon_abyss_gate",
    "modelSource": "meshy/AI-052-poseidon_abyss_gate/textured/poseidon_abyss_gate_textured.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "hit",
+    "destroy",
+    "ability",
+    "idle",
+    "select"
+   ]
   },
   {
    "id": "zeus_ion_storm_lattice",
@@ -944,7 +1155,15 @@
    "type": "CHARACTER",
    "model": "Tokens/zeus_keyword_cloudline_raider/zeus_keyword_cloudline_raider",
    "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_keyword_cloudline_raider.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_keyword_aetherbolt_avatar",
@@ -980,7 +1199,15 @@
    "type": "CHARACTER",
    "model": "Tokens/zeus_keyword_thunderhead_guardian/zeus_keyword_thunderhead_guardian",
    "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_keyword_thunderhead_guardian.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_keyword_reef_tunneler",
@@ -998,7 +1225,15 @@
    "type": "CHARACTER",
    "model": "Tokens/poseidon_keyword_trench_stalker/poseidon_keyword_trench_stalker",
    "modelSource": "meshy/batch-03-rarity3-units/poseidon_keyword_trench_stalker.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_keyword_abyssal_leviathan",
@@ -1034,7 +1269,15 @@
    "type": "CHARACTER",
    "model": "Tokens/poseidon_keyword_maelstrom_bulwark/poseidon_keyword_maelstrom_bulwark",
    "modelSource": "meshy/batch-03-rarity3-units/poseidon_keyword_maelstrom_bulwark.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_chain_lightning",
@@ -1133,7 +1376,15 @@
    "type": "CHARACTER",
    "model": "",
    "modelSource": "",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_siege_thunder_ram",
@@ -1142,7 +1393,15 @@
    "type": "CHARACTER",
    "model": "Tokens/zeus_siege_thunder_ram/zeus_siege_thunder_ram",
    "modelSource": "meshy/AI-052-zeus_siege_thunder_ram/textured/zeus_siege_thunder_ram_textured.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "zeus_sharp_aether_spotter",
@@ -1151,7 +1410,15 @@
    "type": "CHARACTER",
    "model": "Tokens/zeus_sharp_aether_spotter/zeus_sharp_aether_spotter",
    "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_sharp_aether_spotter.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_fast_razorfin_lancer",
@@ -1169,7 +1436,15 @@
    "type": "CHARACTER",
    "model": "Tokens/poseidon_siege_kraken_sapper/poseidon_siege_kraken_sapper",
    "modelSource": "meshy/batch-03-rarity3-units/poseidon_siege_kraken_sapper.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_sharp_tidewall_harpooner",
@@ -1178,7 +1453,15 @@
    "type": "CHARACTER",
    "model": "Tokens/poseidon_sharp_tidewall_harpooner/poseidon_sharp_tidewall_harpooner",
    "modelSource": "meshy/batch-03-rarity3-units/poseidon_sharp_tidewall_harpooner.glb",
-   "sfx": []
+   "sfx": [
+    "deploy",
+    "move",
+    "attack",
+    "hit",
+    "destroy",
+    "ability",
+    "idle"
+   ]
   },
   {
    "id": "poseidon_tutor_land_1",

@@ -777,6 +777,14 @@ public final class RulesBridge {
                             ? "ATTACK_RESOLVED" : "OPPORTUNITY_ATTACK");
                     wire.put("instance_id", m.group(1));
                     wire.put("target_instance_id", m.group(2));
+                    UUID targetId = UUID.fromString(m.group(2));
+                    Optional<BoardPosition> targetPos = cardOf(m.group(2))
+                            .flatMap(c -> state.board().positionOf(c.instanceId()));
+                    if (targetPos.isEmpty() && lastPos.containsKey(targetId)) {
+                        targetPos = Optional.of(lastPos.get(targetId));
+                    }
+                    targetPos.ifPresent(pos -> wire.put("to",
+                            Map.of("x", pos.x(), "y", pos.y())));
                     wire.put("detail", detail);
                 }
                 case CARD_DESTROYED -> {

@@ -7,34 +7,30 @@ using System.Threading;
 using UnityEngine;
 
 namespace InfiniteConquest.Playtest {
-    // AI-079 rules-bridge client (behind the -bridgeCmd flag). The bridge is Muse's headless Java process
-    // against the pinned alpha jar, speaking line-delimited JSON over stdin/stdout. Until it lands this
-    // client follows the protocol as described in PRODUCT_BACKLOG.md (AI-079):
-    //   -> {"cmd":"new","seed":42,"human":0}      <- {"ok":true,"events":[...],"state":{...}}
-    //   -> {"cmd":"legal"}                         <- {"ok":true,"actions":[{"id":"a3","kind":"MOVE",...}]}
-    //   -> {"cmd":"act","id":"a3"}                 <- {"ok":true,"events":[...],"state":{...}}  (bot seat auto-plays)
-    //   illegal ids                                <- {"ok":false,"error":"..."}
-    // Events are AI-062 wire records; state carries hands, GP and per-hex stacks. Field names here are the
-    // expected ones; adjust BridgeResponse if the landed bridge differs.
+    // AI-079 rules-bridge v1.0.0 client (behind the -bridgeCmd flag). The bridge is Muse's
+    // headless Java process against the pinned alpha jar, speaking line-delimited JSON over
+    // stdin/stdout. Requests use id/op and responses carry legal/state/events.
     [Serializable] public sealed class BridgeAction {
-        public string id, kind, label, instance_id, card_id;
-        public WireHex to, from;
+        public string id, type, command, instance_id, card_id, card_name;
+        public WireHex to, from, at, target, destination;
     }
     [Serializable] public sealed class BridgeHandCard { public string instance_id, card_id; }
-    [Serializable] public sealed class BridgePlayer { public int gp, capital_hp, hand_count, deck_count; public BridgeHandCard[] hand; }
+    [Serializable] public sealed class BridgePlayer { public int gp, hand_count, deck_count, discard_count, seat; public string faction, controller; public BridgeHandCard[] hand; }
     [Serializable] public sealed class BridgeStackCard { public string instance_id, card_id; public int owner; }
     [Serializable] public sealed class BridgeHex { public int x, y; public BridgeStackCard[] stack; }
     [Serializable] public sealed class BridgeState {
-        public int turn, active, winner = -1;
+        public int turn, active_player, winner;
         public string phase;
         public BridgePlayer[] players;
         public BridgeHex[] board;
+        public bool GameOver => phase == "GAME_OVER";
     }
     [Serializable] public sealed class BridgeResponse {
         public bool ok;
-        public string error;
+        public string id, error, error_code;
+        public int revision;
         public WireEvent[] events;
-        public BridgeAction[] actions;
+        public BridgeAction[] legal;
         public BridgeState state;
         [NonSerialized] public string raw;
     }
@@ -45,6 +41,7 @@ namespace InfiniteConquest.Playtest {
         readonly ConcurrentQueue<string> lines = new ConcurrentQueue<string>();
         readonly ConcurrentQueue<string> errors = new ConcurrentQueue<string>();
         Thread reader, errReader;
+        int requestId;
         public string LastError;
         public bool Alive => process == null || !process.HasExited;
 
@@ -68,9 +65,12 @@ namespace InfiniteConquest.Playtest {
         }
 
         public void Send(string json) { input.WriteLine(json); input.Flush(); }
-        public void New(int seed, int humanSeat) => Send("{\"cmd\":\"new\",\"seed\":" + seed + ",\"human\":" + humanSeat + "}");
-        public void Legal() => Send("{\"cmd\":\"legal\"}");
-        public void Act(string id) => Send("{\"cmd\":\"act\",\"id\":\"" + id.Replace("\"", "") + "\"}");
+        string NextId() => "unity-" + Interlocked.Increment(ref requestId);
+        public void New(int seed, int humanSeat) => Send("{\"id\":\"" + NextId() + "\",\"op\":\"new\",\"seed\":" + seed
+            + ",\"human_player\":" + humanSeat + ",\"human_faction\":\"" + (humanSeat == 0 ? "ZEUS" : "POSEIDON")
+            + "\",\"bot_faction\":\"" + (humanSeat == 0 ? "POSEIDON" : "ZEUS") + "\",\"difficulty\":\"HERO\"}");
+        public void Legal() => Send("{\"id\":\"" + NextId() + "\",\"op\":\"legal\"}");
+        public void Act(string actionId) => Send("{\"id\":\"" + NextId() + "\",\"op\":\"act\",\"action_id\":\"" + actionId.Replace("\"", "") + "\"}");
 
         public bool TryReceive(out BridgeResponse response) {
             response = null;

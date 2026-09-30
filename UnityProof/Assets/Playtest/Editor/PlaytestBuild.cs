@@ -139,23 +139,23 @@ public static class PlaytestBuild {
         return mat;
     }
 
-    // BridgeClient against canned AI-079-shaped lines (the real bridge has not landed on the branch yet).
+    // BridgeClient against canned AI-079 v1.0.0 lines.
     static void BridgeSelfTest() {
         var sentWriter = new StringWriter();
-        var canned = "{\"ok\":true,\"events\":[{\"turn\":1,\"player\":0,\"event\":\"CARD_PLAYED\",\"card_id\":\"zeus_arc_relay_scout\",\"instance_id\":\"i1\",\"to\":{\"x\":1,\"y\":1},\"seq\":0}],\"state\":{\"turn\":1,\"active\":0,\"winner\":-1,\"phase\":\"PLAY\",\"players\":[{\"gp\":2,\"capital_hp\":20,\"hand\":[{\"instance_id\":\"i2\",\"card_id\":\"zeus_arc_relay_scout\"}]},{\"gp\":0,\"capital_hp\":20,\"hand_count\":6}],\"board\":[{\"x\":1,\"y\":1,\"stack\":[{\"instance_id\":\"i1\",\"card_id\":\"zeus_arc_relay_scout\",\"owner\":0}]}]}}\n"
-                   + "{\"ok\":true,\"actions\":[{\"id\":\"a1\",\"kind\":\"MOVE\",\"instance_id\":\"i1\",\"card_id\":\"zeus_arc_relay_scout\",\"to\":{\"x\":1,\"y\":2}},{\"id\":\"end\",\"kind\":\"END_TURN\"}]}\n"
-                   + "{\"ok\":false,\"error\":\"illegal action id: zz\"}\n";
+        var canned = "{\"id\":\"unity-1\",\"ok\":true,\"revision\":0,\"events\":[{\"turn\":1,\"player\":0,\"event\":\"CARD_PLAYED\",\"card_id\":\"zeus_arc_relay_scout\",\"instance_id\":\"i1\",\"to\":{\"x\":1,\"y\":1},\"seq\":0}],\"legal\":[{\"id\":\"r0-a1\",\"type\":\"move\",\"instance_id\":\"i1\",\"card_id\":\"zeus_arc_relay_scout\",\"to\":{\"x\":1,\"y\":2}},{\"id\":\"r0-a2\",\"type\":\"end_turn\"}],\"state\":{\"turn\":1,\"active_player\":0,\"winner\":null,\"phase\":\"PLAY\",\"players\":[{\"gp\":2,\"hand\":[{\"instance_id\":\"i2\",\"card_id\":\"zeus_arc_relay_scout\"}]},{\"gp\":0,\"hand_count\":6}],\"board\":[{\"x\":1,\"y\":1,\"stack\":[{\"instance_id\":\"i1\",\"card_id\":\"zeus_arc_relay_scout\",\"owner\":0}]}]}}\n"
+                   + "{\"id\":\"unity-2\",\"ok\":true,\"revision\":0,\"events\":[],\"legal\":[{\"id\":\"r0-a1\",\"type\":\"move\",\"instance_id\":\"i1\",\"card_id\":\"zeus_arc_relay_scout\",\"to\":{\"x\":1,\"y\":2}},{\"id\":\"r0-a2\",\"type\":\"end_turn\"}]}\n"
+                   + "{\"id\":\"unity-3\",\"ok\":false,\"revision\":0,\"error_code\":\"INVALID_ACTION\",\"error\":\"unknown or stale action id: zz\"}\n";
         var client = new BridgeClient(null, sentWriter, new StringReader(canned));
         client.New(42, 0); client.Legal(); client.Act("zz");
         var got = new List<BridgeResponse>();
         var until = DateTime.Now.AddSeconds(5);
         while (got.Count < 3 && DateTime.Now < until) { if (client.TryReceive(out var r)) got.Add(r); else System.Threading.Thread.Sleep(10); }
         var sent = sentWriter.ToString().Split('\n').Select(s => s.Trim()).Where(s => s.Length > 0).ToArray();
-        Check(sent.Length == 3 && sent[0] == "{\"cmd\":\"new\",\"seed\":42,\"human\":0}" && sent[1] == "{\"cmd\":\"legal\"}" && sent[2] == "{\"cmd\":\"act\",\"id\":\"zz\"}", "bridge client writes new/legal/act lines");
+        Check(sent.Length == 3 && sent[0].Contains("\"op\":\"new\"") && sent[0].Contains("\"human_player\":0") && sent[1].Contains("\"op\":\"legal\"") && sent[2].Contains("\"op\":\"act\"") && sent[2].Contains("\"action_id\":\"zz\""), "bridge client writes v1.0.0 new/legal/act lines");
         Check(got.Count == 3, "bridge client reads three responses");
         Check(got[0].ok && got[0].events.Length == 1 && got[0].events[0].hasTo && got[0].events[0].to.y == 1 && got[0].state.players[0].hand.Length == 1 && got[0].state.board[0].stack[0].owner == 0, "bridge response: events + state parsed");
-        Check(got[1].actions.Length == 2 && got[1].actions[0].to.y == 2 && got[1].actions[1].kind == "END_TURN", "bridge response: legal actions parsed");
-        Check(!got[2].ok && got[2].error.Contains("illegal"), "bridge response: illegal id error surfaced");
+        Check(got[1].legal.Length == 2 && got[1].legal[0].to.y == 2 && got[1].legal[1].type == "end_turn", "bridge response: legal actions parsed");
+        Check(!got[2].ok && got[2].error_code == "INVALID_ACTION" && got[2].error.Contains("stale"), "bridge response: illegal id error surfaced");
     }
 }
 
