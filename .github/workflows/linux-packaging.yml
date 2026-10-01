@@ -108,7 +108,7 @@ jobs:
       # AI-100 rework: keep the built jar for the per-entry cross-OS diff
       # (tools/diff-jar-entries.py), mirroring windows-packaging.yml.
       - name: Upload built jar (AI-100 diagnosis)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: linux-jar
           path: releases/alpha-0.7.15-playable/infinite-conquest-alpha-0.7.15.jar
