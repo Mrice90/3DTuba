@@ -61,7 +61,7 @@ jobs:
       # (tools/diff-jar-entries.py). Uploaded right after the build so the
       # jar is available even when the asserting step below fails.
       - name: Upload built jar (AI-100 diagnosis)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: windows-jar
           path: releases/alpha-0.7.15-playable/infinite-conquest-alpha-0.7.15.jar
