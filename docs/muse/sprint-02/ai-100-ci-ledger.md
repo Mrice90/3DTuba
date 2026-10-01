@@ -124,7 +124,8 @@ tip `a04a0a4` chains on `4e144e7`. Runs since the acceptance section above:
 
 | Head | Run | Workflow | Conclusion | Notes |
 |------|-----|----------|------------|-------|
-| `3bf9641` | [#214](https://github.com/Mrice90/3DTuba/actions/runs/36759079743) `36759079743` | Verify | success | AI-102 verification head (setup-python@v6), both OSes |
+| `7bae8ac` | [#214](https://github.com/Mrice90/3DTuba/actions/runs/36758717297) `36758717297` | Verify | success | AI-101 correction: this run is Verify #214 (docs-only ledger commit); the row below is #215 |
+| `3bf9641` | [#215](https://github.com/Mrice90/3DTuba/actions/runs/36759079743) `36759079743` | Verify | success | AI-102 verification head (setup-python@v6), both OSes |
 | `95024eb` | [#216](https://github.com/Mrice90/3DTuba/actions/runs/36762842508) `36762842508` | Verify | success | docs-only (AI-101/AI-102 delivery entry) |
 | `4e144e7` | [#217](https://github.com/Mrice90/3DTuba/actions/runs/36762850162) `36762850162` | Verify | success | docs-only (independent QA entry) |
 | `a04a0a4` | [#218](https://github.com/Mrice90/3DTuba/actions/runs/36776423251) `36776423251` | Verify | success | both OSes, incl. WinError 32 regression tests |
