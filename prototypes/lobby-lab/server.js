@@ -4,6 +4,8 @@
  *
  * - Imports upstream/worker.js VERBATIM (see upstream/PROVENANCE.md).
  * - Adapts Node http requests to the worker's fetch(request, env) signature.
+ * - Routes /v2/* to worker-v2.js (AI-096: room assignment, signed results,
+ *   dataVersion gate); everything else goes to the pinned v1 worker verbatim.
  * - In-memory KV with TTL + controllable clock (see kv.js).
  * - Serves the browser UI from public/.
  * - Binds loopback (127.0.0.1) by default; override with HOST/PORT env.
@@ -21,6 +23,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import worker from "./upstream/worker.js";
+import { createV2Router } from "./worker-v2.js";
 import { createKv } from "./kv.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -34,7 +37,7 @@ const MIME = {
     ".md": "text/markdown; charset=utf-8",
 };
 
-const API_PREFIXES = ["/lobbies", "/queue", "/pair", "/report", "/leaderboard", "/rating"];
+const API_PREFIXES = ["/lobbies", "/queue", "/pair", "/report", "/leaderboard", "/rating", "/v2"];
 
 /**
  * Loopback-only policy (AI-045). The lab server must never be reachable
@@ -151,6 +154,11 @@ async function serveStatic(req, res) {
  *   Reports are caller-asserted UUIDs with no authentication: a single
  *   caller can submit both "agreeing" reports and mint Elo for arbitrary
  *   UUIDs. Keep disabled until a production identity design exists.
+ * Worker v2 (see worker-v2.js, docs/v2-design.md) is always routed:
+ * /v2/* is handled by the v2 router, everything else by the pinned v1
+ * worker verbatim. The v2 receipt HMAC secret comes from LAB_V2_SECRET
+ * (ephemeral per process when unset); the dataVersion gate minimum from
+ * LAB_V2_DATAVERSION_MIN (default "lab-2").
  */
 export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes = 1_000_000, allowReports = false } = {}) {
     if (!isLoopbackHost(host)) {
@@ -158,6 +166,15 @@ export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes
     }
     const kv = createKv(now ? { now } : {});
     const env = { IC_KV: kv };
+    // AI-096: v2 router wraps the pinned v1 worker. Non-/v2/* requests are
+    // delegated verbatim (backward compatible); /v2/* adds room assignment,
+    // signed results and the dataVersion gate. See docs/v2-design.md.
+    const v2 = createV2Router({
+        v1fetch: (wReq, wEnv) => worker.fetch(wReq, wEnv),
+        now: kv.now,
+        dataVersionMin: process.env.LAB_V2_DATAVERSION_MIN || "lab-2",
+        secret: process.env.LAB_V2_SECRET || undefined,
+    });
 
     const server = http.createServer(async (req, res) => {
         try {
@@ -215,7 +232,7 @@ export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes
                 headers: req.headers,
                 body: req.method === "GET" || req.method === "HEAD" ? undefined : body,
             });
-            const wRes = await worker.fetch(wReq, env);
+            const wRes = await v2.fetch(wReq, env);
             const buf = Buffer.from(await wRes.arrayBuffer());
             const headers = {};
             wRes.headers.forEach((v, k) => { headers[k] = v; });
@@ -252,6 +269,7 @@ if (isMain) {
     const allowReports = process.env.LAB_ALLOW_REPORTS === "1";
     const { server, port: boundPort, host: boundHost } = await start({ port, host, maxBodyBytes, allowReports });
     console.log(`lobby-lab listening on http://${boundHost}:${boundPort}`);
+    console.log(`worker v2: dataVersionMin=${process.env.LAB_V2_DATAVERSION_MIN || "lab-2"}, receipt secret=${process.env.LAB_V2_SECRET ? "provided" : "ephemeral (per-process)"}`);
     console.log(`match reporting: ${allowReports ? "ENABLED (local contract exercise only)" : "disabled"}; body cap: ${maxBodyBytes} bytes`);
     console.log("local development only — do not expose beyond loopback without real identity");
     const shutdown = () => {
