@@ -913,3 +913,22 @@ Scheduled checkpoint, run at 17:52 EDT. Coverage continues: there are no Astra-a
 | Mathew | WAITING — needs Mathew present: the AI-046-WIN-ACCEPT local `play.bat` run (now unblocked by AI-100), the AI-080/AI-030 mouse-driven full match, the AI-065 deep-path rerun, and the Seraph Unity import. Decisions: **confirm or deny the 365-credit Meshy spend (HA-022, new)**, HA-015, HA-011, HA-012, HA-009, HA-003 remainder, HA-018..020. |
 
 No release or full-match claim.
+
+## 2026-09-30 ~20:45 EDT — lobby-lab reflection (lobby-lab-reflection-2000): AI-096 DELIVERED
+
+Branch tip at run start: `b39d70f` (Claude's 18:00 review: AI-100/101/102 ACCEPTED, new AI-103 (P3), HA-022; assignment: AI-096 unblocked, then AI-103, then AI-097; Claude reviews AI-096 progress at 00:00).
+
+**AI-096 Worker v2 DELIVERED** (acceptance pending Claude's 00:00 review — no self-acceptance). `prototypes/lobby-lab/`:
+- `worker-v2.js` (`e1c3fe2`): routes `/v2/*`; everything else delegated to the pinned v1 worker **verbatim** (2D alpha contract untouched, v1 paths ungated).
+  - dataVersion gate: `POST /v2/rooms/pair` and `POST /v2/results` require a known dataVersion ≥ minimum (default `lab-2`, env `LAB_V2_DATAVERSION_MIN`); unknown strings fail closed.
+  - Server-side room assignment: `POST /v2/rooms/pair {uuidA,uuidB,dataVersion}` atomically pairs two live v1 queue tickets into a room (TTL 300s), consuming the tickets so a paired player can't double-pair; idempotent re-pair; `GET /v2/rooms?uuid=`, seat-only idempotent `DELETE /v2/rooms/:roomId`.
+  - Signed results: `POST /v2/results` keeps the two-claim agreement shape (room live, reporter a seat, winner/loser the seats); waiting → agreed with HMAC-SHA256 receipt (`LAB_V2_SECRET`, ephemeral per process unless set) → `POST /v2/results/verify`; disagreements flagged, never auto-resolved; **v2 does not apply Elo** (stays with v1 `/report`, disabled in lab, or a future AI-010 ranked service).
+- `server.js` (`51c17cf`): wires the router through the same AI-045 loopback guards; `/v2` added to API prefixes; startup logs v2 gate + secret mode.
+- Tests (`a73bf3f`, 13 new): v1 backward compat through the router (lab-1 lobby ungated), gate rejects missing/old/unknown versions, pairing consumes tickets + idempotency + unqueued rejection, room read/close, results lifecycle (waiting→agreed→verify, tampered receipt rejected, dispute flagged, non-seat 403, idempotent retries). Full suite **56/56 green** (was 43).
+- Docs: `docs/v2-design.md` (`82de7e0`) — design + explicit trust limits (caller UUIDs still untrusted; receipts are tamper-evidence, not identity; no auth theater); `docs/api.md` v2 endpoint section for the C# handoff (`8eb1f88`); README env vars + layout (`657c45e`).
+- Upstream `worker.js` SHA-256 verified `73bde885…f990` — unchanged. Workers-compatible (Web Platform APIs only) for the deploy-with-Mathew step.
+- Deliberate non-goals: game-traffic relay/reconnect/turn timers (AI-097, Muse + Claude Unity thread — v2 rooms carry no `wssUrl`); authenticated ranked identity (AI-010).
+
+Verification pass (tip `657c45e`): npm test 56/56; demos exit 0; deployed worker `/lobbies`+`/leaderboard` 200 — no drift since the 2026-09-27 fingerprint. No lane conflicts (only Claude's 18:00 review commits since the last run).
+
+Next work: (1) AI-103 (P3) — bump `actions/upload-artifact@v4` → Node 24 major in both packaging workflows + apply the two AI-101 ledger corrections; (2) AI-097 after AI-096 acceptance; (3) Claude's 00:00 review covers AI-096/AI-103. Standing gaps unchanged: browser UI visual check unverifiable from remote tooling; Mathew-present items (AI-030, AI-080, AI-046-WIN-ACCEPT local run, HA-022 Meshy spend confirmation).
