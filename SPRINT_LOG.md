@@ -1005,3 +1005,10 @@ Mathew asked for a solo stand-up: review backlog + sprint log, self-assign in-sc
 - Fix deliberately **not** applied to the pinned alpha (read-only) or the rules bridge (must remain a faithful rules engine). When the bot is rewritten, invert the test's oscillation assertion to verify the fix.
 
 Next work: AI-097 client wiring is the Unity lane's (Claude Unity thread); Meshy/ElevenLabs lanes are Claude's. Nothing further unblocked in Muse's lane — standing reflection lane continues green verification.
+
+## 2026-10-02 ~20:45 EDT — standup with Rune + IC-S03 replan; Unity lane AI-104/105/106 (Claude)
+- Standup run in Muse (Rune). Replan: Claude owns the Unity lane; Rune builds the C# relay client for AI-097 under `UnityProof/Assets/Scripts/IC.Net/` with headless lockstep tests.
+- Pushed the local ChatGPT Unity work as `claude/unity-live-match` (merged with `4c09913`).
+- `c86e23b` delivers AI-106 (live match by default, bridge auto-discovery), AI-104 (no post-death respawn + smoke check), AI-105 (card faces: hand, hover view, play pop-up), and a laptop-fit layout.
+- Verification: Unity 6000.6.3f1 batch build PASS; `-playtestSmoke` PASS (11 checks, 0 enemy-share violations, 6 ghost events suppressed); one live turn played by mouse in the built exe.
+- Build for Mathew: `playtest\unity-build-2026-10-02\` (local only; 288 MB). Next: AI-093 land tiles, AI-107 review, AI-097 Unity wiring once Rune's client lands.
