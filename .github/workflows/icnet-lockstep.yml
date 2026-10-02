@@ -1,0 +1,41 @@
+name: IC.Net lockstep test
+# AI-097 client (IC.Net): two RelayClients against the real lab relay (node)
+# plus two rules-bridge processes (Java). Same seed, same relay intents,
+# same order => identical state hashes every turn. Needs the release jar,
+# so this workflow builds it first with build-release.sh.
+on:
+  push:
+    branches:
+      - claude/unity-live-match
+    paths:
+      - 'UnityProof/Assets/Scripts/IC.Net/**'
+      - 'UnityProof/IC.Net.Tests/**'
+      - 'prototypes/lobby-lab/**'
+      - 'releases/alpha-0.7.15-playable/**'
+      - '.github/workflows/icnet-lockstep.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lockstep:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      - name: Build release jar
+        working-directory: releases/alpha-0.7.15-playable
+        run: ./build-release.sh
+      - name: IC.Net two-client lockstep test
+        env:
+          ICNET_RUN_LOCKSTEP: '1'
+        run: dotnet test UnityProof/IC.Net.Tests/IC.Net.Tests.csproj --nologo
