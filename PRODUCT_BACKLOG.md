@@ -684,3 +684,20 @@ Mathew asked for a standup with Muse, sprint planning, and continued work toward
 | AI-093 | P1 | Claude | NEXT | Swap the approved land GLBs into the board as textured tiles. |
 | AI-107 review | P3 | Claude | NEXT | Review Rune's 17:45 delivery. |
 | AI-081 / AI-020 asset lanes | P0 | Claude asset threads | UNCHANGED | No asset-thread activity seen this evening; rows from the 22:15 plan stand. |
+
+## 2026-10-02 ~20:10 EDT — IC-S03 task assignments (Claude, covering Astra; Mathew: "assign tasks")
+One owner per item. Every lane fetches this file before writing. Credits: existing Meshy/ElevenLabs balances only, no purchases.
+
+| Owner | Item | Pri | Assignment | Acceptance |
+|---|---|---|---|---|
+| Claude (Unity) | AI-093 | P1 | Put the 35 approved hybrid land GLBs (`assets/staging/meshy/batch-06-lands-hybrid/hybrid/`) on the playtest board as textured tiles under each placed land. | Every land card shows its own tile at board scale; smoke stays green. |
+| Claude (Unity) | AI-097 wiring | P0 | Wire Rune's IC.Net relay client into PlaytestGame for a two-human online match once it lands. | Two local clients finish a match with matching per-turn hashes. |
+| Claude (review) | AI-107 | P3 | Review Rune's bot-pacing analysis. | ACCEPT/REJECT row on this board. |
+| Claude (Meshy) | AI-081 Poseidon humans | P0 | Download the 13 batch-07 Poseidon humans (already generated and textured, already paid), normalize, check_glb, stage into the playtest catalog, review sheet. | 13 models load in the build; sheet to Mathew. |
+| Claude (Meshy) | AI-081 burn-down | P1 | Then spend what is left this month per the 22:15 order (Skyfather Archon, Eagle of the High Grid, other model-less Zeus/Poseidon cards). Hold at zero; no top-ups. | Credits reconciled in the sprint log. |
+| Claude (ElevenLabs) | AI-020 / AI-061 | P0 | Deploy/move/attack/hit/destroy cues for every model without card-specific SFX (13 Poseidon humans first, then the Zeus pilots), plus a placement cue per land. Stage with a manifest. | AI-064 coverage report shows no Zeus/Poseidon card missing a cue; Mathew listen-through. |
+| Rune (Muse) | AI-097 client | P0 | C# relay-1 client in `UnityProof/Assets/Scripts/IC.Net/` + headless two-client lockstep tests (dotnet, CI). README on how PlaytestGame calls it. Do not edit `UnityProof/Assets/Playtest/`. | Tests green in CI; Claude accepts. |
+| Rune (Muse) | QA | P1 | Independent QA of `claude/unity-live-match` `c86e23b`: rebuild the bridge classes, run test_bridge.py + playtest smoke if possible, review AI-104/105/106 code. | Written QA note with any defects as new rows. |
+| ChatGPT | AI-082 | P1 | Continue unique-card audio mapping from 51/139 using the approved staged pool and any new ElevenLabs cues; deliver as a mapping file on a branch or a doc Claude can commit. | Coverage count up, generic fallback preserved. |
+| ChatGPT | Review | P1 | Code review of `claude/unity-live-match` (its own playable work, now on GitHub) and the player-facing playtest README. | Review notes; defects as rows. |
+| Mathew | AI-080 / HA-013 | P0 | Play `playtest\unity-build-2026-10-02\InfiniteConquestPlaytest.exe` for one full mouse match; note anything confusing. Open decisions: HA-011, HA-012, HA-015. | Pass/fail recorded. |
