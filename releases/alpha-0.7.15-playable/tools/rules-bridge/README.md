@@ -3,7 +3,7 @@
 A small Java program against the pinned alpha JAR that runs a HEX match
 and talks **line-delimited JSON over stdin/stdout**. The Claude Unity
 thread spawns this process from UnityProof to make the board playable.
-**The protocol below is stable** — v1.0.0. Breaking changes get a
+**The protocol below is stable** — v1.1.0. Breaking changes get a
 minor-version bump and a changelog entry here.
 
 - Board: 4×6 HEX, odd-row offset (`MatchRules.hex()` / `BoardGeometry.HEX`).
@@ -70,6 +70,35 @@ Reply on a stale or fabricated id — **no state or revision mutation**:
 Error codes: `INVALID_ACTION` (stale/fabricated id, illegal act),
 `BAD_REQUEST` (malformed request, unknown op), `NO_MATCH` (no match
 started), `INTERNAL` (never expected; report it).
+
+### `hash` — canonical state hash (AI-097 lockstep)
+
+```json
+{"id":"r4","op":"hash"}
+```
+
+Reply: `{"id":"r4","ok":true,"revision":3,"turn":3,
+"state_hash":"9f2c…64 hex chars"}`.
+
+`state_hash` is SHA-256 over the **canonical** JSON of the full
+*unredacted* game state: seed, turn, phase, active player, winner, both
+players' GP, and every card in both hands, both decks, both discard
+piles and on the board — identities (`card_id`, `instance_id`, owner,
+zone) plus all mutable per-card state (damage, combat damage, tapped,
+movement spent, attacked/blink/ability flags, bonuses). Canonical form:
+object keys sorted, arrays in encounter order (board cells sorted by
+`x`,`y`, stacks bottom-to-top), compact separators, standard escaping —
+so the same logical state always serializes to the same bytes.
+
+Read-only: `hash` never mutates state or revision. The `state` snapshot
+stays redacted; `hash` is the deliberate exception — the relay's
+lockstep hash exchange (`prototypes/lobby-lab/docs/relay-design.md`)
+compares it across two clients that both legitimately hold the full
+state. Seeded setup: both clients start with `new` using the same
+revealed seed (AI-097 seed commit-reveal) and apply the same relay
+intents in the same order — engine determinism (seed-derived shuffle,
+`nameUUIDFromBytes` instance ids, seeded bot RNGs) makes their hashes
+match. `NO_MATCH` before `new`, as with `legal`/`act`.
 
 ### Action ids
 
@@ -144,13 +173,19 @@ Action fields (common: `id`, `type`, `command` — the raw engine command):
 - `RulesBridge.java` — the bridge (stdlib + Jackson from the alpha JAR).
 - `test_bridge.py` — protocol tests: determinism, valid act,
   stale/fabricated rejection, no mutation on rejection, bot auto-play,
-  scripted GAME_OVER, AI-062 validation of every event, redaction.
+  scripted GAME_OVER, AI-062 validation of every event, redaction,
+  AI-097 `hash` op (canonical hash, read-only, seeded-setup and
+  lockstep-determinism proofs).
 - `fixtures/golden-seed-42.jsonl` — golden transcript (responses,
   `sort_keys` JSON, one per line).
 - `run.sh` / `run.bat` — CI entry points.
 
 ## Changelog
 
+- v1.1.0 (AI-097, 2026-10-02): additive `hash` op — canonical SHA-256 of
+  the full unredacted state for the relay lockstep hash exchange;
+  seeded-setup contract documented (same revealed seed + same intents
+  ⇒ identical hashes). Backward compatible with v1.0.0 clients.
 - v1.0.0 (AI-079, 2026-09-29): stable protocol — `id`/`op` requests,
   `id`/`ok`/`revision` responses, revision-scoped action ids,
   `INVALID_ACTION` without mutation, redacted state, bot auto-play,
