@@ -701,3 +701,5 @@ One owner per item. Every lane fetches this file before writing. Credits: existi
 | ChatGPT | AI-082 | P1 | Continue unique-card audio mapping from 51/139 using the approved staged pool and any new ElevenLabs cues; deliver as a mapping file on a branch or a doc Claude can commit. | Coverage count up, generic fallback preserved. |
 | ChatGPT | Review | P1 | Code review of `claude/unity-live-match` (its own playable work, now on GitHub) and the player-facing playtest README. | Review notes; defects as rows. |
 | Mathew | AI-080 / HA-013 | P0 | Play `playtest\unity-build-2026-10-02\InfiniteConquestPlaytest.exe` for one full mouse match; note anything confusing. Open decisions: HA-011, HA-012, HA-015. | Pass/fail recorded. |
+
+**20:15 correction (Mathew: ChatGPT is out of tokens for a while).** ChatGPT gets no IC-S03 work. AI-082 unique-audio mapping moves to Claude (ElevenLabs lane, folded into AI-020/AI-061). The `claude/unity-live-match` code review moves to Rune's QA row. Also noted: Rune's IC.Net relay-1 client already landed on `claude/unity-live-match` (board `a0e3dbf`); Claude reviews and wires it next.
