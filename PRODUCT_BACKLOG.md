@@ -657,3 +657,13 @@ Standup and planning run 2026-10-01 ~22:15 EDT after Mathew's PC restart. This s
 **Needs Mathew (when present):** AI-046-WIN-ACCEPT local `play.bat` run; AI-080/AI-030 mouse-driven full match; AI-065 deep-path rerun; Seraph Unity import proof; Poseidon-human review sheet; SFX listen-through. Open decisions: HA-011, HA-012, HA-015, HA-003 remainder, HA-018..020.
 
 **Process:** one owner per in-progress item (no duplicate Muse runs); fetch before every edit to this file; watch for double-spend if another session uses the Meshy account.
+
+### 2026-10-01 ~22:30 EDT — PO playtest of the Unity build (recording: project files `Screen Recording 2026-10-01 222456.mp4`)
+Mathew ran `playtest\unity-build-2026-09-30`. It played the recorded seed-42 bot-vs-bot match to "Zeus wins" (turn 14). Findings:
+
+| ID | Pri | Owner | State | Finding / acceptance |
+|---|---|---|---|---|
+| **AI-104** (new, AI-080) | P0 | Unity lane (ChatGPT; Claude if the branch reaches GitHub) | READY | **Ghost token: a destroyed unit reappears and shares a hex with an enemy.** The rules forbid this (`MovementRules.passability`: an enemy Character is BLOCKED; README "Friendly Characters may share a stack"). Cause is in the replay, not the rules: in `dump-seed-42.jsonl` the engine emits `CARD_DESTROYED` (seq 63) for Arc Relay Scout *before* its `CHARACTER_MOVED 3,1→3,4` (seq 64), because the opportunity attack kills it mid-move. The client removes the token, then the move event puts it back on 3,4 next to Tidepool Surveyor. Same pattern at seq 180–182. Fix: once an instance is destroyed, ignore later move/damage events for it (or play the move first, then the death). Acceptance: seed-42 replay never shows two enemy units on one hex; add a check to `-playtestSmoke`. |
+| **AI-105** (new, AI-080) | P0 | Unity lane | READY | **Show the cards.** Without a visible hand and card faces the match is hard to follow. Need: own hand along the bottom with card art/cost/stats, hover or right-click for a full card view (as in the 2D alpha), and a card pop-up when anything is played. |
+| **AI-106** (new, AI-080/AI-079) | P0 | Unity lane | READY | **Live human-vs-bot match.** The build only replays a recorded bot match, so the PO mouse-driven acceptance (AI-080) is not possible yet. Wire the human seat to the accepted AI-079 rules bridge. |
+| AI-107 (new, AI-007) | P3 | Muse | READY | Bot quirk: Tidepool Surveyor steps 3,5↔3,4 back and forth up to 3 times per turn (seq 47–49, 106–108). Legal, but it looks broken. |
