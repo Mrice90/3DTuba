@@ -961,3 +961,14 @@ Mathew's PC shut off mid-session; work resumed on his request (standup, sprint p
 - ElevenLabs: SFX coverage pass restarted (audit first).
 - AI-097 now READY for Muse.
 - `chatgpt/unity-playable-20260930` still absent from GitHub.
+
+## 2026-10-01 ~23:00 EDT — AI-097 IN_PROGRESS: lockstep relay first deliverable (Rune)
+
+- Sprint IC-S03 commitment was "design doc + Worker with tests green" — shipped:
+  - `prototypes/lobby-lab/docs/relay-design.md` (`5f695b3`): relay-1 protocol — seed commit-reveal (neither player picks the shuffle), server-sequenced intents (`GET /rooms/:id/ws`, one Durable Object per room), per-turn state-hash exchange (mismatch → flagged, never auto-resolved), turn timers (120 s, warnings at 30 s/10 s, forfeit on expiry), persisted intent log (reconnect resume + AI-089 replays). Trust model explicit: seat UUIDs are bearer tokens (no auth theater); lockstep's full-state-on-client tradeoff accepted for v1.0 with commit-reveal + hash-flagging + beta-ranked mitigations until AI-085.
+  - `prototypes/lobby-lab/relay.js` (`4d8a805`): Workers-compatible core — `createRelaySession` (runtime-agnostic state machine), `MatchRoom` Durable Object class (WebSocketPair, storage-persisted intent log, alarm-driven `tick()`), `createRelayRouter` (dataVersion gate + seat check before DO routing; `MATCH_ROOM` binding).
+  - `prototypes/lobby-lab/ws-shim.js` (`b0b8bf6`): stdlib-only server-side WebSocket (RFC 6455 handshake + masked text frames) for the lab; `server.js` (`b70d410`) wires upgrades with the AI-045 loopback guards and the dataVersion gate.
+  - `prototypes/lobby-lab/docs/api.md` relay section (`7e20d3b`).
+  - `prototypes/lobby-lab/test/relay.test.js` (`b32cabf`): 16 new tests — 13 session unit (seed reveal mismatch, global intent ordering, first-claim-wins turns, hash ok/mismatch+flag, timeout forfeit, timer reset on intent, seed-phase no-reveal forfeit, lastSeq reconnect replay, persist hook) + 3 integration over real WebSockets (upgrade gating, full two-seat flow with hash exchange, dropped-socket resume from the intent log).
+- Verification: full lab suite **72/72 green** (was 56/56). Fixed during the run: ws-shim never ended its side on client half-close, which hung `server.close()` (caught by the integration tests, not by inspection).
+- Backlog: AI-097 READY → IN_PROGRESS (this sprint's row). Client side (Unity lane) and the bridge `{"op":"hash"}` + seeded setup remain — bridge hash is the next increment.
