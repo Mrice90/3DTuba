@@ -623,3 +623,35 @@ Review: `docs/reviews/2026-09-30-1800-claude-acceptance.md`.
 | AI-081 | — | Claude Meshy thread | HOLD | Attribute the Meshy 1,734 → 1,369 (−365) spend and the 10 new Zeus groups. The Seraph import proof waits for Mathew. |
 | HA-022 (new) | — | Mathew | **CLOSED** 2026-10-01 ~21:55 EDT (evidence: repo SPRINT_LOG.md @ `ad1597e`) | Mathew confirmed directly (main chat, 2026-09-30 ~21:31 EDT) that he green-lit the 365-credit Meshy spend behind the 10 new Zeus model groups — authorized spend, not unattributed. |
 | AI-055 / AI-056 / AI-057 / AI-048 | P1/P2/P3/— | — | OPEN | Unchanged. |
+
+## Sprint IC-S03 plan (2026-10-01 22:15 → 2026-10-04 08:12 EDT) — Claude (covering Astra)
+Standup and planning run 2026-10-01 ~22:15 EDT after Mathew's PC restart. This section supersedes earlier rows for these IDs. The sprint ends when Astra returns (2026-10-04 08:12 EDT); the sprint review is the first meeting after that.
+
+**Sprint goal:** spend the rest of this month's Meshy credits on finished, board-ready Zeus/Poseidon assets (all 35 lands on exact hex bases, plus the missing Poseidon humans), give every delivered model and land its sound set in ElevenLabs, and start the AI-097 lockstep relay now that AI-096 is accepted.
+
+**Standup (state at 22:15 EDT)**
+- Meshy lane ("Meshy asset development 2" thread): all 30 remaining lands generated and textured in Meshy 6 Lite (600 credits); 35 lands mid-way through hybrid processing onto Blender hex bases; 7 of 13 missing Poseidon humans generated from Desolate Tuba art. About 179 credits left at the last report (21:36). The PC shut off mid-turn; the thread has resumed.
+- ElevenLabs lane ("ElevenLabs sound effects" thread): restarted with a full audit of existing audio against what the game needs. Last recorded balance 123,239.
+- Muse (Rune): AI-096 and AI-103 delivered 2026-09-30 and waiting on review (the 00:00 review never ran). Verified tonight, see below.
+- ChatGPT: `chatgpt/unity-playable-20260930` is still not on GitHub (checked `git ls-remote` 22:15).
+- Repo tip `ceea269`: Verify #240 `36953407019` success.
+
+**Acceptances tonight**
+- **AI-096 ACCEPTED** (Worker v2): independent `npm test` in `prototypes/lobby-lab` at `ceea269` — 56/56 pass, 0 fail. Acceptance is on tests and the design doc; the deployed-worker step still waits for Mathew.
+- **AI-103 ACCEPTED**: `actions/upload-artifact@v6` at `linux-packaging.yml:111` and `windows-packaging.yml:64`; Linux packaging #42 `36799609034` and Windows packaging #75 `36799617757` success.
+
+| ID | Pri | Owner | State | Sprint commitment / acceptance |
+|---|---|---|---|---|
+| AI-081 / AI-061 Meshy lands | P0 | Claude ("Meshy asset development 2") | IN_PROGRESS | Finish hybrid hex-base processing for all 35 lands; render on the hex board; review sheet to Mathew. Acceptance: every land fits one hex at board scale (AI-063 budget) and matches its faction palette. |
+| AI-081 Poseidon humans | P0 | Claude ("Meshy asset development 2") | IN_PROGRESS (7/13 generated) | Generate the other 6 from Desolate Tuba art, texture, download, normalize, render, review sheet. Neo-futuristic: energy weapons, no bows. |
+| AI-081 credit burn-down | P1 | Claude (Meshy thread) | READY after the humans | Spend whatever remains on the next highest-value gaps in this order: (1) Skyfather Archon and Eagle of the High Grid (last Zeus holds), (2) any Zeus/Poseidon card still without a model, (3) Zeus retextures toward more gold. Then HOLD all Meshy work until next month's refill. No top-ups. |
+| AI-020 / AI-061 SFX coverage | P0 | Claude ("ElevenLabs sound effects") | IN_PROGRESS | Audit staged audio vs the AI-064 presentation manifest; generate missing deploy/move/attack/hit/destroy cues for every delivered model, plus land-placement cues for the 35 lands; stage with a manifest. Acceptance: coverage report shows no Zeus/Poseidon card missing a cue; Mathew listen-through. |
+| AI-064 coverage report | P1 | Claude | READY | Run `coverage.py` against `assets/staging/` once the new models and cues are staged; post the first real coverage report. |
+| AI-097 | P0 | Muse (Rune) | READY (AI-096 accepted) | Start the Durable Object relay per its section: `GET /rooms/:id/ws`, ordered intent log, per-turn hash exchange. First deliverable this sprint: design doc + Worker with tests green in CI. Client side waits for the Unity lane. |
+| AI-080 | P0 | ChatGPT | READY FOR HUMAN TEST | Push `chatgpt/unity-playable-20260930` to GitHub so it can be reviewed; then Mathew plays one full mouse-driven match. |
+| AI-093 | P1 | Claude + ChatGPT Unity | READY after lands | Swap the new land GLBs into the playtest board as textured tiles. |
+| AI-055 / AI-056 / AI-057 / AI-048 | — | Muse | OPEN | Carry over; no new commitment this sprint. |
+
+**Needs Mathew (when present):** AI-046-WIN-ACCEPT local `play.bat` run; AI-080/AI-030 mouse-driven full match; AI-065 deep-path rerun; Seraph Unity import proof; land and Poseidon-human review sheets; SFX listen-through. Open decisions: HA-011, HA-012, HA-015, HA-003 remainder, HA-018..020.
+
+**Process:** one owner per in-progress item (no duplicate Muse runs); fetch before every edit to this file; watch for double-spend if another session uses the Meshy account.
