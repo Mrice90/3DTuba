@@ -235,6 +235,38 @@ submitted the claims (caller UUIDs remain untrusted — no auth theater).
 { "valid": false, "reason": "signature mismatch" }
 ```
 
+## Match relay (AI-097) — `GET /rooms/{roomId}/ws`
+
+WebSocket upgrade (production: one `MatchRoom` Durable Object per room;
+the lab runs the same `relay.js` session in-process). Query:
+`dataVersion=lab-2` (gate) and `seat=<seat uuid>` (must be a room seat).
+Protocol `relay-1` — full spec in `relay-design.md`:
+
+```jsonc
+// client -> server
+{ "type": "hello", "seat": "<uuid>", "lastSeq": 0 }   // resume after a drop
+{ "type": "seed-commit", "commit": "<64 hex>" }        // SHA-256(seed|salt)
+{ "type": "seed-reveal", "seed": "<seed>", "salt": "<salt>" }
+{ "type": "intent", "actionId": "r3-a12" }             // AI-079 action id
+{ "type": "turn", "turn": 3, "activeSeat": "<uuid>" }  // first claim wins
+{ "type": "hash", "turn": 2, "hash": "<64 hex>" }      // bridge op:hash
+// server -> client
+{ "type": "welcome", "seat": "<uuid>", "roomId": "<id>", "phase": "play",
+  "turn": 2, "seed": "<64 hex>", "log": [/* intents after lastSeq */] }
+{ "type": "seed", "seed": "<64 hex>" }                // SHA-256(seedA|seedB)
+{ "type": "intent", "seq": 7, "seat": "<uuid>", "actionId": "r3-a12" }
+{ "type": "hash-request", "turn": 2 }
+{ "type": "hash-ok", "turn": 2 }                      // or "hash-mismatch" (flagged)
+{ "type": "timer", "seat": "<uuid>", "msRemaining": 30000 }
+{ "type": "forfeit", "seat": "<uuid>", "reason": "timeout" }  // or "no-reveal"
+{ "type": "error", "reason": "..." }
+```
+
+The server is the only sequencer (`seq` is assigned on arrival); clients
+apply intents in `seq` order. A dropped socket is not a forfeit — reconnect
+with `hello{lastSeq}` and replay the returned log. Turn timeout (default
+120 s, warning at 30 s/10 s) forfeits the active seat.
+
 ## C# integration notes (Unity)
 
 - Target the **lab server on loopback** during development; the deployed
@@ -252,7 +284,14 @@ submitted the claims (caller UUIDs remain untrusted — no auth theater).
   `POST /v2/rooms/pair` (atomic server-side pairing, `dataVersion: "lab-2"`
   required) → `GET /v2/rooms?uuid=` to read the room →
   `POST /v2/results` per seat → `agreed` returns a signed receipt, verifiable
-  via `POST /v2/results/verify`. Game-traffic relay is AI-097's scope;
-  v2 rooms carry no `wssUrl` yet.
+  via `POST /v2/results/verify`.
+- Match relay flow (AI-097): after `POST /v2/rooms/pair`, each seat opens
+  `GET /rooms/{roomId}/ws?dataVersion=lab-2&seat=<seatUuid>` (WebSocket
+  upgrade; one Durable Object per room in production, in-process session in
+  the lab). Protocol `relay-1` — see `relay-design.md`: `hello` →
+  `seed-commit`/`seed-reveal` → shared `seed` → `intent` (server-sequenced,
+  broadcast to both) → `turn` announcements → `hash-request`/`hash` per
+  completed turn (`hash-ok` or flagged `hash-mismatch`) → `forfeit` on turn
+  timeout. Dropped sockets resume with `hello{lastSeq}` and a replayed log.
 - Never ship a build that reports match results to a service without
   authenticated player identity; the lab disables `/report` for this reason.
