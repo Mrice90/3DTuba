@@ -1012,3 +1012,27 @@ Next work: AI-097 client wiring is the Unity lane's (Claude Unity thread); Meshy
 - `c86e23b` delivers AI-106 (live match by default, bridge auto-discovery), AI-104 (no post-death respawn + smoke check), AI-105 (card faces: hand, hover view, play pop-up), and a laptop-fit layout.
 - Verification: Unity 6000.6.3f1 batch build PASS; `-playtestSmoke` PASS (11 checks, 0 enemy-share violations, 6 ghost events suppressed); one live turn played by mouse in the built exe.
 - Build for Mathew: `playtest\unity-build-2026-10-02\` (local only; 288 MB). Next: AI-093 land tiles, AI-107 review, AI-097 Unity wiring once Rune's client lands.
+
+## 2026-10-02 ~21:30 EDT — AI-097 client DELIVERED (Rune): IC.Net relay-1 library + headless tests
+
+Per the ~20:45 EDT replan (Claude): Rune built the pure C# relay client for AI-097, published to `claude/unity-live-match` (tip `f49a1c0`, 19 files) so it lands next to PlaytestGame, which will consume it. Item 2(a) (BridgeClient) was dropped — the Unity branch already has one.
+
+**Library** `UnityProof/Assets/Scripts/IC.Net/` (netstandard2.1, C# 9, **zero dependencies**, no UnityEngine refs; `.meta` files included):
+- `RelayClient.cs` (`059bbf0`) — relay-1 over `ClientWebSocket`: hello (+`lastSeq` resume), seed commit-reveal, sequenced intents, turn announce, per-turn hash exchange; events for welcome/intent/seed/hash-request/hash-ok/hash-mismatch/timer/forfeit/error/bye/closed; `LastSeq` for reconnect resume; sends serialized; malformed inbound fails fast with `RelayProtocolException` then `Closed`.
+- `RelayTransport.cs` (`5c49fc1`) — `IRelayTransport` seam; production `ClientWebSocketTransport`; tests inject an in-memory fake (no TCP needed).
+- `RelayMessages.cs` (`4eef...`) — relay-1 DTOs + outbound builders.
+- `JsonLite.cs` (`e97805d`) — minimal JSON reader/writer (internal) so the library needs no NuGet restore inside Unity.
+- `README.md` (`0cce92d`) — includes **"Wiring it into PlaytestGame"**: a `RelayMatchDriver` sketch (connect → commit-reveal → seed→`bridge.New` → intents via relay → hash exchange), the relay-seed→int mapping both clients must share, and the two additions the Unity lane needs in its own `BridgeClient`: a `Hash()` op (rules-bridge v1.1.0 `{"op":"hash"}` → `state_hash`; Unity client currently speaks v1.0.0 only) and `LastSeq`-based resume.
+
+**Tests** `UnityProof/IC.Net.Tests/` (net9.0, xUnit):
+- `RelayClientTests.cs` (`3dcccfc`) — 17 tests against the in-memory fake transport (protocol flow, sequencing, hash exchange, malformed→close, 20 concurrent sends) + `JsonLite`/`RelayMessages` codec tests.
+- `BridgeDriver.cs` (`cd8c8e0`) — tiny test-only stdio driver for the bridge.
+- `LockstepTests.cs` (`5537fcc`) — gated by `ICNET_RUN_LOCKSTEP=1`: two `RelayClient`s vs the real lab relay (node) + two real bridge processes; same seed + same relay intents → identical hashes every turn; relay hash-exchange round per turn; reconnect resume replays missed intents from `welcome.log`.
+
+**CI** (on `claude/unity-live-match`):
+- `verify.yml` (`3dc7358`) — new step `dotnet test UnityProof/IC.Net.Tests` (unit tests; lockstep self-skips without the env var). verify.yml triggers on push to any branch.
+- `icnet-lockstep.yml` (`f49a1c0`, new) — builds the release jar, then runs the lockstep test with `ICNET_RUN_LOCKSTEP=1`.
+
+**Verification:** `dotnet test` cannot run in this sandbox (vstest's testhost socket is denied to the dotnet runtime — same restriction as the csharp-core lane; CI will run it). Verified instead with a console runner mirroring the xUnit tests: **47/47 PASS** — 11 codec, 15 client-flow (fake transport), 21 bridge (two real `RulesBridge` processes from branch-pinned `RulesBridge.java` @`026ffb8`: same seed + same 17 acts across 3 turns → identical hashes; divergent intent → divergent hash). Note: the local `~/workspace/work-3dtuba` checkout is stale (pre-hash `RulesBridge.java`); all publishes went through the GitHub API from branch-pinned sources.
+
+**Not done / Unity lane:** wiring `RelayMatchDriver` into `PlaytestGame` (Claude Unity thread); adding `Hash()` to the Unity `BridgeClient`. No self-acceptance — awaiting Claude's review.
