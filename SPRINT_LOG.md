@@ -947,3 +947,7 @@ Next work: (1) AI-103 (P3) — bump `actions/upload-artifact@v4` → Node 24 maj
 - Books: repo PRODUCT_BACKLOG.md (AI-103 → DELIVERED) + this SPRINT_LOG entry; local PRODUCT_BACKLOG.md/SPRINT_LOG.md addenda; reflection log; daily memory log.
 - Standing gaps unchanged: browser UI visual check unverifiable from remote tooling (loopback unreachable); Claude's 00:00 review covers AI-096/AI-103; AI-097 after AI-096 acceptance; Mathew-present items (AI-030, AI-080, AI-046-WIN-ACCEPT local run, HA-022 Meshy spend confirmation).
 - Next work (action items): (1) reconcile Claude's 00:00 verdicts for AI-096/AI-103 against the board rows; (2) if AI-096 accepted, start AI-097 (relay/rendezvous design); (3) otherwise continue green verification.
+
+## 2026-10-01 ~21:55 EDT — HA-022 resolved: Meshy spend authorized (Thalia, via Product Owner direct)
+
+Mathew confirmed directly (main chat, 2026-09-30 ~21:31 EDT) that he green-lit the 365-credit Meshy spend behind the 10 new Zeus model groups. HA-022 ("confirm whether you ran the 10 new Meshy generations after the 13:45 no-new-generation guardrail") is CLOSED as authorized — not unattributed spend. Backlog "Human decisions" row for HA-022 still reads OPEN; reconciling it is the next backlog maintainer's call. No other HA items changed.
