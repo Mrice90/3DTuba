@@ -68,11 +68,38 @@ namespace InfiniteConquest.Playtest {
             if (dumpPath != null && File.Exists(dumpPath)) { events = WireEvent.ParseJsonl(File.ReadAllText(dumpPath)); dumpName = Path.GetFileName(dumpPath); }
             else if (DefaultDump != null) { events = WireEvent.ParseJsonl(DefaultDump.text); dumpName = "AI-066 seed 42 (bundled)"; }
             if (smoke) { sfx.Muted = true; StartCoroutine(Smoke()); return; }
+            // Fit laptops: a fixed 1600x900 window ran under the taskbar on a 1280x720 (150% scaled) display.
+            if (!Application.isBatchMode && Arg("-playtestShots") == null && Arg("-screen-height") == null) Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
             var shots = Arg("-playtestShots");
             if (shots != null) { StartCoroutine(Screenshots(shots)); return; }
+            // AI-106: live human-vs-bot is the default. -playback forces the recorded seed-42 match.
             var bridgeCmd = Arg("-bridgeCmd") ?? Environment.GetEnvironmentVariable("IC_BRIDGE_CMD");
+            if (string.IsNullOrEmpty(bridgeCmd) && !Flag("-playback")) bridgeCmd = DiscoverBridge(out bridgeHint);
             if (!string.IsNullOrEmpty(bridgeCmd)) StartLive(bridgeCmd, Arg("-bridgeCwd"), Arg("-bridgeTranscript"));
             else RestartPlayback();
+        }
+
+        // Finds <build>/Bridge (jar + classes) and a Java 17 runtime (JAVA_HOME, then PATH), so the
+        // exe starts a live match without the launcher's IC_BRIDGE_CMD.
+        string bridgeHint = "";
+        static string DiscoverBridge(out string hint) {
+            hint = "";
+            var root = Path.GetDirectoryName(Application.dataPath);
+            string dir = null;
+            foreach (var d in new[] { Path.Combine(root, "Bridge"), Path.Combine(root, "..", "Bridge") })
+                if (Directory.Exists(d)) { dir = Path.GetFullPath(d); break; }
+            if (dir == null) { hint = "No Bridge folder next to the game, so the recorded match is shown."; return null; }
+            var jar = Directory.GetFiles(dir, "*.jar").FirstOrDefault();
+            var classes = Path.Combine(dir, "classes");
+            if (jar == null || !File.Exists(Path.Combine(classes, "RulesBridge.class"))) { hint = "Bridge folder is incomplete, so the recorded match is shown."; return null; }
+            string java = null;
+            var home = Environment.GetEnvironmentVariable("JAVA_HOME");
+            if (!string.IsNullOrEmpty(home) && File.Exists(Path.Combine(home, "bin", "java.exe"))) java = Path.Combine(home, "bin", "java.exe");
+            if (java == null) foreach (var p in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(Path.PathSeparator)) {
+                try { var c = Path.Combine(p.Trim('"'), "java.exe"); if (File.Exists(c)) { java = c; break; } } catch { }
+            }
+            if (java == null) { hint = "Java 17 was not found, so the recorded match is shown. Install Java 17 to play live."; return null; }
+            return "\"" + java + "\" -cp \"" + classes + Path.PathSeparator + jar + "\" RulesBridge";
         }
 
         void SetupScene() {
@@ -127,7 +154,7 @@ namespace InfiniteConquest.Playtest {
             runner = anim.StartCoroutine(Run());
         }
         void ClearMatch() {
-            board.ClearPieces(); pieces.Clear(); model = new MatchModel();
+            board.ClearPieces(); pieces.Clear(); model = new MatchModel(); destroyed.Clear(); GhostEventsSkipped = 0;
             board.SetLegal(null); selectedPiece = null; board.Selected = new Vector2Int(-1, -1);
         }
         // EventDump seats: Zeus default capital at (1,0) for seat 0, Poseidon default at (2,5) for seat 1
@@ -142,15 +169,38 @@ namespace InfiniteConquest.Playtest {
                 stepOnce = false;
                 var e = events[cursor++];
                 yield return Apply(e);
+                if (smoke && EnemiesShareAHex(out var hex)) { EnemyShareViolations++; firstViolation = firstViolation ?? $"event {cursor} ({e.@event}) at {hex}"; }
             }
             playing = false;
         }
+        public int EnemyShareViolations { get; private set; }
+        string firstViolation;
+        // MovementRules.passability: an enemy Character blocks a hex, so no hex may hold Characters of both seats.
+        bool EnemiesShareAHex(out string hex) {
+            hex = null;
+            for (int x = 0; x < BoardView.W; x++) for (int y = 0; y < BoardView.H; y++) {
+                var owners = board.StackAt(x, y).Where(p => p != null && p.Card.type == "CHARACTER").Select(p => p.Owner).Distinct().Count();
+                if (owners > 1) { hex = x + "," + y; return true; }
+            }
+            return false;
+        }
         float D(float seconds) => seconds / Mathf.Max(.01f, speed);
+
+        // AI-104: the engine can emit CARD_DESTROYED before the rest of the same move (an opportunity
+        // attack kills the mover mid-move), so later events for a destroyed instance must not respawn it.
+        readonly HashSet<string> destroyed = new HashSet<string>();
+        public int GhostEventsSkipped { get; private set; }
+        static bool ActsOnInstance(string ev) => ev == "CHARACTER_MOVED" || ev == "ATTACK_RESOLVED" || ev == "OPPORTUNITY_ATTACK"
+            || ev == "DAMAGE_DEALT" || ev == "CARD_ABILITY_TRIGGERED";
 
         IEnumerator Apply(WireEvent e) {
             var m = model;
             int pl = Mathf.Clamp(e.player, 0, 1);
             string fac = m.Faction[pl];
+            if (e.instance_id != null) {
+                if (e.@event == "CARD_PLAYED") destroyed.Remove(e.instance_id);
+                else if (ActsOnInstance(e.@event) && destroyed.Contains(e.instance_id)) { GhostEventsSkipped++; yield break; }
+            }
             switch (e.@event) {
                 case "MATCH_STARTED":
                     Banner("Match start — " + e.detail, 2.5f); m.AddLog(e.detail); yield return Wait(.6f); break;
@@ -166,6 +216,7 @@ namespace InfiniteConquest.Playtest {
                     m.Hand[pl] = Mathf.Max(0, m.Hand[pl] - 1); m.Played[pl]++;
                     var card = PlaytestCatalog.Get(e.card_id);
                     m.Ensure(e.instance_id, e.card_id, pl);
+                    PopupCard(e.card_id, pl);
                     m.AddLog($"{Faction(pl)} plays {card.name} ({card.type}){(e.hasTo ? $" at {e.to.x},{e.to.y}" : "")}");
                     if (e.hasTo) { board.SetLegal(new[] { e.To }); }
                     yield return Wait(.25f);
@@ -241,6 +292,7 @@ namespace InfiniteConquest.Playtest {
                 }
                 case "CARD_DESTROYED": {
                     var p = PieceOf(e.instance_id);
+                    if (e.instance_id != null) destroyed.Add(e.instance_id);
                     m.Destroyed[pl]++;
                     if (p == null) break;
                     m.AddLog($"{p.Card.name} destroyed");
@@ -283,7 +335,7 @@ namespace InfiniteConquest.Playtest {
 
         // ------------------------------------------------------------------ live play (AI-079 bridge)
         void StartLive(string cmd, string cwd, string transcriptPath) {
-            ClearMatch(); mode = Mode.Live;
+            ClearMatch(); mode = Mode.Live; FitViewport();
             try {
                 bridge = BridgeClient.Spawn(cmd, cwd, transcriptPath);
                 int seed = int.TryParse(Arg("-seed"), out var s) ? s : 42;
@@ -350,7 +402,7 @@ namespace InfiniteConquest.Playtest {
         // ------------------------------------------------------------------ gallery (HA-009 review)
         void ShowGallery(string filter) {
             if (mode != Mode.Gallery) returnMode = mode;
-            mode = Mode.Gallery; galleryFilter = filter;
+            mode = Mode.Gallery; galleryFilter = filter; FitViewport();
             if (galleryRoot != null) Destroy(galleryRoot);
             galleryRoot = new GameObject("Gallery");
             var cards = PlaytestCatalog.All.Where(c => filter == "all" || (filter == "real" ? c.HasModel && !standInsOnly : !c.HasModel || standInsOnly))
@@ -391,7 +443,7 @@ namespace InfiniteConquest.Playtest {
         }
         void LeaveGallery() {
             if (galleryRoot != null) Destroy(galleryRoot);
-            mode = returnMode; rig.ResetView(); rig.Snap();
+            mode = returnMode; FitViewport(); rig.ResetView(); rig.Snap();
         }
 
         // ------------------------------------------------------------------ input
@@ -404,7 +456,7 @@ namespace InfiniteConquest.Playtest {
                 if (kb.gKey.wasPressedThisFrame) { if (mode == Mode.Gallery) LeaveGallery(); else ShowGallery("all"); }
                 if (kb.escapeKey.wasPressedThisFrame) { if (mode == Mode.Gallery) LeaveGallery(); else ClearSelection(); }
             }
-            if (mouse == null || mode == Mode.Gallery) { hoverInfo = ""; return; }
+            if (mouse == null || mode == Mode.Gallery) { hoverInfo = ""; hoverCardId = null; return; }
             var mp = mouse.position.ReadValue();
             CameraRig.PointerOverHud = OverHud(mp);
             var hover = new Vector2Int(-1, -1); Piece hp = null;
@@ -416,6 +468,7 @@ namespace InfiniteConquest.Playtest {
             }
             if (hover != board.Hover) { board.Hover = hover; board.Refresh(); }
             hoverInfo = HoverText(hover, hp);
+            hoverCardId = hp != null ? hp.Card.id : null;
             if (mouse.leftButton.wasPressedThisFrame && !CameraRig.PointerOverHud) Click(hover, hp);
         }
         string HoverText(Vector2Int h, Piece hp) {
@@ -453,7 +506,7 @@ namespace InfiniteConquest.Playtest {
         Rect topBar, leftPanel, rightPanel, bottomBar, logPanel;
         bool OverHud(Vector2 mp) {
             var g = new Vector2(mp.x, Screen.height - mp.y);
-            return topBar.Contains(g) || leftPanel.Contains(g) || rightPanel.Contains(g) || bottomBar.Contains(g);
+            return topBar.Contains(g) || leftPanel.Contains(g) || rightPanel.Contains(g) || bottomBar.Contains(g) || handRect.Contains(g) || viewRect.Contains(g) || logPanel.Contains(g);
         }
         void Styles() {
             if (titleStyle != null) return;
@@ -472,7 +525,7 @@ namespace InfiniteConquest.Playtest {
             topBar = new Rect(0, 0, W, 62);
             GUI.Box(topBar, "", panelStyle);
             GUI.Label(new Rect(14, 9, 420, 30), "INFINITE CONQUEST — 3D playtest", titleStyle);
-            string modeText = mode == Mode.Playback ? $"Playback: {dumpName}  ·  event {cursor}/{events.Count}" : mode == Mode.Live ? $"Live vs bot (rules bridge) · you are {Faction(humanSeat)}" : $"Catalog gallery ({galleryFilter})";
+            string modeText = mode == Mode.Playback ? $"Playback: {dumpName}  ·  event {cursor}/{events.Count}{(string.IsNullOrEmpty(bridgeHint) ? "" : "  ·  " + bridgeHint)}" : mode == Mode.Live ? $"Live vs bot (rules bridge) · you are {Faction(humanSeat)}" : $"Catalog gallery ({galleryFilter})";
             GUI.Label(new Rect(440, 12, W - 900, 26), modeText, labelStyle);
             GUI.Label(new Rect(14, 40, W - 28, 20), "Click a piece to select it (markers = reachable/attackable hexes) · hover for stack details · right-drag / Q E orbit · wheel zoom · middle-drag / WASD pan · Space pause · N step · G gallery · Home reset view", smallStyle);
             GUI.Label(new Rect(W - 450, 12, 440, 26), $"Turn <b>{model.Turn}</b> · Active <b>{Faction(model.Active)}</b> · Phase <b>{model.Phase}</b>", labelStyle);
@@ -511,14 +564,19 @@ namespace InfiniteConquest.Playtest {
 
             // Event log
             if (mode != Mode.Gallery) {
-                logPanel = new Rect(W - 380, H - 250, 370, 190);
+                // Live: the log sits under the opponent panel so the hand can use the bottom of the screen.
+                logPanel = mode == Mode.Live ? new Rect(W - 380, 202, 370, 190) : new Rect(W - 380, H - 250, 370, 190);
                 GUI.Box(logPanel, "", panelStyle);
                 var tail = model.Log.Skip(Mathf.Max(0, model.Log.Count - 10));
                 GUI.Label(new Rect(logPanel.x + 8, logPanel.y + 4, logPanel.width - 16, logPanel.height - 8), string.Join("\n", tail), smallStyle);
+                DrawHand(W, H);
                 if (!string.IsNullOrEmpty(hoverInfo)) {
-                    var r = new Rect(10, H - 60 - 22 * (hoverInfo.Split('\n').Length) - 12, 460, 22 * hoverInfo.Split('\n').Length + 10);
-                    GUI.Box(r, "", panelStyle); GUI.Label(new Rect(r.x + 8, r.y + 4, r.width - 12, r.height), hoverInfo, labelStyle);
+                    int n = hoverInfo.Split('\n').Length;
+                    float w = mode == Mode.Live ? 255 : 460, lh = mode == Mode.Live ? 34 : 22;
+                    var r = new Rect(10, H - 60 - lh * n - 12, w, lh * n + 10);
+                    GUI.Box(r, "", panelStyle); GUI.Label(new Rect(r.x + 8, r.y + 4, r.width - 12, r.height), hoverInfo, mode == Mode.Live ? smallStyle : labelStyle);
                 }
+                DrawCardView(W, H);
             }
             if (mode != Mode.Gallery && Time.time < bannerUntil && !string.IsNullOrEmpty(banner)) {
                 var r = new Rect(W / 2 - 330, 76, 660, 50);
@@ -538,18 +596,66 @@ namespace InfiniteConquest.Playtest {
             bar.width *= Mathf.Clamp01(model.CapitalHp[p] / 20f);
             GUI.DrawTexture(bar, Texture2D.whiteTexture, ScaleMode.StretchToFill, false, 0, fc, 0, 0);
             GUI.Label(new Rect(r.x + 10, r.y + 96, r.width - 20, 22), $"Played {model.Played[p]} · Lost {model.Destroyed[p]}", smallStyle);
-            // Live: the human's hand as buttons (click card → legal hexes → click hex).
-            if (mode == Mode.Live && p == humanSeat && liveState?.players != null && liveState.players.Length > p && liveState.players[p].hand != null) {
-                var hand = liveState.players[p].hand;
-                float hy = r.y + r.height + 6;
-                for (int i = 0; i < hand.Length; i++) {
-                    var c = PlaytestCatalog.Get(hand[i].card_id);
-                    bool playable = ActionsFor(hand[i].instance_id).Any();
-                    GUI.enabled = playable && !waiting;
-                    if (GUI.Toggle(new Rect(r.x, hy + i * 30, r.width, 28), liveSelected == hand[i].instance_id, $"{c.name} ({c.type})", buttonStyle) && liveSelected != hand[i].instance_id) SelectLive(hand[i].instance_id);
-                    GUI.enabled = true;
+        }
+
+        // ------------------------------------------------------------------ AI-105 cards on screen
+        // Live: render the board above the hand so the near rows (and your capital) are never covered.
+        Camera backdrop;
+        void FitViewport() {
+            if (cam == null) return;
+            cam.rect = mode == Mode.Live ? new Rect(0, .24f, 1, .76f) : new Rect(0, 0, 1, 1);
+            // A clear-only camera behind the board so the strip under a shrunk viewport never shows stale frames.
+            if (backdrop == null) {
+                backdrop = new GameObject("Backdrop camera").AddComponent<Camera>();
+                backdrop.clearFlags = CameraClearFlags.SolidColor; backdrop.backgroundColor = cam.backgroundColor;
+                backdrop.cullingMask = 0; backdrop.depth = cam.depth - 1;
+            }
+        }
+        string hoverCardId, popupCardId; float popupUntil; int popupOwner;
+        Rect handRect, viewRect;
+        void PopupCard(string cardId, int owner) {
+            popupCardId = cardId; popupOwner = owner;
+            popupUntil = Time.time + Mathf.Max(.4f, 1.8f / Mathf.Max(1, speed));
+        }
+        // The human's hand along the bottom (live only): click a card → legal hexes light up → click a hex.
+        void DrawHand(float W, float H) {
+            handRect = Rect.zero;
+            if (mode != Mode.Live || liveState?.players == null || liveState.players.Length <= humanSeat) return;
+            var hand = liveState.players[humanSeat].hand;
+            if (hand == null || hand.Length == 0) return;
+            float cw = Mathf.Clamp(H * .15f, 96, 132), ch = cw * 1.39f, gap = 8, lift = cw * .2f;
+            float total = hand.Length * cw + (hand.Length - 1) * gap;
+            float x0 = Mathf.Max(270, W / 2 - total / 2), y0 = H - 52 - ch - 10;
+            handRect = new Rect(x0 - 6, y0 - lift - 6, total + 12, ch + lift + 12);
+            var mp = Event.current.mousePosition;
+            for (int i = 0; i < hand.Length; i++) {
+                var card = hand[i];
+                bool playable = ActionsFor(card.instance_id).Any() && !waiting;
+                bool selected = liveSelected == card.instance_id;
+                var r = new Rect(x0 + i * (cw + gap), y0, cw, ch);
+                bool hover = new Rect(r.x, r.y - lift, r.width, r.height + lift).Contains(mp);
+                if (selected || hover) r.y -= lift;
+                if (hover) hoverCardId = card.card_id;
+                CardFaces.Draw(r, card.card_id, true, selected || (hover && playable), !playable);
+                if (Event.current.type == EventType.MouseDown && Event.current.button == 0 && r.Contains(mp)) {
+                    if (playable) { if (selected) ClearSelection(); else SelectLive(card.instance_id); }
+                    else { sfx.PlayUi("error"); liveStatus = CardFaces.Get(card.card_id).name + " can't be played right now."; }
+                    Event.current.Use();
                 }
-                leftPanel = new Rect(r.x, r.y, r.width, r.height + 6 + hand.Length * 30);
+            }
+        }
+        void DrawCardView(float W, float H) {
+            viewRect = Rect.zero;
+            if (Time.time < popupUntil && popupCardId != null) {
+                var r = new Rect(W / 2 - 150, 132, 300, 420);
+                CardFaces.Draw(r, popupCardId, false, true);
+                var tag = new Rect(r.x, r.y - 26, r.width, 24);
+                GUI.Box(tag, "", panelStyle); GUI.Label(tag, $"{Faction(popupOwner)} plays", new GUIStyle(labelStyle) { alignment = TextAnchor.MiddleCenter });
+            }
+            if (hoverCardId != null) {
+                viewRect = new Rect(10, 202, 270, 380);
+                if (viewRect.yMax > H - 60) viewRect.height = H - 60 - viewRect.y;
+                CardFaces.Draw(viewRect, hoverCardId, false);
             }
         }
         void RebuildPieces() {
@@ -568,6 +674,9 @@ namespace InfiniteConquest.Playtest {
             void Check(bool ok, string name) { checks.Add((ok ? "PASS " : "FAIL ") + name); if (!ok) pass = false; Debug.Log("PLAYTEST_SMOKE " + (ok ? "PASS " : "FAIL ") + name); }
             var cards = PlaytestCatalog.All;
             Check(cards.Length == 139, "catalog has 139 cards (" + cards.Length + ")");
+            int faces = cards.Count(c => CardFaces.Get(c.id).cost > 0 || CardFaces.Get(c.id).rulesText.Length > 0 || CardFaces.Art(c.id) != null);
+            int arts = cards.Count(c => CardFaces.Art(c.id) != null);
+            Check(CardFaces.Count >= 139 && arts >= 100, $"AI-105: card faces staged ({faces}/{cards.Length} with data, {arts} with art)");
             int real = 0, stand = 0, failed = 0; var realIds = new List<string>();
             foreach (var c in cards) {
                 if (c.type == "SPELL") { stand++; continue; }
@@ -592,6 +701,8 @@ namespace InfiniteConquest.Playtest {
             string err = errors > 0 ? firstError : null;
             Check(err == null, "playback ran without exceptions" + (err != null ? ": " + err : ""));
             Check(events.Count > 0 && cursor == events.Count, $"all events applied ({cursor}/{events.Count})");
+            Check(EnemyShareViolations == 0, $"AI-104: no hex ever holds enemy Characters together ({EnemyShareViolations} violations{(firstViolation != null ? ", first " + firstViolation : "")}; {GhostEventsSkipped} events for destroyed units skipped)");
+            Check(GhostEventsSkipped > 0, "AI-104: seed-42 post-death move events were suppressed");
             Check(model.Winner == 0, "GAME_OVER winner = seat 0 (Zeus) as in AI-066 seed 42 (" + model.Winner + ")");
             Check(model.CapitalHp[1] == 0 || model.Winner == 0, "Poseidon capital destroyed");
             Debug.Log("PLAYTEST_SMOKE " + (pass ? "PASS" : "FAIL"));
