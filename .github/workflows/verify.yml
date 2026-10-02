@@ -57,3 +57,8 @@ jobs:
       - name: Client integration example
         working-directory: prototypes/lobby-lab
         run: node examples/client-demo.js
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      - name: IC.Net relay-1 client unit tests
+        run: dotnet test UnityProof/IC.Net.Tests/IC.Net.Tests.csproj --nologo
