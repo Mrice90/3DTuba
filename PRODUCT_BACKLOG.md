@@ -652,6 +652,8 @@ Standup and planning run 2026-10-01 ~22:15 EDT after Mathew's PC restart. This s
 | AI-093 | P1 | Claude + ChatGPT Unity | READY after lands | Swap the new land GLBs into the playtest board as textured tiles. |
 | AI-055 / AI-056 / AI-057 / AI-048 | — | Muse | OPEN | Carry over; no new commitment this sprint. |
 
-**Needs Mathew (when present):** AI-046-WIN-ACCEPT local `play.bat` run; AI-080/AI-030 mouse-driven full match; AI-065 deep-path rerun; Seraph Unity import proof; land and Poseidon-human review sheets; SFX listen-through. Open decisions: HA-011, HA-012, HA-015, HA-003 remainder, HA-018..020.
+**Land tiles APPROVED by Mathew 2026-10-01 ~22:20 EDT ("the land is fine i aprove").**
+
+**Needs Mathew (when present):** AI-046-WIN-ACCEPT local `play.bat` run; AI-080/AI-030 mouse-driven full match; AI-065 deep-path rerun; Seraph Unity import proof; Poseidon-human review sheet; SFX listen-through. Open decisions: HA-011, HA-012, HA-015, HA-003 remainder, HA-018..020.
 
 **Process:** one owner per in-progress item (no duplicate Muse runs); fetch before every edit to this file; watch for double-spend if another session uses the Meshy account.
