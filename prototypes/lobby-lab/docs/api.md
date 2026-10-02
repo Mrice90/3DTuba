@@ -142,6 +142,131 @@ UUIDs with no authentication. Contract, for reference:
 { "rating": 1016, "wins": 1, "losses": 0, "name": "Mathew" }
 ```
 
+## Worker v2 (AI-096) — `/v2/*`
+
+Runs beside v1: all paths above keep their exact v1 behavior (v1 is
+delegated verbatim, `dataVersion` still stored-but-never-enforced there).
+v2 adds a `dataVersion` gate, server-side room assignment, and signed
+results. Design + trust limits: `docs/v2-design.md`.
+
+Conventions: `dataVersion` is **required** on the two state-changing
+endpoints and must be at or above the server minimum (default `lab-2`;
+unknown versions fail closed). Errors keep the `{ "error": "<message>" }`
+shape.
+
+### `GET /v2/version` — capability discovery
+
+```jsonc
+{ "worker": "v2", "dataVersions": ["lab-1", "lab-2"], "dataVersionMin": "lab-2",
+  "v1Compatible": true, "secretMode": "ephemeral",
+  "endpoints": ["GET /v2/version", "POST /v2/rooms/pair", /* ... */] }
+```
+
+### `POST /v2/rooms/pair` — server-side atomic pairing
+
+```jsonc
+// request
+{ "uuidA": "<uuid>", "uuidB": "<uuid>", "dataVersion": "lab-2" }
+// 200 response
+{ "roomId": "K7Q2XAB4M9D2", "seatA": "<uuidA>", "seatB": "<uuidB>",
+  "dataVersion": "lab-2", "createdAt": 1759274400000, "expiresIn": 300 }
+// 400: dataVersion missing/old/unknown, bad UUIDs, or either player lacks a
+//      live v1 queue ticket (POST /queue first)
+```
+
+Both v1 queue tickets are consumed, so a paired player cannot be paired
+again while the room is live. Re-pairing an already-paired seat pair
+returns the live room (idempotent).
+
+### `GET /v2/rooms?uuid=<uuid>` — the caller's live room
+
+`200` → the room object above. `404` → `{ "error": "no live room for uuid" }`.
+
+### `DELETE /v2/rooms/{roomId}` — close a room (seat only)
+
+```jsonc
+// request
+{ "uuid": "<seat uuid>" }
+// 200 response
+{ "ok": true }
+// 403: not a seat of this room. Idempotent: closing twice still 200.
+```
+
+### `POST /v2/results` — two-seat agreement with signed receipts
+
+```jsonc
+// request
+{ "roomId": "<roomId>", "reporterUuid": "<seat uuid>",
+  "winnerUuid": "<seat uuid>", "loserUuid": "<seat uuid>",
+  "finalStateHash": "abc123",          // optional, max 128 chars
+  "dataVersion": "lab-2" }
+// 200 — first claim recorded
+{ "recorded": true, "status": "waiting", "reason": "waiting for the other seat's report" }
+// 200 — both seats agree: tamper-evident receipt issued
+{ "recorded": true, "status": "agreed",
+  "receipt": { "v": 2, "roomId": "<roomId>", "winnerUuid": "<uuid>",
+               "loserUuid": "<uuid>", "dataVersion": "lab-2",
+               "nonce": "<32 hex chars>", "sig": "<64 hex chars>" } }
+// 200 — seats disagree: flagged, nothing applied
+{ "recorded": true, "status": "disputed", "reason": "reports disagree — flagged for review" }
+// 403: reporter is not a seat. 404: unknown/expired room.
+// 400: winner/loser are not the room's seats, or the dataVersion gate fails.
+```
+
+v2 does **not** apply Elo — rating application stays with the v1 `/report`
+path (disabled in the lab) or a future ranked service. A receipt proves
+*this server* issued exactly these fields; it says nothing about who
+submitted the claims (caller UUIDs remain untrusted — no auth theater).
+
+### `GET /v2/results/{roomId}` — agreement state
+
+`200` → `{ "status": "waiting" }`, `{ "status": "agreed", "receipt": {...},
+"agreedAt": <ms> }`, or `{ "status": "disputed", "reason": "..." }`.
+`404` → no results recorded for the room.
+
+### `POST /v2/results/verify` — verify a receipt
+
+```jsonc
+// request
+{ "receipt": { "v": 2, /* ... */ } }
+// 200 response
+{ "valid": true }
+// or
+{ "valid": false, "reason": "signature mismatch" }
+```
+
+## Match relay (AI-097) — `GET /rooms/{roomId}/ws`
+
+WebSocket upgrade (production: one `MatchRoom` Durable Object per room;
+the lab runs the same `relay.js` session in-process). Query:
+`dataVersion=lab-2` (gate) and `seat=<seat uuid>` (must be a room seat).
+Protocol `relay-1` — full spec in `relay-design.md`:
+
+```jsonc
+// client -> server
+{ "type": "hello", "seat": "<uuid>", "lastSeq": 0 }   // resume after a drop
+{ "type": "seed-commit", "commit": "<64 hex>" }        // SHA-256(seed|salt)
+{ "type": "seed-reveal", "seed": "<seed>", "salt": "<salt>" }
+{ "type": "intent", "actionId": "r3-a12" }             // AI-079 action id
+{ "type": "turn", "turn": 3, "activeSeat": "<uuid>" }  // first claim wins
+{ "type": "hash", "turn": 2, "hash": "<64 hex>" }      // bridge op:hash
+// server -> client
+{ "type": "welcome", "seat": "<uuid>", "roomId": "<id>", "phase": "play",
+  "turn": 2, "seed": "<64 hex>", "log": [/* intents after lastSeq */] }
+{ "type": "seed", "seed": "<64 hex>" }                // SHA-256(seedA|seedB)
+{ "type": "intent", "seq": 7, "seat": "<uuid>", "actionId": "r3-a12" }
+{ "type": "hash-request", "turn": 2 }
+{ "type": "hash-ok", "turn": 2 }                      // or "hash-mismatch" (flagged)
+{ "type": "timer", "seat": "<uuid>", "msRemaining": 30000 }
+{ "type": "forfeit", "seat": "<uuid>", "reason": "timeout" }  // or "no-reveal"
+{ "type": "error", "reason": "..." }
+```
+
+The server is the only sequencer (`seq` is assigned on arrival); clients
+apply intents in `seq` order. A dropped socket is not a forfeit — reconnect
+with `hello{lastSeq}` and replay the returned log. Turn timeout (default
+120 s, warning at 30 s/10 s) forfeits the active seat.
+
 ## C# integration notes (Unity)
 
 - Target the **lab server on loopback** during development; the deployed
@@ -155,5 +280,18 @@ UUIDs with no authentication. Contract, for reference:
   `hostRating`, connect to `wssUrl` directly — there is no server-side join.
 - Quick-match flow: `POST /queue` → poll `GET /queue/poll?uuid=` →
   `host` publishes via `POST /pair` → opponent's next poll returns `ready`.
+- Worker v2 flow (AI-096): `POST /queue` (both players) →
+  `POST /v2/rooms/pair` (atomic server-side pairing, `dataVersion: "lab-2"`
+  required) → `GET /v2/rooms?uuid=` to read the room →
+  `POST /v2/results` per seat → `agreed` returns a signed receipt, verifiable
+  via `POST /v2/results/verify`.
+- Match relay flow (AI-097): after `POST /v2/rooms/pair`, each seat opens
+  `GET /rooms/{roomId}/ws?dataVersion=lab-2&seat=<seatUuid>` (WebSocket
+  upgrade; one Durable Object per room in production, in-process session in
+  the lab). Protocol `relay-1` — see `relay-design.md`: `hello` →
+  `seed-commit`/`seed-reveal` → shared `seed` → `intent` (server-sequenced,
+  broadcast to both) → `turn` announcements → `hash-request`/`hash` per
+  completed turn (`hash-ok` or flagged `hash-mismatch`) → `forfeit` on turn
+  timeout. Dropped sockets resume with `hello{lastSeq}` and a replayed log.
 - Never ship a build that reports match results to a service without
   authenticated player identity; the lab disables `/report` for this reason.

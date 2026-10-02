@@ -578,3 +578,92 @@ Review: `docs/reviews/2026-09-30-0000-claude-acceptance.md`. This section supers
 | AI-097 | P0 | Muse + Claude Unity thread | READY, after AI-096 | Per the 20:00 PO section. |
 
 Process: record every CI run ID with its conclusion; fetch before each root-record edit (third stale overwrite on 2026-09-29).
+
+## 2026-09-30 06:00 — Claude (covering Astra): board update
+Review: `docs/reviews/2026-09-30-0600-claude-acceptance.md`. This section supersedes earlier rows for these IDs.
+
+| ID | P | Owner | State | Next |
+|---|---|---|---|---|
+| AI-098 | P1 | Muse | **ACCEPTED** | Verify green on both OSes (36681380841, 36681414338, 36687085629). |
+| AI-099 | P1 | Muse | **REJECTED (partial)**; Linux half accepted | Windows jar `18998415…` ≠ canonical `2db3a12c…`, so `play.bat` refuses a fresh Windows build. Fix via AI-100. |
+| **AI-100** (AI-006) | P1 | Muse | **DELIVERED** 2026-09-30 ~08:30 EDT (acceptance pending 12:00 review — do NOT self-accept) | `make-repro-jar.py` normalises **all** manifest CRLF→LF plus text-resource (`.json`/`.txt`/`.md`/…) CRLF→LF — the second delta Claude flagged beyond the manifest (16 git-checkout text resources). windows-packaging now **asserts** jar hash == tracked `CHECKSUMS.sha256` (was print-only); new `play.bat --check-only` proves the gate accepts a fresh Windows build without launching the GUI; `test_make_repro_jar.py` 5/5 (fails 3/5 on the old code) runs in verify.yml. Evidence: local full build from pin `992bc95` → `2db3a12c…` (canonical, unchanged — fix is a no-op on LF inputs); same tree with all text resources + manifest converted to CRLF (simulated Windows checkout) → **identical `2db3a12c…`** with the new tool, `7557b17c…` with the old tool (reproduces the `18998415…` failure mode). 23 entries differed under the old tool (manifest + 22 text resources incl. Jackson pom files). Acceptance: Windows + Linux packaging green with equal asserted hashes. |
+| AI-076 | P3 | Muse | ACCEPTED (corrections `1ec13ee`) | → HA-015 (Mathew). |
+| AI-096 | P0 | Muse | READY, after AI-100 | Worker v2. |
+| AI-097 | P0 | Muse + Claude Unity thread | READY, after AI-096 | Per the 20:00 PO section. |
+
+## 2026-09-30 12:00 — Claude (covering Astra): board update
+Review: `docs/reviews/2026-09-30-1200-claude-acceptance.md`. This section supersedes earlier rows for these IDs. Lane owners follow the local 07:25 EDT working meeting: ChatGPT owns AI-080/AI-082, Claude owns AI-081, and Muse owns QA.
+
+| ID | P | Owner | State | Next |
+|---|---|---|---|---|
+| AI-100 | P1 | Muse | **DELIVERED** 2026-09-30 ~14:45 EDT (acceptance pending 18:00 review — do NOT self-accept) | Rework complete. Root cause: CPython `ZipInfo.create_system` defaults 0 on Windows / 3 on POSIX (2-byte OS fingerprint per entry header); pinned to 3 in `make-repro-jar.py` (`b1199b6`). Per-entry diff tool `diff-jar-entries.py` proves the residue: old-Windows simulation shows header-only `create_system` diffs on every entry, fixed packer yields byte-identical jars from LF/CRLF sources. Fixed two WinError 32 regressions in test helpers (unclosed `mkstemp` fd; `0912185`, `874ea3a`). Evidence at `874ea3a`: Linux packaging [#38](https://github.com/Mrice90/3DTuba/actions/runs/36758602542) success (asserts canonical `2db3a12c…`), Windows packaging [#71](https://github.com/Mrice90/3DTuba/actions/runs/36758602750) success (asserts canonical; `play.bat --check-only` green), Verify [#213](https://github.com/Mrice90/3DTuba/actions/runs/36758602937) success both OSes. Full run ledger: `docs/muse/sprint-02/ai-100-ci-ledger.md` (AI-101). |
+| **AI-101** (new, AI-006) | P2 | Muse | **DELIVERED** 2026-09-30 ~15:00 EDT (process rule; acceptance with Claude's 18:00 review) | Full CI run ledger `docs/muse/sprint-02/ai-100-ci-ledger.md` (`7bae8ac`): every run at every tested head with URL/ID, workflow, head SHA and conclusion — including red (`18178ba` #63, `3105c1a` #64 packaging failures), in-progress, and failure reasons. The rule now lives as standing record in the ledger header: a delivery entry must list every CI run at its head with its conclusion; an item whose own acceptance CI is red stays IN_PROGRESS, not DELIVERED. |
+| **AI-102** (new, AI-006) | P3 | Muse | **DELIVERED** 2026-09-30 ~15:00 EDT (acceptance with Claude's 18:00 review) | `actions/setup-python@v5` → `@v6` in `.github/workflows/windows-packaging.yml:36` (with AI-102 comment; the Node-20 deprecation warning is gone). Shipped in the 14:00 rework commits; independently verified at tip `3bf9641`: Verify #214 (run `36759079743`) **success** on ubuntu-24.04 and windows-latest, which exercises the bumped action. |
+| AI-080 | P0 | ChatGPT | READY FOR HUMAN TEST (not accepted) | Push `chatgpt/unity-playable-20260930` (`47c4a15`) to GitHub for independent review. Mathew plays one full mouse-driven match. |
+| AI-081 | P1 | Claude (Meshy) | HOLD | Waits on the Zeus palette (HA-021) and the concurrent-queue reconciliation. Meshy is at 1,754. |
+| AI-096 | P0 | Muse | READY, after AI-100 | Worker v2. |
+| AI-097 | P0 | Muse + ChatGPT Unity | READY, after AI-096 | Per the 20:00 PO section. |
+| **HA-021** (new) | — | Mathew | OPEN | Choose the replacement Zeus palette. Black-and-gold is reserved for Hades. |
+
+**12:05 correction (Claude covering Astra):** HA-021 is **CLOSED**. The PO's binding Zeus palette is now recorded in `docs/production/ASSET_QUEUE.md` and `docs/production/ZEUS_COLOR_DIRECTION.md` (local, ~12:00 EDT): dominant white, secondary blue, restrained gold accents, with Desolate-Tuba art as the style reference (read-only). The AI-081 Zeus retexture is no longer blocked on a palette choice. Per that record, Meshy provider execution for it is owned by Mathew, so this checkpoint submits nothing.
+
+## 2026-09-30 18:00 — Claude (covering Astra): board update
+
+Review: `docs/reviews/2026-09-30-1800-claude-acceptance.md`.
+
+| ID | Pri | Owner | State | Next / evidence |
+|---|---|---|---|---|
+| AI-100 (AI-006) | P1 | Muse | **ACCEPTED** 2026-09-30 18:00 | Windows #72 `36776423170` + Linux #39 `36776423099` @ `a04a0a4`. Independent dispatch @ `e6c519e`: Windows #73 `36782436578`, Linux #40 `36782526494`. All green; canonical `2db3a12c…` unchanged. |
+| AI-101 (AI-006) | P2 | Muse | **ACCEPTED** (corrections in AI-103) | Ledger `7bae8ac`/`de2a534`. Fix: `36759079743` = Verify #215 (not #214); add Verify #214 `36758717297` @ `7bae8ac`. |
+| AI-102 (AI-006) | P3 | Muse | **ACCEPTED** | setup-python@v6 at `windows-packaging.yml:36`, `verify.yml:19`. |
+| **AI-103** (new, AI-006) | P3 | Muse | **DELIVERED** 2026-09-30 ~21:45 EDT (acceptance pending Claude's 00:00 review — do NOT self-accept) | `actions/upload-artifact@v4` → **@v6** in both packaging workflows (commits `5dbdeab`/`f406dd8`, corrected `efa3f4d`/`26aed61` — first attempt used @v5, but @v5's action.yml still declares `node20`; verified @v6 declares `node24` before republishing). Ledger corrections at `f5e5c61`: `36759079743` relabeled #214 → #215, Verify #214 `36758717297` @ `7bae8ac` (success) added. CI: Linux packaging #41 `36799609034` @ `efa3f4d` success, Windows packaging #74 `36799617757` @ `26aed61` success — zero Node 20 annotations on either run (annotation scan over all packaging check runs). |
+| AI-096 | P0 | Muse | **DELIVERED** 2026-09-30 ~20:45 EDT (acceptance pending Claude's 00:00 review — do NOT self-accept) | Worker v2 in `prototypes/lobby-lab/`: `worker-v2.js` (`e1c3fe2`) routes `/v2/*` — server-side room assignment (`POST /v2/rooms/pair`, atomic over v1 queue tickets), signed results (`POST /v2/results` → HMAC receipt, `POST /v2/results/verify`), dataVersion gate (min `lab-2`); all other paths delegated to the pinned v1 worker verbatim (2D alpha unaffected). `server.js` (`51c17cf`) wires the router + `LAB_V2_SECRET`/`LAB_V2_DATAVERSION_MIN`; 13 new tests (`a73bf3f`) — full suite **56/56 green**; design + trust doc (`82de7e0`), api.md v2 section (`8eb1f88`), README (`657c45e`). Upstream `worker.js` SHA-256 unchanged. Relay/rendezvous stays AI-097's scope. |
+| AI-097 | — | Muse | READY after AI-096/AI-103 | — |
+| AI-046-WIN-ACCEPT | P1 | Mathew | WAITING — needs Mathew present | Local `play.bat` run on a fresh Windows build. CI now proves the gate. |
+| AI-081 | — | Claude Meshy thread | HOLD | Attribute the Meshy 1,734 → 1,369 (−365) spend and the 10 new Zeus groups. The Seraph import proof waits for Mathew. |
+| HA-022 (new) | — | Mathew | **CLOSED** 2026-10-01 ~21:55 EDT (evidence: repo SPRINT_LOG.md @ `ad1597e`) | Mathew confirmed directly (main chat, 2026-09-30 ~21:31 EDT) that he green-lit the 365-credit Meshy spend behind the 10 new Zeus model groups — authorized spend, not unattributed. |
+| AI-055 / AI-056 / AI-057 / AI-048 | P1/P2/P3/— | — | OPEN | Unchanged. |
+
+## Sprint IC-S03 plan (2026-10-01 22:15 → 2026-10-04 08:12 EDT) — Claude (covering Astra)
+Standup and planning run 2026-10-01 ~22:15 EDT after Mathew's PC restart. This section supersedes earlier rows for these IDs. The sprint ends when Astra returns (2026-10-04 08:12 EDT); the sprint review is the first meeting after that.
+
+**Sprint goal:** spend the rest of this month's Meshy credits on finished, board-ready Zeus/Poseidon assets (all 35 lands on exact hex bases, plus the missing Poseidon humans), give every delivered model and land its sound set in ElevenLabs, and start the AI-097 lockstep relay now that AI-096 is accepted.
+
+**Standup (state at 22:15 EDT)**
+- Meshy lane ("Meshy asset development 2" thread): all 30 remaining lands generated and textured in Meshy 6 Lite (600 credits); 35 lands mid-way through hybrid processing onto Blender hex bases; 7 of 13 missing Poseidon humans generated from Desolate Tuba art. About 179 credits left at the last report (21:36). The PC shut off mid-turn; the thread has resumed.
+- ElevenLabs lane ("ElevenLabs sound effects" thread): restarted with a full audit of existing audio against what the game needs. Last recorded balance 123,239.
+- Muse (Rune): AI-096 and AI-103 delivered 2026-09-30 and waiting on review (the 00:00 review never ran). Verified tonight, see below.
+- ChatGPT: `chatgpt/unity-playable-20260930` is still not on GitHub (checked `git ls-remote` 22:15).
+- Repo tip `ceea269`: Verify #240 `36953407019` success.
+
+**Acceptances tonight**
+- **AI-096 ACCEPTED** (Worker v2): independent `npm test` in `prototypes/lobby-lab` at `ceea269` — 56/56 pass, 0 fail. Acceptance is on tests and the design doc; the deployed-worker step still waits for Mathew.
+- **AI-103 ACCEPTED**: `actions/upload-artifact@v6` at `linux-packaging.yml:111` and `windows-packaging.yml:64`; Linux packaging #42 `36799609034` and Windows packaging #75 `36799617757` success.
+
+| ID | Pri | Owner | State | Sprint commitment / acceptance |
+|---|---|---|---|---|
+| AI-081 / AI-061 Meshy lands | P0 | Claude ("Meshy asset development 2") | IN_PROGRESS | Finish hybrid hex-base processing for all 35 lands; render on the hex board; review sheet to Mathew. Acceptance: every land fits one hex at board scale (AI-063 budget) and matches its faction palette. |
+| AI-081 Poseidon humans | P0 | Claude ("Meshy asset development 2") | IN_PROGRESS (7/13 generated) | Generate the other 6 from Desolate Tuba art, texture, download, normalize, render, review sheet. Neo-futuristic: energy weapons, no bows. |
+| AI-081 credit burn-down | P1 | Claude (Meshy thread) | READY after the humans | Spend whatever remains on the next highest-value gaps in this order: (1) Skyfather Archon and Eagle of the High Grid (last Zeus holds), (2) any Zeus/Poseidon card still without a model, (3) Zeus retextures toward more gold. Then HOLD all Meshy work until next month's refill. No top-ups. |
+| AI-020 / AI-061 SFX coverage | P0 | Claude ("ElevenLabs sound effects") | IN_PROGRESS | Audit staged audio vs the AI-064 presentation manifest; generate missing deploy/move/attack/hit/destroy cues for every delivered model, plus land-placement cues for the 35 lands; stage with a manifest. Acceptance: coverage report shows no Zeus/Poseidon card missing a cue; Mathew listen-through. |
+| AI-064 coverage report | P1 | Claude | READY | Run `coverage.py` against `assets/staging/` once the new models and cues are staged; post the first real coverage report. |
+| AI-097 | P0 | Muse (Rune) | **IN_PROGRESS 2026-10-01 ~23:00 EDT** — first sprint deliverable shipped | Design doc `prototypes/lobby-lab/docs/relay-design.md` (`5f695b3`): relay-1 protocol (seed commit-reveal, server-sequenced intents, per-turn hash exchange, turn timers/forfeit, reconnect resume), trust model (no auth theater — seat UUIDs are bearer tokens; lockstep hidden-info tradeoff accepted for v1.0 with hash-flagging mitigations). `relay.js` (`4d8a805`): Workers-compatible relay core — `createRelaySession` state machine + `MatchRoom` Durable Object class + `createRelayRouter` for `GET /rooms/:id/ws`. Lab shim: `ws-shim.js` (`b0b8bf6`, stdlib server-side WebSocket) wired into `server.js` (`b70d410`) with loopback guards and the dataVersion gate on the upgrade path; `docs/api.md` relay section (`7e20d3b`). Tests `test/relay.test.js` (`b32cabf`): 16 new (13 session unit + 3 real-WebSocket integration incl. two-seat flow and 60 s-style reconnect resume); full suite **72/72 green**. Second deliverable DELIVERED 2026-10-02 ~02:00 EDT (rules-bridge protocol v1.1.0, additive): `{"op":"hash"}` returns SHA-256 over canonical JSON of the full unredacted state (seed/turn/phase/active_player/winner, both players' GP, full hand/deck/discard with card+instance identity and all mutable per-card state, board cells sorted x,y with ordered stacks); stdlib canonicalizer (sorted keys, compact); read-only — no state/revision mutation, NO_MATCH before `new`. Determinism basis verified against pinned 992bc95 sources (read-only): seed-derived shuffle, `nameUUIDFromBytes` instance ids, seeded bot RNGs. test_bridge.py now **11/11 properties** (was 8/8): hash basics + read-only + sensitivity; two independent processes, same seed → identical hash; same seed + same intents → identical hash sequence, divergent intent → divergent hash (shared prefix identical). Golden fixture byte-identical; local run against canonical jar 2db3a12c; covered by linux-packaging.yml AI-079 step on the pinned build. Next: Unity-lane client wiring (Claude Unity thread). |
+| AI-080 | P0 | ChatGPT | READY FOR HUMAN TEST | Push `chatgpt/unity-playable-20260930` to GitHub so it can be reviewed; then Mathew plays one full mouse-driven match. |
+| AI-093 | P1 | Claude + ChatGPT Unity | READY after lands | Swap the new land GLBs into the playtest board as textured tiles. |
+| AI-055 / AI-056 / AI-057 / AI-048 | — | Muse | OPEN | Carry over; no new commitment this sprint. |
+
+**Land tiles APPROVED by Mathew 2026-10-01 ~22:20 EDT ("the land is fine i aprove").**
+
+**Needs Mathew (when present):** AI-046-WIN-ACCEPT local `play.bat` run; AI-080/AI-030 mouse-driven full match; AI-065 deep-path rerun; Seraph Unity import proof; Poseidon-human review sheet; SFX listen-through. Open decisions: HA-011, HA-012, HA-015, HA-003 remainder, HA-018..020.
+
+**Process:** one owner per in-progress item (no duplicate Muse runs); fetch before every edit to this file; watch for double-spend if another session uses the Meshy account.
+
+### 2026-10-01 ~22:30 EDT — PO playtest of the Unity build (recording: project files `Screen Recording 2026-10-01 222456.mp4`)
+Mathew ran `playtest\unity-build-2026-09-30`. It played the recorded seed-42 bot-vs-bot match to "Zeus wins" (turn 14). Findings:
+
+| ID | Pri | Owner | State | Finding / acceptance |
+|---|---|---|---|---|
+| **AI-104** (new, AI-080) | P0 | Unity lane (ChatGPT; Claude if the branch reaches GitHub) | READY | **Ghost token: a destroyed unit reappears and shares a hex with an enemy.** The rules forbid this (`MovementRules.passability`: an enemy Character is BLOCKED; README "Friendly Characters may share a stack"). Cause is in the replay, not the rules: in `dump-seed-42.jsonl` the engine emits `CARD_DESTROYED` (seq 63) for Arc Relay Scout *before* its `CHARACTER_MOVED 3,1→3,4` (seq 64), because the opportunity attack kills it mid-move. The client removes the token, then the move event puts it back on 3,4 next to Tidepool Surveyor. Same pattern at seq 180–182. Fix: once an instance is destroyed, ignore later move/damage events for it (or play the move first, then the death). Acceptance: seed-42 replay never shows two enemy units on one hex; add a check to `-playtestSmoke`. |
+| **AI-105** (new, AI-080) | P0 | Unity lane | READY | **Show the cards.** Without a visible hand and card faces the match is hard to follow. Need: own hand along the bottom with card art/cost/stats, hover or right-click for a full card view (as in the 2D alpha), and a card pop-up when anything is played. |
+| **AI-106** (new, AI-080/AI-079) | P0 | Unity lane | READY | **Live human-vs-bot match.** The build only replays a recorded bot match, so the PO mouse-driven acceptance (AI-080) is not possible yet. Wire the human seat to the accepted AI-079 rules bridge. |
+| AI-107 (new, AI-007) | P3 | Muse | **DELIVERED 2026-10-02 ~17:45 EDT** — root cause + characterization, no behavior change | Quirk is general bot behavior, not Surveyor-specific: 25 A→B→A oscillations across 4 units on both sides in the seed-42 dump (both Surveyors 22, Skyline Seer 2, Stormgate Sentinel 1). Root cause in pinned alpha (read-only, `TubaExperiment@992bc95`): `BotPlayer.score()` gives every `move` a flat 35 regardless of destination (`BotPlayer.java:322`); ties broken by reverse-lexicographic command string (`ranked()`, lines 275–278); `score()` is pure `(state, command)` with no position memory; `end` scores 0 so any legal move wins. `docs/muse/sprint-02/ai-107-bot-pacing/`: analysis doc with file:line citations + fix design for the future engine (destination-aware scoring and/or anti-oscillation memory), `test_pacing.py` 4/4 green characterizing the exact pattern (wired into verify.yml). Not fixed in the pinned alpha or the bridge (bridge must stay a faithful engine). |

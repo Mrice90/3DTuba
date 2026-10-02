@@ -4,6 +4,8 @@
  *
  * - Imports upstream/worker.js VERBATIM (see upstream/PROVENANCE.md).
  * - Adapts Node http requests to the worker's fetch(request, env) signature.
+ * - Routes /v2/* to worker-v2.js (AI-096: room assignment, signed results,
+ *   dataVersion gate); everything else goes to the pinned v1 worker verbatim.
  * - In-memory KV with TTL + controllable clock (see kv.js).
  * - Serves the browser UI from public/.
  * - Binds loopback (127.0.0.1) by default; override with HOST/PORT env.
@@ -21,6 +23,9 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import worker from "./upstream/worker.js";
+import { createV2Router } from "./worker-v2.js";
+import { createRelaySession, RELAY_PROTOCOL } from "./relay.js";
+import { handleUpgrade as handleWsUpgrade } from "./ws-shim.js";
 import { createKv } from "./kv.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -34,7 +39,14 @@ const MIME = {
     ".md": "text/markdown; charset=utf-8",
 };
 
-const API_PREFIXES = ["/lobbies", "/queue", "/pair", "/report", "/leaderboard", "/rating"];
+const API_PREFIXES = ["/lobbies", "/queue", "/pair", "/report", "/leaderboard", "/rating", "/v2", "/rooms"];
+
+const RELAY_WS_PATH = /^\/rooms\/([^/]+)\/ws$/;
+
+/** UUID shape shared with worker-v2.js. */
+function isUuid(value) {
+    return typeof value === "string" && /^[0-9a-fA-F-]{1,64}$/.test(value);
+}
 
 /**
  * Loopback-only policy (AI-045). The lab server must never be reachable
@@ -151,6 +163,11 @@ async function serveStatic(req, res) {
  *   Reports are caller-asserted UUIDs with no authentication: a single
  *   caller can submit both "agreeing" reports and mint Elo for arbitrary
  *   UUIDs. Keep disabled until a production identity design exists.
+ * Worker v2 (see worker-v2.js, docs/v2-design.md) is always routed:
+ * /v2/* is handled by the v2 router, everything else by the pinned v1
+ * worker verbatim. The v2 receipt HMAC secret comes from LAB_V2_SECRET
+ * (ephemeral per process when unset); the dataVersion gate minimum from
+ * LAB_V2_DATAVERSION_MIN (default "lab-2").
  */
 export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes = 1_000_000, allowReports = false } = {}) {
     if (!isLoopbackHost(host)) {
@@ -158,6 +175,15 @@ export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes
     }
     const kv = createKv(now ? { now } : {});
     const env = { IC_KV: kv };
+    // AI-096: v2 router wraps the pinned v1 worker. Non-/v2/* requests are
+    // delegated verbatim (backward compatible); /v2/* adds room assignment,
+    // signed results and the dataVersion gate. See docs/v2-design.md.
+    const v2 = createV2Router({
+        v1fetch: (wReq, wEnv) => worker.fetch(wReq, wEnv),
+        now: kv.now,
+        dataVersionMin: process.env.LAB_V2_DATAVERSION_MIN || "lab-2",
+        secret: process.env.LAB_V2_SECRET || undefined,
+    });
 
     const server = http.createServer(async (req, res) => {
         try {
@@ -215,7 +241,7 @@ export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes
                 headers: req.headers,
                 body: req.method === "GET" || req.method === "HEAD" ? undefined : body,
             });
-            const wRes = await worker.fetch(wReq, env);
+            const wRes = await v2.fetch(wReq, env);
             const buf = Buffer.from(await wRes.arrayBuffer());
             const headers = {};
             wRes.headers.forEach((v, k) => { headers[k] = v; });
@@ -234,13 +260,96 @@ export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes
         server.once("error", reject);
         server.listen(port, host, resolve);
     });
+
+    // AI-097 lockstep relay (in-process lab shim for relay.js). Each v2
+    // room gets one relay session; WebSocket upgrades on /rooms/:id/ws
+    // attach seats to it. Production runs the same session inside the
+    // MatchRoom Durable Object.
+    const relaySessions = new Map(); // roomId -> {session, sockets: Map(seat->ws)}
+    const dataVersionMin = process.env.LAB_V2_DATAVERSION_MIN || "lab-2";
+
+    function getRelaySession(room) {
+        let entry = relaySessions.get(room.roomId);
+        if (!entry) {
+            const sockets = new Map();
+            const session = createRelaySession({
+                room: { roomId: room.roomId, seatA: room.seatA, seatB: room.seatB },
+                now: kv.now,
+                send: (seat, msg) => {
+                    const ws = sockets.get(seat);
+                    if (ws && !ws.closed) ws.send(JSON.stringify(msg));
+                },
+                broadcast: (msg) => {
+                    for (const seat of [room.seatA, room.seatB]) {
+                        const ws = sockets.get(seat);
+                        if (ws && !ws.closed) ws.send(JSON.stringify(msg));
+                    }
+                },
+                onEnd: () => relaySessions.delete(room.roomId),
+            });
+            entry = { session, sockets };
+            relaySessions.set(room.roomId, entry);
+        }
+        return entry;
+    }
+
+    const relayTick = setInterval(() => {
+        for (const { session } of relaySessions.values()) {
+            try { session.tick(); } catch (e) { console.error("relay tick failed:", e.message); }
+        }
+    }, 5000);
+    relayTick.unref();
+
+    server.on("upgrade", async (req, socket, head) => {
+        const fail = () => { try { socket.destroy(); } catch { /* noop */ } };
+        try {
+            // Same loopback boundary as HTTP (AI-045): the Host header of
+            // the upgrade request must be loopback.
+            const hh = hostHeaderHostname(req);
+            if (!hh || !isLoopbackHost(hh)) return fail();
+            const url = new URL(req.url, "http://local");
+            const m = url.pathname.match(RELAY_WS_PATH);
+            if (!m) return fail();
+            const roomId = decodeURIComponent(m[1]);
+            const dataVersion = url.searchParams.get("dataVersion");
+            if (dataVersion !== dataVersionMin && dataVersion !== "lab-3") return fail();
+            const seat = url.searchParams.get("seat");
+            if (!isUuid(seat)) return fail();
+            const roomRaw = await kv.get(`v2:room:${roomId}`);
+            if (!roomRaw) return fail();
+            const room = JSON.parse(roomRaw);
+            if (seat !== room.seatA && seat !== room.seatB) return fail();
+
+            const ws = handleWsUpgrade(req, socket, head);
+            if (!ws) return fail();
+            const { session, sockets } = getRelaySession(room);
+            if (!session.handleConnect(seat)) { ws.close(); return; }
+            // Reconnect replaces the seat's socket.
+            const prev = sockets.get(seat);
+            if (prev && prev !== ws && !prev.closed) prev.close();
+            sockets.set(seat, ws);
+            ws.onMessage((text) => session.handleMessage(seat, text));
+            ws.onClose(() => {
+                if (sockets.get(seat) === ws) sockets.delete(seat);
+                session.handleDisconnect(seat);
+            });
+        } catch (e) {
+            console.error("relay upgrade failed:", e.message);
+            fail();
+        }
+    });
+
     const addr = server.address();
     return {
         server,
         kv,
         host: addr.address,
         port: addr.port,
-        close: () => new Promise((resolve, reject) => server.close((e) => (e ? reject(e) : resolve()))),
+        relaySessions,
+        close: () => new Promise((resolve, reject) => {
+            clearInterval(relayTick);
+            server.close((e) => (e ? reject(e) : resolve()));
+        }),
     };
 }
 
@@ -252,6 +361,7 @@ if (isMain) {
     const allowReports = process.env.LAB_ALLOW_REPORTS === "1";
     const { server, port: boundPort, host: boundHost } = await start({ port, host, maxBodyBytes, allowReports });
     console.log(`lobby-lab listening on http://${boundHost}:${boundPort}`);
+    console.log(`worker v2: dataVersionMin=${process.env.LAB_V2_DATAVERSION_MIN || "lab-2"}, receipt secret=${process.env.LAB_V2_SECRET ? "provided" : "ephemeral (per-process)"}`);
     console.log(`match reporting: ${allowReports ? "ENABLED (local contract exercise only)" : "disabled"}; body cap: ${maxBodyBytes} bytes`);
     console.log("local development only — do not expose beyond loopback without real identity");
     const shutdown = () => {

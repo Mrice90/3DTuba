@@ -9,7 +9,13 @@ Builds RulesBridge against the pinned alpha JAR and proves:
   5. the bot auto-plays after the human ends turn,
   6. a scripted game reaches GAME_OVER,
   7. every emitted event passes AI-062 validation,
-  8. opponent hand/deck identities are never exposed.
+  8. opponent hand/deck identities are never exposed,
+  9. AI-097: {"op":"hash"} returns a canonical 64-hex state hash and is
+     read-only (NO_MATCH before new; hash changes when state changes),
+ 10. AI-097: seeded setup — two independent bridge processes with the
+     same seed report the identical hash,
+ 11. AI-097: same seed + same intents -> identical hash sequence;
+     a divergent intent -> divergent hash.
 
 Also writes the golden transcript fixture (fixtures/golden-seed-42.jsonl).
 
@@ -87,6 +93,11 @@ def check(cond, msg):
         print(f"test_bridge: FAIL: {msg}", file=sys.stderr)
         sys.exit(1)
     print(f"test_bridge: ok: {msg}")
+
+
+def is_hex64(s):
+    return (isinstance(s, str) and len(s) == 64
+            and all(c in "0123456789abcdef" for c in s))
 
 
 def new_match(b, human_player=0):
@@ -245,7 +256,86 @@ def main():
     finally:
         b.close()
 
-    print("test_bridge: PASS (8/8 properties)")
+    # Property 9: AI-097 {"op":"hash"} — canonical state hash, read-only.
+    b = Bridge()
+    try:
+        pre = b.call("hash")
+        check(not pre["ok"] and pre["error_code"] == "NO_MATCH",
+              "hash before new rejected NO_MATCH")
+        r = new_match(b)
+        h1 = b.call("hash")
+        check(h1["ok"] and h1["revision"] == r["revision"],
+              "hash ok, revision correlates with new")
+        check(is_hex64(h1["state_hash"]),
+              "hash is canonical 64-char lowercase hex")
+        check(isinstance(h1["turn"], int) and h1["turn"] >= 1,
+              "hash carries the current turn")
+        h2 = b.call("hash")
+        check(h2["state_hash"] == h1["state_hash"]
+              and h2["revision"] == h1["revision"],
+              "hash is read-only: repeat call, same hash, no revision bump")
+        legal = b.call("legal")
+        pick = next(a for a in legal["legal"] if a["type"] != "end_turn")
+        ra = b.call("act", action_id=pick["id"])
+        h3 = b.call("hash")
+        check(h3["ok"] and h3["revision"] == ra["revision"]
+              and h3["state_hash"] != h1["state_hash"],
+              "hash sensitive to state change, revision tracks latest act")
+    finally:
+        b.close()
+
+    # Property 10: AI-097 seeded setup — two independent bridge processes
+    # with the same seed report the identical canonical hash.
+    seed_hashes = []
+    for i in range(2):
+        b = Bridge()
+        try:
+            new_match(b)
+            h = b.call("hash")
+            check(h["ok"] and is_hex64(h["state_hash"]),
+                  f"seed-setup[{i}]: hash ok on fresh process")
+            seed_hashes.append(h["state_hash"])
+        finally:
+            b.close()
+    check(seed_hashes[0] == seed_hashes[1],
+          "seeded setup: same seed on two processes -> identical state hash")
+
+    # Property 11: AI-097 lockstep determinism — same seed + same intents
+    # -> identical hash sequence; one divergent intent -> divergent hash.
+    def scripted_hashes(diverge_second=False):
+        bb = Bridge()
+        hs = []
+        try:
+            new_match(bb)
+            hs.append(bb.call("hash")["state_hash"])
+            for step in range(2):
+                legal = bb.call("legal")
+                non_end = [a for a in legal["legal"]
+                           if a["type"] != "end_turn"]
+                if diverge_second and step == 1:
+                    pick = next(a for a in legal["legal"]
+                                if a["type"] == "end_turn")
+                elif non_end:
+                    pick = non_end[0]
+                else:
+                    pick = next(a for a in legal["legal"]
+                                if a["type"] == "end_turn")
+                bb.call("act", action_id=pick["id"])
+                hs.append(bb.call("hash")["state_hash"])
+            return hs
+        finally:
+            bb.close()
+
+    seq_a = scripted_hashes()
+    seq_b = scripted_hashes()
+    check(len(seq_a) == 3 and seq_a == seq_b,
+          "same seed + same intents -> identical hash sequence")
+    seq_c = scripted_hashes(diverge_second=True)
+    check(seq_c[0] == seq_a[0] and seq_c[1] == seq_a[1]
+          and seq_c[2] != seq_a[2],
+          "divergent intent -> divergent hash (shared prefix identical)")
+
+    print("test_bridge: PASS (11/11 properties)")
 
 
 if __name__ == "__main__":

@@ -45,6 +45,15 @@ jobs:
       - name: Event-to-presentation timeline (AI-075)
         working-directory: docs/muse/sprint-02/timeline
         run: python test_timeline.py
+      - name: Bot pacing quirk characterization (AI-107)
+        working-directory: docs/muse/sprint-02/ai-107-bot-pacing
+        run: python test_pacing.py
+      - name: Reproducible-jar tooling (AI-078/100)
+        working-directory: releases/alpha-0.7.15-playable/tools
+        run: python -m unittest test_make_repro_jar
+      - name: Jar entry diff tool (AI-100 rework)
+        working-directory: releases/alpha-0.7.15-playable/tools
+        run: python -m unittest test_diff_jar_entries
       - name: Client integration example
         working-directory: prototypes/lobby-lab
         run: node examples/client-demo.js

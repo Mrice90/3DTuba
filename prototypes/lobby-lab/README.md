@@ -16,7 +16,10 @@ node server.js
 Then open http://127.0.0.1:8787 in a browser. `PORT` / `HOST` env vars
 override the bind (default is loopback-only). `LAB_ALLOW_REPORTS=1` enables
 the unsafe match-reporting contract locally; `LAB_MAX_BODY` overrides the
-1 MB body cap.
+1 MB body cap. Worker v2 (AI-096): `LAB_V2_SECRET` sets the result-receipt
+HMAC secret (unset → ephemeral per-process secret); `LAB_V2_DATAVERSION_MIN`
+sets the v2 dataVersion gate minimum (default `lab-2`). See
+`docs/v2-design.md`.
 
 ```sh
 npm test    # all suites: HTTP routes + two-client contract tests (node:test)
@@ -95,4 +98,7 @@ prototypes/lobby-lab/
   test/          node:test suites (run: npm test)
   server.js      HTTP adapter (node server.js)
   kv.js          in-memory KV with TTL + controllable clock
+  worker-v2.js   AI-096 Worker v2: room assignment, signed results,
+                 dataVersion gate (routes /v2/*; v1 delegated verbatim)
+  docs/v2-design.md  Worker v2 design + trust model
 ```

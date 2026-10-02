@@ -23,19 +23,22 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * AI-079: headless rules bridge for the 3D playable (protocol v1.0.0).
+ * AI-079: headless rules bridge for the 3D playable (protocol v1.1.0).
  *
  * <p>A small Java program against the pinned alpha JAR that runs a
  * Zeus-vs-Poseidon HEX match and talks line-delimited JSON over
@@ -56,6 +59,9 @@ import java.util.regex.Pattern;
  *       "difficulty":"HERO"}}
  *   <li>{@code {"id":"r2","op":"legal"}}
  *   <li>{@code {"id":"r3","op":"act","action_id":"r0-a5"}}
+ *   <li>{@code {"id":"r4","op":"hash"}} — AI-097: canonical SHA-256 of the
+ *       full <em>unredacted</em> game state for the relay lockstep hash
+ *       exchange. Read-only: never mutates state or revision.
  * </ul>
  *
  * <p>Action ids are deterministic and revision-scoped
@@ -63,8 +69,11 @@ import java.util.regex.Pattern;
  * with {@code INVALID_ACTION} and no state/revision mutation.
  *
  * <p>State is redacted: the opponent's hand and deck expose counts only,
- * never identities. Bot turns run automatically until the next human
- * decision or GAME_OVER. Stdout is JSONL only; diagnostics go to stderr.
+ * never identities. The {@code hash} op is the exception by design —
+ * lockstep compares it across two clients that both legitimately hold
+ * the full state (same seed + same intents ⇒ same hash). Bot turns run
+ * automatically until the next human decision or GAME_OVER. Stdout is
+ * JSONL only; diagnostics go to stderr.
  */
 public final class RulesBridge {
     private static final int MAX_TURNS = 300;
@@ -118,8 +127,10 @@ public final class RulesBridge {
                 case "new" -> doNew(reqId, req);
                 case "legal" -> doLegal(reqId);
                 case "act" -> doAct(reqId, req);
+                case "hash" -> doHash(reqId);
                 default -> error(reqId, revision(),
-                        "BAD_REQUEST", "unknown op: " + op + " (want new|legal|act)");
+                        "BAD_REQUEST",
+                        "unknown op: " + op + " (want new|legal|act|hash)");
             };
         } catch (Exception e) {
             return error(reqId, revision(), "INTERNAL",
@@ -198,6 +209,121 @@ public final class RulesBridge {
         session.runBotTurns(events);
         session.refreshLegal();
         return success(reqId, session.revision, events);
+    }
+
+    /**
+     * AI-097: canonical state hash for the relay lockstep hash exchange.
+     * Returns SHA-256 over the canonical JSON of the full <em>unredacted</em>
+     * game state (both hands/decks/discard, full board stacks with mutable
+     * card state, GP, turn, phase). Read-only: never mutates state or
+     * revision. Two bridges that started from the same {@code new} seed
+     * and applied the same intents in the same order report the same hash.
+     */
+    private Map<String, Object> doHash(String reqId) {
+        if (session == null) {
+            return error(reqId, -1, "NO_MATCH",
+                    "no match started (send op:new first)");
+        }
+        Map<String, Object> m = new LinkedHashMap<>();
+        m.put("id", reqId);
+        m.put("ok", true);
+        m.put("revision", session.revision);
+        m.put("turn", Math.max(1, session.state.turnNumber()));
+        m.put("state_hash", sha256Hex(session.canonicalState()));
+        return m;
+    }
+
+    private static String sha256Hex(String input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] digest = md.digest(
+                    input.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder(digest.length * 2);
+            for (byte b : digest) {
+                sb.append(Character.forDigit((b >> 4) & 0xF, 16));
+                sb.append(Character.forDigit(b & 0xF, 16));
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            throw new IllegalStateException("SHA-256 unavailable", e);
+        }
+    }
+
+    /**
+     * Canonical JSON: object keys sorted, arrays in encounter order,
+     * compact separators, standard string escaping. Deterministic for
+     * equal logical state regardless of the map implementation used.
+     */
+    private static String canonicalJson(Object value) {
+        StringBuilder sb = new StringBuilder();
+        appendCanonical(sb, value);
+        return sb.toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void appendCanonical(StringBuilder sb, Object value) {
+        if (value == null) {
+            sb.append("null");
+        } else if (value instanceof Map<?, ?> map) {
+            TreeMap<String, Object> sorted = new TreeMap<>();
+            for (Map.Entry<?, ?> e : map.entrySet()) {
+                sorted.put(String.valueOf(e.getKey()), e.getValue());
+            }
+            sb.append('{');
+            boolean first = true;
+            for (Map.Entry<String, Object> e : sorted.entrySet()) {
+                if (!first) {
+                    sb.append(',');
+                }
+                first = false;
+                appendString(sb, e.getKey());
+                sb.append(':');
+                appendCanonical(sb, e.getValue());
+            }
+            sb.append('}');
+        } else if (value instanceof List<?> list) {
+            sb.append('[');
+            boolean first = true;
+            for (Object item : list) {
+                if (!first) {
+                    sb.append(',');
+                }
+                first = false;
+                appendCanonical(sb, item);
+            }
+            sb.append(']');
+        } else if (value instanceof String s) {
+            appendString(sb, s);
+        } else if (value instanceof Boolean || value instanceof Number) {
+            sb.append(value);
+        } else {
+            throw new IllegalArgumentException(
+                    "non-canonical value type: " + value.getClass());
+        }
+    }
+
+    private static void appendString(StringBuilder sb, String s) {
+        sb.append('"');
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '"' -> sb.append("\\\"");
+                case '\\' -> sb.append("\\\\");
+                case '\b' -> sb.append("\\b");
+                case '\f' -> sb.append("\\f");
+                case '\n' -> sb.append("\\n");
+                case '\r' -> sb.append("\\r");
+                case '\t' -> sb.append("\\t");
+                default -> {
+                    if (c < 0x20) {
+                        sb.append(String.format("\\u%04x", (int) c));
+                    } else {
+                        sb.append(c);
+                    }
+                }
+            }
+        }
+        sb.append('"');
     }
 
     private Map<String, Object> success(String reqId, int revision,
@@ -532,6 +658,86 @@ public final class RulesBridge {
             }
             snap.put("board", board);
             return snap;
+        }
+
+        /**
+         * AI-097: canonical serialization of the full <em>unredacted</em>
+         * game state for the relay lockstep hash exchange. Both players'
+         * hands, decks and discard piles carry full card identities and
+         * mutable per-card state; board stacks are ordered bottom-to-top;
+         * cells are sorted by (x, y). Deterministic for a given engine
+         * state — same seed + same intents ⇒ byte-identical output.
+         */
+        String canonicalState() {
+            Map<String, Object> root = new LinkedHashMap<>();
+            root.put("seed", state.seed());
+            root.put("turn", Math.max(1, state.turnNumber()));
+            root.put("phase", state.phase().name());
+            root.put("active_player", state.activePlayer());
+            root.put("winner", state.winner().isPresent()
+                    ? state.winner().getAsInt() : null);
+            List<Object> players = new ArrayList<>();
+            for (int p = 0; p < 2; p++) {
+                Map<String, Object> pl = new LinkedHashMap<>();
+                pl.put("seat", p);
+                pl.put("faction", factions[p]);
+                pl.put("gp", state.player(p).currentGp());
+                pl.put("max_gp", state.player(p).maximumGp());
+                pl.put("hand", encodeCards(state.player(p).hand()));
+                pl.put("deck", encodeCards(state.player(p).deck()));
+                pl.put("discard", encodeCards(state.player(p).discard()));
+                players.add(pl);
+            }
+            root.put("players", players);
+            List<Object> board = new ArrayList<>();
+            List<BoardPosition> positions =
+                    new ArrayList<>(state.board().positions());
+            positions.sort(Comparator.comparingInt(BoardPosition::x)
+                    .thenComparingInt(BoardPosition::y));
+            for (BoardPosition pos : positions) {
+                List<UUID> stack = state.board().stackAt(pos);
+                if (stack.isEmpty()) {
+                    continue;
+                }
+                Map<String, Object> cell = new LinkedHashMap<>();
+                cell.put("x", pos.x());
+                cell.put("y", pos.y());
+                cell.put("stack", encodeCards(stack));
+                board.add(cell);
+            }
+            root.put("board", board);
+            return RulesBridge.canonicalJson(root);
+        }
+
+        private List<Object> encodeCards(List<UUID> ids) {
+            List<Object> out = new ArrayList<>(ids.size());
+            for (UUID id : ids) {
+                out.add(encodeCard(id));
+            }
+            return out;
+        }
+
+        private Map<String, Object> encodeCard(UUID id) {
+            Map<String, Object> c = new LinkedHashMap<>();
+            c.put("instance_id", id.toString());
+            CardInstance card = state.card(id).orElse(null);
+            if (card == null) {
+                c.put("missing", true);
+                return c;
+            }
+            c.put("card_id", card.definition().id());
+            c.put("owner", card.owner());
+            c.put("zone", card.zone().name());
+            c.put("damage", card.damage());
+            c.put("combat_damage", card.combatDamage());
+            c.put("tapped", card.tapped());
+            c.put("movement_spent", card.movementSpent());
+            c.put("attacked", card.attackedThisTurn());
+            c.put("blink_used", card.blinkUsedThisTurn());
+            c.put("attack_bonus", card.attackBonus());
+            c.put("defense_bonus", card.defenseBonus());
+            c.put("ability_used", card.abilityUsedThisTurn());
+            return c;
         }
 
         record ActResolution(boolean valid, String command, String error) {

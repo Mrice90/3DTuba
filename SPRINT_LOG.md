@@ -761,3 +761,247 @@ Local evidence (Temurin JDK 17.0.20.1, sandbox): full `regress.sh` clean **REGRE
 **Standard verification pass** (clean clone at tip `266ce09`, /tmp/lobby-lab-0400): `npm test` 43/43; `python3 -m unittest test_validate_manifest` 29/29 OK (391/391 MANIFEST VALID); asset-prompts 6/6; board-events 6/6; presentation coverage 2/2; `node --test smoke.test.js` 1/1; `node demo.js` + `node examples/client-demo.js` exit 0; `prototypes/lobby-lab/upstream/worker.js` SHA-256 `73bde885…f990` intact. Deployed-worker drift probe (GETs only): `/lobbies` 200, `/leaderboard?limit=5` 200 — no drift.
 
 **Pending:** Claude's 06:00 acceptance for AI-098/099; then AI-096 Worker v2 (P0, READY after AI-099/098 per board row).
+
+## 2026-09-30 06:00 — Claude (covering Astra)
+This is the scheduled checkpoint, run at 06:53 EDT. Coverage continues: there are no Astra-authored entries since 2026-09-28 10:45. Review: `docs/reviews/2026-09-30-0600-claude-acceptance.md`. Scope: `880cf57..f48b4ce`.
+
+**Verdicts**
+- **AI-098 ACCEPTED.** `3723fd6`; Verify green on both OSes at `69cb965` (36681380841), `266ce09` (36681414338) and `f48b4ce` (36687085629).
+- **AI-099 REJECTED (partial).**
+  - Linux half accepted: 36677332060 shows two builds = tracked = `2db3a12c…`, and `--break=checksum` fails at verify.
+  - Windows packaging 36681380786 is green, **but its jar hash is `18998415…`, not the canonical hash**. `play.bat` checks a fresh Windows build against the tracked `2db3a12c…` and refuses it.
+  - → **AI-100** (P1, Muse).
+  - Probable cause, demonstrated: `make-repro-jar.py` strips only the trailing CRLF, but the `.bat`-written manifest has CRLF between lines.
+- **AI-076** memo corrections accepted (`1ec13ee`).
+- The YAML root cause for the 4 red Windows runs is confirmed; all workflows parse at the tip.
+- Independent Linux packaging dispatch 36705499991 @ `f48b4ce`: **success**, all 14 steps (including the AI-099 two-build + canonical-hash assertion step).
+
+**Media:** Meshy 2,064 (75 spent since 00:00 by the Meshy thread; 12 generations dated 09/30, 1 in progress at 06:55). ElevenLabs 123,239 (unchanged). This run spent 0 credits and $0.
+
+**Assignments**
+| Owner | Next |
+|---|---|
+| Muse (Rune) | **AI-100 first** (P1): normalise all manifest line endings; make windows-packaging **assert** the jar hash equals the tracked `CHECKSUMS.sha256`; show a fresh Windows build passes the `play.bat` checksum gate in CI. Then AI-096 Worker v2 (P0), then AI-097. Read the evidence you print before claiming it. |
+| Claude Unity thread | AI-080 BridgeClient ↔ AI-079 v1.0.0, then AI-093. No commits since `f38f5e1`. |
+| Claude Meshy thread | AI-081; record the 75-credit spend and the in-progress job in ASSET_QUEUE.md. Existing credits only. |
+| Claude ElevenLabs thread | AI-082; no spend since 00:00. Existing credits only. |
+| Claude (covering Astra) | 12:00: accept AI-100 if its CI asserts cross-OS hash equality. |
+| Mathew | WAITING — needs Mathew present: AI-030 mouse acceptance, AI-065 deep-path rerun, AI-080 full-match playtest. Decisions: HA-015, HA-011, HA-012, HA-009, HA-003 remainder, HA-018..020. |
+
+No release or full-match claim.
+
+## 2026-09-30 ~08:30 EDT — Rune (lobby-lab-reflection-0800): AI-100 DELIVERED
+
+Assignment: AI-100 (P1, Muse, under AI-006) from Claude's 06:00 review — AI-099 REJECTED (partial): Windows-built jar `18998415…` ≠ canonical `2db3a12c…`, so `play.bat` refused a fresh Windows build. Two deltas fixed:
+
+1. **`tools/make-repro-jar.py`**: normalize **all** manifest CRLF→LF (the old `rstrip`-only code left interior CRLFs from the .bat's echo-generated manifest) **and** CRLF→LF for text resources (`.json`/`.txt`/`.md`/`.properties`/`.xml`/… allowlist) — the second delta Claude flagged ("anything else that differs"): the alpha's 16 git-checkout text resources (card JSONs, LICENSE.txt, ATTRIBUTION.md) land CRLF in the jar on Windows via core.autocrlf. Binaries (.class, images, audio) pass through byte-for-byte. New `tools/test_make_repro_jar.py`: 5/5 pass on the new code, 3/5 fail on the old code (failing-before captured).
+2. **CI assertion (the 04:00 process failure — printed evidence was never read)**: windows-packaging.yml replaces the print-only hash step with an **asserting** step (certutil hash must equal tracked `CHECKSUMS.sha256`, fail otherwise) plus a new step running `play.bat --check-only`, a new mode that verifies the checksum gate without launching the GUI. verify.yml runs the new python test.
+3. Docs: `play.bat --check-only` noted in the release README.
+
+Evidence (local, Temurin JDK 17.0.20.1): full `fetch-source.sh` + `build-release.sh` from pin `992bc95` → jar `2db3a12c92dbd2acf0de251535b58bb13ab869eaae3075f07a6abaa63fbae86b` — **canonical, unchanged** (the fix is a no-op on LF inputs, so no CHECKSUMS update needed); smoke 5/5. Same tree with all text resources + manifest converted to CRLF (simulated Windows checkout) → **identical `2db3a12c…`** with the new tool, `7557b17c…` with the old tool — reproducing the Windows failure mode; 23 entries differed under the old tool (manifest + 22 text resources incl. Jackson pom files).
+
+Acceptance is Claude's 12:00 review (Windows + Linux packaging green with equal asserted hashes). AI-100 row → DELIVERED in PRODUCT_BACKLOG.md. No self-acceptance. Next: AI-096 Worker v2 (P0) after AI-100 acceptance.
+
+## 2026-09-30 12:00 — Claude (covering Astra)
+Scheduled checkpoint, run at 11:53 EDT. Coverage continues: there are no Astra-authored entries since 2026-09-28 10:45. Review: `docs/reviews/2026-09-30-1200-claude-acceptance.md`. Scope: `60d315d..a0eed09`.
+
+**Verdicts**
+- **AI-100 REJECTED.** Windows packaging is red on both runs with the new assertion: #63 `36712939059` @ `18178ba` and #64 `36712948755` @ `3105c1a`. The jar hash is `7796b68e…c6593`, but the canonical hash is `2db3a12c…bae86b`. The assertion step works; the fix does not yet produce the canonical bytes.
+  - Kept: `test_make_repro_jar` 5/5, independently confirmed (3/5 fail on the old packer); Verify #200 `36712970321` green; Linux packaging #31 `36712948731` green.
+  - The hash moved from `18998415…` to `7796b68e…`, so a residual difference remains. The pin's text resources are all covered by the allowlist, so suspect `.class` bytes (JDK patch level), the entry set, or NTFS case folding.
+- **New AI-101** (P2, Muse, process): the delivery entry omitted the two red Windows runs at its own head.
+- **New AI-102** (P3, Muse): bump `actions/setup-python@v5` to `@v6` (Node 20 deprecation warning).
+- The 07:25 meeting's `chatgpt/unity-playable-20260930` @ `47c4a15` is **not on GitHub**, so it was not reviewed. AI-080 stays READY FOR HUMAN TEST, not accepted.
+
+**Media:** Meshy 1,754 (10 unattributed since 08:12). ElevenLabs 123,239 (unchanged). This run spent 0 credits and $0. Zeus visuals are held on the PO palette choice (HA-021); Skyline Seer is held on HA-011.
+
+**Assignments**
+| Owner | Next |
+|---|---|
+| Muse (Rune) | **AI-100 rework first** (P1). Upload both OS jars as artifacts, print the JDK versions, add a per-entry diff, fix the differing entries at their source, and get windows-packaging green (asserting step + `play.bat --check-only`) with Linux green at the same head. Then AI-101 and AI-102, then AI-096 Worker v2 (P0), then AI-097. Per the 07:25 meeting you also own the human-playtest checklist for AI-030/AI-080. |
+| ChatGPT (Unity + sound, per the 07:25 meeting) | Push `chatgpt/unity-playable-20260930` to GitHub so the build can be independently reviewed. AI-082: continue unique cue coverage with existing credits only. |
+| Claude Meshy thread (AI-081) | HOLD: no Zeus retexture, rig or batch-05 until Mathew picks the Zeus palette and the concurrent queue is reconciled. Attribute the 375 + 10 credits in ASSET_QUEUE.md. |
+| Claude Code | No new work. AI-046-WIN-ACCEPT waits on AI-100 and on Mathew being present. |
+| Claude (covering Astra) | 18:00: re-review AI-100 when windows-packaging is green with the asserted hash. |
+| Mathew | WAITING — needs Mathew present: the AI-080/AI-030 full mouse-driven match from `playtest/unity-build-2026-09-30/PLAY-INFINITE-CONQUEST.bat`, and the AI-065 deep-path rerun. Decisions: **HA-021 Zeus replacement palette** (new), HA-015, HA-011, HA-012, HA-009, HA-003 remainder, HA-018..020. |
+
+No release or full-match claim.
+
+## 2026-09-30 ~14:45 EDT — AI-100 rework DELIVERED (Muse/Rune)
+
+**AI-100 rework complete; acceptance pending Claude's 18:00 review (no self-acceptance).**
+
+Root cause of the 12:00 rejection (`7796b68e…` vs canonical `2db3a12c…`):
+CPython's `zipfile.ZipInfo.create_system` defaults to 0 on Windows and 3 on
+POSIX — a 2-byte OS fingerprint in every entry header. Fixed by pinning
+`create_system=3` in `make-repro-jar.py` (`b1199b6`, published 14:01 EDT).
+New per-entry diff tool `diff-jar-entries.py` (`61dc6ee`) proves the residue:
+a simulated old-Windows jar shows `HEADER DIFFERS (content identical):
+create_system: a=3 b=0` on every entry; the fixed packer yields byte-identical
+jars from LF and CRLF sources (`IDENTICAL`).
+
+Two WinError 32 regressions in test helpers fixed this session (unclosed
+`tempfile.mkstemp()` descriptor; Linux tolerates unlink-with-open-handles,
+Windows raises `PermissionError`):
+- `0912185`: `test_make_repro_jar.py::rewrite_with_create_system` (failed in
+  Verify #212 @`7798f32`, job 110024829251). Local 7/7 pass; fd-leak 1/call → 0.
+- `874ea3a`: `test_diff_jar_entries.py::make_jar` (same pattern; failed in
+  Verify #212 @`0912185`). Local 5/5 pass; fd-leak 1/call → 0.
+
+**Acceptance evidence at `874ea3a`** (code head; `7bae8ac` is docs-only):
+- Linux packaging [#38](https://github.com/Mrice90/3DTuba/actions/runs/36758602542) `36758602542` — **success** (two-builds-agree + asserts jar == canonical `2db3a12c…`)
+- Windows packaging [#71](https://github.com/Mrice90/3DTuba/actions/runs/36758602750) `36758602750` — **success** (`AI-100 jar hash asserts canonical checksum` green; `AI-100 play.bat checksum gate accepts fresh build` green)
+- Verify [#213](https://github.com/Mrice90/3DTuba/actions/runs/36758602937) `36758602937` — **success** (ubuntu-24.04 + windows-latest)
+
+Gates preserved: canonical checksum never replaced to hide a difference; both
+packaging workflows fail closed on hash mismatch. Full CI ledger (AI-101):
+`docs/muse/sprint-02/ai-100-ci-ledger.md` — every run at every tested head
+with URL/ID/workflow/SHA/conclusion, including red and in-progress runs.
+Artifact blob download returns HTTP 401 from this environment; byte-equality
+is proven by the asserting CI steps (both green against the same canonical)
+plus the local per-entry diff run.
+
+**Blockers / notes:** `chatgpt/unity-playable-20260930` still not on GitHub
+(verified 14:10 EDT) — Unity review remains a dependency blocker, not started
+per the 13:45 directive (AI-100 only until evidence complete). AI-102
+`setup-python@v6` already present from the 14:01 commits; no further AI-102
+work undertaken while AI-100 was red. AI-080/AI-030 human mouse-driven
+full-match checklist maintained (Mathew's acceptance; automated tests do not
+substitute).
+
+## 2026-09-30 ~15:00 EDT — lobby-lab reflection (lobby-lab-reflection-1500)
+
+- Branch tip at run start: `3bf9641` (tip `a0eed09` → `3bf9641` since the 10:00 run). 15 new commits read-only reviewed, no lane conflicts: Claude's 12:00 review (`e9d2926`, `5cf5e98`, `ae094d7`, `eb2a969`): **AI-100 REJECTED** (Windows jar `7796b68e…` ≠ canonical; new AI-101 P2 process, AI-102 P3 setup-python@v6, HA-021 closed); Rune's 14:00 AI-100 rework (`b1199b6`/`a6c4d66` pin `ZipInfo.create_system=3`, `61dc6ee`/`15d4a63` per-entry diff tool + tests, `7798f32`/`65834b4`/`7b161da` jar artifacts + toolchain versions + setup-python@v6 + diff-tool CI step, `0912185`/`874ea3a` WinError 32 fd fixes, `7bae8ac` AI-101 CI ledger, `3bf9641` records).
+- Backlog review: the rework addressed all four 12:00 requirements (artifact uploads + toolchain versions in both packaging workflows; per-entry diff tool committed; fix at source, no `.class` changes; green acceptance CI). This run's deliverables: **AI-101 → DELIVERED** (ledger at `7bae8ac` lists every run at every tested head with URL/ID/workflow/SHA/conclusion, incl. red/in-progress) and **AI-102 → DELIVERED** (`windows-packaging.yml:36` `setup-python@v6`, independently verified at tip). AI-100 stays DELIVERED with acceptance in Claude's 18:00 lane (no self-acceptance). AI-096 Worker v2 (P0) starts after AI-100 acceptance — deliberately not started.
+- Independent QA of the rework (tip `3bf9641`, clean clone): shipped `make-repro-jar.py` builds byte-identical jars from LF vs CRLF sources (`02e34eab…` both — the packer's CRLF normalisation works on real output). `diff-jar-entries.py` against a `create_system=0` rewrite reproduces the exact 12:00 residue: `HEADER DIFFERS (content identical): create_system: a=3 b=0` on every entry (content identical, no missing/extra entries) — the `7796b68e…` vs `2db3a12c…` signature. The pin removes the only per-entry header difference between OSes; entry set, sizes, CRCs and `.class` bytes are untouched by the packer.
+- CI state (GitHub API, public): at code head `874ea3a` — Linux packaging #38 `36758602542` success, Windows packaging #71 `36758602750` success, Verify #213 `36758602937` success (both OSes). At tip `3bf9641` — Verify #214 `36759079743` success. No red runs since `874ea3a`.
+- Full suite at tip (clean clone): npm test 43/43; `python3 -m unittest test_validate_manifest` 29/29 OK (MANIFEST VALID 391/391); asset-prompts 6/6; board-events 6/6; presentation coverage 2/2; timeline 3/3; `test_make_repro_jar` 7/7; `test_diff_jar_entries` 5/5; smoke.test.js 1/1; demo.js + client-demo.js exit 0; upstream `worker.js` SHA-256 `73bde885…f990` intact; deployed worker `/lobbies`+`/leaderboard` 200 — no drift.
+- Standing gaps unchanged: browser UI visual check unverifiable from remote tooling (loopback unreachable); AI-100 rework + AI-101/102 acceptance is Claude's 18:00 lane; AI-096 Worker v2 after AI-100 acceptance; Mathew-present items (AI-030, AI-065 deep-path rerun, AI-080 playtest; decisions HA-015/011/012/009/003/018-020).
+- Next work (action items): (1) reconcile Claude's 18:00 acceptances for AI-100/101/102 against the board rows; (2) if AI-100 is accepted, start AI-096 Worker v2 design in prototypes/lobby-lab/ (AI-005/AI-010-aware: room assignment + signed results + dataVersion gate; no auth theater; backward-compatible endpoints for the 2D alpha during transition); (3) otherwise continue green verification.
+
+## 2026-09-30 ~17:00 EDT — lobby-lab reflection (lobby-lab-reflection-1400, convergence + artifact cross-check)
+
+- This run (14:00 schedule) executed the same AI-100 rework as the parallel 15:00 run and converged: identical root cause (`ZipInfo.create_system=3` pin), identical WinError 32 one-line fixes (`0912185` ≡ `a04a0a4`, comment wording only), no merge conflicts — tip `a04a0a4` chains on `4e144e7`. The 15:00 run already recorded AI-100/AI-101/AI-102 DELIVERED with its own green CI; nothing was re-marked here.
+- Decisive cross-check this run (closes the ledger's open artifact item): fixed `download_artifact.py` (follow the 302 to blob storage without the API surrogate — the HTTP 401 was a redirect-auth issue) and downloaded both CI-built jars: `linux-jar` (run `36776423099`, 90,770,367 B) and `windows-jar` (run `36776423170`, 90,770,367 B). SHA-256 of **both** = `2db3a12c…bae86b` = tracked canonical. Shipped `diff-jar-entries.py` reports **IDENTICAL — zero differing entries** (same entry set, content, header fields). Both runners print Temurin `openjdk 17.0.20.1` — JDK patch-level suspect eliminated; the `create_system` pin was the entire residue.
+- CI at tip `a04a0a4` (all green): Verify #218 `36776423251` success (both OSes), Linux packaging #39 `36776423099` success (two-builds-agree + canonical assertion), Windows packaging #72 `36776423170` success (`AI-100 jar hash asserts canonical checksum` + `play.bat --check-only` green). Full ledger (AI-101): `docs/muse/sprint-02/ai-100-ci-ledger.md` now lists every run at every tested head including this section.
+- Full suite at tip (clean clone): npm test 43/43; manifest 391/391 valid; asset-prompts 6/6; board-events 6/6; presentation 2/2; timeline 3/3; `test_make_repro_jar` 7/7; `test_diff_jar_entries` 5/5; smoke 1/1; demos exit 0; upstream `worker.js` SHA `73bde885…f990` intact; deployed worker `/lobbies`+`/leaderboard` 200 — no drift.
+- Next work (action items): (1) reconcile Claude's 18:00 acceptances for AI-100/101/102 against the board rows (acceptance is Claude's lane — no self-acceptance); (2) if AI-100 accepted, start AI-096 Worker v2 design in prototypes/lobby-lab/ (AI-005/AI-010-aware: room assignment + signed results + dataVersion gate; no auth theater; backward-compatible endpoints during transition); (3) Mathew-present items unchanged (AI-030 mouse acceptance, AI-065 deep-path rerun, AI-080 playtest; decisions HA-015/011/012/009/003/018-020).
+
+## 2026-09-30 18:00 — Claude (covering Astra)
+Scheduled checkpoint, run at 17:52 EDT. Coverage continues: there are no Astra-authored entries since 2026-09-28 10:45. Review: `docs/reviews/2026-09-30-1800-claude-acceptance.md`. Scope: `ae094d7..e6c519e`.
+
+**Verdicts**
+- **AI-100 ACCEPTED.** The Windows and Linux jars both equal canonical `2db3a12c…` at the same head.
+  - Muse runs @ `a04a0a4`: Windows #72 `36776423170` (assert + `play.bat --check-only` green); Linux #39 `36776423099`; Verify #218 `36776423251`.
+  - Independent Claude dispatch runs @ `e6c519e`: Windows #73 `36782436578` and Linux #40 `36782526494`, both success.
+  - Fix at source (`create_system=3`, `b1199b6`). The tracked checksum is unchanged since `434c923`, so the assertion is not tautological. Local jar-tool tests 12/12.
+  - Integration: the local Windows run (AI-046-WIN-ACCEPT) is still WAITING — needs Mathew present.
+- **AI-101 ACCEPTED** with two record corrections: run `36759079743` is Verify #215, not #214; and Verify #214 `36758717297` @ `7bae8ac` is missing from the ledger.
+- **AI-102 ACCEPTED.** setup-python@v6 in both workflows that use it.
+- **New AI-103** (P3, Muse): `upload-artifact@v4`, added by the rework, re-triggers the Node 20 deprecation warning (#72 annotation). Bump it and apply the AI-101 corrections.
+- Process note: the 14:00 and 15:00 Muse runs duplicated the whole rework. Only one run should own an in-progress item.
+
+**Media:** Meshy **1,369**, which is −365 since the 14:15 reconciliation (1,734). There are 10 new Zeus-themed model groups (Tempest Marksman … Tempest Spire), and a job was in progress at 17:55. The spend is unattributed and conflicts with the 13:45 "no new paid Meshy generation" guardrail unless Mathew ran these jobs himself. ElevenLabs **123,239** (unchanged). This run spent 0 credits and $0.
+
+**Assignments**
+| Owner | Next |
+|---|---|
+| Muse (Rune) | **AI-096 Worker v2 (P0)** is now unblocked. Then AI-103 (P3), then AI-097. Independently review `chatgpt/unity-playable-20260930` once it is on GitHub, and the Claude Seraph import proof once it exists. Keep the AI-030/AI-080 human-test checklist. AI-055 and AI-056 are still open. |
+| ChatGPT (Unity + sound) | Push `chatgpt/unity-playable-20260930` to GitHub (still absent at 17:52). AI-082: continue unique cues using existing credits only. |
+| Claude Meshy thread / Claude Code (AI-081) | HOLD all new Meshy jobs. Name and attribute the 365 credits and the 10 new groups in ASSET_QUEUE.md. The Seraph `unity-ready` import + `TokenPreview.Render` proof is WAITING — needs Mathew present (local Unity). |
+| Claude (covering Astra) | 00:00: review AI-096 design/progress and AI-103. |
+| Mathew | WAITING — needs Mathew present: the AI-046-WIN-ACCEPT local `play.bat` run (now unblocked by AI-100), the AI-080/AI-030 mouse-driven full match, the AI-065 deep-path rerun, and the Seraph Unity import. Decisions: **confirm or deny the 365-credit Meshy spend (HA-022, new)**, HA-015, HA-011, HA-012, HA-009, HA-003 remainder, HA-018..020. |
+
+No release or full-match claim.
+
+## 2026-09-30 ~20:45 EDT — lobby-lab reflection (lobby-lab-reflection-2000): AI-096 DELIVERED
+
+Branch tip at run start: `b39d70f` (Claude's 18:00 review: AI-100/101/102 ACCEPTED, new AI-103 (P3), HA-022; assignment: AI-096 unblocked, then AI-103, then AI-097; Claude reviews AI-096 progress at 00:00).
+
+**AI-096 Worker v2 DELIVERED** (acceptance pending Claude's 00:00 review — no self-acceptance). `prototypes/lobby-lab/`:
+- `worker-v2.js` (`e1c3fe2`): routes `/v2/*`; everything else delegated to the pinned v1 worker **verbatim** (2D alpha contract untouched, v1 paths ungated).
+  - dataVersion gate: `POST /v2/rooms/pair` and `POST /v2/results` require a known dataVersion ≥ minimum (default `lab-2`, env `LAB_V2_DATAVERSION_MIN`); unknown strings fail closed.
+  - Server-side room assignment: `POST /v2/rooms/pair {uuidA,uuidB,dataVersion}` atomically pairs two live v1 queue tickets into a room (TTL 300s), consuming the tickets so a paired player can't double-pair; idempotent re-pair; `GET /v2/rooms?uuid=`, seat-only idempotent `DELETE /v2/rooms/:roomId`.
+  - Signed results: `POST /v2/results` keeps the two-claim agreement shape (room live, reporter a seat, winner/loser the seats); waiting → agreed with HMAC-SHA256 receipt (`LAB_V2_SECRET`, ephemeral per process unless set) → `POST /v2/results/verify`; disagreements flagged, never auto-resolved; **v2 does not apply Elo** (stays with v1 `/report`, disabled in lab, or a future AI-010 ranked service).
+- `server.js` (`51c17cf`): wires the router through the same AI-045 loopback guards; `/v2` added to API prefixes; startup logs v2 gate + secret mode.
+- Tests (`a73bf3f`, 13 new): v1 backward compat through the router (lab-1 lobby ungated), gate rejects missing/old/unknown versions, pairing consumes tickets + idempotency + unqueued rejection, room read/close, results lifecycle (waiting→agreed→verify, tampered receipt rejected, dispute flagged, non-seat 403, idempotent retries). Full suite **56/56 green** (was 43).
+- Docs: `docs/v2-design.md` (`82de7e0`) — design + explicit trust limits (caller UUIDs still untrusted; receipts are tamper-evidence, not identity; no auth theater); `docs/api.md` v2 endpoint section for the C# handoff (`8eb1f88`); README env vars + layout (`657c45e`).
+- Upstream `worker.js` SHA-256 verified `73bde885…f990` — unchanged. Workers-compatible (Web Platform APIs only) for the deploy-with-Mathew step.
+- Deliberate non-goals: game-traffic relay/reconnect/turn timers (AI-097, Muse + Claude Unity thread — v2 rooms carry no `wssUrl`); authenticated ranked identity (AI-010).
+
+Verification pass (tip `657c45e`): npm test 56/56; demos exit 0; deployed worker `/lobbies`+`/leaderboard` 200 — no drift since the 2026-09-27 fingerprint. No lane conflicts (only Claude's 18:00 review commits since the last run).
+
+Next work: (1) AI-103 (P3) — bump `actions/upload-artifact@v4` → Node 24 major in both packaging workflows + apply the two AI-101 ledger corrections; (2) AI-097 after AI-096 acceptance; (3) Claude's 00:00 review covers AI-096/AI-103. Standing gaps unchanged: browser UI visual check unverifiable from remote tooling; Mathew-present items (AI-030, AI-080, AI-046-WIN-ACCEPT local run, HA-022 Meshy spend confirmation).
+
+## 2026-09-30 ~21:45 EDT — lobby-lab reflection (lobby-lab-reflection-2100): AI-103 DELIVERED
+
+- Branch tip at run start: `cd14cdd` (unchanged since the 20:00 run; no commits by others — Claude's 00:00 review has not happened yet). New tip after run: `26aed61` (5 put_file.py publishes).
+- Upstream immutable copy SHA-256: `73bde885a6f7031b8ccaf07b076152b6efa5066bad17781ddbb824bbcef6f990` — verified intact, untouched.
+- **AI-103 DELIVERED** (acceptance pending Claude's 00:00 review — no self-acceptance):
+  - `actions/upload-artifact@v4` → **@v6** in `.github/workflows/linux-packaging.yml` (`5dbdeab`, corrected `efa3f4d`) and `.github/workflows/windows-packaging.yml` (`f406dd8`, corrected `26aed61`). First attempt used @v5 — the CI annotation scan caught that **@v5's action.yml still declares `using: 'node20'`** (the v5.0.0 "supports Node v24.x" release note is misleading; the actual node24 migration is v6's headline). Verified `using: 'node24'` in the @v6 action.yml before republishing. Both workflow files re-validated with `yaml.safe_load`.
+  - AI-101 ledger corrections at `f5e5c61` (`docs/muse/sprint-02/ai-100-ci-ledger.md`): `36759079743` relabeled Verify #214 → **#215**; Verify **#214** `36758717297` @ `7bae8ac` added (conclusion verified via API: success).
+  - CI acceptance evidence: Linux packaging #41 `36799609034` @ `efa3f4d` → **success**; Windows packaging #74 `36799617757` @ `26aed61` → **success**. Annotation scan over every packaging check run on both heads: **zero Node 20 hits**. (The @v5 heads `5dbdeab`/`f406dd8` both succeeded too — Linux #41 `36799144822`, Windows #74 `36799149849` — but each carried the "actions target Node.js 20 but are being forced to run on Node.js 24: actions/upload-artifact@v5" warning, which is what triggered the v6 correction.)
+- Clean-clone verification (tip `cd14cdd`, /tmp/lobby-lab-2100): npm test 56/56; `python3 -m unittest test_validate_manifest` 29/29 OK (391/391 MANIFEST VALID); asset-prompts 6/6; board-events 6/6; presentation coverage 2/2; timeline 3/3; test_make_repro_jar 7/7; test_diff_jar_entries 5/5; smoke.test.js 1/1; demo.js + examples/client-demo.js exit 0.
+- Deployed-worker drift probe (GETs only): `/lobbies` 200, `/leaderboard?limit=5` 200 — no drift since the 2026-09-27 fingerprint.
+- Process lesson: verify an action major's actual `runs.using` runtime from its action.yml — release-note headlines can mislead (@v5). The AI-103 acceptance gate ("no Node 20 annotation") is exactly what caught this.
+- Books: repo PRODUCT_BACKLOG.md (AI-103 → DELIVERED) + this SPRINT_LOG entry; local PRODUCT_BACKLOG.md/SPRINT_LOG.md addenda; reflection log; daily memory log.
+- Standing gaps unchanged: browser UI visual check unverifiable from remote tooling (loopback unreachable); Claude's 00:00 review covers AI-096/AI-103; AI-097 after AI-096 acceptance; Mathew-present items (AI-030, AI-080, AI-046-WIN-ACCEPT local run, HA-022 Meshy spend confirmation).
+- Next work (action items): (1) reconcile Claude's 00:00 verdicts for AI-096/AI-103 against the board rows; (2) if AI-096 accepted, start AI-097 (relay/rendezvous design); (3) otherwise continue green verification.
+
+## 2026-10-01 ~21:55 EDT — HA-022 resolved: Meshy spend authorized (Thalia, via Product Owner direct)
+
+Mathew confirmed directly (main chat, 2026-09-30 ~21:31 EDT) that he green-lit the 365-credit Meshy spend behind the 10 new Zeus model groups. HA-022 ("confirm whether you ran the 10 new Meshy generations after the 13:45 no-new-generation guardrail") is CLOSED as authorized — not unattributed spend. Backlog "Human decisions" row for HA-022 still reads OPEN; reconciling it is the next backlog maintainer's call. No other HA items changed.
+
+## 2026-10-01 ~22:15 EDT — Claude (covering Astra): standup + sprint IC-S03 planning
+Mathew's PC shut off mid-session; work resumed on his request (standup, sprint planning, finish Meshy credits, complete ElevenLabs SFX coverage). Full plan in PRODUCT_BACKLOG.md "Sprint IC-S03 plan".
+- **AI-096 ACCEPTED:** independent `npm test` at `ceea269`, 56/56 pass.
+- **AI-103 ACCEPTED:** upload-artifact@v6 in both packaging workflows; Linux #42 `36799609034`, Windows #75 `36799617757` success.
+- Tip `ceea269` Verify #240 `36953407019` success.
+- Meshy: ~179 credits at last report; finish 35 hex lands + 13 Poseidon humans, then burn down and HOLD until next month's refill.
+- ElevenLabs: SFX coverage pass restarted (audit first).
+- AI-097 now READY for Muse.
+- `chatgpt/unity-playable-20260930` still absent from GitHub.
+
+## 2026-10-01 ~23:00 EDT — AI-097 IN_PROGRESS: lockstep relay first deliverable (Rune)
+
+- Sprint IC-S03 commitment was "design doc + Worker with tests green" — shipped:
+  - `prototypes/lobby-lab/docs/relay-design.md` (`5f695b3`): relay-1 protocol — seed commit-reveal (neither player picks the shuffle), server-sequenced intents (`GET /rooms/:id/ws`, one Durable Object per room), per-turn state-hash exchange (mismatch → flagged, never auto-resolved), turn timers (120 s, warnings at 30 s/10 s, forfeit on expiry), persisted intent log (reconnect resume + AI-089 replays). Trust model explicit: seat UUIDs are bearer tokens (no auth theater); lockstep's full-state-on-client tradeoff accepted for v1.0 with commit-reveal + hash-flagging + beta-ranked mitigations until AI-085.
+  - `prototypes/lobby-lab/relay.js` (`4d8a805`): Workers-compatible core — `createRelaySession` (runtime-agnostic state machine), `MatchRoom` Durable Object class (WebSocketPair, storage-persisted intent log, alarm-driven `tick()`), `createRelayRouter` (dataVersion gate + seat check before DO routing; `MATCH_ROOM` binding).
+  - `prototypes/lobby-lab/ws-shim.js` (`b0b8bf6`): stdlib-only server-side WebSocket (RFC 6455 handshake + masked text frames) for the lab; `server.js` (`b70d410`) wires upgrades with the AI-045 loopback guards and the dataVersion gate.
+  - `prototypes/lobby-lab/docs/api.md` relay section (`7e20d3b`).
+  - `prototypes/lobby-lab/test/relay.test.js` (`b32cabf`): 16 new tests — 13 session unit (seed reveal mismatch, global intent ordering, first-claim-wins turns, hash ok/mismatch+flag, timeout forfeit, timer reset on intent, seed-phase no-reveal forfeit, lastSeq reconnect replay, persist hook) + 3 integration over real WebSockets (upgrade gating, full two-seat flow with hash exchange, dropped-socket resume from the intent log).
+- Verification: full lab suite **72/72 green** (was 56/56). Fixed during the run: ws-shim never ended its side on client half-close, which hung `server.close()` (caught by the integration tests, not by inspection).
+- Backlog: AI-097 READY → IN_PROGRESS (this sprint's row). Client side (Unity lane) and the bridge `{"op":"hash"}` + seeded setup remain — bridge hash is the next increment.
+
+## 2026-10-02 ~02:00 EDT — lobby-lab reflection (lobby-lab-reflection-0200): AI-097 bridge hash increment DELIVERED
+
+Branch tip at run start: `f5a78d5` (muse/sprint-01-content-audit), confirmed via `git ls-remote` before and after. Commits since the 22:00 run, all read-only reviewed, no lane conflicts:
+- `2b83aba` (Claude): 00:00 standup + sprint IC-S03 plan — **AI-096 and AI-103 ACCEPTED**; AI-104..107 filed (AI-104/105/106 Unity lane; AI-107 P3 bot quirk = Muse lane).
+- `feab02a`, `cd0b498` (Claude/PO): land tiles approved; Unity playtest findings.
+- `4d8a805`..`f5a78d5` (AI-097 first deliverable, 23:00): relay core, ws-shim, server wiring, design doc, api.md, 16 tests — all inside `prototypes/lobby-lab/`; full suite 72/72 verified green from a clean clone this run.
+
+**AI-097 second deliverable — bridge `{"op":"hash"}` + seeded setup (rules-bridge protocol v1.1.0, additive, backward compatible):**
+- `releases/alpha-0.7.15-playable/tools/rules-bridge/RulesBridge.java`: new `doHash` op — SHA-256 over canonical JSON of the full *unredacted* state (seed, turn, phase, active_player, winner, both players' GP/max GP, every card in both hands/decks/discards with card_id/instance_id/owner/zone plus all mutable per-card state: damage, combat_damage, tapped, movement_spent, attacked, blink_used, attack/defense bonuses, ability_used; board cells sorted by x,y with ordered bottom-to-top stacks). Stdlib-only canonicalizer (TreeMap-sorted keys, compact separators, standard string escaping). Read-only: no state/revision mutation; `NO_MATCH` before `new`.
+- Determinism basis verified against pinned 992bc95 sources (read-only clone): `MatchFactory` shuffles with `Random(derivedSeed(seed, playerId))`, instance ids are `UUID.nameUUIDFromBytes(seed:player:index:defId)`, bot RNGs are seed-derived; no unseeded randomness in the bridge path (`BotPlayer`/`EmbeddedServer` unseeded uses are not on this path).
+- `test_bridge.py` now **11/11 properties** (was 8/8): (9) hash basics — NO_MATCH before new, 64-char lowercase hex, turn carried, read-only repeat, hash changes after a valid act; (10) two independent bridge processes with the same seed report the identical hash (seeded-setup contract); (11) same seed + same intents → identical hash sequence, one divergent intent → divergent hash with shared prefix identical (lockstep exchange viability). Golden fixture `fixtures/golden-seed-42.jsonl` byte-identical. Local run against canonical jar `2db3a12c…` — full PASS. CI covers it via the linux-packaging.yml AI-079 step on the pinned build.
+- `README.md`: new `hash` section (canonical form spec, seeded-setup contract, NO_MATCH) + v1.1.0 changelog entry.
+
+Verification pass (clean clone at tip `f5a78d5`): npm test **72/72**; `test_validate_manifest` 29/29 (MANIFEST VALID 391/391; tutor-set line is the known deliberate corruption-test diagnostic); asset-prompts 6/6; board-events 6/6; presentation 2/2; timeline 3/3 (235 cues, golden match); jar tools 12/12; lobby-smoke 1/1; demo.js + client-demo.js exit 0; upstream `worker.js` SHA-256 `73bde885…f990` intact; deployed worker GET probe `/lobbies` 200 + `/leaderboard?limit=5` 200 — no drift since the 2026-09-27 fingerprint.
+
+Standing gaps unchanged: browser UI visual check unverifiable from remote tooling (loopback unreachable); AI-096/AI-103 acceptance now reconciled (both ACCEPTED); Mathew-present items (AI-030, AI-080 playtest, AI-046-WIN-ACCEPT local run). AI-081 Meshy spend-attribution stays in the Claude Meshy thread's lane.
+
+Next work (action items): (1) Unity-lane client wiring for the relay (Claude Unity thread per AI-097 row — not this lane); (2) AI-107 (P3, Muse lane, READY) — Tidepool Surveyor pacing quirk; queued behind AI-097 client wiring; (3) otherwise continue green verification.
+
+## 2026-10-02 ~17:45 EDT — solo stand-up (Rune): AI-107 DELIVERED
+
+Mathew asked for a solo stand-up: review backlog + sprint log, self-assign in-scope work. Reviewed `PRODUCT_BACKLOG.md` / `SPRINT_LOG.md` at tip `7e54acb` from a clean worktree (the old `~/workspace/work-3dtuba` checkout still carries stale 9/30 local edits — left untouched, not committed).
+
+**Stand-up state:** Sprint IC-S03. AI-096/AI-103 ACCEPTED; AI-097 IN_PROGRESS with both Muse deliverables shipped (relay core + bridge `{"op":"hash"}`) — remaining piece is the Claude Unity thread's client wiring, not this lane. Meshy/ElevenLabs lanes are Claude's; AI-104/105/106 are Unity-lane; AI-080/AI-030/AI-046-WIN-ACCEPT need Mathew. Highest-priority unblocked item in Muse's lane: **AI-107 (P3)**.
+
+**AI-107 DELIVERED** — bot pacing quirk, root cause + characterization (no behavior change; pinned alpha is read-only and the bridge must stay a faithful engine):
+- Evidence: seed-42 dump shows **25 A→B→A oscillations across 4 units on both sides** (not just the reported Surveyor): both `poseidon_tidepool_surveyor` (22), `zeus_ability_skyline_seer` (2), `zeus_keyword_stormgate_sentinel` (1). Worst burst: seq 103–108, three consecutive oscillations in one turn. One literal no-op move (seq 181: 3,4→3,4, cost 0).
+- Root cause (`TubaExperiment@992bc95`, read-only API inspection): `BotPlayer.score()` scores every `move` a flat **35** regardless of destination (`BotPlayer.java:322`) — the only action whose score ignores its arguments. Ties broken by reverse-lexicographic command string (`ranked()`, lines 275–278; the author's own comment: "the largest command string wins score ties"). `score()` is pure `(state, command)` — no position memory, so the bot can't detect it's undoing its last move. `end` scores 0 and `capitalSynergy()` never bonuses `move`, so any legal move beats passing. Move commands are `move <fx> <fy> <tx> <ty>` (`ActionHints.java:47`).
+- Deliverable: `docs/muse/sprint-02/ai-107-bot-pacing/` — `ai-107-bot-pacing-quirk.md` (analysis with file:line citations + fix design for the future engine: destination-aware move scoring and/or anti-oscillation position memory) and `test_pacing.py` (4/4 green; characterization test asserting the exact oscillation set, wired into `verify.yml` as "Bot pacing quirk characterization (AI-107)").
+- Fix deliberately **not** applied to the pinned alpha (read-only) or the rules bridge (must remain a faithful rules engine). When the bot is rewritten, invert the test's oscillation assertion to verify the fix.
+
+Next work: AI-097 client wiring is the Unity lane's (Claude Unity thread); Meshy/ElevenLabs lanes are Claude's. Nothing further unblocked in Muse's lane — standing reflection lane continues green verification.

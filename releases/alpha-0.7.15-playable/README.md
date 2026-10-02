@@ -95,7 +95,9 @@ play.bat
 `build-release` fails fast with a plain-English error if Java is missing/too
 old, the source checkout is absent, or the checkout does not match the release
 pin (`992bc95`). `play.*` refuses to run a missing or checksum-mismatched jar
-and tells you exactly where to get one. Full runbook, exact commands, and what
+and tells you exactly where to get one. `play.bat --check-only` verifies the
+checksum gate without launching the GUI (used by CI after a fresh Windows
+build). Full runbook, exact commands, and what
 was verified on which OS: `docs/muse/sprint-01/alpha-build-handoff.md`.
 
 ## Regression (AI-048)
