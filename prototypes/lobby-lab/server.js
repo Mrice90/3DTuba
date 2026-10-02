@@ -24,6 +24,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import worker from "./upstream/worker.js";
 import { createV2Router } from "./worker-v2.js";
+import { createRelaySession, RELAY_PROTOCOL } from "./relay.js";
+import { handleUpgrade as handleWsUpgrade } from "./ws-shim.js";
 import { createKv } from "./kv.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -37,7 +39,14 @@ const MIME = {
     ".md": "text/markdown; charset=utf-8",
 };
 
-const API_PREFIXES = ["/lobbies", "/queue", "/pair", "/report", "/leaderboard", "/rating", "/v2"];
+const API_PREFIXES = ["/lobbies", "/queue", "/pair", "/report", "/leaderboard", "/rating", "/v2", "/rooms"];
+
+const RELAY_WS_PATH = /^\/rooms\/([^/]+)\/ws$/;
+
+/** UUID shape shared with worker-v2.js. */
+function isUuid(value) {
+    return typeof value === "string" && /^[0-9a-fA-F-]{1,64}$/.test(value);
+}
 
 /**
  * Loopback-only policy (AI-045). The lab server must never be reachable
@@ -251,13 +260,96 @@ export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes
         server.once("error", reject);
         server.listen(port, host, resolve);
     });
+
+    // AI-097 lockstep relay (in-process lab shim for relay.js). Each v2
+    // room gets one relay session; WebSocket upgrades on /rooms/:id/ws
+    // attach seats to it. Production runs the same session inside the
+    // MatchRoom Durable Object.
+    const relaySessions = new Map(); // roomId -> {session, sockets: Map(seat->ws)}
+    const dataVersionMin = process.env.LAB_V2_DATAVERSION_MIN || "lab-2";
+
+    function getRelaySession(room) {
+        let entry = relaySessions.get(room.roomId);
+        if (!entry) {
+            const sockets = new Map();
+            const session = createRelaySession({
+                room: { roomId: room.roomId, seatA: room.seatA, seatB: room.seatB },
+                now: kv.now,
+                send: (seat, msg) => {
+                    const ws = sockets.get(seat);
+                    if (ws && !ws.closed) ws.send(JSON.stringify(msg));
+                },
+                broadcast: (msg) => {
+                    for (const seat of [room.seatA, room.seatB]) {
+                        const ws = sockets.get(seat);
+                        if (ws && !ws.closed) ws.send(JSON.stringify(msg));
+                    }
+                },
+                onEnd: () => relaySessions.delete(room.roomId),
+            });
+            entry = { session, sockets };
+            relaySessions.set(room.roomId, entry);
+        }
+        return entry;
+    }
+
+    const relayTick = setInterval(() => {
+        for (const { session } of relaySessions.values()) {
+            try { session.tick(); } catch (e) { console.error("relay tick failed:", e.message); }
+        }
+    }, 5000);
+    relayTick.unref();
+
+    server.on("upgrade", async (req, socket, head) => {
+        const fail = () => { try { socket.destroy(); } catch { /* noop */ } };
+        try {
+            // Same loopback boundary as HTTP (AI-045): the Host header of
+            // the upgrade request must be loopback.
+            const hh = hostHeaderHostname(req);
+            if (!hh || !isLoopbackHost(hh)) return fail();
+            const url = new URL(req.url, "http://local");
+            const m = url.pathname.match(RELAY_WS_PATH);
+            if (!m) return fail();
+            const roomId = decodeURIComponent(m[1]);
+            const dataVersion = url.searchParams.get("dataVersion");
+            if (dataVersion !== dataVersionMin && dataVersion !== "lab-3") return fail();
+            const seat = url.searchParams.get("seat");
+            if (!isUuid(seat)) return fail();
+            const roomRaw = await kv.get(`v2:room:${roomId}`);
+            if (!roomRaw) return fail();
+            const room = JSON.parse(roomRaw);
+            if (seat !== room.seatA && seat !== room.seatB) return fail();
+
+            const ws = handleWsUpgrade(req, socket, head);
+            if (!ws) return fail();
+            const { session, sockets } = getRelaySession(room);
+            if (!session.handleConnect(seat)) { ws.close(); return; }
+            // Reconnect replaces the seat's socket.
+            const prev = sockets.get(seat);
+            if (prev && prev !== ws && !prev.closed) prev.close();
+            sockets.set(seat, ws);
+            ws.onMessage((text) => session.handleMessage(seat, text));
+            ws.onClose(() => {
+                if (sockets.get(seat) === ws) sockets.delete(seat);
+                session.handleDisconnect(seat);
+            });
+        } catch (e) {
+            console.error("relay upgrade failed:", e.message);
+            fail();
+        }
+    });
+
     const addr = server.address();
     return {
         server,
         kv,
         host: addr.address,
         port: addr.port,
-        close: () => new Promise((resolve, reject) => server.close((e) => (e ? reject(e) : resolve()))),
+        relaySessions,
+        close: () => new Promise((resolve, reject) => {
+            clearInterval(relayTick);
+            server.close((e) => (e ? reject(e) : resolve()));
+        }),
     };
 }
 
