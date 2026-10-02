@@ -991,3 +991,17 @@ Verification pass (clean clone at tip `f5a78d5`): npm test **72/72**; `test_vali
 Standing gaps unchanged: browser UI visual check unverifiable from remote tooling (loopback unreachable); AI-096/AI-103 acceptance now reconciled (both ACCEPTED); Mathew-present items (AI-030, AI-080 playtest, AI-046-WIN-ACCEPT local run). AI-081 Meshy spend-attribution stays in the Claude Meshy thread's lane.
 
 Next work (action items): (1) Unity-lane client wiring for the relay (Claude Unity thread per AI-097 row — not this lane); (2) AI-107 (P3, Muse lane, READY) — Tidepool Surveyor pacing quirk; queued behind AI-097 client wiring; (3) otherwise continue green verification.
+
+## 2026-10-02 ~17:45 EDT — solo stand-up (Rune): AI-107 DELIVERED
+
+Mathew asked for a solo stand-up: review backlog + sprint log, self-assign in-scope work. Reviewed `PRODUCT_BACKLOG.md` / `SPRINT_LOG.md` at tip `7e54acb` from a clean worktree (the old `~/workspace/work-3dtuba` checkout still carries stale 9/30 local edits — left untouched, not committed).
+
+**Stand-up state:** Sprint IC-S03. AI-096/AI-103 ACCEPTED; AI-097 IN_PROGRESS with both Muse deliverables shipped (relay core + bridge `{"op":"hash"}`) — remaining piece is the Claude Unity thread's client wiring, not this lane. Meshy/ElevenLabs lanes are Claude's; AI-104/105/106 are Unity-lane; AI-080/AI-030/AI-046-WIN-ACCEPT need Mathew. Highest-priority unblocked item in Muse's lane: **AI-107 (P3)**.
+
+**AI-107 DELIVERED** — bot pacing quirk, root cause + characterization (no behavior change; pinned alpha is read-only and the bridge must stay a faithful engine):
+- Evidence: seed-42 dump shows **25 A→B→A oscillations across 4 units on both sides** (not just the reported Surveyor): both `poseidon_tidepool_surveyor` (22), `zeus_ability_skyline_seer` (2), `zeus_keyword_stormgate_sentinel` (1). Worst burst: seq 103–108, three consecutive oscillations in one turn. One literal no-op move (seq 181: 3,4→3,4, cost 0).
+- Root cause (`TubaExperiment@992bc95`, read-only API inspection): `BotPlayer.score()` scores every `move` a flat **35** regardless of destination (`BotPlayer.java:322`) — the only action whose score ignores its arguments. Ties broken by reverse-lexicographic command string (`ranked()`, lines 275–278; the author's own comment: "the largest command string wins score ties"). `score()` is pure `(state, command)` — no position memory, so the bot can't detect it's undoing its last move. `end` scores 0 and `capitalSynergy()` never bonuses `move`, so any legal move beats passing. Move commands are `move <fx> <fy> <tx> <ty>` (`ActionHints.java:47`).
+- Deliverable: `docs/muse/sprint-02/ai-107-bot-pacing/` — `ai-107-bot-pacing-quirk.md` (analysis with file:line citations + fix design for the future engine: destination-aware move scoring and/or anti-oscillation position memory) and `test_pacing.py` (4/4 green; characterization test asserting the exact oscillation set, wired into `verify.yml` as "Bot pacing quirk characterization (AI-107)").
+- Fix deliberately **not** applied to the pinned alpha (read-only) or the rules bridge (must remain a faithful rules engine). When the bot is rewritten, invert the test's oscillation assertion to verify the fix.
+
+Next work: AI-097 client wiring is the Unity lane's (Claude Unity thread); Meshy/ElevenLabs lanes are Claude's. Nothing further unblocked in Muse's lane — standing reflection lane continues green verification.
