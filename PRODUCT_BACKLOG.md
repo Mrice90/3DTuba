@@ -621,5 +621,5 @@ Review: `docs/reviews/2026-09-30-1800-claude-acceptance.md`.
 | AI-097 | — | Muse | READY after AI-096/AI-103 | — |
 | AI-046-WIN-ACCEPT | P1 | Mathew | WAITING — needs Mathew present | Local `play.bat` run on a fresh Windows build. CI now proves the gate. |
 | AI-081 | — | Claude Meshy thread | HOLD | Attribute the Meshy 1,734 → 1,369 (−365) spend and the 10 new Zeus groups. The Seraph import proof waits for Mathew. |
-| HA-022 (new) | — | Mathew | OPEN | Confirm whether you ran the 10 new Meshy generations (−365 credits) after the 13:45 no-new-generation guardrail. |
+| HA-022 (new) | — | Mathew | **CLOSED** 2026-10-01 ~21:55 EDT (evidence: repo SPRINT_LOG.md @ `ad1597e`) | Mathew confirmed directly (main chat, 2026-09-30 ~21:31 EDT) that he green-lit the 365-credit Meshy spend behind the 10 new Zeus model groups — authorized spend, not unattributed. |
 | AI-055 / AI-056 / AI-057 / AI-048 | P1/P2/P3/— | — | OPEN | Unchanged. |
