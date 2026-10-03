@@ -32,6 +32,9 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
+      - name: Fetch pinned alpha source
+        working-directory: releases/alpha-0.7.15-playable
+        run: ./fetch-source.sh
       - name: Build release jar
         working-directory: releases/alpha-0.7.15-playable
         run: ./build-release.sh
