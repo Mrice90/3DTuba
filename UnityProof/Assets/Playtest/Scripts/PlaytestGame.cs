@@ -12,13 +12,13 @@ namespace InfiniteConquest.Playtest {
     // AI-080 playtest scene: polished hex board, 139-card stand-in/real-model catalog, AI-066 event
     // playback (default) and AI-079 bridge live play (flag -bridgeCmd). Also routes -proofSmoke to the
     // original MovementProof scene so the existing player smoke keeps working in the same build.
-    public sealed class PlaytestGame : MonoBehaviour {
+    public sealed partial class PlaytestGame : MonoBehaviour {
         public Shader LitShader, UnlitShader;
         public Material ParticleMaterial;
         public TextAsset DefaultDump;
         public const string ProofSceneName = "MovementProof";
 
-        enum Mode { Playback, Live, Gallery }
+        enum Mode { Menu, Playback, Live, Gallery }
         Mode mode = Mode.Playback, returnMode = Mode.Playback;
         Camera cam; CameraRig rig; BoardView board; TokenFactory factory; Vfx vfx; SfxBank sfx;
         MatchModel model = new MatchModel();
@@ -72,11 +72,16 @@ namespace InfiniteConquest.Playtest {
             if (!Application.isBatchMode && Arg("-playtestShots") == null && Arg("-screen-height") == null) Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
             var shots = Arg("-playtestShots");
             if (shots != null) { StartCoroutine(Screenshots(shots)); return; }
-            // AI-106: live human-vs-bot is the default. -playback forces the recorded seed-42 match.
-            var bridgeCmd = Arg("-bridgeCmd") ?? Environment.GetEnvironmentVariable("IC_BRIDGE_CMD");
-            if (string.IsNullOrEmpty(bridgeCmd) && !Flag("-playback")) bridgeCmd = DiscoverBridge(out bridgeHint);
-            if (!string.IsNullOrEmpty(bridgeCmd)) StartLive(bridgeCmd, Arg("-bridgeCwd"), Arg("-bridgeTranscript"));
-            else RestartPlayback();
+            // Installable build: opens on the main menu. -live / -bridgeCmd jump straight into a match,
+            // -playback into the recorded seed-42 match.
+            LoadSettings();
+            var explicitCmd = Arg("-bridgeCmd") ?? Environment.GetEnvironmentVariable("IC_BRIDGE_CMD");
+            resolvedBridgeCmd = string.IsNullOrEmpty(explicitCmd) ? DiscoverBridge(out bridgeHint) : explicitCmd;
+            if (Flag("-playback")) RestartPlayback();
+            else if ((!string.IsNullOrEmpty(explicitCmd) || Flag("-live")) && !string.IsNullOrEmpty(resolvedBridgeCmd))
+                StartLive(resolvedBridgeCmd, Arg("-bridgeCwd"), Arg("-bridgeTranscript"),
+                          int.TryParse(Arg("-seed"), out var sd) ? sd : 42, int.TryParse(Arg("-humanSeat"), out var hs) ? hs : 0, "HERO");
+            else OpenMenu();
         }
 
         // Finds <build>/Bridge (jar + classes) and a Java 17 runtime (JAVA_HOME, then PATH), so the
@@ -88,17 +93,19 @@ namespace InfiniteConquest.Playtest {
             string dir = null;
             foreach (var d in new[] { Path.Combine(root, "Bridge"), Path.Combine(root, "..", "Bridge") })
                 if (Directory.Exists(d)) { dir = Path.GetFullPath(d); break; }
-            if (dir == null) { hint = "No Bridge folder next to the game, so the recorded match is shown."; return null; }
+            if (dir == null) { hint = "The rules engine is missing, so only the demo match can be shown. Reinstall the game to fix this."; return null; }
             var jar = Directory.GetFiles(dir, "*.jar").FirstOrDefault();
             var classes = Path.Combine(dir, "classes");
             if (jar == null || !File.Exists(Path.Combine(classes, "RulesBridge.class"))) { hint = "Bridge folder is incomplete, so the recorded match is shown."; return null; }
             string java = null;
             var home = Environment.GetEnvironmentVariable("JAVA_HOME");
-            if (!string.IsNullOrEmpty(home) && File.Exists(Path.Combine(home, "bin", "java.exe"))) java = Path.Combine(home, "bin", "java.exe");
+            // The installer ships a trimmed Java runtime in Bridge/jre, so players need nothing installed.
+            if (File.Exists(Path.Combine(dir, "jre", "bin", "java.exe"))) java = Path.Combine(dir, "jre", "bin", "java.exe");
+            if (java == null && !string.IsNullOrEmpty(home) && File.Exists(Path.Combine(home, "bin", "java.exe"))) java = Path.Combine(home, "bin", "java.exe");
             if (java == null) foreach (var p in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(Path.PathSeparator)) {
                 try { var c = Path.Combine(p.Trim('"'), "java.exe"); if (File.Exists(c)) { java = c; break; } } catch { }
             }
-            if (java == null) { hint = "Java 17 was not found, so the recorded match is shown. Install Java 17 to play live."; return null; }
+            if (java == null) { hint = "The rules engine runtime is missing, so only the demo match can be shown. Reinstall the game to fix this."; return null; }
             return "\"" + java + "\" -cp \"" + classes + Path.PathSeparator + jar + "\" RulesBridge";
         }
 
@@ -148,8 +155,8 @@ namespace InfiniteConquest.Playtest {
         // ------------------------------------------------------------------ playback
         void RestartPlayback() {
             anim.StopAllCoroutines(); runner = null;
-            ClearMatch();
-            mode = Mode.Playback; cursor = 0; playing = true;
+            ClearMatch(); paused = false;
+            mode = Mode.Playback; cursor = 0; playing = true; FitViewport();
             PlaceDemoCapitals();
             runner = anim.StartCoroutine(Run());
         }
@@ -334,13 +341,13 @@ namespace InfiniteConquest.Playtest {
         void Banner(string text, float seconds) { banner = text; bannerUntil = Time.time + Mathf.Max(.2f, seconds / Mathf.Max(1, speed)); if (seconds > 100) bannerUntil = float.MaxValue; }
 
         // ------------------------------------------------------------------ live play (AI-079 bridge)
-        void StartLive(string cmd, string cwd, string transcriptPath) {
-            ClearMatch(); mode = Mode.Live; FitViewport();
+        void StartLive(string cmd, string cwd, string transcriptPath, int seed, int seat, string difficulty) {
+            anim.StopAllCoroutines(); runner = null; paused = false;
+            ClearMatch(); mode = Mode.Live; FitViewport(); liveState = null; liveActions = new BridgeAction[0]; liveQueue.Clear();
             try {
                 bridge = BridgeClient.Spawn(cmd, cwd, transcriptPath);
-                int seed = int.TryParse(Arg("-seed"), out var s) ? s : 42;
-                humanSeat = int.TryParse(Arg("-humanSeat"), out var h) ? h : 0;
-                bridge.New(seed, humanSeat); waiting = true; liveStatus = "Starting rules bridge…";
+                humanSeat = seat;
+                bridge.New(seed, humanSeat, difficulty); waiting = true; liveStatus = "Starting the rules engine…";
                 StartCoroutine(LiveLoop());
             } catch (Exception ex) {
                 liveStatus = "Bridge failed to start: " + ex.Message + " — falling back to playback.";
@@ -443,6 +450,7 @@ namespace InfiniteConquest.Playtest {
         }
         void LeaveGallery() {
             if (galleryRoot != null) Destroy(galleryRoot);
+            if (returnMode == Mode.Menu) { OpenMenu(); return; }
             mode = returnMode; FitViewport(); rig.ResetView(); rig.Snap();
         }
 
@@ -450,13 +458,28 @@ namespace InfiniteConquest.Playtest {
         void Update() {
             if (board == null) return;
             var mouse = Mouse.current; var kb = Keyboard.current;
+            rig.InputEnabled = mode != Mode.Menu && !paused && !MatchOver;
+            if (mode == Mode.Menu) { rig.Yaw += Time.deltaTime * 4f; hoverInfo = ""; hoverCardId = null; CameraRig.PointerOverHud = true; return; }
             if (kb != null) {
-                if (kb.spaceKey.wasPressedThisFrame && mode == Mode.Playback) playing = !playing;
-                if (kb.nKey.wasPressedThisFrame && mode == Mode.Playback) { playing = false; stepOnce = true; }
-                if (kb.gKey.wasPressedThisFrame) { if (mode == Mode.Gallery) LeaveGallery(); else ShowGallery("all"); }
-                if (kb.escapeKey.wasPressedThisFrame) { if (mode == Mode.Gallery) LeaveGallery(); else ClearSelection(); }
+                if (kb.spaceKey.wasPressedThisFrame && mode == Mode.Playback && !paused) playing = !playing;
+                if (kb.nKey.wasPressedThisFrame && mode == Mode.Playback && !paused) { playing = false; stepOnce = true; }
+                if (kb.gKey.wasPressedThisFrame && !paused && mode != Mode.Live) { if (mode == Mode.Gallery) LeaveGallery(); else ShowGallery("all"); }
+                if (kb.escapeKey.wasPressedThisFrame) {
+                    if (mode == Mode.Gallery) LeaveGallery();
+                    else if (!paused && (liveSelected != null || selectedPiece != null)) ClearSelection();
+                    else TogglePause();
+                }
             }
-            if (mouse == null || mode == Mode.Gallery) { hoverInfo = ""; hoverCardId = null; return; }
+            if (paused || MatchOver) { hoverInfo = ""; hoverCardId = null; CameraRig.PointerOverHud = true; return; }
+            if (mouse != null && mode == Mode.Gallery) {
+                // Collection: hover a model to read its card.
+                CameraRig.PointerOverHud = OverHud(mouse.position.ReadValue());
+                hoverInfo = "";
+                hoverCardId = !CameraRig.PointerOverHud && Physics.Raycast(cam.ScreenPointToRay(mouse.position.ReadValue()), out var gh, 400)
+                    ? gh.collider.GetComponentInParent<Piece>()?.Card.id : null;
+                return;
+            }
+            if (mouse == null) { hoverInfo = ""; hoverCardId = null; return; }
             var mp = mouse.position.ReadValue();
             CameraRig.PointerOverHud = OverHud(mp);
             var hover = new Vector2Int(-1, -1); Piece hp = null;
@@ -521,13 +544,16 @@ namespace InfiniteConquest.Playtest {
         void OnGUI() {
             if (board == null) return;
             Styles();
+            if (mode == Mode.Menu) { DrawMenu(); return; }
             float W = Screen.width, H = Screen.height;
             topBar = new Rect(0, 0, W, 62);
             GUI.Box(topBar, "", panelStyle);
-            GUI.Label(new Rect(14, 9, 420, 30), "INFINITE CONQUEST — 3D playtest", titleStyle);
-            string modeText = mode == Mode.Playback ? $"Playback: {dumpName}  ·  event {cursor}/{events.Count}{(string.IsNullOrEmpty(bridgeHint) ? "" : "  ·  " + bridgeHint)}" : mode == Mode.Live ? $"Live vs bot (rules bridge) · you are {Faction(humanSeat)}" : $"Catalog gallery ({galleryFilter})";
+            GUI.Label(new Rect(14, 9, 420, 30), "INFINITE CONQUEST", titleStyle);
+            string modeText = mode == Mode.Playback ? $"Demo match  ·  event {cursor}/{events.Count}" : mode == Mode.Live ? $"You are {Faction(humanSeat)} vs the {Faction(1 - humanSeat)} bot" : "Card collection — hover a model to read its card";
             GUI.Label(new Rect(440, 12, W - 900, 26), modeText, labelStyle);
-            GUI.Label(new Rect(14, 40, W - 28, 20), "Click a piece to select it (markers = reachable/attackable hexes) · hover for stack details · right-drag / Q E orbit · wheel zoom · middle-drag / WASD pan · Space pause · N step · G gallery · Home reset view", smallStyle);
+            GUI.Label(new Rect(14, 40, W - 28, 20), mode == Mode.Live
+                ? "Click a bright card, then a glowing hex · click your unit, then a glowing hex (move) or red marker (attack) · hover anything to read it · right-drag orbit · wheel zoom · WASD pan · Esc menu"
+                : "Hover to read a card · right-drag / Q E orbit · wheel zoom · middle-drag / WASD pan · Space pause · N step · Home reset view · Esc menu", smallStyle);
             GUI.Label(new Rect(W - 450, 12, 440, 26), $"Turn <b>{model.Turn}</b> · Active <b>{Faction(model.Active)}</b> · Phase <b>{model.Phase}</b>", labelStyle);
 
             if (mode != Mode.Gallery) {
@@ -552,7 +578,8 @@ namespace InfiniteConquest.Playtest {
                 GUI.enabled = true;
                 GUI.Label(new Rect(x, y + 6, 520, 26), (waiting ? "[waiting] " : "") + liveStatus, labelStyle); x += 530;
             }
-            if (GUI.Button(new Rect(x, y, 150, 32), mode == Mode.Gallery ? "Back to board" : "Card gallery (G)", buttonStyle)) { if (mode == Mode.Gallery) LeaveGallery(); else ShowGallery("all"); } x += 156;
+            if (mode == Mode.Gallery) { if (GUI.Button(new Rect(x, y, 150, 32), "Back", buttonStyle)) LeaveGallery(); x += 156; }
+            else { if (GUI.Button(new Rect(x, y, 110, 32), "Menu (Esc)", buttonStyle)) TogglePause(); x += 116; }
             if (mode == Mode.Gallery) {
                 foreach (var f in new[] { "all", "real", "stand-ins" }) { if (GUI.Toggle(new Rect(x, y, 90, 32), galleryFilter == f, f, buttonStyle) && galleryFilter != f) ShowGallery(f); x += 94; }
             }
@@ -582,6 +609,7 @@ namespace InfiniteConquest.Playtest {
                 var r = new Rect(W / 2 - 330, 76, 660, 50);
                 GUI.Box(r, "", panelStyle); GUI.Label(r, banner, bannerStyle);
             }
+            if (paused) DrawPause(); else if (MatchOver) DrawGameOver();
         }
         void PlayerPanel(Rect r, int p) {
             GUI.Box(r, "", panelStyle);
@@ -637,7 +665,7 @@ namespace InfiniteConquest.Playtest {
                 if (selected || hover) r.y -= lift;
                 if (hover) hoverCardId = card.card_id;
                 CardFaces.Draw(r, card.card_id, true, selected || (hover && playable), !playable);
-                if (Event.current.type == EventType.MouseDown && Event.current.button == 0 && r.Contains(mp)) {
+                if (!paused && !MatchOver && Event.current.type == EventType.MouseDown && Event.current.button == 0 && r.Contains(mp)) {
                     if (playable) { if (selected) ClearSelection(); else SelectLive(card.instance_id); }
                     else { sfx.PlayUi("error"); liveStatus = CardFaces.Get(card.card_id).name + " can't be played right now."; }
                     Event.current.Use();

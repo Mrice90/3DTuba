@@ -6,8 +6,8 @@
    "name": "Stormfront Plateau",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_ability_stormfront/zeus_ability_stormfront",
+   "modelSource": "meshy/batch-05-lands-pilot/hybrid/zeus_ability_stormfront.glb",
    "sfx": []
   },
   {
@@ -25,7 +25,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "model": "Tokens/zeus_ability_skyline_seer/zeus_ability_skyline_seer",
-   "modelSource": "meshy/AI-050-skyline-seer/zeus_ability_skyline_seer.glb",
+   "modelSource": "meshy/batch-04b-alpha-img2-3d/zeus_ability_skyline_seer.glb",
    "sfx": [
     "deploy",
     "move",
@@ -41,8 +41,8 @@
    "name": "Healing Shoal",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_ability_healing_shoal/poseidon_ability_healing_shoal",
+   "modelSource": "meshy/batch-05-lands-pilot/hybrid/poseidon_ability_healing_shoal.glb",
    "sfx": []
   },
   {
@@ -60,7 +60,7 @@
    "faction": "POSEIDON",
    "type": "CHARACTER",
    "model": "Tokens/poseidon_ability_reefwarden/poseidon_ability_reefwarden",
-   "modelSource": "meshy/batch-03-rarity3-units/poseidon_ability_reefwarden.glb",
+   "modelSource": "meshy/batch-04b-alpha-img2-3d/poseidon_ability_reefwarden.glb",
    "sfx": [
     "deploy",
     "move",
@@ -140,7 +140,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "model": "Tokens/zeus_apex_keraunos_seraph/zeus_apex_keraunos_seraph",
-   "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_apex_keraunos_seraph.glb",
+   "modelSource": "meshy/zeus-white-blue-gold-pilot/zeus_apex_keraunos_seraph.glb",
    "sfx": [
     "deploy",
     "move",
@@ -175,8 +175,8 @@
    "name": "Celestial Throne Grid",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_apex_celestial_throne_grid/zeus_apex_celestial_throne_grid",
+   "modelSource": "meshy/batch-05-lands-pilot/hybrid/zeus_apex_celestial_throne_grid.glb",
    "sfx": [
     "deploy",
     "destroy",
@@ -199,8 +199,8 @@
    "name": "Atlantis Crown Basin",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_apex_atlantis_crown_basin/poseidon_apex_atlantis_crown_basin",
+   "modelSource": "meshy/batch-05-lands-pilot/hybrid/poseidon_apex_atlantis_crown_basin.glb",
    "sfx": [
     "deploy",
     "destroy",
@@ -214,8 +214,8 @@
    "name": "Oceanus Current Vault",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_apex_oceanus_current_vault/poseidon_apex_oceanus_current_vault",
+   "modelSource": "meshy/batch-05-lands-pilot/hybrid/poseidon_apex_oceanus_current_vault.glb",
    "sfx": [
     "deploy",
     "destroy",
@@ -229,8 +229,8 @@
    "name": "Leviathan Nursery Trench",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_apex_leviathan_nursery_trench/poseidon_apex_leviathan_nursery_trench",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_apex_leviathan_nursery_trench.glb",
    "sfx": [
     "deploy",
     "destroy",
@@ -244,8 +244,8 @@
    "name": "Trident Confluence",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_apex_trident_confluence/poseidon_apex_trident_confluence",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_apex_trident_confluence.glb",
    "sfx": [
     "deploy",
     "destroy",
@@ -259,8 +259,8 @@
    "name": "Worldsea Platform",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_apex_worldsea_platform/poseidon_apex_worldsea_platform",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_apex_worldsea_platform.glb",
    "sfx": [
     "deploy",
     "destroy",
@@ -275,7 +275,7 @@
    "faction": "POSEIDON",
    "type": "CHARACTER",
    "model": "Tokens/poseidon_apex_atlantis_tide_sovereign/poseidon_apex_atlantis_tide_sovereign",
-   "modelSource": "meshy/batch-02-apex-units/poseidon_apex_atlantis_tide_sovereign.glb",
+   "modelSource": "meshy/batch-04b-alpha-img2-3d/poseidon_apex_atlantis_tide_sovereign.glb",
    "sfx": [
     "deploy",
     "move",
@@ -311,7 +311,7 @@
    "faction": "POSEIDON",
    "type": "CHARACTER",
    "model": "Tokens/poseidon_apex_abysswalker_nereid/poseidon_apex_abysswalker_nereid",
-   "modelSource": "meshy/batch-02-apex-units/poseidon_apex_abysswalker_nereid.glb",
+   "modelSource": "meshy/batch-04b-alpha-img2-3d/poseidon_apex_abysswalker_nereid.glb",
    "sfx": [
     "deploy",
     "move",
@@ -347,7 +347,7 @@
    "faction": "ZEUS",
    "type": "CAPITAL",
    "model": "Tokens/zeus_capital_olympus_citadel/zeus_capital_olympus_citadel",
-   "modelSource": "meshy/batch-01-capitals/zeus_capital_olympus_citadel.glb",
+   "modelSource": "meshy/batch-04b-alpha-img2-3d/zeus_capital_olympus_citadel.glb",
    "sfx": [
     "deploy",
     "hit",
@@ -362,7 +362,7 @@
    "faction": "ZEUS",
    "type": "CAPITAL",
    "model": "Tokens/zeus_capital_keraunos_spire/zeus_capital_keraunos_spire",
-   "modelSource": "meshy/batch-01-capitals/zeus_capital_keraunos_spire.glb",
+   "modelSource": "meshy/batch-04b-alpha-img2-3d/zeus_capital_keraunos_spire.glb",
    "sfx": [
     "deploy",
     "hit",
@@ -377,7 +377,7 @@
    "faction": "ZEUS",
    "type": "CAPITAL",
    "model": "Tokens/zeus_capital_cloud_throne/zeus_capital_cloud_throne",
-   "modelSource": "meshy/batch-01-capitals/zeus_capital_cloud_throne.glb",
+   "modelSource": "meshy/batch-04b-alpha-img2-3d/zeus_capital_cloud_throne.glb",
    "sfx": [
     "deploy",
     "hit",
@@ -436,8 +436,8 @@
    "name": "Cloudline Courier",
    "faction": "ZEUS",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_cloudline_courier/zeus_cloudline_courier",
+   "modelSource": "meshy/batch-04c-zeus-humans-desolate-tuba/zeus_cloudline_courier.glb",
    "sfx": [
     "deploy",
     "move",
@@ -453,8 +453,8 @@
    "name": "Arc Relay Scout",
    "faction": "ZEUS",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_arc_relay_scout/zeus_arc_relay_scout",
+   "modelSource": "meshy/batch-04c-zeus-humans-desolate-tuba/zeus_arc_relay_scout.glb",
    "sfx": [
     "deploy",
     "move",
@@ -470,8 +470,8 @@
    "name": "Thunderhead Skirmisher",
    "faction": "ZEUS",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_thunderhead_skirmisher/zeus_thunderhead_skirmisher",
+   "modelSource": "meshy/batch-04c-zeus-humans-desolate-tuba/zeus_thunderhead_skirmisher.glb",
    "sfx": [
     "deploy",
     "move",
@@ -487,8 +487,8 @@
    "name": "Iris Signal Runner",
    "faction": "ZEUS",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_iris_signal_runner/zeus_iris_signal_runner",
+   "modelSource": "meshy/batch-04c-zeus-humans-desolate-tuba/zeus_iris_signal_runner.glb",
    "sfx": [
     "deploy",
     "move",
@@ -504,8 +504,8 @@
    "name": "Aegis Airguard",
    "faction": "ZEUS",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_aegis_airguard/zeus_aegis_airguard",
+   "modelSource": "meshy/batch-04c-zeus-humans-desolate-tuba/zeus_aegis_airguard.glb",
    "sfx": [
     "deploy",
     "move",
@@ -521,8 +521,8 @@
    "name": "Cyclone Marksman",
    "faction": "ZEUS",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_cyclone_marksman/zeus_cyclone_marksman",
+   "modelSource": "meshy/batch-04c-zeus-humans-desolate-tuba/zeus_cyclone_marksman.glb",
    "sfx": [
     "deploy",
     "move",
@@ -538,8 +538,8 @@
    "name": "Boltwing Cavalier",
    "faction": "ZEUS",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_boltwing_cavalier/zeus_boltwing_cavalier",
+   "modelSource": "meshy/batch-04c-zeus-humans-desolate-tuba/zeus_boltwing_cavalier.glb",
    "sfx": [
     "deploy",
     "move",
@@ -555,8 +555,8 @@
    "name": "Tempest Oracle",
    "faction": "ZEUS",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_tempest_oracle/zeus_tempest_oracle",
+   "modelSource": "meshy/batch-04c-zeus-humans-desolate-tuba/zeus_tempest_oracle.glb",
    "sfx": [
     "deploy",
     "move",
@@ -572,8 +572,8 @@
    "name": "Hera Protocol Warden",
    "faction": "ZEUS",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_hera_protocol_warden/zeus_hera_protocol_warden",
+   "modelSource": "meshy/batch-04c-zeus-humans-desolate-tuba/zeus_hera_protocol_warden.glb",
    "sfx": [
     "deploy",
     "move",
@@ -589,8 +589,8 @@
    "name": "Stormgate Adept",
    "faction": "ZEUS",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_stormgate_adept/zeus_stormgate_adept",
+   "modelSource": "meshy/batch-04c-zeus-humans-desolate-tuba/zeus_stormgate_adept.glb",
    "sfx": [
     "deploy",
     "move",
@@ -640,8 +640,8 @@
    "name": "Olympian Cloudbank",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_olympian_cloudbank/zeus_olympian_cloudbank",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/zeus_olympian_cloudbank.glb",
    "sfx": []
   },
   {
@@ -649,8 +649,8 @@
    "name": "Ionized Skyway",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_ionized_skyway/zeus_ionized_skyway",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/zeus_ionized_skyway.glb",
    "sfx": []
   },
   {
@@ -658,8 +658,8 @@
    "name": "Eagle's Perch Array",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_eagles_perch_array/zeus_eagles_perch_array",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/zeus_eagles_perch_array.glb",
    "sfx": []
   },
   {
@@ -667,8 +667,8 @@
    "name": "Throneward Conduit",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_throneward_conduit/zeus_throneward_conduit",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/zeus_throneward_conduit.glb",
    "sfx": []
   },
   {
@@ -712,8 +712,8 @@
    "name": "Tidepool Surveyor",
    "faction": "POSEIDON",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_tidepool_surveyor/poseidon_tidepool_surveyor",
+   "modelSource": "meshy/batch-07-poseidon-humans-lite/textured/poseidon_tidepool_surveyor.glb",
    "sfx": [
     "deploy",
     "move",
@@ -729,8 +729,8 @@
    "name": "Nereid Current-Rider",
    "faction": "POSEIDON",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_nereid_current_rider/poseidon_nereid_current_rider",
+   "modelSource": "meshy/batch-07-poseidon-humans-lite/textured/poseidon_nereid_current_rider.glb",
    "sfx": [
     "deploy",
     "move",
@@ -746,8 +746,8 @@
    "name": "Reefline Defender",
    "faction": "POSEIDON",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_reefline_defender/poseidon_reefline_defender",
+   "modelSource": "meshy/batch-07-poseidon-humans-lite/textured/poseidon_reefline_defender.glb",
    "sfx": [
     "deploy",
     "move",
@@ -763,8 +763,8 @@
    "name": "Undertow Stalker",
    "faction": "POSEIDON",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_undertow_stalker/poseidon_undertow_stalker",
+   "modelSource": "meshy/batch-07-poseidon-humans-lite/textured/poseidon_undertow_stalker.glb",
    "sfx": [
     "deploy",
     "move",
@@ -780,8 +780,8 @@
    "name": "Triton Waveguard",
    "faction": "POSEIDON",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_triton_waveguard/poseidon_triton_waveguard",
+   "modelSource": "meshy/batch-07-poseidon-humans-lite/textured/poseidon_triton_waveguard.glb",
    "sfx": [
     "deploy",
     "move",
@@ -797,8 +797,8 @@
    "name": "Delphic Sonar Adept",
    "faction": "POSEIDON",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_delphic_sonar_adept/poseidon_delphic_sonar_adept",
+   "modelSource": "meshy/batch-07-poseidon-humans-lite/textured/poseidon_delphic_sonar_adept.glb",
    "sfx": []
   },
   {
@@ -806,8 +806,8 @@
    "name": "Kraken Tendril Drone",
    "faction": "POSEIDON",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_kraken_tendril_drone/poseidon_kraken_tendril_drone",
+   "modelSource": "meshy/batch-07-poseidon-humans-lite/textured/poseidon_kraken_tendril_drone.glb",
    "sfx": []
   },
   {
@@ -815,8 +815,8 @@
    "name": "Naiad Flowshaper",
    "faction": "POSEIDON",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_naiad_flowshaper/poseidon_naiad_flowshaper",
+   "modelSource": "meshy/batch-07-poseidon-humans-lite/textured/poseidon_naiad_flowshaper.glb",
    "sfx": []
   },
   {
@@ -824,8 +824,8 @@
    "name": "Abyssal Molecrab",
    "faction": "POSEIDON",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_abyssal_molecrab/poseidon_abyssal_molecrab",
+   "modelSource": "meshy/batch-07-poseidon-humans-lite/textured/poseidon_abyssal_molecrab.glb",
    "sfx": []
   },
   {
@@ -833,8 +833,8 @@
    "name": "Oceanid Pressure Mage",
    "faction": "POSEIDON",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_oceanid_pressure_mage/poseidon_oceanid_pressure_mage",
+   "modelSource": "meshy/batch-07-poseidon-humans-lite/textured/poseidon_oceanid_pressure_mage.glb",
    "sfx": []
   },
   {
@@ -876,8 +876,8 @@
    "name": "Neon Tidelands",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_neon_tidelands/poseidon_neon_tidelands",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_neon_tidelands.glb",
    "sfx": []
   },
   {
@@ -885,8 +885,8 @@
    "name": "Coral Data Reef",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_coral_data_reef/poseidon_coral_data_reef",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_coral_data_reef.glb",
    "sfx": []
   },
   {
@@ -894,8 +894,8 @@
    "name": "Abyssal Pressure Trench",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_abyssal_pressure_trench/poseidon_abyssal_pressure_trench",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_abyssal_pressure_trench.glb",
    "sfx": []
   },
   {
@@ -903,8 +903,8 @@
    "name": "Palace of Tides Approach",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_palace_of_tides_approach/poseidon_palace_of_tides_approach",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_palace_of_tides_approach.glb",
    "sfx": []
   },
   {
@@ -973,8 +973,8 @@
    "name": "Drowned Archive",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_drowned_archive/poseidon_drowned_archive",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_drowned_archive.glb",
    "sfx": []
   },
   {
@@ -1000,8 +1000,8 @@
    "name": "Dawncloud Step",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_land_dawncloud_step/zeus_land_dawncloud_step",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/zeus_land_dawncloud_step.glb",
    "sfx": []
   },
   {
@@ -1018,8 +1018,8 @@
    "name": "Empyrean Current",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_land_empyrean_current/zeus_land_empyrean_current",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/zeus_land_empyrean_current.glb",
    "sfx": []
   },
   {
@@ -1036,8 +1036,8 @@
    "name": "Saltmarsh Harbor",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_land_saltmarsh_harbor/poseidon_land_saltmarsh_harbor",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_land_saltmarsh_harbor.glb",
    "sfx": []
   },
   {
@@ -1054,8 +1054,8 @@
    "name": "Pelagic Kingdom",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_land_pelagic_kingdom/poseidon_land_pelagic_kingdom",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_land_pelagic_kingdom.glb",
    "sfx": []
   },
   {
@@ -1072,8 +1072,8 @@
    "name": "Thunderstep Plateau",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_land_thunderstep_plateau/zeus_land_thunderstep_plateau",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/zeus_land_thunderstep_plateau.glb",
    "sfx": []
   },
   {
@@ -1081,8 +1081,8 @@
    "name": "Aurora Reach",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_land_aurora_reach/zeus_land_aurora_reach",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/zeus_land_aurora_reach.glb",
    "sfx": []
   },
   {
@@ -1108,8 +1108,8 @@
    "name": "Coral Tributary",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_land_coral_tributary/poseidon_land_coral_tributary",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_land_coral_tributary.glb",
    "sfx": []
   },
   {
@@ -1117,8 +1117,8 @@
    "name": "Leviathan Shelf",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_land_leviathan_shelf/poseidon_land_leviathan_shelf",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_land_leviathan_shelf.glb",
    "sfx": []
   },
   {
@@ -1144,8 +1144,8 @@
    "name": "Sparkstep Runner",
    "faction": "ZEUS",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_keyword_sparkstep_runner/zeus_keyword_sparkstep_runner",
+   "modelSource": "meshy/batch-04c-zeus-humans-desolate-tuba/zeus_keyword_sparkstep_runner.glb",
    "sfx": []
   },
   {
@@ -1154,7 +1154,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "model": "Tokens/zeus_keyword_cloudline_raider/zeus_keyword_cloudline_raider",
-   "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_keyword_cloudline_raider.glb",
+   "modelSource": "meshy/batch-04d-zeus-held-desolate-tuba/zeus_keyword_cloudline_raider.glb",
    "sfx": [
     "deploy",
     "move",
@@ -1171,7 +1171,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "model": "Tokens/zeus_keyword_aetherbolt_avatar/zeus_keyword_aetherbolt_avatar",
-   "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_keyword_aetherbolt_avatar.glb",
+   "modelSource": "meshy/batch-04d-zeus-held-desolate-tuba/zeus_keyword_aetherbolt_avatar.glb",
    "sfx": [
     "deploy",
     "move",
@@ -1188,8 +1188,8 @@
    "name": "Stormgate Sentinel",
    "faction": "ZEUS",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_keyword_stormgate_sentinel/zeus_keyword_stormgate_sentinel",
+   "modelSource": "meshy/batch-04c-zeus-humans-desolate-tuba/zeus_keyword_stormgate_sentinel.glb",
    "sfx": []
   },
   {
@@ -1198,7 +1198,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "model": "Tokens/zeus_keyword_thunderhead_guardian/zeus_keyword_thunderhead_guardian",
-   "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_keyword_thunderhead_guardian.glb",
+   "modelSource": "meshy/batch-04d-zeus-held-desolate-tuba/zeus_keyword_thunderhead_guardian.glb",
    "sfx": [
     "deploy",
     "move",
@@ -1214,8 +1214,8 @@
    "name": "Reef Tunneler",
    "faction": "POSEIDON",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_keyword_reef_tunneler/poseidon_keyword_reef_tunneler",
+   "modelSource": "meshy/batch-07-poseidon-humans-lite/textured/poseidon_keyword_reef_tunneler.glb",
    "sfx": []
   },
   {
@@ -1258,8 +1258,8 @@
    "name": "Breakwater Hoplite",
    "faction": "POSEIDON",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_keyword_breakwater_hoplite/poseidon_keyword_breakwater_hoplite",
+   "modelSource": "meshy/batch-07-poseidon-humans-lite/textured/poseidon_keyword_breakwater_hoplite.glb",
    "sfx": []
   },
   {
@@ -1268,7 +1268,7 @@
    "faction": "POSEIDON",
    "type": "CHARACTER",
    "model": "Tokens/poseidon_keyword_maelstrom_bulwark/poseidon_keyword_maelstrom_bulwark",
-   "modelSource": "meshy/batch-03-rarity3-units/poseidon_keyword_maelstrom_bulwark.glb",
+   "modelSource": "meshy/batch-04b-alpha-img2-3d/poseidon_keyword_maelstrom_bulwark.glb",
    "sfx": [
     "deploy",
     "move",
@@ -1374,8 +1374,8 @@
    "name": "Tempest Duelist",
    "faction": "ZEUS",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_fast_tempest_duelist/zeus_fast_tempest_duelist",
+   "modelSource": "meshy/batch-04c-zeus-humans-desolate-tuba/zeus_fast_tempest_duelist.glb",
    "sfx": [
     "deploy",
     "move",
@@ -1409,7 +1409,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "model": "Tokens/zeus_sharp_aether_spotter/zeus_sharp_aether_spotter",
-   "modelSource": "meshy/batch-04-alpha-img2-3d/zeus_sharp_aether_spotter.glb",
+   "modelSource": "meshy/batch-04d-zeus-held-desolate-tuba/zeus_sharp_aether_spotter.glb",
    "sfx": [
     "deploy",
     "move",
@@ -1425,8 +1425,8 @@
    "name": "Razorfin Lancer",
    "faction": "POSEIDON",
    "type": "CHARACTER",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_fast_razorfin_lancer/poseidon_fast_razorfin_lancer",
+   "modelSource": "meshy/batch-07-poseidon-humans-lite/textured/poseidon_fast_razorfin_lancer.glb",
    "sfx": []
   },
   {
@@ -1452,7 +1452,7 @@
    "faction": "POSEIDON",
    "type": "CHARACTER",
    "model": "Tokens/poseidon_sharp_tidewall_harpooner/poseidon_sharp_tidewall_harpooner",
-   "modelSource": "meshy/batch-03-rarity3-units/poseidon_sharp_tidewall_harpooner.glb",
+   "modelSource": "meshy/batch-04b-alpha-img2-3d/poseidon_sharp_tidewall_harpooner.glb",
    "sfx": [
     "deploy",
     "move",
@@ -1468,8 +1468,8 @@
    "name": "Mole-Tide Channel",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_tutor_land_1/poseidon_tutor_land_1",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_tutor_land_1.glb",
    "sfx": []
   },
   {
@@ -1486,8 +1486,8 @@
    "name": "Vanguard Reef",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_tutor_land_2/poseidon_tutor_land_2",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_tutor_land_2.glb",
    "sfx": []
   },
   {
@@ -1504,8 +1504,8 @@
    "name": "Leviathan Mooring Shelf",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_tutor_land_3/poseidon_tutor_land_3",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_tutor_land_3.glb",
    "sfx": []
   },
   {
@@ -1522,8 +1522,8 @@
    "name": "Sunken Muster Basin",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_tutor_land_4/poseidon_tutor_land_4",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_tutor_land_4.glb",
    "sfx": []
   },
   {
@@ -1540,8 +1540,8 @@
    "name": "Worldsea Anchorage",
    "faction": "POSEIDON",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/poseidon_tutor_land_5/poseidon_tutor_land_5",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/poseidon_tutor_land_5.glb",
    "sfx": []
   },
   {
@@ -1558,8 +1558,8 @@
    "name": "Stormwright's Approach",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_tutor_land_1/zeus_tutor_land_1",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/zeus_tutor_land_1.glb",
    "sfx": []
   },
   {
@@ -1576,8 +1576,8 @@
    "name": "Blinkway Plateau",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_tutor_land_2/zeus_tutor_land_2",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/zeus_tutor_land_2.glb",
    "sfx": []
   },
   {
@@ -1594,8 +1594,8 @@
    "name": "Far-Sight Cloudbank",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_tutor_land_3/zeus_tutor_land_3",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/zeus_tutor_land_3.glb",
    "sfx": []
   },
   {
@@ -1612,8 +1612,8 @@
    "name": "Keraunic Assembly Field",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_tutor_land_4/zeus_tutor_land_4",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/zeus_tutor_land_4.glb",
    "sfx": []
   },
   {
@@ -1630,8 +1630,8 @@
    "name": "Olympian Muster Sky",
    "faction": "ZEUS",
    "type": "LAND",
-   "model": "",
-   "modelSource": "",
+   "model": "Tokens/zeus_tutor_land_5/zeus_tutor_land_5",
+   "modelSource": "meshy/batch-06-lands-hybrid/hybrid/zeus_tutor_land_5.glb",
    "sfx": []
   },
   {

@@ -77,9 +77,9 @@ namespace InfiniteConquest.Playtest {
 
         public void Send(string json) { WriteTranscript("request", json); input.WriteLine(json); input.Flush(); }
         string NextId() => "unity-" + Interlocked.Increment(ref requestId);
-        public void New(int seed, int humanSeat) => Send("{\"id\":\"" + NextId() + "\",\"op\":\"new\",\"seed\":" + seed
+        public void New(int seed, int humanSeat, string difficulty = "HERO") => Send("{\"id\":\"" + NextId() + "\",\"op\":\"new\",\"seed\":" + seed
             + ",\"human_player\":" + humanSeat + ",\"human_faction\":\"" + (humanSeat == 0 ? "ZEUS" : "POSEIDON")
-            + "\",\"bot_faction\":\"" + (humanSeat == 0 ? "POSEIDON" : "ZEUS") + "\",\"difficulty\":\"HERO\"}");
+            + "\",\"bot_faction\":\"" + (humanSeat == 0 ? "POSEIDON" : "ZEUS") + "\",\"difficulty\":\"" + difficulty + "\"}");
         public void Legal() => Send("{\"id\":\"" + NextId() + "\",\"op\":\"legal\"}");
         public void Act(string actionId) => Send("{\"id\":\"" + NextId() + "\",\"op\":\"act\",\"action_id\":\"" + actionId.Replace("\"", "") + "\"}");
 

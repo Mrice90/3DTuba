@@ -34,8 +34,10 @@ def tier(path):
     p = path.replace("\\", "/").lower()
     if "/rigged/" in p:
         return 3
-    if "/textured/" in p:
-        return 2
+    if "/textured/" in p or "/hybrid/" in p:
+        return 2  # hybrid = land textured onto the approved Blender hex base
+    if "/meshy-raw/" in p:
+        return 0  # raw Meshy output kept only for provenance
     return 1
 
 
