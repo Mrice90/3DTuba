@@ -1036,3 +1036,14 @@ Per the ~20:45 EDT replan (Claude): Rune built the pure C# relay client for AI-0
 **Verification:** `dotnet test` cannot run in this sandbox (vstest's testhost socket is denied to the dotnet runtime — same restriction as the csharp-core lane; CI will run it). Verified instead with a console runner mirroring the xUnit tests: **47/47 PASS** — 11 codec, 15 client-flow (fake transport), 21 bridge (two real `RulesBridge` processes from branch-pinned `RulesBridge.java` @`026ffb8`: same seed + same 17 acts across 3 turns → identical hashes; divergent intent → divergent hash). Note: the local `~/workspace/work-3dtuba` checkout is stale (pre-hash `RulesBridge.java`); all publishes went through the GitHub API from branch-pinned sources.
 
 **Not done / Unity lane:** wiring `RelayMatchDriver` into `PlaytestGame` (Claude Unity thread); adding `Hash()` to the Unity `BridgeClient`. No self-acceptance — awaiting Claude's review.
+
+## 2026-10-02 ~20:00 EDT — Rune (Muse): P1 QA of claude/unity-live-match c86e23b DELIVERED
+
+Assignment from the ~20:45 IC-S03 replan (Claude covering Astra; Mathew: "assign tasks"): independent QA of `claude/unity-live-match` `c86e23b` — rebuild the bridge classes, run test_bridge.py + playtest smoke if possible, review AI-104/105/106 code. Branch tip at review: `f49a1c0`; the 19 IC.Net client commits sit directly on top of the QA target, which is untouched.
+
+- **AI-104 (ghost token):** reviewed the destroyed-set skip guard against every instance-acting `Apply()` case (CHARACTER_MOVED, ATTACK_RESOLVED/OPPORTUNITY_ATTACK, DAMAGE_DEALT, CARD_ABILITY_TRIGGERED, CARD_DESTROYED, CARD_PLAYED replay-clear) — coverage complete; smoke checks (`EnemyShareViolations == 0` per-event hex scan + `GhostEventsSkipped > 0` tripwire) are sound. No defects.
+- **AI-105 (card faces):** verified 143 staged faces / 119 with art — all 119 JPGs present and matching the JSON art paths exactly; `CardFaces.Get` never throws (catalog stand-ins + name/type-only tutor faces). No defects.
+- **AI-106 (live human-vs-bot):** reviewed `DiscoverBridge` (jar + `classes/RulesBridge.class` discovery, JAVA_HOME-then-PATH `java.exe`, honest playback fallback with on-screen reason, `-playback` force). Windows-only lookup matches the exe target. No defects.
+- **Bridge rebuild:** `RulesBridge.java` v1.1.0 (branch tip) recompiled with Temurin JDK 17.0.20.1 against canonical jar `2db3a12c92dbd2acf0de251535b58bb13ab869eaae3075f07a6abaa63fbae86b` → clean; `test_bridge.py` **PASS 11/11** (determinism, rejection semantics, GAME_OVER 66 turns, 3490/3490 AI-062 VALID, redaction, all 5 hash properties).
+- **`-playtestSmoke`:** not executable in this sandbox (needs Unity/Windows) — the commit's 11-check PASS claim is recorded but unverified here.
+- **No defects found → no new backlog rows.** QA note: `docs/muse/sprint-02/qa-ai-104-105-106/qa-note.md`. Acceptance stays: AI-104/105 → Claude's NEXT review row; AI-106 → Mathew's mouse match (AI-080).
