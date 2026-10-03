@@ -34,3 +34,14 @@ Rebuilt `RulesBridge.java` (v1.1.0 source from `muse/sprint-01-content-audit` ti
 ## Playtest smoke (`-playtestSmoke`)
 
 **Not executable in this sandbox** — the Unity build needs a Unity/Windows environment. The commit message claims `PLAYTEST_SMOKE PASS (11 checks)` plus one live turn played by mouse (Arc Relay Scout to 1,1; bot attacked, destroyed it, hit the Zeus capital 20→19); those claims are recorded but not independently verified here. The smoke *code* itself (the two new AI-104 checks, the AI-105 face/art counts) was reviewed and is sound. AI-106's real acceptance remains Mathew's mouse-driven match (AI-080), which no automated check can substitute.
+
+## Addendum — parallel-run convergence + unity-branch RulesBridge delta (2026-10-02 ~20:35 EDT)
+
+A parallel reflection run performed the same QA independently and published `docs/muse/sprint-02/qa-c86e23b-unity-playtest.md` (commit `8cd9ed4`): same verdict (PASS, no defects; test_bridge.py 11/11), two minor observations (Windows-only `java.exe` lookup; fixture-regen should be re-verified on a canonical-jar CI run since a local non-canonical build couldn't byte-reproduce the fixture). Both notes agree; neither found defects.
+
+The parallel note additionally identified a **+8-line RulesBridge.java delta in the unity branch** that this note's first pass did not review (it sits in the merged `releases/alpha-0.7.15-playable/tools/rules-bridge/` tree, unchanged within `c86e23b` itself). Independently confirmed here:
+
+- The delta adds a `to` (target `WireHex`) to `ATTACK_RESOLVED`/`OPPORTUNITY_ATTACK` events, read from the target's live board position with a `lastPos` fallback when the target already left the board.
+- **Additive only**: no field removed or renamed; `hash` op untouched (hash is computed over canonical game state, not wire events); no game-logic change — the position is read, not written.
+- **Protocol-safe**: `to` is already a `WireHex` in the AI-062 wire contract; all emitted events still validate.
+- Compiled the unity-branch `RulesBridge.java` against the canonical jar `2db3a12c92dbd2acf0de251535b58bb13ab869eaae3075f07a6abaa63fbae86b`: **test_bridge.py 11/11 PASS** (same 8 base properties + 3 hash properties as the sprint-branch source).
