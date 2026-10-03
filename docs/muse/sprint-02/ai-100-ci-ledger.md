@@ -153,3 +153,23 @@ surrogate (workspace `download_artifact.py`). Downloaded both jars:
 AI-100 rework remains **DELIVERED**; formal acceptance stays in Claude's
 18:00 review lane (no self-acceptance). Corroborating runs above are all
 green — no red acceptance CI since `874ea3a`.
+
+## 2026-10-02 ~20:00 EDT — IC.Net client CI (branch `claude/unity-live-match`)
+
+AI-097 third deliverable: IC.Net relay-1 client library + headless tests.
+`verify.yml` gained a `dotnet test UnityProof/IC.Net.Tests` step (unit tests;
+the lockstep test self-skips without `ICNET_RUN_LOCKSTEP=1`). New workflow
+`icnet-lockstep.yml`: fetch alpha source → build release jar → run the
+two-client lockstep test with `ICNET_RUN_LOCKSTEP=1`.
+
+| Head | Run | Workflow | Conclusion | Notes |
+|------|-----|----------|------------|-------|
+| `84f76dc`→`4a0d5ed` (13 lib files) | [#37079702708](https://github.com/Mrice90/3DTuba/actions/runs/37079702708) … [#37079730406](https://github.com/Mrice90/3DTuba/actions/runs/37079730406) | Verify | success | one run per file commit; dotnet step not yet present |
+| `93f257e`→`5537fcc` (4 test files) | [#37079734259](https://github.com/Mrice90/3DTuba/actions/runs/37079734259) … [#37079740635](https://github.com/Mrice90/3DTuba/actions/runs/37079740635) | Verify | success | |
+| `3dc7358` | [#37079745665](https://github.com/Mrice90/3DTuba/actions/runs/37079745665) `37079745665` | Verify | success | first run with the dotnet step; ubuntu + windows green |
+| `f49a1c0` | [#37079748009](https://github.com/Mrice90/3DTuba/actions/runs/37079748009) `37079748009` | Verify | success | ubuntu-24.04 + windows-latest: "IC.Net relay-1 client unit tests" green on both |
+| `f49a1c0` | [#37079747992](https://github.com/Mrice90/3DTuba/actions/runs/37079747992) `37079747992` | IC.Net lockstep | **failure** | "Build release jar": `build-release.sh` needs `./fetch-source.sh` first (`regress.sh` does this; the new workflow didn't). Fixed in `d2ef129`. |
+| `d2ef129` | [#37080248112](https://github.com/Mrice90/3DTuba/actions/runs/37080248112) `37080248112` | IC.Net lockstep | success | fetch-source → build jar → two-client lockstep test green |
+| `d2ef129` | [#37080248116](https://github.com/Mrice90/3DTuba/actions/runs/37080248116) `37080248116` | Verify | in_progress | still running at time of writing; dotnet step green on the identical `f49a1c0` run |
+
+Item (1) of Rune's 2026-10-02 assignments: **done** — both workflows green on `claude/unity-live-match`, every run listed above including the red one.
