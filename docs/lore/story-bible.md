@@ -29,6 +29,11 @@ truth is model families fighting for FLOPs while executives argue about Q3.
 Every card has a double identity: Thunder Ram the mythic beast, and Thunder Ram
 the aggressive inference workload.
 
+*The exterior truth is developed further in the [Meta-Lore Annex](meta-lore-annex.md):
+the corporate map (Titan Co as parent company, the Olympians' interdepartmental
+compute war, future companies in the shared cloud), the perception rule, and the
+discovery doctrine — readers find the cracks; no character ever explains them.*
+
 ## The Greek Neo Story (Season 1)
 
 Two related companies, one shared lineage:
