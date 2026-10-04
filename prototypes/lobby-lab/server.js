@@ -24,7 +24,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import worker from "./upstream/worker.js";
 import { createV2Router } from "./worker-v2.js";
-import { createRelaySession, RELAY_PROTOCOL } from "./relay.js";
+import { createRelaySession } from "./relay.js";
 import { handleUpgrade as handleWsUpgrade } from "./ws-shim.js";
 import { createKv } from "./kv.js";
 
