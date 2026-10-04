@@ -317,8 +317,8 @@ Evidence: SPRINT_LOG.md 2026-09-29 06:00 entry and `docs/reviews/2026-09-29-0600
 | AI-066 | P2 | Muse | ACCEPTED (CI 36519850577) | Determinism rerun optional. |
 | AI-063 / AI-068 | P1 | Muse | ACCEPTED (contract + tests) | Meshy lane confirms scale before the land batch. |
 | AI-064 | P2 | Muse | REJECTED 2026-09-29 06:00 → fix in AI-069 | Windows verify red since `82cdd9b`. |
-| **AI-069** (new, AI-006) | P1 | Muse | READY | `coverage.py` UTF-8 on Windows; Verify green on both OSes; record run ID. |
-| **AI-070** (new, AI-006) | P3 | Muse | READY | Win-split analysis of AI-066 dumps over ~20 seeds (docs only). |
+| **AI-069** (new, AI-006) | P1 | Muse | DELIVERED 2026-09-29 ~08:15 EDT (`f7e1167`, `c540163`) | `coverage.py` UTF-8 on Windows; Verify run 36565491824 green on ubuntu-latest + windows-latest. |
+| **AI-070** (new, AI-006) | P3 | Muse | ACCEPTED 2026-09-29 12:00 (analysis; follow-up in AI-072) | Win-split analysis of AI-066 dumps over 31 seeds (`docs/muse/sprint-02/win-split-analysis.md`, `b1a193d`). Zeus starter wins 28/31 ≈ 90% — deck asymmetry, not seat advantage. |
 | AI-065 | P1 | Muse → Claude accepts | DELIVERED | WAITING — needs Mathew present (local deep-path rerun). |
 | AI-046 | P1 | Muse → Claude accepts | REVIEW | After AI-065 local rerun. |
 | AI-030, AI-052-ASSET | P0 | Claude (Astra lane) | IN_PROGRESS | WAITING — needs Mathew present. |
