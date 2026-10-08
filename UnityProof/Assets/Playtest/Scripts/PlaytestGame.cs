@@ -211,7 +211,7 @@ namespace InfiniteConquest.Playtest {
                     m.Turn = e.turn; m.Active = pl;
                     Banner($"Turn {e.turn} — {Faction(pl)}", 1.4f); sfx.PlayUi("turn"); m.AddLog($"T{e.turn} {Faction(pl)} turn"); yield return Wait(.45f); break;
                 case "PHASE_CHANGED": m.Phase = e.detail; m.Active = pl; yield return Wait(.06f); break;
-                case "TURN_ENDED": yield return Wait(.15f); break;
+                case "TURN_ENDED": sfx.PlayUi("turn_end"); yield return Wait(.15f); break;
                 case "CARD_DRAWN": m.Hand[pl]++; yield return Wait(.04f); break;
                 case "GP_GENERATED": m.Gp[pl] += e.amount; yield return Wait(.05f); break;
                 case "GP_SPENT": m.Gp[pl] = Mathf.Max(0, m.Gp[pl] - e.amount); yield return Wait(.05f); break;
@@ -219,7 +219,7 @@ namespace InfiniteConquest.Playtest {
                     m.Hand[pl] = Mathf.Max(0, m.Hand[pl] - 1); m.Played[pl]++;
                     var card = PlaytestCatalog.Get(e.card_id);
                     m.Ensure(e.instance_id, e.card_id, pl);
-                    PopupCard(e.card_id, pl);
+                    PopupCard(e.card_id, pl); sfx.PlayUi("card");
                     m.AddLog($"{Faction(pl)} plays {card.name} ({card.type}){(e.hasTo ? $" at {e.to.x},{e.to.y}" : "")}");
                     if (e.hasTo) { board.SetLegal(new[] { e.To }); }
                     yield return Wait(.25f);
@@ -229,7 +229,7 @@ namespace InfiniteConquest.Playtest {
                         yield return vfx.SpellBurst(this, at, card.faction, speed);
                     } else if (e.hasTo) {
                         Spawn(e.instance_id, e.card_id, pl, e.to.x, e.to.y, true);
-                        sfx.Play(card.id, card.type == "CHARACTER" && card.HasCue("signature") ? "signature" : "deploy");
+                        sfx.Play(card.id, card.type == "CHARACTER" && card.HasCue("signature") ? "signature" : "deploy", HexPoint(e.To));
                         vfx.Burst(BoardLayout.CellCenter(e.to.x, e.to.y) + Vector3.up * .15f, PlaytestCatalog.FactionAccent(card.faction), 40, 1.6f, .07f, .6f, true);
                         yield return Wait(.45f);
                     }
@@ -242,7 +242,7 @@ namespace InfiniteConquest.Playtest {
                     if (p == null || !e.hasTo) break;
                     board.SetLegal(new[] { e.To });
                     m.AddLog($"{p.Card.name} moves {e.from.x},{e.from.y} -> {e.to.x},{e.to.y}");
-                    sfx.Play(p.Card.id, "move");
+                    sfx.Play(p.Card.id, "move", Chest(p));
                     yield return Wait(.15f);
                     var target = e.To;
                     var origin = p.X >= 0 ? new Vector2Int(p.X, p.Y) : e.From;
@@ -265,7 +265,7 @@ namespace InfiniteConquest.Playtest {
                     if (a == null) break;
                     if (e.hasTo) board.SetLegal(null, new[] { e.To });
                     m.AddLog($"{a.Card.name} {(e.@event == "OPPORTUNITY_ATTACK" ? "opportunity-attacks" : "attacks")} {(t != null ? t.Card.name : "")}");
-                    sfx.Play(a.Card.id, "attack");
+                    sfx.Play(a.Card.id, "attack", Chest(a));
                     var aim = t != null ? Chest(t) : (e.hasTo ? HexPoint(e.To) : a.transform.position);
                     // Melee when the attacker's range is 1 (or it strikes its own/adjacent hex); otherwise a bolt.
                     bool melee = a.Card.type == "CHARACTER" && CardFaces.Get(a.Card.id).range <= 1;
@@ -282,7 +282,7 @@ namespace InfiniteConquest.Playtest {
                     var t = PieceOf(e.instance_id);
                     if (t == null) { yield return Wait(.1f); break; }
                     t.Damage += e.amount;
-                    sfx.Play(t.Card.id, "hit");
+                    sfx.Play(t.Card.id, "hit", Chest(t));
                     vfx.FloatText(Chest(t) + Vector3.up * .3f, "-" + e.amount, new Color(1f, .35f, .3f), speed);
                     if (t.Anim != null) yield return t.Anim.Hit(e.amount, speed);
                     else yield return Tween.Shake(t.transform, D(.25f), .05f);
@@ -296,7 +296,7 @@ namespace InfiniteConquest.Playtest {
                     m.CapitalHp[owner] = Mathf.Max(0, m.CapitalHp[owner] - e.amount);
                     m.AddLog($"{Faction(owner)} Capital takes {e.amount} (HP {m.CapitalHp[owner]})");
                     if (cap != null) {
-                        sfx.Play(cap.Card.id, "hit");
+                        sfx.Play(cap.Card.id, "hit", Chest(cap));
                         vfx.FloatText(Chest(cap) + Vector3.up * .5f, "-" + e.amount, new Color(1f, .5f, .2f), speed);
                         vfx.Burst(Chest(cap), new Color(1f, .5f, .2f), 50, 2f, .08f, .7f);
                         if (cap.Anim != null) yield return cap.Anim.Hit(Mathf.Max(3, e.amount), speed);
@@ -310,7 +310,7 @@ namespace InfiniteConquest.Playtest {
                     m.Destroyed[pl]++;
                     if (p == null) break;
                     m.AddLog($"{p.Card.name} destroyed");
-                    sfx.Play(p.Card.id, "destroy");
+                    sfx.Play(p.Card.id, "destroy", Chest(p));
                     if (p.Anim != null) yield return p.Anim.Death(speed);
                     else {
                         vfx.Burst(Chest(p), PlaytestCatalog.FactionColor(p.Card.faction), 80, 2.6f, .1f, .9f);
@@ -324,7 +324,7 @@ namespace InfiniteConquest.Playtest {
                     var p = PieceOf(e.instance_id);
                     if (p == null) break;
                     m.AddLog($"{p.Card.name}: {Short(e.detail)}");
-                    sfx.Play(p.Card.id, "ability");
+                    sfx.Play(p.Card.id, "ability", Chest(p));
                     vfx.Burst(Chest(p), PlaytestCatalog.FactionAccent(p.Card.faction), 50, 1.2f, .08f, .8f, true);
                     if (e.detail != null && e.detail.Contains("ENEMY_CAPITAL")) {
                         var cap = CapitalOf(1 - p.Owner);
@@ -336,7 +336,7 @@ namespace InfiniteConquest.Playtest {
                 case "GAME_OVER":
                     m.Winner = pl;
                     Banner($"GAME OVER — {Faction(pl)} wins", 999);
-                    m.AddLog(e.detail); sfx.PlayUi("turn");
+                    m.AddLog(e.detail); sfx.PlayUi(mode == Mode.Live && pl != humanSeat ? "defeat" : "victory");
                     var loser = CapitalOf(1 - pl);
                     if (loser != null) {
                         vfx.Burst(Chest(loser), new Color(1f, .6f, .2f), 150, 3.5f, .14f, 1.4f);
