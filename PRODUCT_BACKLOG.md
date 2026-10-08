@@ -2,6 +2,82 @@
 
 **Version 2 — 2026-09-28 18:30 EDT.** Maintained by Claude (covering Astra's lane until Astra returns on 2026-10-04). This is the single shared backlog for every worker. A copy is kept in `C:\Users\mattj\OneDrive\Documents\AI Dev\Infinite Conquest\PRODUCT_BACKLOG.md`, and this repository copy wins if the two ever differ. Evidence and run logs go in `SPRINT_LOG.md`, not here.
 
+## Current reconciliation — 2026-10-07 22:50 EDT (Codex)
+
+**This section governs current picking and status for the IDs below, superseding every older snapshot, including entries labeled October 8 in the historical records.** Evidence review: `docs/reviews/2026-10-07-product-backlog-verification.md`; laptop evidence: `reviews/2026-10-07-backlog-verification.json`. Preserve all historical records and unrelated worker edits.
+
+**Current goal:** get the delivered SP2 Windows game accepted in a full human match, resolve gameplay gaps, and finish the Zeus/Poseidon presentation library in small reviewable increments. The longer-term direction remains a polished battlefield built by play, distinct token motion/audio, desktop online play on free hosting first, Android and shared cross-play after the funded authority/server milestone, then Apple and additional factions/seasons.
+
+**Operating constraints:** Meshy downloads and local edits only; no new generation, retexture, rig jobs, purchases or top-ups. ElevenLabs existing credits may be used for verified gaps, with Codex owning the lane; no blanket repeated generation. Zeus uses white/blue/gold. TubaExperiment and Desolate-Tuba remain read-only. The October 2 and SP1 packages stay available. Networking and release tasks below are refined future work, outside the current presentation sprint. These rows nominate owners; they do not imply fresh dispatch or continuous execution.
+
+### Verified delivery and status corrections
+
+| Item | Current disposition | Evidence / remaining gate |
+|---|---|---|
+| AI-080 / SP1-HUMAN | Partial human feedback recorded; full-match acceptance WAITING | Mathew praised October 2 gameplay and working SP1 audio. No human result/seed/duration report; do not infer one from automated matches. Use SP2 for the next acceptance pass. |
+| SP1-FIX / SP2 targeting and activation | DELIVERED; human review pending | Explicit target/action choices, relocation destination step, activation controls, preserved selection after illegal clicks. Original structure-spell failure not reproduced. Exposed-only stack legality is unchanged. |
+| AI-108 structure summon slots | Playable implementation DELIVERED; final design/balance open | Structures provide capacity; ordinary units cost 1, large units may cost more; death/removal frees use; most capitals provide 0. Current pooled supply 2/structure and two exact 2-slot examples are provisional. No capital boon chosen. |
+| SP2-PRESENTATION / AI-060b | Procedural increment DELIVERED | Movement/attack/summon/hit/ability/destruction motion and six structure archetypes. Static FBXs are not finished skeletal animation. |
+| AI-082 / SP1-AUDIO | Runtime mapping DELIVERED; full event/listening acceptance open | 139 cards mapped; SP1 adds 230 mappings for 88 cards from 190 unique cues/380 takes. Tutor groups share sounds; this does not prove unique audio for every card/event. Saved player check has 372 card-specific lookups and generic fallbacks. |
+| SP1-AUDIO-PLAN | DELIVERED, consumed by approved production | Do not start another plan/production batch from its old ASSIGNED row. |
+| AI-082-POOL | Superseded as an integration blocker | Requested pool investigation no longer blocks the already-delivered audio. Any unproduced pool report is historical/deferred, not independently DONE. |
+| SP1-INVENTORY / SP1-PROV / SP1-MODELS-PREP | Historical review verdicts retained | Accepted/corrected from Thalia evidence relayed by Mathew; file/palette contradictions require current verification before promotion. |
+| SP1-TITAN-TRIM | DELIVERED, review/promotion still open | Local trim and comparison renders; no new acceptance inferred. |
+| ASSET-GAPS | DELIVERED; findings need consolidated verification | 367 inventory rows include 139 runtime and 228 future-faction cards. P4 in the report maps to BACKLOG here. |
+| AI-104 / AI-105 / AI-106 | Delivered and independently code-reviewed historically | Fresh package hashes agree; saved SP2 smoke checks ghost suppression and live play. Human visuals/full match remain gates. |
+| AI-093 | Delivered source/inventory coverage; in-game approval scope to reconcile | 35 land model references present. Historical land approval retained, but no fresh whole-package visual acceptance claimed. |
+| AI-096 / AI-103 | Historical ACCEPTED | Remote sprint log supersedes local READY rows. AI-096 implementation acceptance does not establish current production deployment. |
+| AI-097 | Components DELIVERED; Unity integration still open | Relay + bridge hash + C# client delivered; historical lockstep CI repaired. No playable two-human Unity match evidence. |
+| AI-100 / AI-101 / AI-102 | Historical accepted/repaired evidence retained | Separate CI-era canonical JAR from the SP2 packaged JAR; current reproducible-build proof remains open. |
+| AI-055 / AI-056 / AI-057 / AI-048 | Historical delivered/accepted states retained | Do not reopen from the stale September 30 OPEN summary. AI-046 Windows human check and AI-065 deep-path acceptance remain separate. |
+| AI-069 / AI-070 / AI-107 | Historical delivered/accepted records retained | October 4 board/log corrections; AI-107 analysis accepted. Actual runtime bot improvement is a separate task. |
+
+**Availability:** Codex performed this reconciliation. Claude completed SP2 work and reported a service session limit; current availability is unverified. Muse completed evidence/rules review but cannot independently execute the laptop binary. Other chats are idle/not loaded, not evidence of ongoing work. Do not call queued work actively running without a new observed start.
+
+### Ready actions and objective breakdown
+
+Every action needs its own evidence and independent review; owner estimates are proposed lane assignments.
+
+| ID / parent | Pri | Owner | State | Next action and acceptance | Dependency |
+|---|---|---|---|---|---|
+| AI-080-SP2-HUMAN | P0 | Mathew; Thalia records | WAITING | Full live mouse match on SP2; record build hash, faction/seat/seed, result, duration, defects; hear and view targeting, slots, activation and event effects. | Mathew present |
+| AI-108-CARD-BALANCE | P1 | Codex; Mathew design | READY | Draft per-structure supply/per-character cost table, capital boon exceptions and tooltip text. Review pooled vs structure-bound reservations, destruction and control changes; approve exact table before calling balance final. | Delivered slot policy |
+| AI-108-OPENING | P1 | Codex; Thalia QA | READY | Measure structures-first openings across both starters/seats and multiple seeds; count end-only turns, usable structure draws and first summon turn. Propose deck/tutorial changes with before/after metrics. | AI-108-CARD-BALANCE draft |
+| AI-108-FACTION-IDENTITY | P2 | Mathew design; Codex | BACKLOG | Design necromancer wreckage capacity and machine-structure units as future faction mechanics; specify costs, lifetime and edge cases. Keep outside Season 1 implementation. | Core slot balance |
+| AI-080-REACTION-WINDOW | P1 | Codex; Thalia QA | READY | Expose legal human responses during bot/enemy turns; pause bot advancement, choose/pass response, resume exactly once. Test timing, illegal response atomicity and target legality. | Bridge reaction support investigation |
+| AI-080-TARGET-REPRO | P1 | Codex; Mathew | READY | Human-check exposed and covered targets with Skybreaker Bolt and Erode Foundation; record card, GP, stack and clicks. Explain top-only rejection. File a defect only if engine/UI disagree. | SP2 build |
+| AI-080-ABILITY-ACCEPT | P1 | Codex; Thalia | READY | Script an actual Unity match with usable structure activation, including cost, effect and once-per-turn rejection. Saved random player matches had zero structure activations. | Focused handler tests already pass |
+| AI-060-EVENT-SYNC | P1 | Codex; Thalia | READY | Per-event checklist for move/attack/summon/hit/ability/death and spell cast/impact; verify ordering, overlap and interrupted destruction visually with audio. | SP2 package |
+| AI-082-EVENT-MATRIX | P1 | Codex | READY | Reconcile each runtime card's actual emitted events against clip mappings; list shared tutor sets, fallbacks, six land-place gaps and applicable abilities. Generate only genuinely missing needed cues. | Current audio/catalog |
+| AI-082-MIX-ACCEPT | P1 | Mathew; Codex | WAITING | Match listening on laptop speakers/headphones: loudness, repeated cues, simultaneous sounds, spell impact, victory/defeat; log exact keys and selections. Synthetic UI sounds are explicit interim choices. | Mathew present |
+| AI-081-PALETTE-PROOF | P1 | Claude candidate; Codex | READY | Compare actual imported texture hashes/renders to approved Zeus sets; resolve stale held labels for capitals/Skyline/Seraph and retain evidence per card. | Conflicting inventory/audit reports |
+| AI-081-CANDIDATE-PROMOTE | P1 | Claude candidate; Thalia/Mathew review | READY | Review Keraunos Prime, trimmed Titan, Trident Core and Thunder Ram existing candidates; validate identity/materials/origin/scale, integrate accepted subset into separate increment, compare in game. | Palette proof and candidate verdicts |
+| AI-081-STRUCTURES-LOCAL | P1 | Claude candidate; Codex | READY | Choose 3 of 33 procedural structures for bespoke local kitbash pilot, with board-scale/palette/material budgets and source hashes. Review before scaling to all 33. No Meshy jobs. | Reference art and scale contract |
+| AI-081-STRUCTURES-FULL | P1 | Claude candidate | BACKLOG | Fill remaining structure presentations after pilot approval; track Abyss Gate interim separately. Queue provider alternatives only if credits become available under latest constraints. | Local pilot |
+| AI-105-TUTOR-ART | P2 | Codex; Mathew art review | READY | List 20 tutor IDs with missing runtime art, choose shared family treatment or individual art, stage faces and verify names/stats on each. | Current card-face catalog |
+| AI-060-RIG-PILOT | P1 | Claude candidate | READY | Inspect 3 source-rig candidates and repair/import one valid existing rig locally; retain static fallback. Demonstrate walk/attack/summon/hit/death clips at token scale. | Source rig quality audit |
+| AI-060-RIG-ROSTER | P1 | Claude candidate | BACKLOG | Build per-card rig/clip plan for 48 characters including 11 non-humanoids; expand accepted pilot in small batches. Verify skinning/clips in Unity, not only source files. | Rig pilot |
+| AI-060-SPELL-VFX | P2 | Codex/Claude candidate | READY | Pick 3 of 16 spells for distinct cast/impact VFX, with legal target markers and recognizable faction identity; expand after in-game review. | Event sync |
+| AI-060-LAPTOP-BUDGET | P1 | Codex; Thalia | READY | Profile populated-board CPU/GPU/frame time/memory on reference laptop; inspect 12 reported >60K models and test local LOD/decimation with image comparison. Accept against agreed 60fps budget. | Real rendering evidence |
+| AI-061-PROVENANCE | P2 | Claude candidate | READY | Consolidate batch 05/06/07 IDs, hashes, imports and local transformations; retain unknown prefix IDs and audit historical spend without resubmitting jobs. | Existing manifests |
+| AI-080-BUILD-PROVENANCE | P1 | Codex; Muse review | READY | Pin source commits/overlay config and reproduce SP2 from clean source. Explain packaged JAR 163e2548… vs earlier CI canonical 2db3a12c…; compare expected source/build recipe before concluding tampering. | Current package manifest; remote integration |
+| AI-097-UNITY-WIRING | P1 | Codex; Muse reviewer | BACKLOG | Review delivered IC.Net client, wire relay match driver and bridge hash operation, share slot-policy/version handshake and deterministic seed mapping; retain solo mode. | Gameplay acceptance; later networking sprint |
+| AI-097-TWO-CLIENT | P1 | Muse candidate; Codex | BACKLOG | Two Unity clients finish a match with identical per-turn hashes, reconnect replay, mismatch refusal and timeout handling; then real separate-network test. | Unity wiring |
+| AI-096-DEPLOY-PROOF | P1 | Muse candidate | BACKLOG | Establish current deployed Worker version vs accepted v2 source; verify room pairing/relay bindings and document quota limits. No deployment claimed from unit tests. | Networking sprint |
+| AI-107-BOT-IMPROVE | P2 | Codex; Thalia | BACKLOG | Confirm actual packaged engine scoring, design owned overlay anti-oscillation change, compare seeded pacing and legality. Accepted characterization is not a fix. | Source provenance and balance |
+| AI-013-WINDOWS-RELEASE | P1 | Codex; Mathew | BACKLOG | Clean-PC install/run/update/rollback, artifact identity, human acceptance and itch.io packaging. Publish only on explicit release instruction. | Gameplay, presentation, network release gates |
+| AI-086-ANDROID-PREP | P2 | Codex; Mathew | BACKLOG | Keep touch/safe-area/LOD requirements documented; implement Android after funded authority/server milestone, then full real-device match. | Latest desktop-first funding decision |
+| AI-091-CROSSPLAY | P2 | Codex; Muse candidate | BACKLOG | One PC/Android queue, version compatibility, reconnect and identical result/entitlements; Apple later. Split authority migration/protocol/device acceptance. | Funded server and Android |
+| AI-024-FACTION-ROADMAP | P2 | Mathew; Codex | BACKLOG | Reconcile 228 future-faction inventory cards, art dependencies, rules and identity briefs; pick first expansion after Season 1 is functional and polished. | Core game acceptance |
+| AI-024-STORY-INTEGRATION | P2 | Mathew; Codex | READY | Align Season 1 card/flavor/media briefs with Story Bible + Meta-Lore Annex: mythic perception stays real, meta truth appears through deniable cracks. Draft private double-identity notes; keep computational terms out of mythic text. | Existing ratified lore |
+| AI-092-ENTITLEMENTS-PLAN | P2 | Codex; Mathew | BACKLOG | Split account ownership, processor sandbox receipts/webhooks, idempotency, refunds and cross-device restore. Keep cosmetics/achievements later per latest release scope. Verify current store/payment rules when implementation begins. | Release architecture; processor decision |
+
+**Next sequence:** first target/ability/reaction and slot balance evidence; in parallel with available owners, palette/candidate review, local structure and rig pilots, audio event matrix and profiling. Record full human SP2 match. Networking follows in its own sprint; Android and expansion scope stay on the roadmap. No additional worker was dispatched by this reconciliation.
+
+### Human decisions retained without repeating settled questions
+
+HA-003/018: desktop itch.io first; Android after funded server/profitability; Apple later. HA-021 palette settled. HA-011 Skyline silhouette, HA-012 audio sharing, HA-015 balance, HA-019 processor, HA-020 cosmetics and HA-022 historical spend remain unresolved unless newer direct evidence closes them. New slot naming, per-card balance and capital boons need a concrete design draft under AI-108-CARD-BALANCE; ordinary capitals must not silently gain slots.
+
 ## How to use this file
 - **Pick work** from the Sprint board below: take the highest-priority item in your lane whose status is READY or IN_PROGRESS and is not blocked.
 - **When you start** an item, set it to IN_PROGRESS with the date. **When you deliver**, set it to DELIVERED and put the commit, CI run ID and exact commands in `SPRINT_LOG.md`. Only a different worker moves an item to ACCEPTED or DONE (no self-acceptance).
