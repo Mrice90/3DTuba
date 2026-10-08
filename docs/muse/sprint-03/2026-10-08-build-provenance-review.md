@@ -44,3 +44,7 @@ The SP2 package files (`Infinite Conquest/playtest/unity-build-SP2-gameplay/`) l
 ## 5. Verdict
 
 **No corruption or mismatch declared — and none verifiable from here.** The recipe differences (D1–D5) are architectural consequences of shipping a Unity player + Java sidecar instead of a JVM-only game. The one item that would close provenance honestly is Mathew-local verification: recompute the package SHA256SUMS on his machine and confirm the three overlay classes + policy match the reviewed slot design. That check belongs to hands with the package, not this lane.
+
+## 6. Open evidence gate — rules-engine JAR hashes (2026-10-08 ~17:35)
+
+**Not resolved by architecture alone.** The recipe-shape comparison in §3 does not identify the source/recipe differences between the two rules-engine JAR hashes **`163e2548…`** and **`2db3a12c…`**. That exact comparison stays **OPEN** as an evidence gate: which source tree and build recipe produced each hash, and what differs between them (slot overlays? bridge classes? repackaged canonical build?), is unanswered from this workspace. This gate closes only with file-level access to both JARs or their build manifests — it belongs to hands with the packages.
