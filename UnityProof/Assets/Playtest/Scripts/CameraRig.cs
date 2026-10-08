@@ -34,7 +34,15 @@ namespace InfiniteConquest.Playtest {
             var rot = Quaternion.Euler(curPitch, curYaw, 0);
             transform.position = curTarget - rot * Vector3.forward * curDist;
             transform.rotation = rot;
+            // Impact shake (AI-060c): UnitAnimator adds trauma on heavy hits and destruction; it decays fast.
+            if (Trauma > 0) {
+                float s = Trauma * Trauma, t = Time.unscaledTime * 38f;
+                transform.position += rot * new Vector3((Mathf.PerlinNoise(t, 0) - .5f) * .5f * s, (Mathf.PerlinNoise(0, t) - .5f) * .5f * s, 0);
+                transform.rotation = rot * Quaternion.Euler(0, 0, (Mathf.PerlinNoise(t, t) - .5f) * 4f * s);
+                Trauma = Mathf.Max(0, Trauma - Time.unscaledDeltaTime * 1.6f);
+            }
         }
+        public static float Trauma;
         public static bool PointerOverHud;
         void HandleInput() {
             var mouse = Mouse.current; var kb = Keyboard.current;

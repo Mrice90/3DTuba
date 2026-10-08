@@ -57,6 +57,7 @@ namespace InfiniteConquest.Playtest {
             factory = new TokenFactory(LitShader != null ? LitShader : Shader.Find("Universal Render Pipeline/Lit"),
                                        UnlitShader != null ? UnlitShader : Shader.Find("Universal Render Pipeline/Unlit"), font);
             vfx = new Vfx(ParticleMaterial != null ? ParticleMaterial : factory.Glow(Color.white), factory, font);
+            UnitAnimator.Factory = factory; UnitAnimator.Fx = vfx;
             sfx = new GameObject("SFX").AddComponent<SfxBank>();
             anim = new GameObject("Animation host").AddComponent<AnimHost>();
             SetupScene();
@@ -134,12 +135,7 @@ namespace InfiniteConquest.Playtest {
             go.transform.rotation = Quaternion.Euler(0, owner == 0 ? 15 : 195, 0);
             pieces[instanceId] = p;
             board.Add(p, x, y, true);
-            if (animate && speed < 50) {
-                var home = go.transform.position; var s = go.transform.localScale;
-                go.transform.position = home + Vector3.up * 1.2f;
-                anim.StartCoroutine(Tween.Move(go.transform, home, .3f / speed));
-                anim.StartCoroutine(Tween.Scale(go.transform, s * .3f, s, .35f / speed, true));
-            }
+            if (animate && speed < 50 && p.Anim != null) p.Anim.StartCoroutine(p.Anim.Summon(speed));
             return p;
         }
         void Despawn(Piece p) {
@@ -249,11 +245,15 @@ namespace InfiniteConquest.Playtest {
                     sfx.Play(p.Card.id, "move", Chest(p));
                     yield return Wait(.15f);
                     var target = e.To;
+                    var origin = p.X >= 0 ? new Vector2Int(p.X, p.Y) : e.From;
                     board.Remove(p); p.X = target.x; p.Y = target.y;
                     // Tween to where it will stand in the destination stack, then register it there.
                     var stack = board.StackAt(target.x, target.y); stack.Add(p);
                     var dest = board.SlotPosition(p); stack.Remove(p); p.X = -1;
-                    yield return Tween.Move(p.transform, dest, D(.45f), .35f);
+                    if (p.Anim != null) {
+                        var hops = UnitAnimator.HexPath(origin, target).Select(hx => hx == target ? dest : BoardLayout.CellCenter(hx.x, hx.y) + Vector3.up * board.LandTop(hx.x, hx.y)).ToList();
+                        yield return p.Anim.Move(hops, speed);
+                    } else yield return Tween.Move(p.transform, dest, D(.45f), .35f);
                     board.Add(p, target.x, target.y, speed >= 50);
                     if (speed < 50) board.Relayout(target.x, target.y, false);
                     board.SetLegal(null);
@@ -267,8 +267,13 @@ namespace InfiniteConquest.Playtest {
                     m.AddLog($"{a.Card.name} {(e.@event == "OPPORTUNITY_ATTACK" ? "opportunity-attacks" : "attacks")} {(t != null ? t.Card.name : "")}");
                     sfx.Play(a.Card.id, "attack", Chest(a));
                     var aim = t != null ? Chest(t) : (e.hasTo ? HexPoint(e.To) : a.transform.position);
-                    anim.StartCoroutine(Tween.Lunge(a.transform, aim, D(.4f)));
-                    yield return vfx.Bolt(Chest(a), aim, PlaytestCatalog.FactionAccent(a.Card.faction), speed);
+                    // Melee when the attacker's range is 1 (or it strikes its own/adjacent hex); otherwise a bolt.
+                    bool melee = a.Card.type == "CHARACTER" && CardFaces.Get(a.Card.id).range <= 1;
+                    if (a.Anim != null) {
+                        yield return a.Anim.Windup(aim, speed);
+                        yield return a.Anim.Strike(aim, melee, speed);
+                    } else anim.StartCoroutine(Tween.Lunge(a.transform, aim, D(.4f)));
+                    if (!melee || a.Anim == null) yield return vfx.Bolt(Chest(a), aim, PlaytestCatalog.FactionAccent(a.Card.faction), speed);
                     yield return Wait(.2f);
                     board.SetLegal(null);
                     break;
@@ -279,7 +284,8 @@ namespace InfiniteConquest.Playtest {
                     t.Damage += e.amount;
                     sfx.Play(t.Card.id, "hit", Chest(t));
                     vfx.FloatText(Chest(t) + Vector3.up * .3f, "-" + e.amount, new Color(1f, .35f, .3f), speed);
-                    yield return Tween.Shake(t.transform, D(.25f), .05f);
+                    if (t.Anim != null) yield return t.Anim.Hit(e.amount, speed);
+                    else yield return Tween.Shake(t.transform, D(.25f), .05f);
                     break;
                 }
                 case "CAPITAL_HIT": {
@@ -293,7 +299,8 @@ namespace InfiniteConquest.Playtest {
                         sfx.Play(cap.Card.id, "hit", Chest(cap));
                         vfx.FloatText(Chest(cap) + Vector3.up * .5f, "-" + e.amount, new Color(1f, .5f, .2f), speed);
                         vfx.Burst(Chest(cap), new Color(1f, .5f, .2f), 50, 2f, .08f, .7f);
-                        yield return Tween.Shake(cap.transform, D(.45f), .08f);
+                        if (cap.Anim != null) yield return cap.Anim.Hit(Mathf.Max(3, e.amount), speed);
+                        else yield return Tween.Shake(cap.transform, D(.45f), .08f);
                     }
                     break;
                 }
@@ -304,9 +311,12 @@ namespace InfiniteConquest.Playtest {
                     if (p == null) break;
                     m.AddLog($"{p.Card.name} destroyed");
                     sfx.Play(p.Card.id, "destroy", Chest(p));
-                    vfx.Burst(Chest(p), PlaytestCatalog.FactionColor(p.Card.faction), 80, 2.6f, .1f, .9f);
-                    var s = p.transform.localScale;
-                    yield return Tween.Scale(p.transform, s, s * .05f, D(.4f));
+                    if (p.Anim != null) yield return p.Anim.Death(speed);
+                    else {
+                        vfx.Burst(Chest(p), PlaytestCatalog.FactionColor(p.Card.faction), 80, 2.6f, .1f, .9f);
+                        var s = p.transform.localScale;
+                        yield return Tween.Scale(p.transform, s, s * .05f, D(.4f));
+                    }
                     Despawn(p);
                     break;
                 }
@@ -328,7 +338,10 @@ namespace InfiniteConquest.Playtest {
                     Banner($"GAME OVER — {Faction(pl)} wins", 999);
                     m.AddLog(e.detail); sfx.PlayUi(mode == Mode.Live && pl != humanSeat ? "defeat" : "victory");
                     var loser = CapitalOf(1 - pl);
-                    if (loser != null) vfx.Burst(Chest(loser), new Color(1f, .6f, .2f), 150, 3.5f, .14f, 1.4f);
+                    if (loser != null) {
+                        vfx.Burst(Chest(loser), new Color(1f, .6f, .2f), 150, 3.5f, .14f, 1.4f);
+                        if (loser.Anim != null) yield return loser.Anim.Death(speed);
+                    }
                     yield return Wait(.5f);
                     break;
                 default:
@@ -705,10 +718,10 @@ namespace InfiniteConquest.Playtest {
             int faces = cards.Count(c => CardFaces.Get(c.id).cost > 0 || CardFaces.Get(c.id).rulesText.Length > 0 || CardFaces.Art(c.id) != null);
             int arts = cards.Count(c => CardFaces.Art(c.id) != null);
             Check(CardFaces.Count >= 139 && arts >= 100, $"AI-105: card faces staged ({faces}/{cards.Length} with data, {arts} with art)");
-            int real = 0, stand = 0, failed = 0; var realIds = new List<string>();
+            int real = 0, stand = 0, failed = 0, rigged = 0; var realIds = new List<string>();
             foreach (var c in cards) {
                 if (c.type == "SPELL") { stand++; continue; }
-                try { var go = factory.Create(c, 0, out bool r); if (r) { real++; realIds.Add(c.id); } else stand++; Destroy(go); } catch (Exception ex) { failed++; Debug.LogError(c.id + ": " + ex); }
+                try { var go = factory.Create(c, 0, out bool r); if (r) { real++; realIds.Add(c.id); } else stand++; if (go.GetComponent<Piece>().Anim?.ClipCount > 0) rigged++; Destroy(go); } catch (Exception ex) { failed++; Debug.LogError(c.id + ": " + ex); }
             }
             int expectReal = cards.Count(c => c.HasModel && c.type != "SPELL");
             Check(failed == 0, "every card builds a token (" + failed + " failed)");
@@ -718,6 +731,31 @@ namespace InfiniteConquest.Playtest {
                 var clip = sfx.Resolve(c.id, cue, out bool sp); if (clip == null) pass = false; if (sp) specific++;
             }
             Check(true, "every card resolves deploy/move/attack/hit/destroy SFX (" + specific + " card-specific, rest generic)");
+            // AI-060b: one piece of each type plays its whole animation set (summon, move, attack, hit, death).
+            int animErrors = 0, animTypes = 0; string animErr = null;
+            Application.LogCallback onAnimLog = (msg, st, type) => { if (type == LogType.Exception || type == LogType.Error) { animErrors++; animErr = animErr ?? msg; } };
+            Application.logMessageReceived += onAnimLog;
+            foreach (var type in new[] { "CHARACTER", "STRUCTURE", "CAPITAL", "LAND" }) {
+                var c = cards.FirstOrDefault(x => x.type == type && x.HasModel) ?? cards.FirstOrDefault(x => x.type == type);
+                if (c == null) continue;
+                var go = factory.Create(c, 0, out _);
+                go.transform.position = GalleryOrigin;
+                var ua = go.GetComponent<Piece>().Anim;
+                if (ua == null) { animErrors++; animErr = animErr ?? c.id + ": no UnitAnimator"; Destroy(go); continue; }
+                yield return null;
+                var aim = GalleryOrigin + Vector3.forward * 2;
+                yield return ua.Summon(4);
+                yield return ua.Move(new List<Vector3> { GalleryOrigin + Vector3.right * 1.3f, GalleryOrigin }, 4);
+                yield return ua.Windup(aim, 4);
+                yield return ua.Strike(aim, type == "CHARACTER", 4);
+                yield return ua.Hit(3, 4);
+                yield return ua.Death(4);
+                animTypes++;
+                Destroy(go);
+            }
+            yield return null;
+            Application.logMessageReceived -= onAnimLog;
+            Check(animErrors == 0 && animTypes == 4, $"AI-060b: summon/move/attack/hit/death play for {animTypes}/4 piece types{(animErr != null ? ": " + animErr : "")}; {rigged} models carry skeletal clips");
             int errors = 0; string firstError = null;
             Application.LogCallback onLog = (msg, st, type) => { if (type == LogType.Exception || type == LogType.Error) { errors++; firstError = firstError ?? msg; } };
             Application.logMessageReceived += onLog;
@@ -737,7 +775,7 @@ namespace InfiniteConquest.Playtest {
             var outPath = Arg("-playtestResult");
             if (outPath != null) {
                 var json = "{\"passed\":" + pass.ToString().ToLowerInvariant() + ",\"cards\":" + cards.Length + ",\"realModels\":" + real + ",\"standIns\":" + stand +
-                           ",\"events\":" + events.Count + ",\"applied\":" + cursor + ",\"winner\":" + model.Winner + ",\"cardSpecificSfxCues\":" + specific +
+                           ",\"events\":" + events.Count + ",\"applied\":" + cursor + ",\"winner\":" + model.Winner + ",\"cardSpecificSfxCues\":" + specific + ",\"riggedModels\":" + rigged +
                            ",\"realModelIds\":[" + string.Join(",", realIds.Select(s => "\"" + s + "\"")) + "],\"checks\":[" + string.Join(",", checks.Select(s => "\"" + s + "\"")) + "]}";
                 File.WriteAllText(outPath, json);
             }

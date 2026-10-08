@@ -51,6 +51,8 @@ namespace InfiniteConquest.Playtest {
             var b = Bounds(root);
             col.center = root.transform.InverseTransformPoint(b.center); col.height = Mathf.Max(.2f, b.size.y); col.radius = Mathf.Max(.2f, Mathf.Min(b.size.x, b.size.z) * .4f);
             piece.Height = b.size.y;
+            // Last, so it can move every visual part onto its animation pivot.
+            piece.Anim = root.AddComponent<UnitAnimator>();
             return root;
         }
 
@@ -209,6 +211,7 @@ namespace InfiniteConquest.Playtest {
         public float Height;
         public GameObject Plate, OwnerRing;
         public int Damage;
+        public UnitAnimator Anim;
     }
 
     public sealed class Billboard : MonoBehaviour {
