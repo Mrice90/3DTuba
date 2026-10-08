@@ -26,9 +26,11 @@ All below read directly from the read-only 2D reference (`~/workspace/Desolate-T
 | `zeus_storm_relay_pylon` | STRUCTURE | 2 | DAMAGE_ENEMY_CAPITAL 1 |
 | `poseidon_palace_of_tides_approach` | LAND | 1 | HEAL_SELF 2 |
 | `poseidon_sonar_beacon` | STRUCTURE | 2 | DRAW_CHARACTER 1 |
-| `zeus_ion_storm_lattice` | STRUCTURE | 2 | DRAW_CARD 2 |
+| `zeus_ion_storm_lattice` | STRUCTURE | 3 | DRAW_CARD 2 |
 
 Note: 2 of the 7 are **lands** — directly in scope of Mathew's "land abilities under structures" ruling.
+
+**Correction (2026-10-08 ~17:35):** an earlier version of this table listed Ion Storm Lattice at gpCost 2 — wrong (that is the card's *play* cost). The ACTIVATED ability gpCost is **3** per `faction-cards.json`; S4 was already correct. **Flagged:** verify against the exact 3D runtime card version — the 3D configuration's card population already differs from this reference (48 vs 61 Characters), so per-card values must be checked at runtime, not assumed from the 2D data.
 
 **Activation reference implementation** (`game-core/src/main/java/com/infiniteconquest/core/GameEngine.java:29-49`):
 - `:31-33` — owner + battlefield-zone check → reject "Ability source must be your battlefield card."
