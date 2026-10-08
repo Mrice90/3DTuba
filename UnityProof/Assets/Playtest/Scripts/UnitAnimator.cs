@@ -467,7 +467,7 @@ namespace InfiniteConquest.Playtest {
 
         void SpawnDebris(Vector3 at, float h, int count) {
             if (Factory == null) return;
-            var rng = new System.Random(GetInstanceID());
+            var rng = new System.Random(((piece != null && piece.InstanceId != null ? piece.InstanceId : name).GetHashCode()) ^ count);
             var mats = new[] { Factory.Lit(Dark, .3f, .5f), Factory.Lit(Color.Lerp(Main, new Color(.6f, .62f, .68f), .55f), .5f, .6f), Factory.Glow(Accent) };
             for (int i = 0; i < count; i++) {
                 float a = (float)rng.NextDouble() * Mathf.PI * 2, r = .05f + (float)rng.NextDouble() * .15f, sz = .04f + (float)rng.NextDouble() * .07f;
