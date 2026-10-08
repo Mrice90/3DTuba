@@ -79,6 +79,12 @@ jobs:
       - name: AI-079 rules bridge protocol (JSONL stdin/stdout, validate)
         working-directory: releases/alpha-0.7.15-playable
         run: ./tools/rules-bridge/run.sh
+      # Rules audit (3DTuba rules overlay): seeded bot matches under the alpha
+      # and ic3d rules; legal list and engine must agree both ways, board
+      # invariants must hold.
+      - name: Rules audit (alpha + ic3d)
+        working-directory: releases/alpha-0.7.15-playable
+        run: ./tools/rules-bridge/audit/run.sh infinite-conquest-alpha-0.7.15.jar 20 3
       # AI-074: 5-seed x 3-mode balance check (portable run-balance.sh).
       # Logs every run including red ones via the summary.tsv artifact.
       - name: AI-074 balance check (5 seeds x 3 modes)

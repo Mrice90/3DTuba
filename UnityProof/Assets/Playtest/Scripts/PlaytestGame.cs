@@ -39,6 +39,9 @@ namespace InfiniteConquest.Playtest {
         BridgeClient bridge; bool waiting; string liveStatus = ""; int humanSeat = 0;
         BridgeState liveState; BridgeAction[] liveActions = new BridgeAction[0];
         string liveSelected; readonly Queue<WireEvent> liveQueue = new Queue<WireEvent>();
+        // Latest bridge view of every board card (damage, summon slots), keyed by instance id.
+        readonly Dictionary<string, BridgeStackCard> liveCards = new Dictionary<string, BridgeStackCard>();
+        readonly HashSet<string> liveCovered = new HashSet<string>();
 
         // gallery
         GameObject galleryRoot; string galleryFilter = "all";
@@ -347,7 +350,7 @@ namespace InfiniteConquest.Playtest {
             try {
                 bridge = BridgeClient.Spawn(cmd, cwd, transcriptPath);
                 humanSeat = seat;
-                bridge.New(seed, humanSeat, difficulty); waiting = true; liveStatus = "Starting the rules engine…";
+                bridge.New(seed, humanSeat, difficulty, Arg("-rules") ?? "ic3d"); waiting = true; liveStatus = "Starting the rules engine…";
                 StartCoroutine(LiveLoop());
             } catch (Exception ex) {
                 liveStatus = "Bridge failed to start: " + ex.Message + " — falling back to playback.";
@@ -358,11 +361,17 @@ namespace InfiniteConquest.Playtest {
             while (mode == Mode.Live && bridge != null) {
                 if (bridge.TryReceive(out var r)) {
                     waiting = false;
-                    if (!r.ok) { liveStatus = "Bridge: " + (r.error ?? "error"); sfx.PlayUi("error"); }
+                    if (!r.ok) {
+                        liveStatus = "Bridge: " + (r.error ?? "error"); sfx.PlayUi("error");
+                        // A rejected action carries no legal list; ask again so the turn never stalls.
+                        if (liveState != null && !liveState.GameOver && liveState.active_player == humanSeat) { bridge.Legal(); waiting = true; }
+                    }
                     if (r.events != null) foreach (var e in r.events) liveQueue.Enqueue(e);
                     while (liveQueue.Count > 0) yield return Apply(liveQueue.Dequeue());
-                    if (r.state != null) { liveState = r.state; SyncState(r.state); }
-                    if (r.legal != null) { liveActions = r.legal; liveStatus = liveActions.Length + " legal actions — pick a card or piece."; }
+                    // JsonUtility fills missing objects/arrays with empty defaults, so an error reply has a
+                    // non-null but empty state and legal list: only an ok reply may replace them.
+                    if (r.ok && r.state != null && !string.IsNullOrEmpty(r.state.phase)) { liveState = r.state; SyncState(r.state); }
+                    if (r.ok && r.legal != null) { liveActions = r.legal; liveStatus = liveActions.Length + " legal actions — pick a card or piece."; }
                     else if (r.ok && liveState != null && !liveState.GameOver && liveState.active_player == humanSeat) { bridge.Legal(); waiting = true; }
                     else if (r.ok && liveState != null && !liveState.GameOver) { liveStatus = "Opponent (bot) is playing…"; }
                 }
@@ -379,31 +388,101 @@ namespace InfiniteConquest.Playtest {
             model.Turn = s.turn; model.Active = s.active_player; model.Phase = s.phase; if (s.GameOver) model.Winner = s.winner;
             if (s.board == null) return;
             var seen = new HashSet<string>();
+            liveCards.Clear(); liveCovered.Clear();
             foreach (var hex in s.board) {
                 if (hex.stack == null) continue;
-                foreach (var c in hex.stack) {
-                    seen.Add(c.instance_id);
+                for (int i = 0; i < hex.stack.Length; i++) {
+                    var c = hex.stack[i];
+                    seen.Add(c.instance_id); liveCards[c.instance_id] = c;
+                    if (i < hex.stack.Length - 1) liveCovered.Add(c.instance_id);
                     var p = PieceOf(c.instance_id);
-                    if (p == null) Spawn(c.instance_id, c.card_id, c.owner, hex.x, hex.y, false);
+                    if (p == null) p = Spawn(c.instance_id, c.card_id, c.owner, hex.x, hex.y, false);
                     else if (p.X != hex.x || p.Y != hex.y) board.Add(p, hex.x, hex.y, true);
+                    if (p != null) p.Damage = c.damage;
                 }
             }
             foreach (var p in pieces.Values.ToList()) if (p != null && !seen.Contains(p.InstanceId)) Despawn(p);
         }
-        static WireHex TargetOf(BridgeAction a) => a.to ?? a.target ?? a.at ?? a.destination;
+        // The hex an action is aimed at, by type. JsonUtility never leaves a WireHex field null (a missing
+        // one becomes (0,0)), so "a.to ?? a.target ?? a.at" always returned `to`: spell targets and
+        // ability sources all landed on hex (0,0), which is why spells and abilities couldn't be aimed.
+        public static WireHex TargetOf(BridgeAction a) {
+            switch (a.type) {
+                case "cast": return a.target;
+                case "activate": return a.at;
+                case "end_turn": return null;
+                default: return a.to;
+            }
+        }
+        static bool IsTeleport(BridgeAction a) => a.type == "cast" && a.command != null && a.command.Split(' ').Length == 6;
         IEnumerable<BridgeAction> ActionsFor(string instanceId) => liveActions.Where(a => a.instance_id == instanceId && TargetOf(a) != null);
         void SelectLive(string instanceId) {
             liveSelected = instanceId;
             var acts = ActionsFor(instanceId).ToList();
-            board.SetLegal(acts.Where(a => !IsAttack(a)).Select(a => TargetOf(a)).Select(h => new Vector2Int(h.x, h.y)),
-                           acts.Where(IsAttack).Select(a => TargetOf(a)).Select(h => new Vector2Int(h.x, h.y)));
+            pendingTeleport = null;
+            // Red markers for attacks and hostile spells; friendly spell targets glow like moves.
+            board.SetLegal(acts.Where(a => !IsAttack(a) && !(IsCast(a) && IsHostile(a))).Select(a => TargetOf(a)).Select(h => new Vector2Int(h.x, h.y)),
+                           acts.Where(a => IsAttack(a) || (IsCast(a) && IsHostile(a))).Select(a => TargetOf(a)).Select(h => new Vector2Int(h.x, h.y)));
+            liveStatus = SelectionHint(instanceId, acts);
             sfx.PlayUi("click");
+        }
+        static bool IsCast(BridgeAction a) => a.type == "cast";
+        static bool IsActivate(BridgeAction a) => a.type == "activate";
+        bool IsHostile(BridgeAction a) => !string.IsNullOrEmpty(a.target_instance_id) && liveCards.TryGetValue(a.target_instance_id, out var t) && t.owner != humanSeat;
+        string NameOf(string cardId) => string.IsNullOrEmpty(cardId) ? "" : CardFaces.Get(cardId)?.name ?? cardId;
+        // Teleport spells take two clicks: the Character, then an empty destination hex.
+        List<BridgeAction> pendingTeleport;
+        string SelectionHint(string instanceId, List<BridgeAction> acts) {
+            var first = acts.FirstOrDefault();
+            if (first == null) return "";
+            string name = NameOf(first.card_id);
+            if (acts.All(IsActivate)) return name + ": click it again, or use its button under Abilities, to activate.";
+            if (acts.Any(IsCast)) {
+                int covered = acts.Count(a => a.covered);
+                return name + ": click a marked hex to cast" + (covered > 0 ? $" ({covered} covered Structure/Capital target{(covered == 1 ? "" : "s")} included)" : "") + ". Esc cancels.";
+            }
+            if (first.type == "play" && CardFaces.Get(first.card_id)?.type == "CHARACTER" && liveState?.rules == "ic3d")
+                return name + $" needs {SlotCost(first.card_id)} summon slot{(SlotCost(first.card_id) == 1 ? "" : "s")}: click a glowing hex on or next to your Structure or Capital.";
+            return name + ": click a glowing hex (red = attack). Esc cancels.";
+        }
+        // Mirrors SummonSlots.cost in the rules overlay: bigger (costlier) Characters take more slots.
+        static int SlotCost(string cardId) { var f = CardFaces.Get(cardId); int c = f != null ? f.cost : 0; return c <= 3 ? 1 : c <= 6 ? 2 : 3; }
+        // Picks the action for a click on hex h: the one aimed at the clicked card when several share the hex.
+        BridgeAction PickTarget(Vector2Int h, Piece hp) {
+            if (pendingTeleport != null) return pendingTeleport.FirstOrDefault(a => a.destination.x == h.x && a.destination.y == h.y);
+            var acts = ActionsFor(liveSelected).Where(a => TargetOf(a).x == h.x && TargetOf(a).y == h.y).ToList();
+            if (acts.Count == 0) return null;
+            if (acts.All(IsTeleport)) {
+                pendingTeleport = acts;
+                board.SetLegal(acts.Select(a => new Vector2Int(a.destination.x, a.destination.y)));
+                liveStatus = NameOf(acts[0].card_id) + ": now click an empty hex to send it to.";
+                sfx.PlayUi("click");
+                return null;
+            }
+            if (hp != null) {
+                var aimed = acts.FirstOrDefault(a => a.target_instance_id == hp.InstanceId || IsActivate(a) && a.instance_id == hp.InstanceId);
+                if (aimed != null) return aimed;
+            }
+            return acts.FirstOrDefault(IsAttack) ?? acts.FirstOrDefault(a => !a.covered) ?? acts.First();
+        }
+        // Why a click with something selected did nothing.
+        string WhyNot(Vector2Int h) {
+            var acts = ActionsFor(liveSelected).ToList();
+            var first = acts.FirstOrDefault();
+            string name = first != null ? NameOf(first.card_id) : "That";
+            var stack = board.StackAt(h.x, h.y).Where(p => p != null).ToList();
+            if (first != null && IsCast(first) && stack.Count > 1 && liveState?.rules != "ic3d"
+                && stack.Take(stack.Count - 1).Any(p => p.Owner != humanSeat && (p.Card.type == "STRUCTURE" || p.Card.type == "CAPITAL")))
+                return "That Structure is covered by " + stack.Last().Card.name + ": under alpha rules spells hit only the top card.";
+            if (first != null && first.type == "play" && CardFaces.Get(first.card_id)?.type == "CHARACTER" && liveState?.rules == "ic3d")
+                return name + $" can't be summoned there: it needs {SlotCost(first.card_id)} free summon slot(s) on or next to that hex. Hover your Structures to see their slots.";
+            return name + " has no legal target there. Pick a glowing hex, or press Esc to cancel.";
         }
         static bool IsAttack(BridgeAction a) => a.type != null && a.type.Equals("attack", StringComparison.OrdinalIgnoreCase);
         void ActLive(BridgeAction a) {
             if (a == null || bridge == null || waiting) return;
             bridge.Act(a.id); waiting = true; liveStatus = "Resolving " + (a.card_name ?? a.type) + "…";
-            liveActions = new BridgeAction[0]; liveSelected = null; board.SetLegal(null);
+            liveActions = new BridgeAction[0]; liveSelected = null; pendingTeleport = null; board.SetLegal(null);
         }
 
         // ------------------------------------------------------------------ gallery (HA-009 review)
@@ -483,11 +562,20 @@ namespace InfiniteConquest.Playtest {
             var mp = mouse.position.ReadValue();
             CameraRig.PointerOverHud = OverHud(mp);
             var hover = new Vector2Int(-1, -1); Piece hp = null;
-            if (!CameraRig.PointerOverHud && Physics.Raycast(cam.ScreenPointToRay(mp), out var hit, 200)) {
-                hp = hit.collider.GetComponentInParent<Piece>();
-                var cell = hit.collider.GetComponent<ProofCell>();
-                if (hp != null && hp.X >= 0) hover = new Vector2Int(hp.X, hp.Y);
-                else if (cell != null) hover = new Vector2Int(cell.X, cell.Y);
+            if (!CameraRig.PointerOverHud) {
+                // Nearest hit first; with something selected, the first hit on a legal hex wins, so a tall
+                // model standing in front of the target can't swallow the click.
+                bool chosen = false;
+                foreach (var hit in Physics.RaycastAll(cam.ScreenPointToRay(mp), 200).OrderBy(x => x.distance)) {
+                    var piece = hit.collider.GetComponentInParent<Piece>();
+                    var cell = hit.collider.GetComponent<ProofCell>();
+                    Vector2Int at;
+                    if (piece != null && piece.X >= 0) at = new Vector2Int(piece.X, piece.Y);
+                    else if (cell != null) at = new Vector2Int(cell.X, cell.Y);
+                    else continue;
+                    if (!chosen) { hover = at; hp = piece; chosen = true; if (liveSelected == null || mode != Mode.Live) break; }
+                    if (mode == Mode.Live && liveSelected != null && board.IsLegal(at)) { hover = at; hp = piece; break; }
+                }
             }
             if (hover != board.Hover) { board.Hover = hover; board.Refresh(); }
             hoverInfo = HoverText(hover, hp);
@@ -497,18 +585,27 @@ namespace InfiniteConquest.Playtest {
         string HoverText(Vector2Int h, Piece hp) {
             if (!BoardView.InBounds(h.x, h.y)) return "";
             var lines = new List<string> { $"Hex ({h.x},{h.y})" };
-            foreach (var p in board.StackAt(h.x, h.y))
-                lines.Add($"{(p == hp ? "> " : "  ")}{p.Card.name} — {p.Card.type}, {Faction(p.Owner)}{(p.Damage > 0 ? $", dmg {p.Damage}" : "")} [{(p.IsRealModel ? "Meshy model" : "stand-in")}]");
+            foreach (var p in board.StackAt(h.x, h.y)) {
+                string extra = "";
+                if (mode == Mode.Live && liveCards.TryGetValue(p.InstanceId, out var lc)) {
+                    if (lc.slots > 0) extra += $", slots {lc.slots - lc.slots_used}/{lc.slots} free";
+                    if (liveCovered.Contains(p.InstanceId)) extra += ", covered";
+                }
+                lines.Add($"{(p == hp ? "> " : "  ")}{p.Card.name} — {p.Card.type}, {Faction(p.Owner)}{(p.Damage > 0 ? $", dmg {p.Damage}" : "")}{extra} [{(p.IsRealModel ? "Meshy model" : "stand-in")}]");
+            }
             return string.Join("\n", lines);
         }
         void Click(Vector2Int h, Piece hp) {
             if (mode == Mode.Live) {
                 if (BoardView.InBounds(h.x, h.y) && liveSelected != null && board.IsLegal(h)) {
-                    var acts = ActionsFor(liveSelected).Where(a => TargetOf(a).x == h.x && TargetOf(a).y == h.y).ToList();
-                    ActLive(acts.FirstOrDefault(IsAttack) ?? acts.FirstOrDefault());
-                    return;
+                    bool choosingDestination = pendingTeleport != null;
+                    var pick = PickTarget(h, hp);
+                    if (pick != null) { ActLive(pick); return; }
+                    if (pendingTeleport != null && !choosingDestination) return; // first teleport click: now pick a destination
                 }
-                if (hp != null && hp.Owner == humanSeat && ActionsFor(hp.InstanceId).Any()) { SelectPiece(hp); SelectLive(hp.InstanceId); return; }
+                if (hp != null && hp.Owner == humanSeat && hp.InstanceId != liveSelected && ActionsFor(hp.InstanceId).Any()) { SelectPiece(hp); SelectLive(hp.InstanceId); return; }
+                // Keep the selection on a miss and say why, instead of silently dropping it.
+                if (liveSelected != null && BoardView.InBounds(h.x, h.y)) { liveStatus = WhyNot(h); sfx.PlayUi("error"); return; }
                 ClearSelection(); return;
             }
             // Playback: select a piece to preview its neighbourhood (hex distance 1) as legal-target markers.
@@ -523,13 +620,13 @@ namespace InfiniteConquest.Playtest {
             } else ClearSelection();
         }
         void SelectPiece(Piece p) { selectedPiece = p; board.Selected = new Vector2Int(p.X, p.Y); board.Refresh(); }
-        void ClearSelection() { selectedPiece = null; liveSelected = null; board.Selected = new Vector2Int(-1, -1); board.SetLegal(null); }
+        void ClearSelection() { selectedPiece = null; liveSelected = null; pendingTeleport = null; board.Selected = new Vector2Int(-1, -1); board.SetLegal(null); }
 
         // ------------------------------------------------------------------ HUD
         Rect topBar, leftPanel, rightPanel, bottomBar, logPanel;
         bool OverHud(Vector2 mp) {
             var g = new Vector2(mp.x, Screen.height - mp.y);
-            return topBar.Contains(g) || leftPanel.Contains(g) || rightPanel.Contains(g) || bottomBar.Contains(g) || handRect.Contains(g) || viewRect.Contains(g) || logPanel.Contains(g);
+            return topBar.Contains(g) || leftPanel.Contains(g) || rightPanel.Contains(g) || bottomBar.Contains(g) || handRect.Contains(g) || viewRect.Contains(g) || logPanel.Contains(g) || abilityRect.Contains(g);
         }
         void Styles() {
             if (titleStyle != null) return;
@@ -552,7 +649,7 @@ namespace InfiniteConquest.Playtest {
             string modeText = mode == Mode.Playback ? $"Demo match  ·  event {cursor}/{events.Count}" : mode == Mode.Live ? $"You are {Faction(humanSeat)} vs the {Faction(1 - humanSeat)} bot" : "Card collection — hover a model to read its card";
             GUI.Label(new Rect(440, 12, W - 900, 26), modeText, labelStyle);
             GUI.Label(new Rect(14, 40, W - 28, 20), mode == Mode.Live
-                ? "Click a bright card, then a glowing hex · click your unit, then a glowing hex (move) or red marker (attack) · hover anything to read it · right-drag orbit · wheel zoom · WASD pan · Esc menu"
+                ? "Click a bright card, then a glowing hex · click your unit, then a glowing hex (move) or red marker (attack/spell) · Abilities panel fires Structure abilities · right-drag orbit · wheel zoom · Esc cancel/menu"
                 : "Hover to read a card · right-drag / Q E orbit · wheel zoom · middle-drag / WASD pan · Space pause · N step · Home reset view · Esc menu", smallStyle);
             GUI.Label(new Rect(W - 450, 12, 440, 26), $"Turn <b>{model.Turn}</b> · Active <b>{Faction(model.Active)}</b> · Phase <b>{model.Phase}</b>", labelStyle);
 
@@ -597,6 +694,7 @@ namespace InfiniteConquest.Playtest {
                 var tail = model.Log.Skip(Mathf.Max(0, model.Log.Count - 10));
                 GUI.Label(new Rect(logPanel.x + 8, logPanel.y + 4, logPanel.width - 16, logPanel.height - 8), string.Join("\n", tail), smallStyle);
                 DrawHand(W, H);
+                DrawAbilities(W);
                 if (!string.IsNullOrEmpty(hoverInfo)) {
                     int n = hoverInfo.Split('\n').Length;
                     float w = mode == Mode.Live ? 255 : 460, lh = mode == Mode.Live ? 34 : 22;
@@ -670,6 +768,32 @@ namespace InfiniteConquest.Playtest {
                     else { sfx.PlayUi("error"); liveStatus = CardFaces.Get(card.card_id).name + " can't be played right now."; }
                     Event.current.Use();
                 }
+            }
+        }
+        // Activated abilities the human can fire right now (Structures, Lands, Capitals), as buttons under the log.
+        Rect abilityRect; GUIStyle abilityButtonStyle;
+        void DrawAbilities(float W) {
+            abilityRect = Rect.zero;
+            if (mode != Mode.Live) return;
+            var acts = liveActions.Where(IsActivate).ToList();
+            if (acts.Count == 0) return;
+            float rowH = 40, top = logPanel.yMax + 8;
+            abilityRect = new Rect(W - 380, top, 370, 28 + acts.Count * (rowH + 4));
+            GUI.Box(abilityRect, "", panelStyle);
+            GUI.Label(new Rect(abilityRect.x + 8, top + 4, 354, 22), "<b>Abilities</b>  <size=11>(once per turn each)</size>", labelStyle);
+            var mp = Event.current.mousePosition;
+            for (int i = 0; i < acts.Count; i++) {
+                var a = acts[i];
+                var face = CardFaces.Get(a.card_id);
+                string text = face?.rulesText ?? "";
+                int k = text.IndexOf("Activate", StringComparison.OrdinalIgnoreCase);
+                if (k >= 0) text = text.Substring(k);
+                var r = new Rect(abilityRect.x + 8, top + 28 + i * (rowH + 4), 354, rowH);
+                if (r.Contains(mp)) hoverCardId = a.card_id;
+                GUI.enabled = !waiting;
+                if (GUI.Button(r, $"<b>{NameOf(a.card_id)}</b> ({a.at.x},{a.at.y}){(a.covered ? " · covered" : "")}\n<size=11>{text}</size>",
+                               abilityButtonStyle ??= new GUIStyle(buttonStyle) { richText = true, alignment = TextAnchor.MiddleLeft, fontSize = 13 })) ActLive(a);
+                GUI.enabled = true;
             }
         }
         void DrawCardView(float W, float H) {

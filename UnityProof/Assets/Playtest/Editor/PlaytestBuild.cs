@@ -161,6 +161,12 @@ public static class PlaytestBuild {
         Check(transcript.Length == 6 && transcript.Count(s => s.Contains("\"direction\":\"request\"")) == 3
               && transcript.Count(s => s.Contains("\"direction\":\"response\"")) == 3,
               "bridge transcript records exact request/response lines without changing protocol streams");
+        // Spell and ability aim: JsonUtility turns a missing "to" into (0,0), so targets must come from
+        // "target" (cast) and "at" (activate), never from "to".
+        var aim = JsonUtility.FromJson<BridgeResponse>("{\"ok\":true,\"legal\":[{\"id\":\"a\",\"type\":\"cast\",\"command\":\"cast 3 2 4\",\"instance_id\":\"s\",\"target\":{\"x\":2,\"y\":4},\"target_instance_id\":\"t\"},{\"id\":\"b\",\"type\":\"activate\",\"instance_id\":\"p\",\"at\":{\"x\":3,\"y\":1},\"covered\":true}]}");
+        Check(PlaytestGame.TargetOf(aim.legal[0]).x == 2 && PlaytestGame.TargetOf(aim.legal[0]).y == 4
+              && PlaytestGame.TargetOf(aim.legal[1]).x == 3 && PlaytestGame.TargetOf(aim.legal[1]).y == 1 && aim.legal[1].covered,
+              "spell targets and ability sources aim at their own hex, not (0,0)");
     }
 }
 

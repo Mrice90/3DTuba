@@ -97,9 +97,13 @@ namespace IC.Net.Tests
         {
             var classes = Path.Combine(Path.GetTempPath(), "icnet-bridge-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(classes);
-            var src = Path.Combine(_repoRoot, "releases", "alpha-0.7.15-playable",
-                "tools", "rules-bridge", "RulesBridge.java");
-            var javac = await RunProcessAsync("javac", $"-encoding UTF-8 -nowarn -cp \"{jar}\" -d \"{classes}\" \"{src}\"");
+            var bridgeDir = Path.Combine(_repoRoot, "releases", "alpha-0.7.15-playable",
+                "tools", "rules-bridge");
+            // RulesBridge.java plus the 3DTuba rules overlay classes, which shadow the jar's copies.
+            var sources = Directory.GetFiles(Path.Combine(bridgeDir, "overlay", "src"), "*.java", SearchOption.AllDirectories)
+                .Append(Path.Combine(bridgeDir, "RulesBridge.java"))
+                .Select(f => "\"" + f + "\"");
+            var javac = await RunProcessAsync("javac", $"-encoding UTF-8 -nowarn -cp \"{jar}\" -d \"{classes}\" {string.Join(" ", sources)}");
             if (javac != 0) throw new InvalidOperationException("javac failed for RulesBridge.java");
             return classes + Path.PathSeparator + jar;
         }

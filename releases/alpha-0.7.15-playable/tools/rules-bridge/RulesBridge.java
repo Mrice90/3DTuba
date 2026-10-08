@@ -16,6 +16,8 @@ import com.infiniteconquest.core.DeckBuild;
 import com.infiniteconquest.core.GameEngine;
 import com.infiniteconquest.core.GameEvent;
 import com.infiniteconquest.core.GameState;
+import com.infiniteconquest.core.HouseRules;
+import com.infiniteconquest.core.SummonSlots;
 import com.infiniteconquest.core.Phase;
 
 import java.io.BufferedReader;
@@ -161,6 +163,12 @@ public final class RulesBridge {
             return error(reqId, -1, "BAD_REQUEST",
                     "factions must be ZEUS or POSEIDON");
         }
+        String rules = String.valueOf(req.getOrDefault("rules", "alpha"))
+                .toLowerCase();
+        if (!rules.equals("alpha") && !rules.equals("ic3d")) {
+            return error(reqId, -1, "BAD_REQUEST",
+                    "rules must be alpha or ic3d");
+        }
         BotDifficulty botDifficulty;
         try {
             botDifficulty = BotDifficulty.valueOf(difficulty);
@@ -168,6 +176,10 @@ public final class RulesBridge {
             return error(reqId, -1, "BAD_REQUEST",
                     "difficulty must be MORTAL, HERO or DEMIGOD");
         }
+        // 3DTuba rules overlay: "ic3d" turns on summon slots and covered
+        // Structures (HouseRules); "alpha" (default) plays the pinned rules.
+        boolean ic3d = rules.equals("ic3d");
+        HouseRules.set(ic3d, ic3d);
         session = new Session(seed, humanPlayer, humanFaction, botFaction,
                 botDifficulty);
         List<Map<String, Object>> events = new ArrayList<>();
@@ -453,6 +465,9 @@ public final class RulesBridge {
             adapter.snapshotDamage();
             String result = commands.execute(command);
             adapter.drainInto(events);
+            if (!result.startsWith("OK:")) {
+                return result;
+            }
             if (!command.equals("end") && !isGameOver()
                     && state.activePlayer() == p && p == humanPlayer) {
                 adapter.snapshotDamage();
@@ -543,10 +558,13 @@ public final class RulesBridge {
                         BoardPosition at = new BoardPosition(
                                 Integer.parseInt(parts[1]),
                                 Integer.parseInt(parts[2]));
-                        UUID sourceId = state.board().topAt(at).orElseThrow();
+                        UUID sourceId = parts.length == 4
+                                ? UUID.fromString(parts[3])
+                                : state.board().topAt(at).orElseThrow();
                         CardInstance source =
                                 state.card(sourceId).orElseThrow();
                         action.put("type", "activate");
+                        action.put("covered", parts.length == 4);
                         action.put("at", hex(at.x(), at.y()));
                         action.put("instance_id", sourceId.toString());
                         action.put("card_id", source.definition().id());
@@ -560,8 +578,13 @@ public final class RulesBridge {
                         BoardPosition target = new BoardPosition(
                                 Integer.parseInt(parts[2]),
                                 Integer.parseInt(parts[3]));
-                        UUID targetId =
-                                state.board().topAt(target).orElseThrow();
+                        // "cast h x y <id>" names a covered Structure or
+                        // Capital (HouseRules.coveredStructures).
+                        UUID targetId = parts.length == 5
+                                ? UUID.fromString(parts[4])
+                                : state.board().topAt(target).orElseThrow();
+                        CardInstance targetCard =
+                                state.card(targetId).orElseThrow();
                         action.put("type", "cast");
                         action.put("hand_index", handIndex);
                         action.put("card_id", card.definition().id());
@@ -570,6 +593,9 @@ public final class RulesBridge {
                         action.put("target", hex(target.x(), target.y()));
                         action.put("target_instance_id",
                                 targetId.toString());
+                        action.put("target_card_id",
+                                targetCard.definition().id());
+                        action.put("covered", parts.length == 5);
                         if (parts.length == 6) {
                             action.put("destination",
                                     hex(Integer.parseInt(parts[4]),
@@ -604,6 +630,7 @@ public final class RulesBridge {
                     ? state.winner().getAsInt() : null);
             snap.put("you", humanPlayer);
             snap.put("revision", revision);
+            snap.put("rules", HouseRules.summonSlots() ? "ic3d" : "alpha");
             List<Map<String, Object>> players = new ArrayList<>();
             for (int p = 0; p < 2; p++) {
                 Map<String, Object> pl = new LinkedHashMap<>();
@@ -648,6 +675,13 @@ public final class RulesBridge {
                     c.put("card_id", card.definition().id());
                     c.put("instance_id", id.toString());
                     c.put("owner", card.owner());
+                    c.put("damage", card.damage());
+                    if (HouseRules.summonSlots()
+                            && SummonSlots.capacity(card.definition()) > 0) {
+                        c.put("slots", SummonSlots.capacity(
+                                card.definition()));
+                        c.put("slots_used", SummonSlots.used(state, id));
+                    }
                     cards.add(c);
                 }
                 Map<String, Object> cell = new LinkedHashMap<>();
@@ -706,6 +740,13 @@ public final class RulesBridge {
                 board.add(cell);
             }
             root.put("board", board);
+            if (HouseRules.summonSlots()) {
+                // Lockstep: the summon-slot ledger is game state too.
+                Map<String, Object> anchors = new TreeMap<>();
+                state.summonAnchors().forEach((character, anchor) ->
+                        anchors.put(character.toString(), anchor.toString()));
+                root.put("summon_anchors", anchors);
+            }
             return RulesBridge.canonicalJson(root);
         }
 

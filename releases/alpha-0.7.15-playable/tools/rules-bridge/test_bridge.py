@@ -44,9 +44,13 @@ print(f"test_bridge: using {JAR}")
 
 CLASSES = SCRIPT_DIR / "classes"
 CLASSES.mkdir(exist_ok=True)
+# RulesBridge.java plus the 3DTuba rules overlay (overlay/src), whose classes
+# shadow the jar's copies on the classpath. With rules "alpha" (the default)
+# the overlay plays exactly like the pinned engine.
+OVERLAY = sorted(str(p) for p in (SCRIPT_DIR / "overlay" / "src").rglob("*.java"))
 cp = subprocess.run(
     ["javac", "-encoding", "UTF-8", "-nowarn", "-cp", str(JAR),
-     "-d", str(CLASSES), str(SCRIPT_DIR / "RulesBridge.java")],
+     "-d", str(CLASSES), *OVERLAY, str(SCRIPT_DIR / "RulesBridge.java")],
     capture_output=True, text=True)
 if cp.returncode != 0:
     print("test_bridge: javac failed", file=sys.stderr)

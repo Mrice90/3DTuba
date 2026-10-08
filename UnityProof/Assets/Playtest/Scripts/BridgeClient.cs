@@ -11,16 +11,17 @@ namespace InfiniteConquest.Playtest {
     // headless Java process against the pinned alpha jar, speaking line-delimited JSON over
     // stdin/stdout. Requests use id/op and responses carry legal/state/events.
     [Serializable] public sealed class BridgeAction {
-        public string id, type, command, instance_id, card_id, card_name;
+        public string id, type, command, instance_id, card_id, card_name, target_instance_id, target_card_id;
         public WireHex to, from, at, target, destination;
+        public bool covered; // targets or fires a card under the top of its stack (rules "ic3d")
     }
     [Serializable] public sealed class BridgeHandCard { public string instance_id, card_id; }
     [Serializable] public sealed class BridgePlayer { public int gp, hand_count, deck_count, discard_count, seat; public string faction, controller; public BridgeHandCard[] hand; }
-    [Serializable] public sealed class BridgeStackCard { public string instance_id, card_id; public int owner; }
+    [Serializable] public sealed class BridgeStackCard { public string instance_id, card_id; public int owner, damage, slots, slots_used; }
     [Serializable] public sealed class BridgeHex { public int x, y; public BridgeStackCard[] stack; }
     [Serializable] public sealed class BridgeState {
         public int turn, active_player, winner;
-        public string phase;
+        public string phase, rules;
         public BridgePlayer[] players;
         public BridgeHex[] board;
         public bool GameOver => phase == "GAME_OVER";
@@ -77,9 +78,11 @@ namespace InfiniteConquest.Playtest {
 
         public void Send(string json) { WriteTranscript("request", json); input.WriteLine(json); input.Flush(); }
         string NextId() => "unity-" + Interlocked.Increment(ref requestId);
-        public void New(int seed, int humanSeat, string difficulty = "HERO") => Send("{\"id\":\"" + NextId() + "\",\"op\":\"new\",\"seed\":" + seed
+        // rules: "ic3d" = summon slots + covered Structures (3DTuba rules overlay); "alpha" = pinned alpha rules.
+        public void New(int seed, int humanSeat, string difficulty = "HERO", string rules = "ic3d") => Send("{\"id\":\"" + NextId() + "\",\"op\":\"new\",\"seed\":" + seed
             + ",\"human_player\":" + humanSeat + ",\"human_faction\":\"" + (humanSeat == 0 ? "ZEUS" : "POSEIDON")
-            + "\",\"bot_faction\":\"" + (humanSeat == 0 ? "POSEIDON" : "ZEUS") + "\",\"difficulty\":\"" + difficulty + "\"}");
+            + "\",\"bot_faction\":\"" + (humanSeat == 0 ? "POSEIDON" : "ZEUS") + "\",\"difficulty\":\"" + difficulty
+            + "\",\"rules\":\"" + (rules == "alpha" ? "alpha" : "ic3d") + "\"}");
         public void Legal() => Send("{\"id\":\"" + NextId() + "\",\"op\":\"legal\"}");
         public void Act(string actionId) => Send("{\"id\":\"" + NextId() + "\",\"op\":\"act\",\"action_id\":\"" + actionId.Replace("\"", "") + "\"}");
 

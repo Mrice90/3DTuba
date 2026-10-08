@@ -3,7 +3,7 @@
 A small Java program against the pinned alpha JAR that runs a HEX match
 and talks **line-delimited JSON over stdin/stdout**. The Claude Unity
 thread spawns this process from UnityProof to make the board playable.
-**The protocol below is stable** — v1.1.0. Breaking changes get a
+**The protocol below is stable** — v1.2.0. Breaking changes get a
 minor-version bump and a changelog entry here.
 
 - Board: 4×6 HEX, odd-row offset (`MatchRules.hex()` / `BoardGeometry.HEX`).
@@ -32,6 +32,8 @@ revision.
 - `human_player`: `0` or `1` — which seat the human controls.
 - `human_faction` / `bot_faction`: `"ZEUS"` or `"POSEIDON"`.
 - `difficulty`: `"MORTAL"`, `"HERO"` or `"DEMIGOD"`.
+- `rules` (optional): `"alpha"` (default, the pinned rules) or `"ic3d"`
+  (summon slots + covered Structures, see `overlay/README.md`).
 
 Reply: `{"id":"r1","ok":true,"revision":0,"events":[...],"state":{...},
 "legal":[...]}`. If the opening player is a bot, its turns run
@@ -171,6 +173,10 @@ Action fields (common: `id`, `type`, `command` — the raw engine command):
 ## Files
 
 - `RulesBridge.java` — the bridge (stdlib + Jackson from the alpha JAR).
+- `overlay/` — 3DTuba rules overlay (engine classes compiled with the
+  bridge; `rules:"ic3d"` turns its changes on). `build_classes.py` builds
+  the classes for a playtest `Bridge/` folder.
+- `audit/` — rules audit (`audit/run.sh <jar>`).
 - `test_bridge.py` — protocol tests: determinism, valid act,
   stale/fabricated rejection, no mutation on rejection, bot auto-play,
   scripted GAME_OVER, AI-062 validation of every event, redaction,
@@ -181,6 +187,15 @@ Action fields (common: `id`, `type`, `command` — the raw engine command):
 - `run.sh` / `run.bat` — CI entry points.
 
 ## Changelog
+
+- v1.2.0 (2026-10-08): additive. `new` takes `rules` (`alpha` default,
+  `ic3d`). Actions: `cast` carries `target_card_id`; `cast`/`activate`
+  carry `covered` (true when aimed at, or fired from, a card under the top
+  of its stack; the command then ends in that card's instance id). State:
+  `rules`, and per stack card `damage`, plus `slots`/`slots_used` on
+  Structures and Capitals under `ic3d`. `hash` includes the summon-slot
+  ledger under `ic3d` only, so `alpha` hashes are unchanged. A rejected
+  human action no longer lets the bot react before the error returns.
 
 - v1.1.0 (AI-097, 2026-10-02): additive `hash` op — canonical SHA-256 of
   the full unredacted state for the relay lockstep hash exchange;
