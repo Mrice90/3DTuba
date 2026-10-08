@@ -38,7 +38,7 @@ public static class PlaytestBuild {
             var p = AssetDatabase.GUIDToAssetPath(guid);
             var imp = AssetImporter.GetAtPath(p);
             if (imp is TextureImporter ti && ti.maxTextureSize != 1024) { ti.maxTextureSize = 1024; ti.SaveAndReimport(); }
-            else if (imp is ModelImporter mi && mi.materialImportMode != ModelImporterMaterialImportMode.None) { mi.materialImportMode = ModelImporterMaterialImportMode.None; mi.importAnimation = false; mi.SaveAndReimport(); }
+            else if (imp is ModelImporter mi && mi.materialImportMode != ModelImporterMaterialImportMode.None) { mi.materialImportMode = ModelImporterMaterialImportMode.None; mi.importAnimation = true; mi.SaveAndReimport(); }
         }
         int mats = 0;
         if (Directory.Exists(TokensDir)) foreach (var dir in Directory.GetDirectories(TokensDir)) {
@@ -164,8 +164,9 @@ public static class PlaytestBuild {
     }
 }
 
-// Keeps staged tokens light: 1024px textures, no FBX material/animation import (materials are built from
-// Token_*.png by TokenPreview.BuildMaterial and assigned at runtime).
+// Keeps staged tokens light: 1024px textures, no FBX material import (materials are built from
+// Token_*.png by TokenPreview.BuildMaterial and assigned at runtime). Animation is imported (AI-060b): rigged
+// tokens carry Meshy clips that UnitAnimator plays by name; idle/walk/run clips loop. Static tokens have none.
 public sealed class PlaytestTokenImport : AssetPostprocessor {
     static bool IsToken(string path) => path.Replace('\\', '/').StartsWith("Assets/Playtest/Resources/Tokens/");
     void OnPreprocessTexture() {
@@ -177,6 +178,18 @@ public sealed class PlaytestTokenImport : AssetPostprocessor {
         if (!IsToken(assetPath)) return;
         var m = (ModelImporter)assetImporter;
         m.materialImportMode = ModelImporterMaterialImportMode.None;
-        m.importAnimation = false; m.importCameras = false; m.importLights = false;
+        m.importAnimation = true; m.importCameras = false; m.importLights = false;
+        m.animationType = ModelImporterAnimationType.Generic;
+    }
+    void OnPreprocessAnimation() {
+        if (!IsToken(assetPath)) return;
+        var m = (ModelImporter)assetImporter;
+        var clips = m.defaultClipAnimations;
+        if (clips == null || clips.Length == 0) return;
+        foreach (var c in clips) {
+            var n = c.name.ToLowerInvariant();
+            c.loopTime = n.Contains("idle") || n.Contains("walk") || n.Contains("run") || n.Contains("breath");
+        }
+        m.clipAnimations = clips;
     }
 }
