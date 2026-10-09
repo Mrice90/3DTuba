@@ -54,6 +54,9 @@ jobs:
       - name: Jar entry diff tool (AI-100 rework)
         working-directory: releases/alpha-0.7.15-playable/tools
         run: python -m unittest test_diff_jar_entries
+      - name: Jar entry manifest / provenance compare (AI-080-BUILD-PROVENANCE)
+        working-directory: releases/alpha-0.7.15-playable/tools
+        run: python -m unittest test_jar_entry_manifest
       - name: Client integration example
         working-directory: prototypes/lobby-lab
         run: node examples/client-demo.js
