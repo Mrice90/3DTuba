@@ -1,3 +1,0 @@
-# Build working area — fetched source, staging, and locally built jars stay out of git.
-build/
-*.jar
