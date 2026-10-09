@@ -36,7 +36,7 @@ namespace InfiniteConquest.Playtest {
         GUIStyle titleStyle, labelStyle, smallStyle, bannerStyle, panelStyle, buttonStyle;
 
         // live
-        BridgeClient bridge; bool waiting; string liveStatus = ""; int humanSeat = 0;
+        BridgeClient bridge; bool waiting; string liveStatus = ""; int humanSeat = 0; bool faceOwnCapital;
         BridgeState liveState; BridgeAction[] liveActions = new BridgeAction[0];
         string liveSelected; readonly Queue<WireEvent> liveQueue = new Queue<WireEvent>();
 
@@ -346,7 +346,7 @@ namespace InfiniteConquest.Playtest {
             ClearMatch(); mode = Mode.Live; FitViewport(); liveState = null; liveActions = new BridgeAction[0]; liveQueue.Clear();
             try {
                 bridge = BridgeClient.Spawn(cmd, cwd, transcriptPath);
-                humanSeat = seat;
+                humanSeat = seat; faceOwnCapital = true;
                 bridge.New(seed, humanSeat, difficulty); waiting = true; liveStatus = "Starting the rules engine…";
                 StartCoroutine(LiveLoop());
             } catch (Exception ex) {
@@ -389,6 +389,14 @@ namespace InfiniteConquest.Playtest {
                 }
             }
             foreach (var p in pieces.Values.ToList()) if (p != null && !seen.Contains(p.InstanceId)) Despawn(p);
+            FaceOwnCapital();
+        }
+        // Once the human's capital is on the board, put the camera behind it (Home returns here too).
+        void FaceOwnCapital() {
+            if (!faceOwnCapital) return;
+            var cap = CapitalOf(humanSeat); if (cap == null) return;
+            faceOwnCapital = false;
+            rig.FaceFrom(cap.transform.position, Vector3.zero, false);
         }
         static WireHex TargetOf(BridgeAction a) => a.to ?? a.target ?? a.at ?? a.destination;
         IEnumerable<BridgeAction> ActionsFor(string instanceId) => liveActions.Where(a => a.instance_id == instanceId && TargetOf(a) != null);
@@ -552,7 +560,7 @@ namespace InfiniteConquest.Playtest {
             string modeText = mode == Mode.Playback ? $"Demo match  ·  event {cursor}/{events.Count}" : mode == Mode.Live ? $"You are {Faction(humanSeat)} vs the {Faction(1 - humanSeat)} bot" : "Card collection — hover a model to read its card";
             GUI.Label(new Rect(440, 12, W - 900, 26), modeText, labelStyle);
             GUI.Label(new Rect(14, 40, W - 28, 20), mode == Mode.Live
-                ? "Click a bright card, then a glowing hex · click your unit, then a glowing hex (move) or red marker (attack) · hover anything to read it · right-drag orbit · wheel zoom · WASD pan · Esc menu"
+                ? "Click a bright card, then a glowing hex · click your unit, then a glowing hex (move) or red marker (attack) · hover anything to read it · right-drag rotate / tilt · ↑↓ tilt · wheel zoom · WASD pan · Esc menu"
                 : "Hover to read a card · right-drag / Q E orbit · wheel zoom · middle-drag / WASD pan · Space pause · N step · Home reset view · Esc menu", smallStyle);
             GUI.Label(new Rect(W - 450, 12, 440, 26), $"Turn <b>{model.Turn}</b> · Active <b>{Faction(model.Active)}</b> · Phase <b>{model.Phase}</b>", labelStyle);
 
