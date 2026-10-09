@@ -171,6 +171,11 @@ report["bones"]=len(arm_data.bones); report["tris"]=sum(len(p.vertices)-2 for p 
 report["unweighted_fixed"]=REPORT_UNW; report["max_influences"]=max(len(v.groups) for v in mesh.data.vertices)
 json.dump(report,open(f"{outdir}/{name}_rig_report.json","w"),indent=1)
 bpy.ops.wm.save_as_mainfile(filepath=f"{outdir}/{name}_rigged.blend")
+# Unity only makes Texture2D assets from embedded images whose names carry an extension
+for img in bpy.data.images:
+    ext={'JPEG':'.jpg','PNG':'.png'}.get(img.file_format,'.png')
+    base=bpy.path.clean_name(img.name.rsplit('.',1)[0] if img.name.lower().endswith(('.jpg','.png')) else img.name)
+    img.name=base+ext; img.filepath_raw="//"+base+ext
 bpy.ops.export_scene.fbx(filepath=f"{outdir}/{name}_rigged.fbx", object_types={'ARMATURE','MESH'},
     use_selection=False, apply_unit_scale=True, apply_scale_options='FBX_SCALE_ALL', axis_forward='-Z', axis_up='Y',
     add_leaf_bones=False, primary_bone_axis='Y', secondary_bone_axis='X',

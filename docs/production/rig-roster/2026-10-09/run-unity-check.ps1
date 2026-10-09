@@ -10,7 +10,8 @@ if (-not (Test-Path (Join-Path $proj "Assets"))) {
 }
 New-Item -ItemType Directory -Force (Join-Path $proj "Assets\RigCheck"), (Join-Path $proj "Assets\Editor") | Out-Null
 Copy-Item (Join-Path $here "unity-check-kit\Assets\Editor\RigCheck.cs") (Join-Path $proj "Assets\Editor\") -Force
-Copy-Item (Join-Path $here "..\rig-pilot-2026-10-09\zeus_keraunos_prime_rigged.fbx") (Join-Path $proj "Assets\RigCheck\") -Force
+# The Keraunos pilot is re-exported here with fixed texture names; fall back to the pilot folder copy
+if (-not (Test-Path (Join-Path $here "zeus_keraunos_prime_rigged.fbx"))) { Copy-Item (Join-Path $here "..\rig-pilot-2026-10-09\zeus_keraunos_prime_rigged.fbx") (Join-Path $proj "Assets\RigCheck\") -Force }
 Get-ChildItem $here -Filter "*_rigged.fbx" | Copy-Item -Destination (Join-Path $proj "Assets\RigCheck\") -Force
 & $unity -batchmode -projectPath $proj -executeMethod RigCheck.Run -logFile (Join-Path $here "unity-check.log") -quit | Out-Null
 Select-String -Path (Join-Path $here "unity-check.log") -Pattern "RIGCHECK" | ForEach-Object { $_.Line }

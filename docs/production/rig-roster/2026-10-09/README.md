@@ -22,7 +22,7 @@ Lowest-point ranges are measured on the re-imported FBX, across every frame. The
 3. Skinning: a voxel-remeshed proxy (0.008 × height, largest connected piece only) gets Blender bone-heat weights, solved at 10× scale; the weights are then transferred to the real mesh, limited to 4 influences and normalized. Every vertex is weighted.
 4. Retarget: the Keraunos Prime Meshy clips (`Idle_02`, `Walking`) are copied by **joint direction**, not by local rotation, because the Keraunos bind pose has raised arms while these meshes are in A-pose. The hips' travel is scaled by the hip-height ratio.
 5. Grounding: hips are offset so the lowest point of each cycle sits at Z = 0, as in the pilot.
-6. Export: FBX for Unity (Y-up, -Z forward, no leaf bones, baked from NLA strips, textures embedded), and GLB. The .blend working files (27 MB each, textures packed) are not shipped because they exceed the transfer limit; `rig.py` rebuilds them exactly. `sheet.py` re-imports the FBX and renders the check sheets and GIFs.
+6. Export: every embedded image is renamed with a .jpg/.png extension first (without it Unity imports the textures as plain files and the materials come out white). FBX for Unity (Y-up, -Z forward, no leaf bones, baked from NLA strips, textures embedded), and GLB. The .blend working files (27 MB each, textures packed) are not shipped because they exceed the transfer limit; `rig.py` rebuilds them exactly. `sheet.py` re-imports the FBX and renders the check sheets and GIFs.
 
 ## Known limits (for art review)
 
@@ -32,6 +32,17 @@ Lowest-point ranges are measured on the re-imported FBX, across every frame. The
 - Walk is in place, and both feet clear the base for a few frames at mid-stride (max 0.084 m).
 
 ## Unity check
+
+Run 2026-10-09 on Unity 6000.6.3f1 in the throwaway project: **PASS** on geometry and clips, no import warnings. Every clip imports at 24 fps with isLooping on and a loop-seam vertex delta of 0.0000. Lowest skinned point per frame (m):
+
+| Model | Bones | Idle | Walk |
+|---|---|---|---|
+| Iris Signal Runner | 22 | 0.0002 to 0.0027 | 0.0000 to 0.0671 |
+| Keraunos Prime (pilot) | 86 | 0.0002 to 0.0024 | 0.0010 to 0.0729 |
+| Sparkstep Runner | 22 | 0.0006 to 0.0050 | 0.0000 to 0.0848 |
+
+That first run rendered all three untextured: the FBX embedded images had no file extension, so Unity made no textures (the pilot FBX had the same defect). All three FBX files were re-exported with `.jpg`/`.png` names; `zeus_keraunos_prime_rigged.fbx` here is the fixed pilot export (`scripts/reexport_pilot.py`, from the pilot .blend). Re-check pending.
+
 
 `run-unity-check.ps1` creates a throwaway project in `unity-check\` and imports these two rigs plus the Keraunos pilot FBX as Generic with looping clips. It samples every frame, flags sinking below -0.01 m or floating above 0.02 m, measures the loop seam, and renders front and side frames to `unity-check-renders\`. The report goes to `unity-check-report.json`. It does not touch UnityProof.
 
@@ -43,17 +54,18 @@ Lowest-point ranges are measured on the re-imported FBX, across every frame. The
 | zeus_iris_signal_runner_joints.json | 2487 | 4f9c7f66225275283a2bc1f71f5c99e895e9fe36dcbf82dddae73f03af30daaa |
 | zeus_iris_signal_runner_joints_front.png | 193550 | b016bd3566730737d12b353b3b5f660387ad4e461f7bde18cc7b7628cb78ded0 |
 | zeus_iris_signal_runner_rig_report.json | 419 | 156774d29e5017858fd3e4593e140d6a0e2fc4a04dfd8bd3489bedb7eddb80dc |
-| zeus_iris_signal_runner_rigged.fbx | 13293804 | 141ec9a6776f67d4b96a6b2fb6054d566b69c65b476a9070f0329fb7f031ca6b |
-| zeus_iris_signal_runner_rigged.glb | 15214872 | d3e2309e4d9b3eb2ed29903322aca1cf79536838f86b1777cff33713fc34f31b |
+| zeus_iris_signal_runner_rigged.fbx | 13293868 | 2232a2910194a5ffc83c383c69ebd0cab93078958592e1bbded60811cf5ee44c |
+| zeus_iris_signal_runner_rigged.glb | 15214884 | 6d2a83c3225fe88947853b24c18f554fee2e396d20dfe840a4c3f51466680bab |
 | zeus_iris_signal_runner_sheet.png | 1048556 | 9cc220001a72b211ea7e44cf696930fe39350ab971dba2c5a0e379a4299b81cc |
 | zeus_iris_signal_runner_walk.gif | 226523 | cb7d8580eb41458e8b3688dc960dcc1c6bc3e8a5deff901b8c54e699e6775e3e |
+| zeus_keraunos_prime_rigged.fbx | 13276732 | 161100c2c863bfa823cd699db7e4b9d7e58b3b91070cba94ac79d7395984e62c |
 | zeus_keyword_sparkstep_runner_fbx_verify.json | 349 | b22f6f02de07f8f8106dc2b930564df9fd0e8fdec051c92cb99122eb21b6e4fc |
 | zeus_keyword_sparkstep_runner_idle.gif | 226588 | af4cb738c43d6f105b9ae001aa65af4e930832ca2b448a9b7f95fcfa77c3e5ec |
 | zeus_keyword_sparkstep_runner_joints.json | 2501 | 7563cf7eba09e86603117d182ca9d97d52b1cb26095193cdc6e12bc44a8717ab |
 | zeus_keyword_sparkstep_runner_joints_front.png | 183117 | ac59ea05ef92bca15cf4d3ca266b9d041fbf389ad22bcd3ece166f7502a3dd70 |
 | zeus_keyword_sparkstep_runner_rig_report.json | 421 | ce8da703d8ec1f8bf4e76bb203093ba9da7e8decf7718cd7494d2d5ff4992799 |
-| zeus_keyword_sparkstep_runner_rigged.fbx | 12258668 | 380a9909b6bf40d09179f6b1aca811112dd4009ef5b7f11110eb6fea40870403 |
-| zeus_keyword_sparkstep_runner_rigged.glb | 13974836 | f292bf5ae39601469b023f14885b2ba02f33858b47f44ea1e361ac2057b95ed6 |
+| zeus_keyword_sparkstep_runner_rigged.fbx | 12258732 | 2f9fabc93f3a9d077bc2fe4fb8ec25bf2702bcdfed1e46ba677ed0b25f27a1cc |
+| zeus_keyword_sparkstep_runner_rigged.glb | 13974848 | 09a12d0fd42fa654c5ef21916bcc6ca0cd56686155ff6d55fd9152f463a83b23 |
 | zeus_keyword_sparkstep_runner_sheet.png | 983328 | a45820bc1f1fff7b5e1e2c49686690a0c79144534d67b4e24fcda99f41118284 |
 | zeus_keyword_sparkstep_runner_walk.gif | 208419 | 8148fab602e7f74a1163639fbeecd800735a804369afcb3da395e3bfb173e57e |
 
