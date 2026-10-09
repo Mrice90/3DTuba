@@ -12,15 +12,15 @@
     "within_budget": true,
     "glb": {
       "bytes": 251888,
-      "sha256": "c210d38d63c89802d9cb88f9b687d0626e0301a494201413f682d4b3426f43d0"
+      "sha256": "cd3eb6c193116ed4e7c03034cb5c7ab13cc5522d366f246e257ed1eeae578ca7"
     },
     "fbx": {
-      "bytes": 150300,
-      "sha256": "d635a183d5b7ffc48fd3edbe5e139c95983ec1f0cc04a2ebd4c7fabf8e49da71"
+      "bytes": 150252,
+      "sha256": "3fcf2d03b487c08643608a96e01701b1e636cec2ef740a78d682f263ce4a82ab"
     },
     "blend": {
-      "bytes": 167814,
-      "sha256": "f2ad550736c7a88f869e1f5d0bf409b10692a8370b350ff6efc49261d52b7bf8"
+      "bytes": 166702,
+      "sha256": "7aecbb76d56858dddb3f7bb67374393054dbc87da9f71a32967131e6eb19c0b4"
     }
   },
   "zeus_keraunos_charging_spire": {
@@ -36,15 +36,15 @@
     "within_budget": true,
     "glb": {
       "bytes": 317036,
-      "sha256": "2e3937b87315b89a1b50e7e348d901039b979678802a33f9cd971a592c55fa71"
+      "sha256": "c920c8f6eb65e6c88cf4172b5e4f9326f1365b2164545865a2c4cb626833f231"
     },
     "fbx": {
-      "bytes": 155948,
-      "sha256": "d28bcaf5c644099841f751266b5dcd3eb5ba0dd4584a16642ee739fdff3eb607"
+      "bytes": 155964,
+      "sha256": "3ccb98aebecd5852421f953c29d1449223457dd4909498c9e147560a1e2e0679"
     },
     "blend": {
-      "bytes": 175746,
-      "sha256": "0eb2e234be328122d042222b180849dd7f203a0f902a45630a14b354bf137e9e"
+      "bytes": 176600,
+      "sha256": "2902752ab9df33e73e93f60c209fed48deb24b9b59c8e7b1e3a79eba424039c2"
     }
   },
   "poseidon_tidal_pump_station": {
@@ -60,15 +60,759 @@
     "within_budget": true,
     "glb": {
       "bytes": 328072,
-      "sha256": "4b09404ecc513b8002fb953e7ec4838d2aaa6a566344df0c7e72dfc0f5a75612"
+      "sha256": "5307ff0ac89a659c2f68e8b866fa6a19160b61a71ded0934a2ea162cc1a0d55b"
     },
     "fbx": {
-      "bytes": 156780,
-      "sha256": "56a2fecbe7fa913b00e68ddbb07b6af87fd5facfdaaab6d48986971af0b39f6d"
+      "bytes": 156732,
+      "sha256": "19f3f339cc96fbd26fa4d66eca0963b8dcbbdcb83c3c17347f6076f8f7d9ecf2"
     },
     "blend": {
-      "bytes": 172822,
-      "sha256": "20a2e87ff1281155cbabcca74525ea001441328b5b50bac956cc6afe2316be61"
+      "bytes": 172977,
+      "sha256": "54aae9c9a520cb759d34c907f7d6b13ea60ae726ee5613cf78527c8bdb7ddd82"
+    }
+  },
+  "zeus_ability_oracle_spire": {
+    "tris": 7918,
+    "verts": 4245,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.57,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Oracle Spire",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 346696,
+      "sha256": "05cb8e8321a2219b53d3427e02f81389a7bb836b14cc8f7a4c9cec89cc5f89e3"
+    },
+    "fbx": {
+      "bytes": 170716,
+      "sha256": "7d156c14c446d54b03edc0e06f0a997e9b014ef4c05c56a44aa2eff2de24ce7d"
+    },
+    "blend": {
+      "bytes": 183263,
+      "sha256": "0b659f42251a6e9598073b48935c52f4890baf610adfc9f6c103dcc31f3d1b5b"
+    }
+  },
+  "zeus_apex_worldstorm_spire": {
+    "tris": 7792,
+    "verts": 4206,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.6,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Worldstorm Spire",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 349908,
+      "sha256": "905979f58435445b74aeb527536139801b58e9e5ed91d98697cfc0a0368abf1e"
+    },
+    "fbx": {
+      "bytes": 172156,
+      "sha256": "cd62a433817c03e1df3c680f3bad1d45229828f08ddc0a2dcc183ff8b2ae53c0"
+    },
+    "blend": {
+      "bytes": 179702,
+      "sha256": "dcc980be759e9fd4be05bc5b6cfded238e3aaa7e6c5bc5e6cfb9b4d310a1205d"
+    }
+  },
+  "zeus_cloudwall_bastion": {
+    "tris": 6882,
+    "verts": 3809,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.53,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Cloudwall Bastion",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 322360,
+      "sha256": "6ed0cf4ca3f088c67caca97c495e9417f184104b47910c3b6284e80c313759e1"
+    },
+    "fbx": {
+      "bytes": 137260,
+      "sha256": "8c3d13dc79680ed6bfdcddcbdca2454e7dfd2f322ddbaa86a85662d10ddfcedd"
+    },
+    "blend": {
+      "bytes": 165989,
+      "sha256": "7a140aeacdcf1103897a950c0afdca9d495a2985b8d8dd9b2239e4cfa3dfd290"
+    }
+  },
+  "zeus_ion_storm_lattice": {
+    "tris": 6286,
+    "verts": 3511,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.555,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Ion Storm Lattice",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 319872,
+      "sha256": "4395915613d4d4fa278a9c524a71ace58f604f1d81b0cafeb01d5cf1c6ec1c70"
+    },
+    "fbx": {
+      "bytes": 132732,
+      "sha256": "983c64320ac29a87dbc871906547823e3abe088718dfc6e21dcf14a94aedba04"
+    },
+    "blend": {
+      "bytes": 165323,
+      "sha256": "4892c5c005af25057c4b8bd47065ebea82bcc9e0dd7fad2be4fab5e7eb05f1a3"
+    }
+  },
+  "zeus_structure_aegis_conductor": {
+    "tris": 8954,
+    "verts": 4713,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.46,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Aegis Conductor",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 357912,
+      "sha256": "6cc9617ab8f55f940a11250159cd75266c980547d10f59121df8a4ea0c1e2c5f"
+    },
+    "fbx": {
+      "bytes": 189788,
+      "sha256": "5b84e96f2d42054cbdf1368cc9360475d0853972b8956411062e1fd720864e2a"
+    },
+    "blend": {
+      "bytes": 189779,
+      "sha256": "7ae55954d3e94f7058dbfbfc3c53fded40bae8963ffb17de46174d2b88850e10"
+    }
+  },
+  "zeus_structure_cloud_archive": {
+    "tris": 9714,
+    "verts": 5181,
+    "size_x": 1.57,
+    "size_y": 1.68,
+    "height": 1.58,
+    "max_radius": 0.84,
+    "min_z": 0.0,
+    "title": "Cloud Archive",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 412520,
+      "sha256": "9f000b015b0353020872ae459ace7154a7268b7433bd09fc03684e5727561a3c"
+    },
+    "fbx": {
+      "bytes": 197196,
+      "sha256": "7b98d669213054e1ac8f3553fa78ea8c87ee4e2df6f8167ec7a1905ba169f649"
+    },
+    "blend": {
+      "bytes": 200067,
+      "sha256": "6818021ac388ac82a3eebf2be8d0c3c250c77c241ef854f9ca626bbf4d11b3be"
+    }
+  },
+  "zeus_structure_oracle_of_storms": {
+    "tris": 8392,
+    "verts": 4460,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.5556,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Oracle of Storms",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 338608,
+      "sha256": "719d13603efd87ee97cd81f52df5b713741a63fbefd2e88cb1b088bd35ced1ac"
+    },
+    "fbx": {
+      "bytes": 183068,
+      "sha256": "5400616124ef8023bae50817bd9581704c83e7aa28dcce8e07048cec0083c0b6"
+    },
+    "blend": {
+      "bytes": 188517,
+      "sha256": "91e966e60a4817e2773a4a35d036d7181e720dcec30c5171df455370d19e9506"
+    }
+  },
+  "zeus_structure_stormglass_relay": {
+    "tris": 8642,
+    "verts": 4535,
+    "size_x": 1.57,
+    "size_y": 1.68,
+    "height": 1.58,
+    "max_radius": 0.84,
+    "min_z": 0.0,
+    "title": "Stormglass Relay",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 368972,
+      "sha256": "fc84c1733e20e99fc8cd9dc7e666441ac9e256b8a81018295d748a5f20ca69a0"
+    },
+    "fbx": {
+      "bytes": 188876,
+      "sha256": "2fe012b7464662ebe6c5d8984e4a7b82a517582b4fcf8932bedc5fc2d3ebee25"
+    },
+    "blend": {
+      "bytes": 181689,
+      "sha256": "e7931e2b6e2b11f4ffe255480414a44e968d2ee500a47f3d2b8d93e27afc7def"
+    }
+  },
+  "zeus_tutor_structure_1": {
+    "tris": 9450,
+    "verts": 5005,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.59,
+    "max_radius": 0.8659,
+    "min_z": 0.0,
+    "title": "Sparkstep Beacon",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 408460,
+      "sha256": "8622a73d34e17b0d58ef202bca077dbd61120466334cd8dc5bb100f3c3a5461b"
+    },
+    "fbx": {
+      "bytes": 205580,
+      "sha256": "3f4b1b9422186f4f40699f976f21c98c096f79ba8f35b6fcf3b94cfa2f5749d8"
+    },
+    "blend": {
+      "bytes": 199058,
+      "sha256": "71bd67a6990e9859c9257b2e53ee49e66053ba6ebe42120ca60fe22b2173bcb8"
+    }
+  },
+  "zeus_tutor_structure_2": {
+    "tris": 8478,
+    "verts": 4505,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.508,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Cloudline Dispatch",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 350688,
+      "sha256": "ef05790ceea0e2bb7c4fc43f1c52e28c8180e46b1462a9a0d9696d16fe88b4db"
+    },
+    "fbx": {
+      "bytes": 179372,
+      "sha256": "bcc65a62cd7fbe84997594b520e49b6bb887e1b6ac46523d926743b4aaaab84c"
+    },
+    "blend": {
+      "bytes": 186339,
+      "sha256": "cef6138b7ae6334b06040258003becbb6467ac7eff7569b224ccc2b0ce0b60c6"
+    }
+  },
+  "zeus_tutor_structure_3": {
+    "tris": 10308,
+    "verts": 5457,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.595,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Sharp-Shot Observatory",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 447400,
+      "sha256": "ebaa1793732c35debc1432a9a476b0b43e0da34e6e8030ad158a37b813493eae"
+    },
+    "fbx": {
+      "bytes": 213132,
+      "sha256": "3415be99961f0a6718bf6a031bb4a2b81207eb6966b2441254f1d09186a86747"
+    },
+    "blend": {
+      "bytes": 204608,
+      "sha256": "5e1a9a73af2941db6dbdc40824f1024d74134ed3b19de77d2b6915902e9422cb"
+    }
+  },
+  "zeus_tutor_structure_4": {
+    "tris": 10846,
+    "verts": 5915,
+    "size_x": 1.6803,
+    "size_y": 1.72,
+    "height": 1.55,
+    "max_radius": 0.9135,
+    "min_z": 0.0,
+    "title": "Seraphic Relay",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 490724,
+      "sha256": "aa4ddecfe95bb516a018a04dbce3347b07ca5c5f0754b817507a9a04bab53a21"
+    },
+    "fbx": {
+      "bytes": 242940,
+      "sha256": "b9e61bdf60e3e80cffd2442cb431cca8bdc36f61804df839740c64a5ca2f57c7"
+    },
+    "blend": {
+      "bytes": 221426,
+      "sha256": "d31645089153db5ca1eec6bcee28ed2215c16f745b3fc114dc1893bfff76325b"
+    }
+  },
+  "zeus_tutor_structure_5": {
+    "tris": 8640,
+    "verts": 4642,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.59,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Skyfather's Summons",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 354540,
+      "sha256": "2c7989868098d593805ba4c33bb6d0594be6dcee3a10156131e3c9cd21e6fc67"
+    },
+    "fbx": {
+      "bytes": 181708,
+      "sha256": "d1f28a8acaa3b135f25ea19d9cde844f62e6adbc8197325532bdc49b2a4acd75"
+    },
+    "blend": {
+      "bytes": 192862,
+      "sha256": "48596b888e661a23667896452ac4fd0f73c04a6447cc57b790948b4bb8190c73"
+    }
+  },
+  "zeus_zephyr_mooring_mast": {
+    "tris": 7750,
+    "verts": 4361,
+    "size_x": 1.509,
+    "size_y": 1.72,
+    "height": 1.59,
+    "max_radius": 0.8684,
+    "min_z": 0.0,
+    "title": "Zephyr Mooring Mast",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 333972,
+      "sha256": "0ec5cfc8f51e8f7f8430c052a23570dc9ec553c1a94b5790aa8eeaad4fcad473"
+    },
+    "fbx": {
+      "bytes": 165084,
+      "sha256": "db3f9f0269ec632d434caa9ba9f966c07ba2fa65e5ab505e046c2fec5535d43b"
+    },
+    "blend": {
+      "bytes": 181287,
+      "sha256": "ca07d9c0976ef9a661b750d216389fcb955c51a84149b2017e3aa8721697cc93"
+    }
+  },
+  "zeus_zeus_command_nexus": {
+    "tris": 9254,
+    "verts": 4963,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.44,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Zeus Command Nexus",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 413656,
+      "sha256": "7d59abcb3ce24b57b3fcfd806940cc44cf0849fc1fc88dcafdac2aae989e0211"
+    },
+    "fbx": {
+      "bytes": 199852,
+      "sha256": "2e551810a8307442bacfdb32bd4bc5d8e0f09e967a8488eae8dbf3ae530da8af"
+    },
+    "blend": {
+      "bytes": 197142,
+      "sha256": "affc51e31a6226ab2e8d75dd4d9ae15ab08f44cd0f19579404580f495ae0cf4b"
+    }
+  },
+  "poseidon_ability_tidewell": {
+    "tris": 9346,
+    "verts": 5167,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.55,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Tidewell Bastion",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 428420,
+      "sha256": "0c3293197b00f4926caae3898efb8424448e3ce6c61dbbd8540a17accfa350ad"
+    },
+    "fbx": {
+      "bytes": 190780,
+      "sha256": "4c1ff0753bf82c2556add0340654a791d743a302654d52b8cbefb73368440525"
+    },
+    "blend": {
+      "bytes": 205042,
+      "sha256": "6f21b3540ea72f0a231005c22694488c8d2f8db0b5de4acca46f115194cce1fd"
+    }
+  },
+  "poseidon_abyss_gate": {
+    "tris": 6318,
+    "verts": 3343,
+    "size_x": 1.5452,
+    "size_y": 1.72,
+    "height": 1.59,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Abyss Gate",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 286520,
+      "sha256": "9a4667a2eaffd4207c589b90a31413ba9b689fe99ced8cd164c63ea7992fda36"
+    },
+    "fbx": {
+      "bytes": 152140,
+      "sha256": "15542738d9167a980f1861c9120b93d77861eb12ad0231aa4f50810b2cdb562c"
+    },
+    "blend": {
+      "bytes": 168316,
+      "sha256": "955fee77d055207c2399ed863ffed112d0b39dbbe3f8696307443196491b6185"
+    }
+  },
+  "poseidon_apex_leviathan_gate": {
+    "tris": 9446,
+    "verts": 4949,
+    "size_x": 1.5577,
+    "size_y": 1.72,
+    "height": 1.6,
+    "max_radius": 0.8851,
+    "min_z": 0.0,
+    "title": "Leviathan Gate",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 365980,
+      "sha256": "6e69059f216450ec71046b505d604c5568d387a8cb0d2158e88bfdef376a9354"
+    },
+    "fbx": {
+      "bytes": 216988,
+      "sha256": "21667e93bf8370d1dbbb403adaf8a6711c36c04d3ca0588f9bc1ab04f47205f3"
+    },
+    "blend": {
+      "bytes": 202715,
+      "sha256": "77d1d316253e0215e0d2a933cadb30f49c026eea79f6457a160f7d623cbcaa51"
+    }
+  },
+  "poseidon_coral_bulwark": {
+    "tris": 5248,
+    "verts": 2960,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.6,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Coral Bulwark",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 257356,
+      "sha256": "3514c38700506c99efea991b090ecf394b597f26e37246d6698fc3ff04ece521"
+    },
+    "fbx": {
+      "bytes": 121996,
+      "sha256": "5013b50fb624456bde9c9295f1c08de0d05c481d10e86e9cde317abca29f089b"
+    },
+    "blend": {
+      "bytes": 158771,
+      "sha256": "dadcb6d994ea1ee09541d8e98df872d604d8e42a7864022a807dd1face28d0f7"
+    }
+  },
+  "poseidon_driftwood_breakwater": {
+    "tris": 9594,
+    "verts": 5165,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 0.7918,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Driftwood Breakwater",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 473884,
+      "sha256": "2bdd7da250a1b2220b53f3be0d41f3633e8f2d19fab76e13f73421e4417c66d3"
+    },
+    "fbx": {
+      "bytes": 231756,
+      "sha256": "bd9284f02d565dd70a8720a9dd25922c1d5f82fb0af96c12edf58e16d132c004"
+    },
+    "blend": {
+      "bytes": 218311,
+      "sha256": "64b3f7c9ed3744ab8279aeac949cf278633eed38144f2932bfdf26155278f506"
+    }
+  },
+  "poseidon_moonwell_tidegate": {
+    "tris": 7810,
+    "verts": 4197,
+    "size_x": 1.5696,
+    "size_y": 1.72,
+    "height": 1.38,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Moonwell Tidegate",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 362944,
+      "sha256": "2e89decfbae8e3ae865b339b51fbd2131a0f4d111797c1573bd744ec656248f9"
+    },
+    "fbx": {
+      "bytes": 177132,
+      "sha256": "d23080b3e56c394d3639ecf44031b48b71afd505fe0b7217d93e14b2cfa66305"
+    },
+    "blend": {
+      "bytes": 186832,
+      "sha256": "b941228743413f8fdedca287ca409905304f49a22c9b8fe38eb3b155e5359d46"
+    }
+  },
+  "poseidon_sonar_beacon": {
+    "tris": 7556,
+    "verts": 4036,
+    "size_x": 1.7008,
+    "size_y": 1.72,
+    "height": 1.56,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Sonar Beacon",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 329924,
+      "sha256": "22aa7141d176ea14330f6a3d933903da549e150f69fd2862cdef53b9869e23d5"
+    },
+    "fbx": {
+      "bytes": 166748,
+      "sha256": "b2085f120c08d032965749c28f1625b4e2a43638a14191120af16e3e37230fd9"
+    },
+    "blend": {
+      "bytes": 180282,
+      "sha256": "8c9de0cbb53715f00adcfe792fc92cc677d21f351cbd23548ce5040d171cdb26"
+    }
+  },
+  "poseidon_structure_ambrosial_spring": {
+    "tris": 8662,
+    "verts": 4596,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.53,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Ambrosial Spring",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 364008,
+      "sha256": "5ce2715b41bac98fe5cd184177787b23fa909190bacb80cf089b2c5cbcbba622"
+    },
+    "fbx": {
+      "bytes": 195980,
+      "sha256": "9430d7c0a6f4da4e33a5662d2c3b99e9ec0b2dd643e21b18204f841cd7b891e0"
+    },
+    "blend": {
+      "bytes": 194405,
+      "sha256": "7417efaba2ca485f89872fdc3b6302f87eb5f1f1e110b17771f88c1932c76afb"
+    }
+  },
+  "poseidon_structure_current_exchange": {
+    "tris": 10812,
+    "verts": 5818,
+    "size_x": 1.5069,
+    "size_y": 1.74,
+    "height": 1.585,
+    "max_radius": 0.87,
+    "min_z": 0.0,
+    "title": "Current Exchange",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 488624,
+      "sha256": "4b53d72c1bca0c9b5028f2f2f8dece288f850da4808a828a1f41979ed65e4f5b"
+    },
+    "fbx": {
+      "bytes": 220300,
+      "sha256": "4f051850bb18e09beb3570d1897a73cc0dd58a86ac71dde73263fe7844dab192"
+    },
+    "blend": {
+      "bytes": 213524,
+      "sha256": "08843cfac78fe17c37f3926aa7d7d4a396a714ee28f6abab41fc8b57a3917f70"
+    }
+  },
+  "poseidon_structure_pearl_infirmary": {
+    "tris": 8628,
+    "verts": 4608,
+    "size_x": 1.5069,
+    "size_y": 1.74,
+    "height": 1.1101,
+    "max_radius": 0.87,
+    "min_z": 0.0,
+    "title": "Pearl Infirmary",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 385408,
+      "sha256": "2d08b9337f6ee6f7997f8d7c2379261749d78bcc51e076cb73c640bac630a56d"
+    },
+    "fbx": {
+      "bytes": 183612,
+      "sha256": "f6b64e112771534e4ad9fab4acb84d842946faf3d7a2d5fdfdd6539ad9057e43"
+    },
+    "blend": {
+      "bytes": 189917,
+      "sha256": "3e07dc9cc8c472476ce8a10b4afdfc0735e55ec1d612cf686150cd09ad2293ce"
+    }
+  },
+  "poseidon_structure_tidevault": {
+    "tris": 10240,
+    "verts": 5587,
+    "size_x": 1.5069,
+    "size_y": 1.74,
+    "height": 1.315,
+    "max_radius": 0.87,
+    "min_z": 0.0,
+    "title": "Tidevault",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 450236,
+      "sha256": "a64aaa2b03166544c0ee66d2d7e1a71793764e0d5c7e018c86683b9a6a3aeca3"
+    },
+    "fbx": {
+      "bytes": 208668,
+      "sha256": "cfc5007706f8d1eb1946c2928f728aa88c4fc1a78400ca871060dfa069f1ef1c"
+    },
+    "blend": {
+      "bytes": 209652,
+      "sha256": "89c596ac8cd88c1e3f00795abf4eef2ee42277e7633d8ec2ba02613c9b235a60"
+    }
+  },
+  "poseidon_tutor_structure_1": {
+    "tris": 9976,
+    "verts": 5248,
+    "size_x": 1.5069,
+    "size_y": 1.74,
+    "height": 1.44,
+    "max_radius": 0.87,
+    "min_z": 0.0,
+    "title": "Undertow Burrow Gate",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 405896,
+      "sha256": "ae6f8ff723901a61b2eee6ff25eba0312ef3d3189935ca88a99c4bf4fc3b12a3"
+    },
+    "fbx": {
+      "bytes": 230316,
+      "sha256": "654ef2cedaecea1500d05affd1a19894648e751df9b05fd1585b45cb7733f568"
+    },
+    "blend": {
+      "bytes": 208855,
+      "sha256": "fba5b1798c6c18e0d978055fb930304751613f1ed1f9d5642d583e10e2a67ef5"
+    }
+  },
+  "poseidon_tutor_structure_2": {
+    "tris": 6962,
+    "verts": 3785,
+    "size_x": 1.5069,
+    "size_y": 1.74,
+    "height": 1.44,
+    "max_radius": 0.87,
+    "min_z": 0.0,
+    "title": "Tideguard Barracks",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 327584,
+      "sha256": "8fd5ab607a9ab0426531452b2ca5212c6fc4a2ef894dab16a06a5ad0aebd64e4"
+    },
+    "fbx": {
+      "bytes": 154684,
+      "sha256": "c39f15cf8b4274a94348bc566d5cd986805b08485180b364387cc9e64575df87"
+    },
+    "blend": {
+      "bytes": 173153,
+      "sha256": "2d53b658caa9214e7120da7207a02b6e59905e53858c892fcdaaa6616391d369"
+    }
+  },
+  "poseidon_tutor_structure_3": {
+    "tris": 8780,
+    "verts": 4712,
+    "size_x": 1.5069,
+    "size_y": 1.74,
+    "height": 1.3771,
+    "max_radius": 0.87,
+    "min_z": 0.0,
+    "title": "Nereid Calling Conch",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 401180,
+      "sha256": "789d0cafbbe1fcc907252ec72ac9b8497f06c0a3c262f644c69eb2af42633646"
+    },
+    "fbx": {
+      "bytes": 200636,
+      "sha256": "bb47335e9dd3191244f630e5014d80ec355428bef77449fb3ec775f1e8fb872c"
+    },
+    "blend": {
+      "bytes": 197407,
+      "sha256": "9a658b8334cf50604014c864dbc27e3b77b74132bc8a45230c6284b045f66f53"
+    }
+  },
+  "poseidon_tutor_structure_4": {
+    "tris": 7940,
+    "verts": 4420,
+    "size_x": 1.5069,
+    "size_y": 1.74,
+    "height": 1.56,
+    "max_radius": 0.87,
+    "min_z": 0.0,
+    "title": "Leviathan Muster Dock",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 398992,
+      "sha256": "6bb626d6b3a7e2e5eb6062848f67ebd10fc1fce698073b055a1a12f28466159d"
+    },
+    "fbx": {
+      "bytes": 162252,
+      "sha256": "da8c2f9be8bf2b323bae1b104b6dc2e8912bb1ff2e2a7a726990ec04828c8687"
+    },
+    "blend": {
+      "bytes": 187523,
+      "sha256": "a1f7ab55726c66164bd12e643a6bdd06e8c261ca28a0bf69b206d3df46fbc82d"
+    }
+  },
+  "poseidon_tutor_structure_5": {
+    "tris": 6992,
+    "verts": 3846,
+    "size_x": 1.5069,
+    "size_y": 1.74,
+    "height": 1.54,
+    "max_radius": 0.87,
+    "min_z": 0.0,
+    "title": "Thalassic Hero Hall",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 324372,
+      "sha256": "b15cf460957991371ecc6b76f9a84be9427462c07565bac63a98f4a634a7e4e5"
+    },
+    "fbx": {
+      "bytes": 148044,
+      "sha256": "a154db36e8ab6f6e2706879b140039d2ba087b1abe0b3a6eb0ad08a17ec6687f"
+    },
+    "blend": {
+      "bytes": 175787,
+      "sha256": "c8d8772f93624dbcd63bef62eabd89d0265c7c8be8f10adb7a92135c265bac7d"
     }
   }
 }

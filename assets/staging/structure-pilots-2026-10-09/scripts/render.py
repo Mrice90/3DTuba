@@ -7,6 +7,11 @@ from mathutils import Matrix, Vector
 out = os.path.abspath(sys.argv[1])
 ids = json.load(open(os.path.join(out, "stats.json")))
 views = {"front34": (-35, 22, 4.4), "front": (0, 8, 4.4), "side": (90, 8, 4.4), "top": (0, 89, 4.4)}
+# RENDER_VIEWS=front34,side and RENDER_SAMPLES=16 give quick iteration renders
+if os.environ.get("RENDER_VIEWS"):
+    views = {k: v for k, v in views.items() if k in os.environ["RENDER_VIEWS"].split(",")}
+if os.environ.get("RENDER_ONLY"):
+    ids = {k: v for k, v in ids.items() if k in os.environ["RENDER_ONLY"].split(",")}
 
 def look(cam, target):
     d = Vector(target) - cam.location
@@ -16,7 +21,7 @@ for cid, st in ids.items():
     bpy.ops.wm.open_mainfile(filepath=os.path.join(out, f"{cid}.blend"))
     sc = bpy.context.scene
     sc.render.engine = "CYCLES"
-    sc.cycles.device = "CPU"; sc.cycles.samples = 48; sc.cycles.use_denoising = True
+    sc.cycles.device = "CPU"; sc.cycles.samples = int(os.environ.get("RENDER_SAMPLES", 48)); sc.cycles.use_denoising = True
     sc.render.resolution_x = sc.render.resolution_y = 640
     sc.view_settings.view_transform = "AgX"
     # hex tile: 2.0 across the flats, 0.1 thick, top at z=0

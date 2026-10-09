@@ -1,11 +1,19 @@
-"""Build, export and measure the pilots. Usage: python3 -I build.py OUT_DIR"""
-import json, os, sys, hashlib
+"""Build, export and measure structures. Usage: python3 -I build.py OUT_DIR [MODULE ...] [--only card_id,...]
+MODULE defaults to structures; each module exposes a BUILDERS dict."""
+import importlib, json, os, sys, hashlib
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import bpy
 import kit
-from structures import BUILDERS
-
-out = os.path.abspath(sys.argv[1])
+args = sys.argv[1:]
+only = None
+if "--only" in args:
+    i = args.index("--only"); only = set(args[i + 1].split(",")); del args[i:i + 2]
+out = os.path.abspath(args[0])
+BUILDERS = {}
+for mod in (args[1:] or ["structures"]):
+    BUILDERS.update(importlib.import_module(mod).BUILDERS)
+if only:
+    BUILDERS = {k: v for k, v in BUILDERS.items() if k in only}
 os.makedirs(out, exist_ok=True)
 report = {}
 for card_id, (title, faction, fn) in BUILDERS.items():

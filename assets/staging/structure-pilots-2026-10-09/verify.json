@@ -133,5 +133,1400 @@
       0.0
     ],
     "uv_layers": 1
+  },
+  "zeus_ability_oracle_spire.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 7918,
+    "size": [
+      1.49,
+      1.72,
+      1.57
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_ability_oracle_spire.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 7918,
+    "size": [
+      1.49,
+      1.72,
+      1.57
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_apex_worldstorm_spire.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 7792,
+    "size": [
+      1.49,
+      1.72,
+      1.6
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_apex_worldstorm_spire.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 7792,
+    "size": [
+      1.49,
+      1.72,
+      1.6
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_cloudwall_bastion.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 6882,
+    "size": [
+      1.49,
+      1.72,
+      1.53
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_cloudwall_bastion.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 6882,
+    "size": [
+      1.49,
+      1.72,
+      1.53
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_ion_storm_lattice.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 6286,
+    "size": [
+      1.49,
+      1.72,
+      1.555
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_ion_storm_lattice.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 6286,
+    "size": [
+      1.49,
+      1.72,
+      1.555
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_structure_aegis_conductor.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 8954,
+    "size": [
+      1.49,
+      1.72,
+      1.46
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_structure_aegis_conductor.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 8954,
+    "size": [
+      1.49,
+      1.72,
+      1.46
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_structure_cloud_archive.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 9714,
+    "size": [
+      1.57,
+      1.68,
+      1.58
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_structure_cloud_archive.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 9714,
+    "size": [
+      1.57,
+      1.68,
+      1.58
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_structure_oracle_of_storms.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 8392,
+    "size": [
+      1.49,
+      1.72,
+      1.556
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_structure_oracle_of_storms.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 8392,
+    "size": [
+      1.49,
+      1.72,
+      1.556
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_structure_stormglass_relay.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 8642,
+    "size": [
+      1.57,
+      1.68,
+      1.58
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_structure_stormglass_relay.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 8642,
+    "size": [
+      1.57,
+      1.68,
+      1.58
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_tutor_structure_1.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 9450,
+    "size": [
+      1.49,
+      1.72,
+      1.59
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_tutor_structure_1.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 9450,
+    "size": [
+      1.49,
+      1.72,
+      1.59
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_tutor_structure_2.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 8478,
+    "size": [
+      1.49,
+      1.72,
+      1.508
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_tutor_structure_2.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 8478,
+    "size": [
+      1.49,
+      1.72,
+      1.508
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_tutor_structure_3.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 10308,
+    "size": [
+      1.49,
+      1.72,
+      1.595
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_tutor_structure_3.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 10308,
+    "size": [
+      1.49,
+      1.72,
+      1.595
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_tutor_structure_4.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 10846,
+    "size": [
+      1.68,
+      1.72,
+      1.55
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_tutor_structure_4.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 10846,
+    "size": [
+      1.68,
+      1.72,
+      1.55
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_tutor_structure_5.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 8640,
+    "size": [
+      1.49,
+      1.72,
+      1.59
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_tutor_structure_5.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 8640,
+    "size": [
+      1.49,
+      1.72,
+      1.59
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_zephyr_mooring_mast.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 7750,
+    "size": [
+      1.509,
+      1.72,
+      1.59
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_zephyr_mooring_mast.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 7750,
+    "size": [
+      1.509,
+      1.72,
+      1.59
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_zeus_command_nexus.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 9254,
+    "size": [
+      1.49,
+      1.72,
+      1.44
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_zeus_command_nexus.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 9254,
+    "size": [
+      1.49,
+      1.72,
+      1.44
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_ability_tidewell.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 9346,
+    "size": [
+      1.49,
+      1.72,
+      1.55
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_ability_tidewell.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 9346,
+    "size": [
+      1.49,
+      1.72,
+      1.55
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_abyss_gate.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 6318,
+    "size": [
+      1.545,
+      1.72,
+      1.59
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_abyss_gate.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 6318,
+    "size": [
+      1.545,
+      1.72,
+      1.59
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_apex_leviathan_gate.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 9446,
+    "size": [
+      1.558,
+      1.72,
+      1.6
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_apex_leviathan_gate.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 9446,
+    "size": [
+      1.558,
+      1.72,
+      1.6
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_coral_bulwark.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 5248,
+    "size": [
+      1.49,
+      1.72,
+      1.6
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_coral_bulwark.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 5248,
+    "size": [
+      1.49,
+      1.72,
+      1.6
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_driftwood_breakwater.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 9594,
+    "size": [
+      1.49,
+      1.72,
+      0.792
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_driftwood_breakwater.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 9594,
+    "size": [
+      1.49,
+      1.72,
+      0.792
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_moonwell_tidegate.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 7810,
+    "size": [
+      1.57,
+      1.72,
+      1.38
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_moonwell_tidegate.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 7810,
+    "size": [
+      1.57,
+      1.72,
+      1.38
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_sonar_beacon.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 7556,
+    "size": [
+      1.701,
+      1.72,
+      1.56
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_sonar_beacon.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 7556,
+    "size": [
+      1.701,
+      1.72,
+      1.56
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_structure_ambrosial_spring.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 8662,
+    "size": [
+      1.49,
+      1.72,
+      1.53
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_structure_ambrosial_spring.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 8662,
+    "size": [
+      1.49,
+      1.72,
+      1.53
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_structure_current_exchange.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 10812,
+    "size": [
+      1.507,
+      1.74,
+      1.585
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_structure_current_exchange.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 10812,
+    "size": [
+      1.507,
+      1.74,
+      1.585
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_structure_pearl_infirmary.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 8628,
+    "size": [
+      1.507,
+      1.74,
+      1.11
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_structure_pearl_infirmary.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 8628,
+    "size": [
+      1.507,
+      1.74,
+      1.11
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_structure_tidevault.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 10240,
+    "size": [
+      1.507,
+      1.74,
+      1.315
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_structure_tidevault.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 10240,
+    "size": [
+      1.507,
+      1.74,
+      1.315
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_tutor_structure_1.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 9976,
+    "size": [
+      1.507,
+      1.74,
+      1.44
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_tutor_structure_1.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 9976,
+    "size": [
+      1.507,
+      1.74,
+      1.44
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_tutor_structure_2.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 6962,
+    "size": [
+      1.507,
+      1.74,
+      1.44
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_tutor_structure_2.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 6962,
+    "size": [
+      1.507,
+      1.74,
+      1.44
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_tutor_structure_3.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 8780,
+    "size": [
+      1.507,
+      1.74,
+      1.377
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_tutor_structure_3.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 8780,
+    "size": [
+      1.507,
+      1.74,
+      1.377
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_tutor_structure_4.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 7940,
+    "size": [
+      1.507,
+      1.74,
+      1.56
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_tutor_structure_4.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 7940,
+    "size": [
+      1.507,
+      1.74,
+      1.56
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_tutor_structure_5.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 6992,
+    "size": [
+      1.507,
+      1.74,
+      1.54
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_tutor_structure_5.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 6992,
+    "size": [
+      1.507,
+      1.74,
+      1.54
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
   }
 }
