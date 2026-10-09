@@ -1,0 +1,137 @@
+{
+  "zeus_storm_relay_pylon.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 6038,
+    "size": [
+      1.49,
+      1.72,
+      1.51
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_storm_relay_pylon.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 6038,
+    "size": [
+      1.49,
+      1.72,
+      1.51
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_keraunos_charging_spire.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 7790,
+    "size": [
+      1.61,
+      1.68,
+      1.57
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "zeus_keraunos_charging_spire.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 7790,
+    "size": [
+      1.61,
+      1.68,
+      1.57
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_tidal_pump_station.glb": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission",
+      "Token_ORM"
+    ],
+    "tris": 7774,
+    "size": [
+      1.507,
+      1.74,
+      1.32
+    ],
+    "min_z": 0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  },
+  "poseidon_tidal_pump_station.fbx": {
+    "objects": 1,
+    "materials": [
+      "Token"
+    ],
+    "images": [
+      "Token_BaseColor",
+      "Token_Emission"
+    ],
+    "tris": 7774,
+    "size": [
+      1.507,
+      1.74,
+      1.32
+    ],
+    "min_z": -0.0,
+    "center_xy": [
+      0.0,
+      0.0
+    ],
+    "uv_layers": 1
+  }
+}

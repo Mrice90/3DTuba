@@ -1,0 +1,74 @@
+{
+  "zeus_storm_relay_pylon": {
+    "tris": 6038,
+    "verts": 3153,
+    "size_x": 1.4896,
+    "size_y": 1.72,
+    "height": 1.51,
+    "max_radius": 0.86,
+    "min_z": 0.0,
+    "title": "Storm Relay Pylon",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 251888,
+      "sha256": "c210d38d63c89802d9cb88f9b687d0626e0301a494201413f682d4b3426f43d0"
+    },
+    "fbx": {
+      "bytes": 150300,
+      "sha256": "d635a183d5b7ffc48fd3edbe5e139c95983ec1f0cc04a2ebd4c7fabf8e49da71"
+    },
+    "blend": {
+      "bytes": 167814,
+      "sha256": "f2ad550736c7a88f869e1f5d0bf409b10692a8370b350ff6efc49261d52b7bf8"
+    }
+  },
+  "zeus_keraunos_charging_spire": {
+    "tris": 7790,
+    "verts": 4085,
+    "size_x": 1.61,
+    "size_y": 1.68,
+    "height": 1.57,
+    "max_radius": 0.84,
+    "min_z": 0.0,
+    "title": "Keraunos Charging Spire",
+    "faction": "Zeus",
+    "within_budget": true,
+    "glb": {
+      "bytes": 317036,
+      "sha256": "2e3937b87315b89a1b50e7e348d901039b979678802a33f9cd971a592c55fa71"
+    },
+    "fbx": {
+      "bytes": 155948,
+      "sha256": "d28bcaf5c644099841f751266b5dcd3eb5ba0dd4584a16642ee739fdff3eb607"
+    },
+    "blend": {
+      "bytes": 175746,
+      "sha256": "0eb2e234be328122d042222b180849dd7f203a0f902a45630a14b354bf137e9e"
+    }
+  },
+  "poseidon_tidal_pump_station": {
+    "tris": 7774,
+    "verts": 4102,
+    "size_x": 1.5069,
+    "size_y": 1.74,
+    "height": 1.32,
+    "max_radius": 0.87,
+    "min_z": 0.0,
+    "title": "Tidal Pump Station",
+    "faction": "Poseidon",
+    "within_budget": true,
+    "glb": {
+      "bytes": 328072,
+      "sha256": "4b09404ecc513b8002fb953e7ec4838d2aaa6a566344df0c7e72dfc0f5a75612"
+    },
+    "fbx": {
+      "bytes": 156780,
+      "sha256": "56a2fecbe7fa913b00e68ddbb07b6af87fd5facfdaaab6d48986971af0b39f6d"
+    },
+    "blend": {
+      "bytes": 172822,
+      "sha256": "20a2e87ff1281155cbabcca74525ea001441328b5b50bac956cc6afe2316be61"
+    }
+  }
+}
