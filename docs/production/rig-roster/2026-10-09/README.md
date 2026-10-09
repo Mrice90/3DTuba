@@ -2,7 +2,7 @@
 
 > Repository copy of `Infinite Conquest\playtest\rig-roster-2026-10-09\`. The FBX and GLB files (12-15 MB each) stay in that playtest folder; their hashes are listed below.
 
-Status: **STAGED, awaiting the Unity import check and art review.** Nothing was imported into UnityProof or any other project, and no Meshy credits were spent. The static tokens stay the fallback.
+Status: **DELIVERED: Unity import check PASS (textured), awaiting art review.** Nothing was imported into UnityProof or any other project, and no Meshy credits were spent. The static tokens stay the fallback.
 
 ## What was made
 
@@ -41,10 +41,9 @@ Run 2026-10-09 on Unity 6000.6.3f1 in the throwaway project: **PASS** on geometr
 | Keraunos Prime (pilot) | 86 | 0.0002 to 0.0024 | 0.0010 to 0.0729 |
 | Sparkstep Runner | 22 | 0.0006 to 0.0050 | 0.0000 to 0.0848 |
 
-That first run rendered all three untextured: the FBX embedded images had no file extension, so Unity made no textures (the pilot FBX had the same defect). All three FBX files were re-exported with `.jpg`/`.png` names; `zeus_keraunos_prime_rigged.fbx` here is the fixed pilot export (`scripts/reexport_pilot.py`, from the pilot .blend). Re-check pending.
+The first run rendered all three untextured. The FBX embedded images had no file extension, so Unity made no textures; the pilot FBX had the same defect. All three FBX files were re-exported with `.jpg`/`.png` names; `zeus_keraunos_prime_rigged.fbx` here is the fixed pilot export (`scripts/reexport_pilot.py`, from the pilot .blend).
 
-
-`run-unity-check.ps1` creates a throwaway project in `unity-check\` and imports these two rigs plus the Keraunos pilot FBX as Generic with looping clips. It samples every frame, flags sinking below -0.01 m or floating above 0.02 m, measures the loop seam, and renders front and side frames to `unity-check-renders\`. The report goes to `unity-check-report.json`. It does not touch UnityProof.
+Re-check on the fixed files: same numbers, still **PASS**. Unity 6 also needs the "Extract Textures" step on import. After extracting, every material uses real textures: base colour `Image_0*.jpg` as `_MainTex` and `normal*.png` as `_BumpMap`. The renders in `unity-check-renders\` are textured, upright and grounded; the untextured first run is kept in `unity-check-renders-untextured\`. `RigCheck.cs` now does that extraction itself (it was done by a separate editor script during the re-check, so the merged one-pass version has not been run yet). **Game import note:** the integrating project must extract these textures too, or use the GLB files.
 
 ## Files
 | File | Bytes | SHA-256 |

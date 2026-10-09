@@ -50,6 +50,23 @@ public static class RigCheck
         imp.importAnimation = true;
         imp.skinWeights = ModelImporterSkinWeights.Standard; // 4 bones, the default the game will use
         imp.SaveAndReimport();
+        // Unity 6 does not unpack FBX-embedded media on import: extract it next to the model, flag normal maps, reimport.
+        string fbm = Path.ChangeExtension(assetPath, null) + ".fbm";
+        if (!AssetDatabase.IsValidFolder(fbm))
+        {
+            imp.ExtractTextures(fbm);
+            AssetDatabase.Refresh();
+            foreach (var guid in AssetDatabase.FindAssets("t:Texture2D", new[] { fbm }))
+            {
+                var tp = AssetDatabase.GUIDToAssetPath(guid);
+                if (Path.GetFileName(tp).StartsWith("normal"))
+                {
+                    var ti = (TextureImporter)AssetImporter.GetAtPath(tp);
+                    ti.textureType = TextureImporterType.NormalMap; ti.SaveAndReimport();
+                }
+            }
+            imp.SaveAndReimport();
+        }
         var clipsSetup = imp.defaultClipAnimations;
         foreach (var c in clipsSetup) { c.loopTime = true; c.name = c.name.Split('|').Last(); }
         imp.clipAnimations = clipsSetup;
