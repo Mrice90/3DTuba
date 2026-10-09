@@ -136,7 +136,7 @@ namespace InfiniteConquest.Playtest {
                         "<b>Your turn.</b> You earn GP (gold power) each turn from your Capital and Lands. Spend it to play cards from your hand along the bottom of the screen: click a bright card, then click a glowing hex.\n\n" +
                         "<b>Units.</b> Click one of your Characters, then a glowing hex to move or a red marker to attack. Enemy Characters block movement; moving past one can trigger an opportunity attack.\n\n" +
                         "<b>Cards.</b> Lands raise your income, Structures defend and buff, Spells resolve at once. Hover any card or piece to read it.\n\n" +
-                        "<b>Controls.</b> Right-drag or Q/E to orbit, mouse wheel to zoom, middle-drag or WASD to pan, Home to reset the camera, Esc to pause, End turn at bottom-left.",
+                        "<b>Controls.</b> Right-drag to rotate and tilt, Q/E to rotate, Up/Down arrows to tilt, mouse wheel to zoom, middle-drag or WASD to pan, Home to reset the camera, Esc to pause, End turn at bottom-left.",
                         menuBody);
                     if (MenuButton(Centered(360, 46, 640), "Back")) menuScreen = Screen2.Main;
                     break;
