@@ -27,6 +27,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -40,7 +41,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * AI-079: headless rules bridge for the 3D playable (protocol v1.1.0).
+ * AI-079: headless rules bridge for the 3D playable (protocol v1.3.0).
  *
  * <p>A small Java program against the pinned alpha JAR that runs a
  * Zeus-vs-Poseidon HEX match and talks line-delimited JSON over
@@ -180,8 +181,9 @@ public final class RulesBridge {
         // Structures (HouseRules); "alpha" (default) plays the pinned rules.
         boolean ic3d = rules.equals("ic3d");
         HouseRules.set(ic3d, ic3d);
+        boolean reactions = Boolean.TRUE.equals(req.get("reactions"));
         session = new Session(seed, humanPlayer, humanFaction, botFaction,
-                botDifficulty);
+                botDifficulty, reactions);
         List<Map<String, Object>> events = new ArrayList<>();
         session.runBotTurns(events);
         session.refreshLegal();
@@ -212,7 +214,9 @@ public final class RulesBridge {
                     resolution.error());
         }
         List<Map<String, Object>> events = new ArrayList<>();
-        String result = session.executeHuman(resolution.command(), events);
+        String result = session.reactionOpen
+                ? session.executeReaction(resolution.command(), events)
+                : session.executeHuman(resolution.command(), events);
         if (!result.startsWith("OK:")) {
             return error(reqId, session.revision, "INVALID_ACTION",
                     "engine rejected action: " + result);
@@ -370,14 +374,22 @@ public final class RulesBridge {
         private final int humanPlayer;
         private final String[] factions = new String[2];
         private final Adapter adapter;
+        private final boolean reactionPrompts;
+        // AI-080-REACTION-WINDOW: true while the bot's turn is paused so the
+        // human can answer its last action with a reaction spell or pass.
+        private boolean reactionOpen;
+        // Set by "pass turn": no more windows until the bot ends its turn.
+        private boolean reactionsMutedThisTurn;
         private int revision;
         private int decisions;
         private Map<String, String> actionCommands = new HashMap<>();
         private List<Map<String, Object>> legalCache = new ArrayList<>();
 
         Session(long seed, int humanPlayer, String humanFaction,
-                String botFaction, BotDifficulty difficulty) {
+                String botFaction, BotDifficulty difficulty,
+                boolean reactionPrompts) {
             this.humanPlayer = humanPlayer;
+            this.reactionPrompts = reactionPrompts;
             int botPlayer = 1 - humanPlayer;
             factions[humanPlayer] = humanFaction;
             factions[botPlayer] = botFaction;
@@ -422,10 +434,17 @@ public final class RulesBridge {
         void refreshLegal() {
             actionCommands = new HashMap<>();
             legalCache = new ArrayList<>();
-            if (!isHumanTurn()) {
+            List<String> forms;
+            if (reactionOpen) {
+                forms = new ArrayList<>(
+                        hints.spellActionsForPlayer(state, humanPlayer));
+                forms.add("pass");
+                forms.add("pass turn");
+            } else if (isHumanTurn()) {
+                forms = hints.forActivePlayer(state, engine);
+            } else {
                 return;
             }
-            List<String> forms = hints.forActivePlayer(state, engine);
             for (int i = 0; i < forms.size(); i++) {
                 Map<String, Object> action = describeAction(forms.get(i));
                 if (action == null) {
@@ -447,7 +466,7 @@ public final class RulesBridge {
             if (isGameOver()) {
                 return ActResolution.invalid("match is over");
             }
-            if (!isHumanTurn()) {
+            if (!isHumanTurn() && !reactionOpen) {
                 return ActResolution.invalid("not the human turn");
             }
             String command = actionCommands.get(actionId);
@@ -480,8 +499,30 @@ public final class RulesBridge {
             return result;
         }
 
+        /**
+         * AI-080-REACTION-WINDOW: the human answers an open window with one
+         * reaction spell or {@code pass}. Either closes the window; the
+         * caller then resumes the bot turn once. An engine rejection keeps
+         * the window open and the state unchanged.
+         */
+        String executeReaction(String command,
+                               List<Map<String, Object>> events) {
+            if (command.equals("pass") || command.equals("pass turn")) {
+                reactionOpen = false;
+                reactionsMutedThisTurn = command.equals("pass turn");
+                return "OK: passed";
+            }
+            adapter.snapshotDamage();
+            String result = commands.execute(command);
+            adapter.drainInto(events);
+            if (result.startsWith("OK:")) {
+                reactionOpen = false;
+            }
+            return result;
+        }
+
         void runBotTurns(List<Map<String, Object>> events) {
-            while (!isGameOver() && !isHumanTurn()) {
+            while (!isGameOver() && !isHumanTurn() && !reactionOpen) {
                 if (state.turnNumber() > MAX_TURNS
                         || ++decisions > MAX_DECISIONS) {
                     throw new IllegalStateException(
@@ -492,6 +533,9 @@ public final class RulesBridge {
                 BotPlayer.Decision d =
                         bots[p].takeNextAction(state, commands, p);
                 adapter.drainInto(events);
+                if (d.command().equals("end")) {
+                    reactionsMutedThisTurn = false;
+                }
                 if (!d.command().equals("end") && !isGameOver()
                         && state.activePlayer() == p) {
                     int opp = 1 - p;
@@ -502,6 +546,12 @@ public final class RulesBridge {
                         if (r != null) {
                             adapter.drainInto(events);
                         }
+                    } else if (reactionPrompts && !reactionsMutedThisTurn
+                            && !hints.spellActionsForPlayer(state, opp)
+                                    .isEmpty()) {
+                        // Pause here; the next act (reaction or pass)
+                        // resumes this loop.
+                        reactionOpen = true;
                     }
                 }
             }
@@ -569,7 +619,17 @@ public final class RulesBridge {
                         action.put("instance_id", sourceId.toString());
                         action.put("card_id", source.definition().id());
                     }
-                    case "cast" -> {
+                    case "cast", "react" -> {
+                        // "react <player> <hand> ..." is a cast by the
+                        // inactive player; drop the player token so the
+                        // indices below match "cast".
+                        boolean react = parts[0].equals("react");
+                        String type = parts[0];
+                        if (react) {
+                            p = Integer.parseInt(parts[1]);
+                            parts = Arrays.copyOfRange(parts, 1,
+                                    parts.length);
+                        }
                         int handIndex = Integer.parseInt(parts[1]);
                         UUID instanceId =
                                 state.player(p).hand().get(handIndex);
@@ -585,7 +645,7 @@ public final class RulesBridge {
                                 : state.board().topAt(target).orElseThrow();
                         CardInstance targetCard =
                                 state.card(targetId).orElseThrow();
-                        action.put("type", "cast");
+                        action.put("type", type);
                         action.put("hand_index", handIndex);
                         action.put("card_id", card.definition().id());
                         action.put("card_name", card.definition().name());
@@ -603,6 +663,8 @@ public final class RulesBridge {
                         }
                     }
                     case "end" -> action.put("type", "end_turn");
+                    case "pass" -> action.put("type",
+                            parts.length == 1 ? "pass" : "pass_turn");
                     default -> {
                         return null;
                     }
@@ -631,6 +693,7 @@ public final class RulesBridge {
             snap.put("you", humanPlayer);
             snap.put("revision", revision);
             snap.put("rules", HouseRules.summonSlots() ? "ic3d" : "alpha");
+            snap.put("reaction_window", reactionOpen);
             List<Map<String, Object>> players = new ArrayList<>();
             for (int p = 0; p < 2; p++) {
                 Map<String, Object> pl = new LinkedHashMap<>();
