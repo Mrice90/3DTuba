@@ -1,0 +1,36 @@
+{
+ "Idle": {
+  "frames": 46,
+  "seconds": 1.875,
+  "minZ_before": -0.0104,
+  "minZ_after_range": [
+   -0.0,
+   0.0057
+  ]
+ },
+ "Walk": {
+  "frames": 26,
+  "seconds": 1.042,
+  "minZ_before": -0.0259,
+  "minZ_after_range": [
+   -0.0,
+   0.0844
+  ]
+ },
+ "rest_bbox": [
+  [
+   -0.587,
+   -0.287,
+   0.0
+  ],
+  [
+   0.583,
+   0.286,
+   1.904
+  ]
+ ],
+ "bones": 22,
+ "tris": 30976,
+ "unweighted_fixed": 0,
+ "max_influences": 4
+}

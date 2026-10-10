@@ -1120,3 +1120,15 @@ Mathew reported that board rotation and tilt stopped working after the gameplay-
 Cause: rotation and tilt code was never removed. The uncommitted right-click ability menu took the right mouse button, so right-drag no longer orbited. No version ever faced the player's own capital, because the home yaw was fixed.
 
 Delivered: commit `eb606c1` on `claude/camera-restore`, draft PR https://github.com/Mrice90/3DTuba/pull/7. Build `playtest\unity-build-2026-10-09-camera` (via `UnityProof/Tools/package_gameplay_playtest.ps1`; its SHA256SUMS step fails on Windows PowerShell 5.1, which has no `Path.GetRelativePath`, so the hashes were written with sha256sum). Unity build Success, gameplay-priority validation 25/25. `-gameplayLiveSmoke -seed 42` returned GAMEPLAY_LIVE_SMOKE PASS for `-humanSeat 0` (Zeus) and `-humanSeat 1` (Poseidon). Opening screenshots `camera-check-zeus.png` and `camera-check-poseidon.png` show the player's own capital nearest the camera. The playtest build also includes the uncommitted gameplay work in the local checkout. When that work is committed, its right-click handler should call `rig.RightClickReleased(mouse)`.
+
+## 2026-10-10 ~11:55 EDT — Thalia QA: PR #7 camera review + Mathew's 2026-10-08 live session
+
+**PR #7 "Camera: restore rotate/tilt and face your own capital" (claude/camera-restore eb606c19, open, base claude/unity-live-match) — independent diff review, ACCEPT.**
+- 3 files: CameraRig.cs (+23/-5), PlaytestGame.cs (+11/-3), PlaytestMenus.cs (+1/-1).
+- Right-click vs right-drag disambiguated by drag distance (6px threshold, DragThresholdSq=36); a non-drag right-click is yielded to gameplay via RightClickReleased for the ability menu. Matches the stated root cause (right-click ability menu stole right-drag orbit).
+- FaceFrom() computes home yaw from capital→board-center with a degenerate-position guard; PlaytestGame sets faceOwnCapital on StartLive and swings the camera behind the human's capital once it appears (flag clears after first success; Home returns there too). Menu/help text updated to match.
+- No gameplay, rules, or backlog changes. Human corroboration exists (see below). No defects found in the diff.
+
+**Mathew's live session, 2026-10-08 ~22:35 EDT (recorded from his report):** Zeus seat, a few turns (partial match, not full acceptance). Placed a land OK — the SP2/SP3 land-placement blocker appears FIXED (first human land placement since the defect appeared). Placed a structure OK, summoned a character OK (slot chain working downstream), cast a spell with appropriate targeting (first positive human spell-targeting signal). Camera believed fixed (Claude's PR #7 work). Full-match acceptance (AI-080-SP2-HUMAN) remains open pending a complete game.
+
+**Noted, not mine:** PR #8 (AI-060-RIG-ROSTER: Sparkstep Runner + Iris Signal Runner rigs staged, 24 files) — Unity check pending in Claude/Codex's lane. AI-094-COIN-FLIP claimed by Claude Code.

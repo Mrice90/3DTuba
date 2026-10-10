@@ -1,0 +1,25 @@
+{
+ "bones": 22,
+ "tris": 30910,
+ "vgroups": 22,
+ "takes": {
+  "zeus_iris_signal_runner_rig|Idle": [
+   1.0,
+   46.0
+  ],
+  "zeus_iris_signal_runner_rig|Walk": [
+   1.0,
+   26.0
+  ]
+ },
+ "minZ": {
+  "zeus_iris_signal_runner_rig|Idle": [
+   -0.0,
+   0.0037
+  ],
+  "zeus_iris_signal_runner_rig|Walk": [
+   0.0,
+   0.0688
+  ]
+ }
+}

@@ -1,0 +1,19 @@
+{
+  "unity": "6000.6.3f1",
+  "models": [
+    {"model": "zeus_iris_signal_runner_rigged", "bones": 22, "vertices": 24896, "clips": [
+      {"clip": "Idle", "length": 1.8750, "frameRate": 24.0000, "isLooping": true, "minY_lowest": 0.0002, "minY_highest": 0.0027, "loopSeamMaxVertexDelta": 0.0000, "result": "PASS"},
+      {"clip": "Walk", "length": 1.0417, "frameRate": 24.0000, "isLooping": true, "minY_lowest": 0.0000, "minY_highest": 0.0671, "loopSeamMaxVertexDelta": 0.0000, "result": "PASS"}
+    ], "result": "PASS"},
+    {"model": "zeus_keraunos_prime_rigged", "bones": 86, "vertices": 23196, "clips": [
+      {"clip": "Idle", "length": 1.8750, "frameRate": 24.0000, "isLooping": true, "minY_lowest": 0.0002, "minY_highest": 0.0024, "loopSeamMaxVertexDelta": 0.0000, "result": "PASS"},
+      {"clip": "Walk", "length": 1.0417, "frameRate": 24.0000, "isLooping": true, "minY_lowest": 0.0010, "minY_highest": 0.0729, "loopSeamMaxVertexDelta": 0.0000, "result": "PASS"}
+    ], "result": "PASS"},
+    {"model": "zeus_keyword_sparkstep_runner_rigged", "bones": 22, "vertices": 24445, "clips": [
+      {"clip": "Idle", "length": 1.8750, "frameRate": 24.0000, "isLooping": true, "minY_lowest": 0.0006, "minY_highest": 0.0050, "loopSeamMaxVertexDelta": 0.0000, "result": "PASS"},
+      {"clip": "Walk", "length": 1.0417, "frameRate": 24.0000, "isLooping": true, "minY_lowest": 0.0000, "minY_highest": 0.0848, "loopSeamMaxVertexDelta": 0.0000, "result": "PASS"}
+    ], "result": "PASS"}
+  ],
+  "warnings": [],
+  "result": "PASS"
+}

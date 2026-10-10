@@ -1,0 +1,25 @@
+{
+ "bones": 22,
+ "tris": 30976,
+ "vgroups": 22,
+ "takes": {
+  "zeus_keyword_sparkstep_runner_rig|Idle": [
+   1.0,
+   46.0
+  ],
+  "zeus_keyword_sparkstep_runner_rig|Walk": [
+   1.0,
+   26.0
+  ]
+ },
+ "minZ": {
+  "zeus_keyword_sparkstep_runner_rig|Idle": [
+   0.0,
+   0.0057
+  ],
+  "zeus_keyword_sparkstep_runner_rig|Walk": [
+   0.0,
+   0.0844
+  ]
+ }
+}
