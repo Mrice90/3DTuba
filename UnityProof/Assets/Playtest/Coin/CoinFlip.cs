@@ -15,8 +15,8 @@ namespace InfiniteConquest.Playtest {
         public Renderer Target;
         public string SkinId = "olympus";
         public CoinSkin Skin;
-        [Tooltip("Coin diameter in world units (the model is 1.0 across).")] public float Size = 1.4f;
-        public float Height = 3.2f, TossSeconds = 1.25f, SettleSeconds = .7f, HoldSeconds = 1.1f;
+        [Tooltip("Coin diameter in world units (the model is 1.0 across).")] public float Size = 1.8f;
+        public float Height = 2.0f, TossSeconds = 1.25f, SettleSeconds = .7f, HoldSeconds = 1.1f;
         [Tooltip("Whole turns in the air before landing.")] public int Turns = 5;
         public UnityEvent OnToss = new UnityEvent(), OnLand = new UnityEvent();
         public ResultEvent OnResult = new ResultEvent();

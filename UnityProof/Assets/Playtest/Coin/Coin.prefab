@@ -54,8 +54,8 @@ MonoBehaviour:
     Rim: {r: 0.85, g: 0.62, b: 0.22, a: 1}
     Metallic: 0.6
     Smoothness: 0.65
-  Size: 1.4
-  Height: 3.2
+  Size: 1.8
+  Height: 2
   TossSeconds: 1.25
   SettleSeconds: 0.7
   HoldSeconds: 1.1
