@@ -1,0 +1,16 @@
+{
+    "passed": true,
+    "actions": 201,
+    "capacityChecks": 3405,
+    "spellTargets": 1,
+    "structureAbilities": 16,
+    "winner": 1,
+    "turn": 22,
+    "error": "",
+    "checks": [
+        "Packaged rules bridge started with slot policy enabled",
+        "Capacity-valid summon offers and HUD metadata",
+        "Mouse targeting and explicit ability handlers submitted legal actions",
+        "Live Unity match reached GAME_OVER"
+    ]
+}
