@@ -3,7 +3,7 @@
 A small Java program against the pinned alpha JAR that runs a HEX match
 and talks **line-delimited JSON over stdin/stdout**. The Claude Unity
 thread spawns this process from UnityProof to make the board playable.
-**The protocol below is stable** — v1.1.0. Breaking changes get a
+**The protocol below is stable** — v1.2.0. Breaking changes get a
 minor-version bump and a changelog entry here.
 
 - Board: 4×6 HEX, odd-row offset (`MatchRules.hex()` / `BoardGeometry.HEX`).
@@ -100,6 +100,22 @@ intents in the same order — engine determinism (seed-derived shuffle,
 `nameUUIDFromBytes` instance ids, seeded bot RNGs) makes their hashes
 match. `NO_MATCH` before `new`, as with `legal`/`act`.
 
+### `tips` — HUD advice (optional field)
+
+Success responses may carry a `tips` array. It is advice for the HUD only:
+it never changes state, revision or `legal`, and it is omitted when empty.
+
+```json
+"tips":[{"code":"OPENING_KEEP_LAND_STRUCTURE","trigger":"mulligan",
+  "missing":["STRUCTURE"],
+  "text":"Keep a Land and a Structure. You can't summon units until a Structure is down, and a Structure needs a Land to stand on."}]
+```
+
+- `OPENING_KEEP_LAND_STRUCTURE` (AI-108-OPENING): on the human's first
+  turn, before their first action, when the hand is missing a Land, a
+  Structure, or both (`missing`). Shown on `new` and `legal`; gone after
+  the first `act`. Show it with the opening hand.
+
 ### Action ids
 
 Deterministic and **revision-scoped**: `r<revision>-a<index>`, e.g.
@@ -182,6 +198,9 @@ Action fields (common: `id`, `type`, `command` — the raw engine command):
 
 ## Changelog
 
+- v1.2.0 (AI-108-OPENING, 2026-10-09): additive optional `tips` field;
+  first tip is the opening-hand "keep a Land and a Structure" advice.
+  No rule or slot change. Backward compatible with v1.1.0 clients.
 - v1.1.0 (AI-097, 2026-10-02): additive `hash` op — canonical SHA-256 of
   the full unredacted state for the relay lockstep hash exchange;
   seeded-setup contract documented (same revealed seed + same intents
