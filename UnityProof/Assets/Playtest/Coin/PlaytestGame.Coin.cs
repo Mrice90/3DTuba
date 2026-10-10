@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using InfiniteConquest.Proof;
@@ -22,6 +23,18 @@ namespace InfiniteConquest.Playtest {
 
         static Vector3 BoardCentre() =>
             (BoardLayout.CellCenter(0, 0) + BoardLayout.CellCenter(BoardLayout.Width - 1, BoardLayout.Height - 1)) / 2f + Vector3.up * BoardLayout.TileTop;
+
+        // The bridge's `new` reply carries the opening events only when the bot moves first; when the human's side
+        // wins the engine's toss the event list is empty. Queue a stand-in MATCH_STARTED for the seat the state says
+        // is active, so the coin plays either way. Called on the first live reply, after its events are queued.
+        void QueueOpeningFlipIfMissing(BridgeResponse r) {
+            if (r == null || !r.ok || r.state == null || liveQueue.Any(e => e.@event == "MATCH_STARTED")) return;
+            var rest = liveQueue.ToArray(); liveQueue.Clear();
+            int seat = Mathf.Clamp(r.state.active_player, 0, 1);
+            liveQueue.Enqueue(new WireEvent { @event = "MATCH_STARTED", player = seat, turn = r.state.turn,
+                                              detail = $"Match start; coin flip: Player {seat + 1} starts" });
+            foreach (var e in rest) liveQueue.Enqueue(e);
+        }
 
         IEnumerator FlipForFirstPlayer(WireEvent e) {
             if (smoke || speed >= 50) yield break;   // smoke runs and fast playback skip the show

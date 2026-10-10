@@ -360,6 +360,7 @@ namespace InfiniteConquest.Playtest {
                     waiting = false;
                     if (!r.ok) { liveStatus = "Bridge: " + (r.error ?? "error"); sfx.PlayUi("error"); }
                     if (r.events != null) foreach (var e in r.events) liveQueue.Enqueue(e);
+                    if (liveState == null) QueueOpeningFlipIfMissing(r);
                     while (liveQueue.Count > 0) yield return Apply(liveQueue.Dequeue());
                     if (r.state != null) { liveState = r.state; SyncState(r.state); }
                     if (r.legal != null) { liveActions = r.legal; liveStatus = liveActions.Length + " legal actions — pick a card or piece."; }

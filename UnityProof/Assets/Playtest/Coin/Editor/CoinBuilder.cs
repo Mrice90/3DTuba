@@ -57,7 +57,9 @@ public static class CoinBuilder {
             var face = CoinFlip.Spin(1, r, 37, 5) * Vector3.up;
             Check(r == 0 ? face.y > .999f : face.y < -.999f, $"result {r} lands {(r == 0 ? "heads" : "tails")} up (up·Y {face.y:0.000})");
             Check((CoinFlip.Spin(0, r, 37, 5) * Vector3.up).y > .999f, $"result {r} starts heads up and flat");
-            Check(Mathf.Abs((CoinFlip.Spin(.5f, r, 37, 5) * Vector3.up).y) < 1f, $"result {r} is mid-spin at the apex");
+            // u = .5 eases to exactly 3 whole turns (flat), so sample the flight for an edge-on moment instead.
+            bool edgeOn = Enumerable.Range(1, 19).Any(k => Mathf.Abs((CoinFlip.Spin(k / 20f, r, 37, 5) * Vector3.up).y) < .3f);
+            Check(edgeOn, $"result {r} spins edge-on mid-flight");
         }
         Check(PlaytestGame.StarterFromDetail("Match seed 42; coin flip: Player 2 starts", 0) == 1, "engine detail 'Player 2 starts' maps to seat 1");
         Check(PlaytestGame.StarterFromDetail("Match seed 7; coin flip: Player 1 starts", 1) == 0, "engine detail 'Player 1 starts' maps to seat 0");
