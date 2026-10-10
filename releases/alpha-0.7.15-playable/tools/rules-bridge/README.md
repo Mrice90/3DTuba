@@ -3,7 +3,7 @@
 A small Java program against the pinned alpha JAR that runs a HEX match
 and talks **line-delimited JSON over stdin/stdout**. The Claude Unity
 thread spawns this process from UnityProof to make the board playable.
-**The protocol below is stable** — v1.2.0. Breaking changes get a
+**The protocol below is stable** — v1.3.0. Breaking changes get a
 minor-version bump and a changelog entry here.
 
 - Board: 4×6 HEX, odd-row offset (`MatchRules.hex()` / `BoardGeometry.HEX`).
@@ -34,6 +34,9 @@ revision.
 - `difficulty`: `"MORTAL"`, `"HERO"` or `"DEMIGOD"`.
 - `rules` (optional): `"alpha"` (default, the pinned rules) or `"ic3d"`
   (summon slots + covered Structures, see `overlay/README.md`).
+- `reactions` (optional, default `false`): open reaction windows for the
+  human during bot turns (see below). Off, the bot plays straight through
+  as in v1.2.0.
 
 Reply: `{"id":"r1","ok":true,"revision":0,"events":[...],"state":{...},
 "legal":[...]}`. If the opening player is a bot, its turns run
@@ -72,6 +75,38 @@ Reply on a stale or fabricated id — **no state or revision mutation**:
 Error codes: `INVALID_ACTION` (stale/fabricated id, illegal act),
 `BAD_REQUEST` (malformed request, unknown op), `NO_MATCH` (no match
 started), `INTERNAL` (never expected; report it).
+
+### Reaction windows (AI-080-REACTION-WINDOW)
+
+With `"reactions": true` on `new`, the bot turn pauses after each bot
+action (other than ending its turn) for which the human holds a reaction
+spell it can afford and legally aim — the same moments the bot itself
+gets to react to the human. The response then has
+`state.reaction_window: true`, `active_player` still the bot, and `legal`
+holding only `react` actions, one `pass` and one `pass_turn`:
+
+```json
+{"type":"react","hand_index":11,"card_id":"zeus_chain_lightning",
+ "card_name":"Chain Lightning","instance_id":"…","target":{"x":3,"y":4},
+ "target_instance_id":"…","target_card_id":"poseidon_kraken_tendril_drone",
+ "covered":false,"id":"r8-a0","command":"react 0 11 3 4"}
+{"type":"pass","id":"r8-a2","command":"pass"}
+{"type":"pass_turn","id":"r8-a3","command":"pass turn"}
+```
+
+`act` on any of them answers the window: the reaction resolves (or
+nothing happens on a pass), the revision advances, and the bot turn resumes once,
+up to the next human decision — another window, the human's turn, or
+game over. One reaction per window. `pass_turn` also skips every further
+window until the bot ends its current turn; windows can open again on its
+next turn. A human holding a castable spell can otherwise see a window
+after almost every bot action (hundreds over a long match), so the client
+should offer `pass_turn` prominently or auto-pass. A stale, fabricated or engine-rejected
+id gets `INVALID_ACTION` and leaves the window open with state and
+revision unchanged. `pass` changes no game state: a match in which the
+human passes every window reaches the same states and hashes as the same
+match with `reactions` off (checked over 60 human actions on seeds 1, 2
+and 42, passing 322 to 555 windows).
 
 ### `hash` — canonical state hash (AI-097 lockstep)
 
@@ -121,6 +156,8 @@ Action fields (common: `id`, `type`, `command` — the raw engine command):
 | `attack`   | `from:{x,y}`, `to:{x,y}`, `instance_id`, `card_id`, `target_instance_id`, `target_card_id` |
 | `activate` | `at:{x,y}`, `instance_id`, `card_id` |
 | `cast`     | `hand_index`, `card_id`, `card_name`, `instance_id`, `target:{x,y}`, `target_instance_id`, `destination:{x,y}` (teleport only) |
+| `react`    | same as `cast` (reaction window only) |
+| `pass`, `pass_turn` | — (reaction window only) |
 | `end_turn` | — |
 
 ### State snapshot (redacted)
@@ -129,6 +166,7 @@ Action fields (common: `id`, `type`, `command` — the raw engine command):
 {
   "seed": 42, "turn": 3, "phase": "PLAY",
   "active_player": 0, "winner": null, "you": 0, "revision": 3,
+  "rules": "alpha", "reaction_window": false,
   "players": [
     {"seat":0,"faction":"ZEUS","controller":"human","gp":7,
      "hand":[{"card_id":"...","instance_id":"..."}],
@@ -165,8 +203,9 @@ Action fields (common: `id`, `type`, `command` — the raw engine command):
 
 ## v1 limitations
 
-- A human opponent gets no reaction-spell prompt during bot turns; the bot
-  loop plays through. Human-vs-bot is the supported playtesting setup.
+- Reaction prompts are opt-in (`reactions` on `new`). Without them a
+  human opponent gets no reaction-spell prompt during bot turns and the
+  bot loop plays through. Human-vs-bot is the supported playtesting setup.
 - No mulligan UI; the mulligan window closes on the first action as in the
   CLI.
 
@@ -181,13 +220,21 @@ Action fields (common: `id`, `type`, `command` — the raw engine command):
   stale/fabricated rejection, no mutation on rejection, bot auto-play,
   scripted GAME_OVER, AI-062 validation of every event, redaction,
   AI-097 `hash` op (canonical hash, read-only, seeded-setup and
-  lockstep-determinism proofs).
+  lockstep-determinism proofs), AI-080 reaction windows (react/pass
+  only, bad ids change nothing, resume exactly once, off by default).
 - `fixtures/golden-seed-42.jsonl` — golden transcript (responses,
   `sort_keys` JSON, one per line).
 - `run.sh` / `run.bat` — CI entry points.
 
 ## Changelog
 
+- v1.3.0 (2026-10-10): additive. `new` takes `reactions` (default
+  `false`). With it, bot turns pause in reaction windows: `legal` offers
+  `react` actions, `pass` and `pass_turn`, `state.reaction_window` is
+  true, and the bot turn resumes once after the answer. State always carries
+  `reaction_window`. With `reactions` off every response, event and hash
+  matches v1.2.0 apart from that field (checked over 80-step matches,
+  seeds 42/2/7, both rule sets).
 - v1.2.0 (2026-10-08): additive. `new` takes `rules` (`alpha` default,
   `ic3d`). Actions: `cast` carries `target_card_id`; `cast`/`activate`
   carry `covered` (true when aimed at, or fired from, a card under the top

@@ -16,6 +16,11 @@ Builds RulesBridge against the pinned alpha JAR and proves:
      same seed report the identical hash,
  11. AI-097: same seed + same intents -> identical hash sequence;
      a divergent intent -> divergent hash.
+ 12. AI-080-REACTION-WINDOW: with "reactions": true the bot turn pauses
+     when the human has a legal reaction spell; only react/pass are
+     offered, a bad id changes nothing, react or pass resumes the bot
+     turn exactly once (the spent id goes stale), and without the flag
+     no window ever opens.
 
 Also writes the golden transcript fixture (fixtures/golden-seed-42.jsonl).
 
@@ -33,6 +38,7 @@ RELEASE_DIR = SCRIPT_DIR.parent.parent
 BOARD_EVENTS = RELEASE_DIR.parent.parent / "docs" / "muse" / "sprint-02" / "board-events"
 FIXTURE_DIR = SCRIPT_DIR / "fixtures"
 SEED = 42
+REACTION_SEED = 2
 
 JARS = sorted(RELEASE_DIR.glob("infinite-conquest-alpha-*.jar"))
 if not JARS:
@@ -339,7 +345,127 @@ def main():
           and seq_c[2] != seq_a[2],
           "divergent intent -> divergent hash (shared prefix identical)")
 
-    print("test_bridge: PASS (11/11 properties)")
+    # Property 12: AI-080-REACTION-WINDOW — the human answers bot actions.
+    # Seed 2 with the human only ending turns reaches a window on turn 16.
+    def open_window(bb, reactions=True):
+        req = dict(seed=REACTION_SEED, human_player=0, human_faction="ZEUS",
+                   bot_faction="POSEIDON", difficulty="HERO")
+        if reactions:
+            req["reactions"] = True
+        r = bb.call("new", **req)
+        turns = 0
+        while (not r["state"]["reaction_window"]
+               and r["state"]["phase"] != "GAME_OVER" and turns < 40):
+            end = next(a for a in r["legal"] if a["type"] == "end_turn")
+            r = bb.call("act", action_id=end["id"])
+            turns += 1
+        return r, turns
+
+    b = Bridge()
+    try:
+        r, turns = open_window(b, reactions=False)
+        check(not r["state"]["reaction_window"]
+              and (turns == 40 or r["state"]["phase"] == "GAME_OVER"),
+              "reactions off (default): no window ever opens")
+    finally:
+        b.close()
+
+    b = Bridge()
+    try:
+        r, turns = open_window(b)
+        st = r["state"]
+        check(st["reaction_window"] and st["phase"] != "GAME_OVER",
+              f"reaction window opened (turn {st['turn']})")
+        check(st["active_player"] == 1, "window opens during the bot turn")
+        types = [a["type"] for a in r["legal"]]
+        check(set(types) == {"react", "pass", "pass_turn"}
+              and types.count("pass") == 1 and types.count("pass_turn") == 1,
+              "window offers only react actions, one pass, one pass_turn")
+        reacts = [a for a in r["legal"] if a["type"] == "react"]
+        check(all(a["id"].startswith(f"r{r['revision']}-a")
+                  and a["command"].startswith("react 0 ")
+                  and a["card_id"] and a["target_instance_id"]
+                  for a in reacts),
+              "react actions are revision-scoped and name card and target")
+        rev, h = r["revision"], b.call("hash")["state_hash"]
+        bad = b.call("act", action_id=f"r{rev}-a99999")
+        probe = b.call("legal")
+        check(not bad["ok"] and bad["error_code"] == "INVALID_ACTION"
+              and bad["revision"] == rev and probe["state"]["reaction_window"]
+              and b.call("hash")["state_hash"] == h,
+              "bad id in a window: rejected, window and state unchanged")
+        pas = next(a for a in r["legal"] if a["type"] == "pass")
+        rp = b.call("act", action_id=pas["id"])
+        check(rp["ok"] and rp["revision"] == rev + 1,
+              "pass accepted, revision advanced")
+        check(not any(e["player"] == 0 and e["event"] == "CARD_PLAYED"
+                      for e in rp["events"]),
+              "pass plays no card for the human")
+        check(rp["state"]["reaction_window"]
+              or rp["state"]["active_player"] == 0
+              or rp["state"]["phase"] == "GAME_OVER",
+              "after pass the bot turn resumed to the next human decision")
+        again = b.call("act", action_id=pas["id"])
+        check(not again["ok"] and again["error_code"] == "INVALID_ACTION",
+              "spent pass id is stale (resumes once)")
+        validate_events(list(r["events"]) + list(rp["events"]),
+                        "window and pass responses")
+    finally:
+        b.close()
+
+    b = Bridge()
+    try:
+        r, _ = open_window(b)
+        rev = r["revision"]
+        pick = next(a for a in r["legal"] if a["type"] == "react")
+        ra = b.call("act", action_id=pick["id"])
+        check(ra["ok"] and ra["revision"] == rev + 1,
+              "react accepted, revision advanced")
+        mine = [e for e in ra["events"] if e["player"] == 0]
+        check(any(e["event"] == "CARD_PLAYED"
+                  and e.get("instance_id") == pick["instance_id"]
+                  for e in mine),
+              f"reaction spell {pick['card_id']} resolved for the human")
+        check(pick["instance_id"] not in
+              [c["instance_id"] for c in ra["state"]["players"][0]["hand"]],
+              "reaction card left the human hand")
+        check(ra["state"]["reaction_window"]
+              or ra["state"]["active_player"] == 0
+              or ra["state"]["phase"] == "GAME_OVER",
+              "after react the bot turn resumed to the next human decision")
+        again = b.call("act", action_id=pick["id"])
+        check(not again["ok"] and again["error_code"] == "INVALID_ACTION",
+              "spent react id is stale (resumes once)")
+        validate_events(list(ra["events"]), "react response")
+    finally:
+        b.close()
+
+    b = Bridge()
+    try:
+        r, _ = open_window(b)
+        bot_turn = r["state"]["turn"]
+        skip = next(a for a in r["legal"] if a["type"] == "pass_turn")
+        rs = b.call("act", action_id=skip["id"])
+        check(rs["ok"] and not (rs["state"]["reaction_window"]
+                                and rs["state"]["turn"] == bot_turn),
+              "pass_turn: no further window in that bot turn")
+        check(rs["state"]["active_player"] == 0
+              or rs["state"]["phase"] == "GAME_OVER",
+              "pass_turn: lands on the human turn")
+        r = rs
+        turns = 0
+        while (not r["state"]["reaction_window"]
+               and r["state"]["phase"] != "GAME_OVER" and turns < 20):
+            end = next(a for a in r["legal"] if a["type"] == "end_turn")
+            r = b.call("act", action_id=end["id"])
+            turns += 1
+        check(r["state"]["reaction_window"]
+              and r["state"]["turn"] > bot_turn,
+              "pass_turn: windows open again on a later bot turn")
+    finally:
+        b.close()
+
+    print("test_bridge: PASS (12/12 properties)")
 
 
 if __name__ == "__main__":
