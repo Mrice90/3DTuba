@@ -1,0 +1,67 @@
+Mono path[0] = 'C:/Users/mattj/OneDrive/Documents/AI Dev/Infinite Conquest/playtest/unity-build-coin-prototype-2026-10-10/InfiniteConquestPlaytest_Data/Managed'
+Mono config path = 'C:/Users/mattj/OneDrive/Documents/AI Dev/Infinite Conquest/playtest/unity-build-coin-prototype-2026-10-10/MonoBleedingEdge/etc'
+CodeReloadManager initialized
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.6.3f1 (45d8eee7de74)
+[EntityIdStore] init: VM path (explicit commit), pageSize=4096, blockCount=1048576, entitiesPerBlock=256, slots reserved=4294967296 bytes
+[Subsystems] Discovering subsystems at path C:/Users/mattj/OneDrive/Documents/AI Dev/Infinite Conquest/playtest/unity-build-coin-prototype-2026-10-10/InfiniteConquestPlaytest_Data/UnitySubsystems
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 3060 Laptop GPU (ID=0x2520)
+    Vendor:   NVIDIA
+    VRAM:     5996 MB
+    Driver:   32.0.15.8142
+Begin MonoManager ReloadAssembly
+- Finished resetting the current domain, in  0.015 seconds
+[Physics::Module] Selected backend (deferred post-plugins).
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+UnloadTime: 0.979300 ms
+PLAYTEST_SMOKE PASS catalog has 139 cards (139)
+PLAYTEST_SMOKE PASS AI-105: card faces staged (139/139 with data, 119 with art)
+PLAYTEST_SMOKE PASS every card builds a token (0 failed)
+PLAYTEST_SMOKE PASS staged real models load (90/90)
+PLAYTEST_SMOKE PASS every card resolves deploy/move/attack/hit/destroy SFX (372 card-specific, rest generic)
+PLAYTEST_SMOKE PASS CHARACTER repeated animation restores root and visual baseline
+PLAYTEST_SMOKE PASS CHARACTER movement ends at authoritative position and stack scale
+PLAYTEST_SMOKE PASS CHARACTER destruction hides ownership ring
+PLAYTEST_SMOKE PASS CHARACTER settle restores an interrupted or collapsed pose
+PLAYTEST_SMOKE PASS CHARACTER late hit cannot revive an interrupted destruction
+PLAYTEST_SMOKE PASS CHARACTER deactivation completes pending movement and handle
+PLAYTEST_SMOKE PASS STRUCTURE repeated animation restores root and visual baseline
+PLAYTEST_SMOKE PASS STRUCTURE movement ends at authoritative position and stack scale
+PLAYTEST_SMOKE PASS STRUCTURE destruction hides ownership ring
+PLAYTEST_SMOKE PASS STRUCTURE settle restores an interrupted or collapsed pose
+PLAYTEST_SMOKE PASS STRUCTURE late hit cannot revive an interrupted destruction
+PLAYTEST_SMOKE PASS STRUCTURE deactivation completes pending movement and handle
+PLAYTEST_SMOKE PASS CAPITAL repeated animation restores root and visual baseline
+PLAYTEST_SMOKE PASS CAPITAL movement ends at authoritative position and stack scale
+PLAYTEST_SMOKE PASS CAPITAL destruction hides ownership ring
+PLAYTEST_SMOKE PASS CAPITAL settle restores an interrupted or collapsed pose
+PLAYTEST_SMOKE PASS CAPITAL late hit cannot revive an interrupted destruction
+PLAYTEST_SMOKE PASS CAPITAL deactivation completes pending movement and handle
+PLAYTEST_SMOKE PASS LAND repeated animation restores root and visual baseline
+PLAYTEST_SMOKE PASS LAND movement ends at authoritative position and stack scale
+PLAYTEST_SMOKE PASS LAND destruction hides ownership ring
+PLAYTEST_SMOKE PASS LAND settle restores an interrupted or collapsed pose
+PLAYTEST_SMOKE PASS LAND late hit cannot revive an interrupted destruction
+PLAYTEST_SMOKE PASS LAND deactivation completes pending movement and handle
+PLAYTEST_SMOKE PASS playback ran without exceptions
+PLAYTEST_SMOKE PASS all events applied (235/235)
+PLAYTEST_SMOKE PASS AI-104: no hex ever holds enemy Characters together (0 violations; 6 events for destroyed units skipped)
+PLAYTEST_SMOKE PASS AI-104: seed-42 post-death move events were suppressed
+PLAYTEST_SMOKE PASS GAME_OVER winner = seat 0 (Zeus) as in AI-066 seed 42 (0)
+PLAYTEST_SMOKE PASS Poseidon capital destroyed
+PLAYTEST_SMOKE PASS
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+CodeReloadManager destroyed
