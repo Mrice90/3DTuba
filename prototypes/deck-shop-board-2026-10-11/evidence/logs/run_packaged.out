@@ -1,0 +1,180 @@
+{"name": "default-seed42-seat0", "exit_code": 0, "timeout": false, "seconds": 13.4, "passed": true, "error": "", "board": "4x6"}
+{"name": "default-seed42-seat1", "exit_code": 0, "timeout": false, "seconds": 15.1, "passed": true, "error": "", "board": "4x6"}
+{"name": "smoke", "exit_code": 0, "timeout": false, "seconds": 17.1, "passed": true, "error": null, "board": null}
+{"name": "default-seed713-seat1", "exit_code": 0, "timeout": false, "seconds": 5.5, "passed": true, "error": "", "board": "4x6"}
+{"name": "default-seed713-seat0", "exit_code": 0, "timeout": false, "seconds": 8.7, "passed": true, "error": "", "board": "4x6"}
+{"name": "default-seed7-seat0", "exit_code": 0, "timeout": false, "seconds": 9.0, "passed": true, "error": "", "board": "4x6"}
+{"name": "default-seed7-seat1", "exit_code": 0, "timeout": false, "seconds": 7.0, "passed": true, "error": "", "board": "4x6"}
+{"name": "6x8-seed42-seat0", "exit_code": 0, "timeout": false, "seconds": 7.6, "passed": true, "error": "", "board": "6x8"}
+{"name": "6x8-seed713-seat1", "exit_code": 0, "timeout": false, "seconds": 5.4, "passed": true, "error": "", "board": "6x8"}
+{"name": "6x8-seed42-seat1", "exit_code": 0, "timeout": false, "seconds": 9.3, "passed": true, "error": "", "board": "6x8"}
+{"name": "6x8-seed713-seat0", "exit_code": 0, "timeout": false, "seconds": 8.8, "passed": true, "error": "", "board": "6x8"}
+{"name": "hex-seed42-seat0", "exit_code": 0, "timeout": false, "seconds": 7.8, "passed": true, "error": "", "board": "hex37"}
+{"name": "hex-seed42-seat1", "exit_code": 0, "timeout": false, "seconds": 9.4, "passed": true, "error": "", "board": "hex37"}
+{"name": "hex-seed713-seat0", "exit_code": 0, "timeout": false, "seconds": 8.8, "passed": true, "error": "", "board": "hex37"}
+{"name": "hex-seed713-seat1", "exit_code": 0, "timeout": false, "seconds": 5.4, "passed": true, "error": "", "board": "hex37"}
+{"name": "shop-default-1280x720", "exit_code": 0, "timeout": false, "seconds": 17.9, "passed": true, "error": null, "board": null}
+{"name": "shots-default-seed42-seat0-1280x720", "exit_code": 0, "timeout": false, "seconds": 14.0, "passed": true, "error": "", "board": "4x6"}
+{"name": "shots-default-seed42-seat1-1280x720", "exit_code": 0, "timeout": false, "seconds": 15.7, "passed": true, "error": "", "board": "4x6"}
+{"name": "shop-6x8-1280x720", "exit_code": 0, "timeout": false, "seconds": 17.9, "passed": true, "error": null, "board": null}
+{"name": "shots-6x8-seed42-seat0-1280x720", "exit_code": 0, "timeout": false, "seconds": 14.3, "passed": true, "error": "", "board": "6x8"}
+{"name": "shots-6x8-seed42-seat1-1280x720", "exit_code": 0, "timeout": false, "seconds": 15.8, "passed": true, "error": "", "board": "6x8"}
+{"name": "shop-hex-1280x720", "exit_code": 0, "timeout": false, "seconds": 17.8, "passed": true, "error": null, "board": null}
+{"name": "shots-hex-seed42-seat0-1280x720", "exit_code": 0, "timeout": false, "seconds": 13.9, "passed": true, "error": "", "board": "hex37"}
+{"name": "shots-hex-seed42-seat1-1280x720", "exit_code": 0, "timeout": false, "seconds": 15.5, "passed": true, "error": "", "board": "hex37"}
+{
+  "passed": true,
+  "totals": {
+    "actions": 738,
+    "abilityListChecks": 764,
+    "commandCenterActivations": 35,
+    "capitalDamageChecks": 9,
+    "stormRelayChecks": 0,
+    "healChecks": 6,
+    "hpSnapshotChecks": 764,
+    "reactionWindows": 0,
+    "reactionCueChecks": 0
+  },
+  "game_over": [
+    {
+      "name": "default-seed42-seat0",
+      "board": "4x6",
+      "winner": 1,
+      "turn": 9,
+      "actions": 32
+    },
+    {
+      "name": "default-seed42-seat1",
+      "board": "4x6",
+      "winner": 0,
+      "turn": 12,
+      "actions": 53
+    },
+    {
+      "name": "default-seed713-seat0",
+      "board": "4x6",
+      "winner": 1,
+      "turn": 10,
+      "actions": 47
+    },
+    {
+      "name": "default-seed713-seat1",
+      "board": "4x6",
+      "winner": 0,
+      "turn": 9,
+      "actions": 12
+    },
+    {
+      "name": "default-seed7-seat0",
+      "board": "4x6",
+      "winner": 1,
+      "turn": 11,
+      "actions": 29
+    },
+    {
+      "name": "default-seed7-seat1",
+      "board": "4x6",
+      "winner": 0,
+      "turn": 10,
+      "actions": 22
+    },
+    {
+      "name": "6x8-seed42-seat0",
+      "board": "6x8",
+      "winner": 1,
+      "turn": 9,
+      "actions": 32
+    },
+    {
+      "name": "6x8-seed42-seat1",
+      "board": "6x8",
+      "winner": 0,
+      "turn": 12,
+      "actions": 53
+    },
+    {
+      "name": "6x8-seed713-seat0",
+      "board": "6x8",
+      "winner": 1,
+      "turn": 10,
+      "actions": 47
+    },
+    {
+      "name": "6x8-seed713-seat1",
+      "board": "6x8",
+      "winner": 0,
+      "turn": 9,
+      "actions": 12
+    },
+    {
+      "name": "hex-seed42-seat0",
+      "board": "hex37",
+      "winner": 1,
+      "turn": 9,
+      "actions": 32
+    },
+    {
+      "name": "hex-seed42-seat1",
+      "board": "hex37",
+      "winner": 0,
+      "turn": 12,
+      "actions": 53
+    },
+    {
+      "name": "hex-seed713-seat0",
+      "board": "hex37",
+      "winner": 1,
+      "turn": 10,
+      "actions": 47
+    },
+    {
+      "name": "hex-seed713-seat1",
+      "board": "hex37",
+      "winner": 0,
+      "turn": 9,
+      "actions": 12
+    },
+    {
+      "name": "shots-default-seed42-seat0-1280x720",
+      "board": "4x6",
+      "winner": 1,
+      "turn": 9,
+      "actions": 32
+    },
+    {
+      "name": "shots-default-seed42-seat1-1280x720",
+      "board": "4x6",
+      "winner": 0,
+      "turn": 12,
+      "actions": 53
+    },
+    {
+      "name": "shots-6x8-seed42-seat0-1280x720",
+      "board": "6x8",
+      "winner": 1,
+      "turn": 9,
+      "actions": 32
+    },
+    {
+      "name": "shots-6x8-seed42-seat1-1280x720",
+      "board": "6x8",
+      "winner": 0,
+      "turn": 12,
+      "actions": 53
+    },
+    {
+      "name": "shots-hex-seed42-seat0-1280x720",
+      "board": "hex37",
+      "winner": 1,
+      "turn": 9,
+      "actions": 32
+    },
+    {
+      "name": "shots-hex-seed42-seat1-1280x720",
+      "board": "hex37",
+      "winner": 0,
+      "turn": 12,
+      "actions": 53
+    }
+  ]
+}

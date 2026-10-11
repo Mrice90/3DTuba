@@ -1,0 +1,31 @@
+{
+    "passed": true,
+    "actions": 12,
+    "capacityChecks": 0,
+    "spellTargets": 0,
+    "structureAbilities": 0,
+    "winner": 0,
+    "turn": 9,
+    "abilityListChecks": 13,
+    "commandCenterActivations": 0,
+    "capitalDamageChecks": 0,
+    "stormRelayChecks": 0,
+    "healChecks": 0,
+    "losBlockedSeen": 0,
+    "buriedSourcesSeen": 0,
+    "hpSnapshotChecks": 13,
+    "rejectionShown": true,
+    "reactionWindows": 0,
+    "reactionCueChecks": 0,
+    "boardDrawn": "6x8",
+    "boardRules": "4x6",
+    "boardDrawnCells": 48,
+    "boardPreviewTiles": 24,
+    "error": "",
+    "checks": [
+        "Packaged rules bridge started with slot policy enabled",
+        "Capacity-valid summon offers and HUD metadata",
+        "Mouse targeting and explicit ability handlers submitted legal actions",
+        "Live Unity match reached GAME_OVER"
+    ]
+}
