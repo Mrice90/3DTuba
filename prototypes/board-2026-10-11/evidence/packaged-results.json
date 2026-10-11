@@ -1,6 +1,6 @@
 {
   "package": "C:\\Users\\mattj\\OneDrive\\Documents\\AI Dev\\Infinite Conquest\\playtest\\unity-build-board-2026-10-11",
-  "assembly_sha256": "1d47a27010497e0fe99907d60dc576f672e5c0fe24aed678f9423b4b5dd6eed7",
+  "assembly_sha256": "6766c75b6ec79a21b24f502fd0d7cccb93246cf69143d7ad937f19114bee5f79",
   "runs": [
     {
       "name": "smoke",
@@ -9,7 +9,7 @@
       ],
       "exit_code": 0,
       "timeout": false,
-      "seconds": 12.3,
+      "seconds": 21.4,
       "result": {
         "passed": true,
         "cards": 139,
@@ -163,7 +163,7 @@
       ],
       "exit_code": 0,
       "timeout": false,
-      "seconds": 10.5,
+      "seconds": 20.3,
       "result": {
         "passed": true,
         "actions": 55,
@@ -209,7 +209,7 @@
       ],
       "exit_code": 0,
       "timeout": false,
-      "seconds": 7.7,
+      "seconds": 17.3,
       "result": {
         "passed": true,
         "actions": 25,
@@ -255,7 +255,7 @@
       ],
       "exit_code": 0,
       "timeout": false,
-      "seconds": 12.4,
+      "seconds": 9.1,
       "result": {
         "passed": true,
         "actions": 29,
@@ -301,7 +301,7 @@
       ],
       "exit_code": 0,
       "timeout": false,
-      "seconds": 23.8,
+      "seconds": 15.2,
       "result": {
         "passed": true,
         "actions": 117,
@@ -347,7 +347,7 @@
       ],
       "exit_code": 0,
       "timeout": false,
-      "seconds": 27.5,
+      "seconds": 19.2,
       "result": {
         "passed": true,
         "actions": 108,
@@ -393,7 +393,7 @@
       ],
       "exit_code": 0,
       "timeout": false,
-      "seconds": 14.3,
+      "seconds": 8.8,
       "result": {
         "passed": true,
         "actions": 35,
@@ -441,7 +441,7 @@
       ],
       "exit_code": 0,
       "timeout": false,
-      "seconds": 12.9,
+      "seconds": 22.3,
       "result": {
         "passed": true,
         "actions": 55,
@@ -475,6 +475,54 @@
       }
     },
     {
+      "name": "previewhex-seed42-seat0",
+      "args": [
+        "-gameplayLiveSmoke",
+        "-humanSeat",
+        "0",
+        "-seed",
+        "42",
+        "-bridgeTranscript",
+        "C:\\Users\\mattj\\OneDrive\\Documents\\AI Dev\\Infinite Conquest\\playtest\\unity-build-board-2026-10-11\\checks\\previewhex-seed42-seat0\\bridge-transcript.jsonl",
+        "-board",
+        "hex"
+      ],
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 22.0,
+      "result": {
+        "passed": true,
+        "actions": 55,
+        "capacityChecks": 253,
+        "spellTargets": 2,
+        "structureAbilities": 0,
+        "winner": 0,
+        "turn": 18,
+        "abilityListChecks": 56,
+        "commandCenterActivations": 13,
+        "capitalDamageChecks": 7,
+        "stormRelayChecks": 0,
+        "healChecks": 0,
+        "losBlockedSeen": 0,
+        "buriedSourcesSeen": 90,
+        "hpSnapshotChecks": 56,
+        "rejectionShown": true,
+        "reactionWindows": 0,
+        "reactionCueChecks": 0,
+        "boardDrawn": "hex37",
+        "boardRules": "4x6",
+        "boardDrawnCells": 37,
+        "boardPreviewTiles": 13,
+        "error": "",
+        "checks": [
+          "Packaged rules bridge started with slot policy enabled",
+          "Capacity-valid summon offers and HUD metadata",
+          "Mouse targeting and explicit ability handlers submitted legal actions",
+          "Live Unity match reached GAME_OVER"
+        ]
+      }
+    },
+    {
       "name": "preview6x8-seed42-seat1",
       "args": [
         "-gameplayLiveSmoke",
@@ -489,7 +537,7 @@
       ],
       "exit_code": 0,
       "timeout": false,
-      "seconds": 9.9,
+      "seconds": 16.9,
       "result": {
         "passed": true,
         "actions": 25,
@@ -523,6 +571,54 @@
       }
     },
     {
+      "name": "previewhex-seed42-seat1",
+      "args": [
+        "-gameplayLiveSmoke",
+        "-humanSeat",
+        "1",
+        "-seed",
+        "42",
+        "-bridgeTranscript",
+        "C:\\Users\\mattj\\OneDrive\\Documents\\AI Dev\\Infinite Conquest\\playtest\\unity-build-board-2026-10-11\\checks\\previewhex-seed42-seat1\\bridge-transcript.jsonl",
+        "-board",
+        "hex"
+      ],
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 8.3,
+      "result": {
+        "passed": true,
+        "actions": 25,
+        "capacityChecks": 85,
+        "spellTargets": 2,
+        "structureAbilities": 0,
+        "winner": 0,
+        "turn": 12,
+        "abilityListChecks": 26,
+        "commandCenterActivations": 3,
+        "capitalDamageChecks": 0,
+        "stormRelayChecks": 0,
+        "healChecks": 0,
+        "losBlockedSeen": 0,
+        "buriedSourcesSeen": 18,
+        "hpSnapshotChecks": 26,
+        "rejectionShown": true,
+        "reactionWindows": 0,
+        "reactionCueChecks": 0,
+        "boardDrawn": "hex37",
+        "boardRules": "4x6",
+        "boardDrawnCells": 37,
+        "boardPreviewTiles": 13,
+        "error": "",
+        "checks": [
+          "Packaged rules bridge started with slot policy enabled",
+          "Capacity-valid summon offers and HUD metadata",
+          "Mouse targeting and explicit ability handlers submitted legal actions",
+          "Live Unity match reached GAME_OVER"
+        ]
+      }
+    },
+    {
       "name": "preview6x8-seed713-seat0",
       "args": [
         "-gameplayLiveSmoke",
@@ -537,7 +633,7 @@
       ],
       "exit_code": 0,
       "timeout": false,
-      "seconds": 9.0,
+      "seconds": 10.2,
       "result": {
         "passed": true,
         "actions": 29,
@@ -571,6 +667,54 @@
       }
     },
     {
+      "name": "previewhex-seed713-seat0",
+      "args": [
+        "-gameplayLiveSmoke",
+        "-humanSeat",
+        "0",
+        "-seed",
+        "713",
+        "-bridgeTranscript",
+        "C:\\Users\\mattj\\OneDrive\\Documents\\AI Dev\\Infinite Conquest\\playtest\\unity-build-board-2026-10-11\\checks\\previewhex-seed713-seat0\\bridge-transcript.jsonl",
+        "-board",
+        "hex"
+      ],
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 10.2,
+      "result": {
+        "passed": true,
+        "actions": 29,
+        "capacityChecks": 178,
+        "spellTargets": 1,
+        "structureAbilities": 2,
+        "winner": 0,
+        "turn": 15,
+        "abilityListChecks": 30,
+        "commandCenterActivations": 12,
+        "capitalDamageChecks": 10,
+        "stormRelayChecks": 0,
+        "healChecks": 0,
+        "losBlockedSeen": 0,
+        "buriedSourcesSeen": 23,
+        "hpSnapshotChecks": 30,
+        "rejectionShown": true,
+        "reactionWindows": 0,
+        "reactionCueChecks": 0,
+        "boardDrawn": "hex37",
+        "boardRules": "4x6",
+        "boardDrawnCells": 37,
+        "boardPreviewTiles": 13,
+        "error": "",
+        "checks": [
+          "Packaged rules bridge started with slot policy enabled",
+          "Capacity-valid summon offers and HUD metadata",
+          "Mouse targeting and explicit ability handlers submitted legal actions",
+          "Live Unity match reached GAME_OVER"
+        ]
+      }
+    },
+    {
       "name": "preview6x8-seed713-seat1",
       "args": [
         "-gameplayLiveSmoke",
@@ -585,7 +729,7 @@
       ],
       "exit_code": 0,
       "timeout": false,
-      "seconds": 14.7,
+      "seconds": 26.3,
       "result": {
         "passed": true,
         "actions": 117,
@@ -619,6 +763,54 @@
       }
     },
     {
+      "name": "previewhex-seed713-seat1",
+      "args": [
+        "-gameplayLiveSmoke",
+        "-humanSeat",
+        "1",
+        "-seed",
+        "713",
+        "-bridgeTranscript",
+        "C:\\Users\\mattj\\OneDrive\\Documents\\AI Dev\\Infinite Conquest\\playtest\\unity-build-board-2026-10-11\\checks\\previewhex-seed713-seat1\\bridge-transcript.jsonl",
+        "-board",
+        "hex"
+      ],
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 24.6,
+      "result": {
+        "passed": true,
+        "actions": 117,
+        "capacityChecks": 935,
+        "spellTargets": 3,
+        "structureAbilities": 4,
+        "winner": 1,
+        "turn": 18,
+        "abilityListChecks": 118,
+        "commandCenterActivations": 21,
+        "capitalDamageChecks": 0,
+        "stormRelayChecks": 0,
+        "healChecks": 4,
+        "losBlockedSeen": 0,
+        "buriedSourcesSeen": 195,
+        "hpSnapshotChecks": 118,
+        "rejectionShown": true,
+        "reactionWindows": 0,
+        "reactionCueChecks": 0,
+        "boardDrawn": "hex37",
+        "boardRules": "4x6",
+        "boardDrawnCells": 37,
+        "boardPreviewTiles": 13,
+        "error": "",
+        "checks": [
+          "Packaged rules bridge started with slot policy enabled",
+          "Capacity-valid summon offers and HUD metadata",
+          "Mouse targeting and explicit ability handlers submitted legal actions",
+          "Live Unity match reached GAME_OVER"
+        ]
+      }
+    },
+    {
       "name": "shots6x8-seed42-seat0-1280x720",
       "args": [
         "-gameplayLiveSmoke",
@@ -635,7 +827,7 @@
       ],
       "exit_code": 0,
       "timeout": false,
-      "seconds": 16.3,
+      "seconds": 33.6,
       "result": {
         "passed": true,
         "actions": 55,
@@ -685,7 +877,7 @@
       ],
       "exit_code": 0,
       "timeout": false,
-      "seconds": 14.5,
+      "seconds": 32.7,
       "result": {
         "passed": true,
         "actions": 25,
@@ -717,16 +909,116 @@
           "Live Unity match reached GAME_OVER"
         ]
       }
+    },
+    {
+      "name": "shotshex-seed42-seat0-1280x720",
+      "args": [
+        "-gameplayLiveSmoke",
+        "-humanSeat",
+        "0",
+        "-seed",
+        "42",
+        "-bridgeTranscript",
+        "C:\\Users\\mattj\\OneDrive\\Documents\\AI Dev\\Infinite Conquest\\playtest\\unity-build-board-2026-10-11\\checks\\shotshex-seed42-seat0-1280x720\\bridge-transcript.jsonl",
+        "-board",
+        "hex",
+        "-gameplayLiveShots",
+        "C:\\Users\\mattj\\OneDrive\\Documents\\AI Dev\\Infinite Conquest\\playtest\\unity-build-board-2026-10-11\\checks\\shotshex-seed42-seat0-1280x720"
+      ],
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 35.0,
+      "result": {
+        "passed": true,
+        "actions": 55,
+        "capacityChecks": 253,
+        "spellTargets": 2,
+        "structureAbilities": 0,
+        "winner": 0,
+        "turn": 18,
+        "abilityListChecks": 57,
+        "commandCenterActivations": 13,
+        "capitalDamageChecks": 7,
+        "stormRelayChecks": 0,
+        "healChecks": 0,
+        "losBlockedSeen": 0,
+        "buriedSourcesSeen": 90,
+        "hpSnapshotChecks": 57,
+        "rejectionShown": true,
+        "reactionWindows": 0,
+        "reactionCueChecks": 0,
+        "boardDrawn": "hex37",
+        "boardRules": "4x6",
+        "boardDrawnCells": 37,
+        "boardPreviewTiles": 13,
+        "error": "",
+        "checks": [
+          "Packaged rules bridge started with slot policy enabled",
+          "Capacity-valid summon offers and HUD metadata",
+          "Mouse targeting and explicit ability handlers submitted legal actions",
+          "Live Unity match reached GAME_OVER"
+        ]
+      }
+    },
+    {
+      "name": "shotshex-seed42-seat1-1280x720",
+      "args": [
+        "-gameplayLiveSmoke",
+        "-humanSeat",
+        "1",
+        "-seed",
+        "42",
+        "-bridgeTranscript",
+        "C:\\Users\\mattj\\OneDrive\\Documents\\AI Dev\\Infinite Conquest\\playtest\\unity-build-board-2026-10-11\\checks\\shotshex-seed42-seat1-1280x720\\bridge-transcript.jsonl",
+        "-board",
+        "hex",
+        "-gameplayLiveShots",
+        "C:\\Users\\mattj\\OneDrive\\Documents\\AI Dev\\Infinite Conquest\\playtest\\unity-build-board-2026-10-11\\checks\\shotshex-seed42-seat1-1280x720"
+      ],
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 13.1,
+      "result": {
+        "passed": true,
+        "actions": 25,
+        "capacityChecks": 85,
+        "spellTargets": 2,
+        "structureAbilities": 0,
+        "winner": 0,
+        "turn": 12,
+        "abilityListChecks": 27,
+        "commandCenterActivations": 3,
+        "capitalDamageChecks": 0,
+        "stormRelayChecks": 0,
+        "healChecks": 0,
+        "losBlockedSeen": 0,
+        "buriedSourcesSeen": 18,
+        "hpSnapshotChecks": 27,
+        "rejectionShown": true,
+        "reactionWindows": 0,
+        "reactionCueChecks": 0,
+        "boardDrawn": "hex37",
+        "boardRules": "4x6",
+        "boardDrawnCells": 37,
+        "boardPreviewTiles": 13,
+        "error": "",
+        "checks": [
+          "Packaged rules bridge started with slot policy enabled",
+          "Capacity-valid summon offers and HUD metadata",
+          "Mouse targeting and explicit ability handlers submitted legal actions",
+          "Live Unity match reached GAME_OVER"
+        ]
+      }
     }
   ],
   "totals": {
-    "actions": 675,
-    "abilityListChecks": 689,
-    "commandCenterActivations": 129,
-    "capitalDamageChecks": 41,
+    "actions": 981,
+    "abilityListChecks": 1003,
+    "commandCenterActivations": 194,
+    "capitalDamageChecks": 65,
     "stormRelayChecks": 0,
-    "healChecks": 8,
-    "hpSnapshotChecks": 689,
+    "healChecks": 12,
+    "hpSnapshotChecks": 1003,
     "reactionWindows": 0,
     "reactionCueChecks": 0
   },
@@ -782,8 +1074,22 @@
       "actions": 55
     },
     {
+      "name": "previewhex-seed42-seat0",
+      "board": "hex37",
+      "winner": 0,
+      "turn": 18,
+      "actions": 55
+    },
+    {
       "name": "preview6x8-seed42-seat1",
       "board": "6x8",
+      "winner": 0,
+      "turn": 12,
+      "actions": 25
+    },
+    {
+      "name": "previewhex-seed42-seat1",
+      "board": "hex37",
       "winner": 0,
       "turn": 12,
       "actions": 25
@@ -796,8 +1102,22 @@
       "actions": 29
     },
     {
+      "name": "previewhex-seed713-seat0",
+      "board": "hex37",
+      "winner": 0,
+      "turn": 15,
+      "actions": 29
+    },
+    {
       "name": "preview6x8-seed713-seat1",
       "board": "6x8",
+      "winner": 1,
+      "turn": 18,
+      "actions": 117
+    },
+    {
+      "name": "previewhex-seed713-seat1",
+      "board": "hex37",
       "winner": 1,
       "turn": 18,
       "actions": 117
@@ -812,6 +1132,20 @@
     {
       "name": "shots6x8-seed42-seat1-1280x720",
       "board": "6x8",
+      "winner": 0,
+      "turn": 12,
+      "actions": 25
+    },
+    {
+      "name": "shotshex-seed42-seat0-1280x720",
+      "board": "hex37",
+      "winner": 0,
+      "turn": 18,
+      "actions": 55
+    },
+    {
+      "name": "shotshex-seed42-seat1-1280x720",
+      "board": "hex37",
       "winner": 0,
       "turn": 12,
       "actions": 25

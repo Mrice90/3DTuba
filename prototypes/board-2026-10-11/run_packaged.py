@@ -1,7 +1,7 @@
 """Packaged checks for the board build (from reviews/combined-2026-10-11/run_packaged.py).
 
 Rules-grid runs: playback smoke + both-seat -gameplayLiveSmoke matches. Preview runs: the same live matches with
--board 6x8. Shot runs: windowed 1280x720 live matches with -board 6x8 that save the board from both snap views.
+-board 6x8 and -board hex. Shot runs: windowed 1280x720 live matches with each preview board that save the board from both snap views.
 Usage: python run_packaged.py [seed ...]
 """
 import os, concurrent.futures, hashlib, json, pathlib, subprocess, sys, time
@@ -50,13 +50,15 @@ for seed in SEEDS:
 for seed in PREVIEW_SEEDS:
     for seat in (0, 1):
         jobs.append(live(f'preview6x8-seed{seed}-seat{seat}', seed, seat, ['-board', '6x8']))
+        jobs.append(live(f'previewhex-seed{seed}-seat{seat}', seed, seat, ['-board', 'hex']))
 with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
     runs = list(pool.map(lambda j: run(*j), jobs))
 # Windowed shot runs one at a time so each owns the screen.
-for seat in (0, 1):
-    name = f'shots6x8-seed42-seat{seat}-1280x720'
-    n, a = live(name, 42, seat, ['-board', '6x8', '-gameplayLiveShots', str(OUT / name)])
-    runs.append(run(n, a, headless=False))
+for board in ('6x8', 'hex'):
+    for seat in (0, 1):
+        name = f'shots{board}-seed42-seat{seat}-1280x720'
+        n, a = live(name, 42, seat, ['-board', board, '-gameplayLiveShots', str(OUT / name)])
+        runs.append(run(n, a, headless=False))
 
 livers = [r for r in runs if r['name'] != 'smoke' and r['result']]
 keys = ['actions', 'abilityListChecks', 'commandCenterActivations', 'capitalDamageChecks', 'stormRelayChecks', 'healChecks',

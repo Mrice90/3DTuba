@@ -1,4 +1,4 @@
-# Engine handoff: changing the board from 4 × 6 to 6 × 8
+# Engine handoff: changing the board from 4 × 6 to 6 × 8 (and the hexagon option)
 
 **Owner:** ChatGPT (rules). Claude did not change any engine code, data or DLLs in this delivery.
 **Target (Matt, 2026-10-11):** 6 columns × 8 rows = 48 hexes, double today's 24. Each side's home half (plot) becomes 4 rows: Zeus rows 0–3, Poseidon rows 4–7.
@@ -65,7 +65,44 @@ Then rebuild the Java bridge (jar + `RulesBridge.class`).
 
 `Assets/StreamingAssets/NativeRules/` (`cards/*.json`, `faction-starters.json`, `structure-slots.properties`) has **no coordinates or board-size values** (checked 2026-10-11). No data change is needed for the size alone. Card text that names ranges or rows should still be reread for the new rules (e.g. "enemy territory", "back row").
 
-## 7. Re-verify after the change
+## 7. Alternative: hexagon-shaped board (Matt, 2026-10-11 19:34, "a more hexagonal board might be more esthetic")
+
+The client draws it with `-board hex` (`PLAY-BOARD-HEX-PREVIEW.cmd`, and the "hexagon board preview" Start menu shortcut). Matt hasn't chosen between it and 6 × 8; this section is what the engine would need if he picks it.
+
+**Shape:** radius 3, which is **37 hexes**, in rows of 4-5-6-7-6-5-4.
+- I picked radius 3 because it is the regular hexagon closest to 48: radius 3 gives 37 (11 fewer), radius 4 gives 61 (13 more).
+- It also contains the whole current 4 × 6 grid, so today's engine still plays inside the preview.
+- A regular hexagon always has an odd number of rows, so it can't split into two equal halves without a middle row. The clean split is **Zeus rows 0-2 (15 hexes), a neutral middle row of 7, and Poseidon rows 4-6 (15 hexes)**.
+
+**Mapping onto the engine's offset grid.** Keep the odd-row offset coordinates and the 7 × 7 bounding rectangle (49 cells), and add an on-board mask. The 37 on-board cells (x listed per row) are:
+
+| Row y | On-board x | Masked x (12 cells in total) |
+|---|---|---|
+| 0 | 2-5 | 0, 1, 6 |
+| 1 | 1-5 | 0, 6 |
+| 2 | 1-6 | 0 |
+| 3 | 0-6 | none |
+| 4 | 1-6 | 0 |
+| 5 | 1-5 | 0, 6 |
+| 6 | 2-5 | 0, 1, 6 |
+
+The centre hex is (3,3); a cell is on the board when `distance((3,3), cell) <= 3`. Today's grid becomes cells (x+2, y) for x 0-3 and y 0-5; all of them are on the board, and 13 new cells are added. Shifting only x keeps row parity, so existing neighbour maths is unchanged.
+
+**Engine changes:**
+- `BoardPosition.cs`: Width = 7, Height = 7. Replace the rectangle bounds check (`:22`) with `IsOnBoard(x, y)`, i.e. the rectangle bounds plus `HexDistance((3,3), (x,y)) <= 3`. Replace `PlotHeight` with a `MiddleRow = 3` rule:
+  - `IsOnPlayerSide`: player 0 when y < 3, player 1 when y > 3.
+  - `IsOnEnemySide`: the mirror of that.
+  - The middle row belongs to neither side: no movement halving there (`MovementRules.cs:23`), and no capital placement there (`CapitalDeployment.cs:23`).
+- `BoardGeometry.cs:38-39` (`Neighbors`) and `:72` (trace bounds) loop over the rectangle, so they must also skip masked cells (call `IsOnBoard`). The hexagon is convex, so a sight line between two on-board hexes never leaves the board, and the trace logic needs no other change. `:53` `*4` becomes `*7` (Width).
+- `BoardState.cs:20-21`: create only on-board cells (37). Keep row-major order for transcript parity.
+- `NativeRulesSession.cs:99` and `RulesBridge.java:458, 484-485`: default capitals. The point-symmetric back-row pair is **Zeus (3,0) and Poseidon (4,6)**, mirroring today's (1,0)/(2,5).
+- `NativeActionHints.cs:61`: same Java `HashSet` capacity extension as in section 2 (more than 24 destinations needs 64 buckets).
+- Java `BoardPosition.java`, `BoardGeometry.java` and `BoardState.java` need the same mask and middle-row changes.
+- I don't recommend switching to axial coordinates. It would change every wire coordinate, the bot hint strings and both clients, and the mask gives the same result.
+
+**Unity client.** `BoardConfig.HexCenter`/`HexRadius` describe the shape in today's rules coordinates (centre (1,3)). Once the engine plays the hexagon, make the rules grid 7 × 7 with the mask: `BoardConfig.InRules` and `BoardView` would need to honour the mask, which is a small client follow-up I can do. `HomeSide` already treats the middle row as neutral.
+
+## 8. Re-verify after the change
 
 1. Native and Java parity: regenerate the native-vs-Java transcript comparison. The old 4 × 6 transcripts and pins no longer apply.
 2. Unity: run `BoardBuild.Build` (board checks, cue, native, R3, camera, coin, restoration, gameplay, audio, player build), then `reviews/board-2026-10-11/run_packaged.py` (both seats, several seeds, until GAME_OVER).

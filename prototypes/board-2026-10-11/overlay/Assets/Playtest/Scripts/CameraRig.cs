@@ -88,6 +88,22 @@ namespace InfiniteConquest.Playtest {
             var rot = Quaternion.Euler(curPitch, curYaw, 0);
             transform.position = curTarget - rot * Vector3.forward * curDist;
             transform.rotation = rot;
+            ApplyScreenShift();
+        }
+        // AI-110: horizontal lens shift in screen pixels (positive moves the picture left). The pose, the
+        // target and every snap view stay the same; only the projection is offset, so picking still matches.
+        public float ScreenShiftPx;
+        Camera ownCamera;
+        void ApplyScreenShift() {
+            if (ownCamera == null) ownCamera = GetComponent<Camera>();
+            if (ownCamera == null) return;
+            ownCamera.ResetProjectionMatrix();
+            if (Mathf.Abs(ScreenShiftPx) < .01f || ownCamera.pixelWidth <= 0) return;
+            ownCamera.projectionMatrix = ShiftedProjection(ownCamera.projectionMatrix, ScreenShiftPx, ownCamera.pixelWidth);
+        }
+        public static Matrix4x4 ShiftedProjection(Matrix4x4 p, float shiftPx, float viewportWidthPx) {
+            p[0, 2] = 2f * shiftPx / viewportWidthPx;
+            return p;
         }
         public static bool PointerOverHud;
         void HandleInput() {

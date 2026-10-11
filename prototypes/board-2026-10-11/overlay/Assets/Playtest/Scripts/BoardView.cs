@@ -24,9 +24,13 @@ namespace InfiniteConquest.Playtest {
 
         public void Build(TokenFactory f) {
             factory = f;
-            float k = BoardLayout.ViewScale;
-            var plinth = PlaytestMeshes.Make("Board plinth", PlaytestMeshes.Prism(6, 4.25f * k, 4.0f * k, .35f, 30), f.Lit(new Color(.06f, .08f, .12f), .6f, .7f), transform, new Vector3(0, -BoardLayout.TileThickness / 2 - .36f, 0));
-            PlaytestMeshes.Make("Plinth glow", PlaytestMeshes.Prism(6, 4.25f * k + .03f, 4.25f * k + .03f, .03f, 30), f.Glow(new Color(.2f, .5f, .7f)), transform, new Vector3(0, -BoardLayout.TileThickness / 2 - .05f, 0));
+            // Rectangle boards keep the original pointy-ended plinth, scaled; the hexagon board gets a flat-topped
+            // plinth that follows its outline (its top and bottom rows are flat, its widest row ends in points).
+            bool hex = BoardConfig.Shape == BoardShape.Hexagon;
+            float k = BoardLayout.ViewScale, phase = hex ? 0 : 30;
+            float R = hex ? (BoardConfig.HexRadius * BoardLayout.RowSpacing + BoardLayout.TileSize / Mathf.Sqrt(3f) + .3f) / .8660254f : 4.25f * k;
+            var plinth = PlaytestMeshes.Make("Board plinth", PlaytestMeshes.Prism(6, R, R * (4.0f / 4.25f), .35f, phase), f.Lit(new Color(.06f, .08f, .12f), .6f, .7f), transform, new Vector3(0, -BoardLayout.TileThickness / 2 - .36f, 0));
+            PlaytestMeshes.Make("Plinth glow", PlaytestMeshes.Prism(6, R + .03f, R + .03f, .03f, phase), f.Glow(new Color(.2f, .5f, .7f)), transform, new Vector3(0, -BoardLayout.TileThickness / 2 - .05f, 0));
             hoverMat = f.Lit(new Color(.28f, .42f, .58f), .6f, .3f);
             selectMat = f.Lit(new Color(.55f, .45f, .18f), .6f, .3f);
             markerMat = f.Glow(new Color(.25f, 1f, .85f));
@@ -34,16 +38,18 @@ namespace InfiniteConquest.Playtest {
             rimMat = f.Glow(new Color(.16f, .26f, .36f));
             rimHoverMat = f.Glow(new Color(.9f, .95f, 1f));
             var previewRim = f.Glow(new Color(.10f, .16f, .22f));
-            for (int dx = 0; dx < BoardConfig.Width; dx++) for (int dy = 0; dy < BoardConfig.Height; dy++) {
-                var r = BoardLayout.FromDrawn(dx, dy); int x = r.x, y = r.y;
-                // Home rows carry a faint faction tint: Zeus on the near PlotHeight rows, Poseidon on the rest.
-                var home = BoardConfig.HomeOfSeat0(dy) ? PlaytestCatalog.FactionColor("ZEUS") : PlaytestCatalog.FactionColor("POSEIDON");
+            foreach (var r in BoardConfig.DrawnCells) {
+                int x = r.x, y = r.y;
+                // Home rows carry a faint faction tint: Zeus on the near rows, Poseidon on the far ones
+                // (the hexagon's middle row is neutral and untinted).
+                int side = BoardConfig.HomeSide(x, y);
                 float checker = ((x + y) & 1) == 0 ? .0f : .025f;
-                var c = Color.Lerp(new Color(.10f + checker, .15f + checker, .21f + checker), home, .09f);
+                var c = new Color(.10f + checker, .15f + checker, .21f + checker);
+                if (side >= 0) c = Color.Lerp(c, PlaytestCatalog.FactionColor(side == 0 ? "ZEUS" : "POSEIDON"), .09f);
                 if (!InBounds(x, y)) {
                     // Preview ring: drawn a shade darker, no ProofCell, no markers, no stacks.
                     var ghost = BoardLayout.CreateTile(x, y, f.Lit(c * .72f, .55f, .25f));
-                    ghost.name = $"Preview tile {dx},{dy}"; ghost.transform.SetParent(transform, true);
+                    ghost.name = $"Preview tile {x},{y}"; ghost.transform.SetParent(transform, true);
                     PlaytestMeshes.Make("Rim", PlaytestMeshes.HexRing(BoardLayout.TileSize, BoardLayout.TileSize - .07f), previewRim, ghost.transform, new Vector3(0, BoardLayout.TileTop + .002f, 0));
                     PreviewTileCount++;
                     continue;

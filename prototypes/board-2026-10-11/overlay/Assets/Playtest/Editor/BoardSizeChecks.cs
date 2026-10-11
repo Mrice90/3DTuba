@@ -39,6 +39,7 @@ public static class BoardSizeChecks {
             Check(Mathf.Abs(BoardLayout.ViewScale - 1) < 1e-5f && Mathf.Abs(BoardLayout.CameraScale - 1) < 1e-5f, "default camera/plinth scale is 1");
             Geometry("4x6");
             CapitalCells();
+            CameraFraming();
 
             foreach (var arg in new[] { "6x8", "planned", "PLANNED" }) {
                 BoardConfig.ApplyCommandLine(new[] { "game.exe", "-board", arg });
@@ -51,8 +52,8 @@ public static class BoardSizeChecks {
             Info("ViewScale 6x8 = " + BoardLayout.ViewScale.ToString("0.000") + ", CameraScale " + BoardLayout.CameraScale.ToString("0.000"));
             Check(BoardLayout.ViewScale > 1.2f && BoardLayout.ViewScale < 1.6f, "6x8 camera/plinth scale is between 1.2 and 1.6");
             for (int y = 0; y < BoardConfig.RulesHeight; y++) {
-                bool zeus = y < BoardConfig.RulesPlotHeight;
-                if (BoardConfig.HomeOfSeat0(y + BoardConfig.Offset.y) != zeus) Check(false, "rules row " + y + " keeps its home side in the preview");
+                int side = y < BoardConfig.RulesPlotHeight ? 0 : 1;
+                if (BoardConfig.HomeSide(0, y) != side) Check(false, "rules row " + y + " keeps its home side in the preview");
             }
             Check(true, "every rules row keeps its faction home side inside the 6x8 home halves");
             Geometry("6x8");
@@ -60,6 +61,25 @@ public static class BoardSizeChecks {
             BoardViewTiles();
             CameraFraming();
             CameraSnapChecks.Run(); Check(true, "camera snap suite passes on the 6x8 preview");
+
+            // Hexagon preview (-board hex): radius 3 around rules (1,3).
+            foreach (var arg in new[] { "hex", "HEXAGON" }) {
+                BoardConfig.ApplyCommandLine(new[] { "game.exe", "-board", arg });
+                Check(BoardConfig.Shape == BoardShape.Hexagon && BoardConfig.CellCount == 37 && BoardConfig.Label == "hex37", "-board " + arg + " draws the 37-hex hexagon");
+            }
+            var cellsHex = BoardConfig.DrawnCells;
+            Check(cellsHex.All(c => MovementState.HexDistance(1, 3, c.x, c.y) <= 3) && cellsHex.Distinct().Count() == 37, "hexagon = every cell within 3 of its centre, no duplicates");
+            Check(Enumerable.Range(0, 24).All(i => cellsHex.Contains(new Vector2Int(i % 4, i / 4))), "hexagon contains the whole 4x6 rules grid");
+            int zeusHome = cellsHex.Count(c => BoardConfig.HomeSide(c.x, c.y) == 0), poseidonHome = cellsHex.Count(c => BoardConfig.HomeSide(c.x, c.y) == 1);
+            Check(zeusHome == 15 && poseidonHome == 15 && cellsHex.Count(c => BoardConfig.HomeSide(c.x, c.y) == -1) == 7, "hexagon home halves 15 + 15 with a 7-hex neutral middle row");
+            var rows = cellsHex.GroupBy(c => c.y).OrderBy(g => g.Key).Select(g => g.Count()).ToArray();
+            Check(rows.SequenceEqual(new[] { 4, 5, 6, 7, 6, 5, 4 }), "hexagon rows 4-5-6-7-6-5-4");
+            Info("hexagon ViewScale " + BoardLayout.ViewScale.ToString("0.000") + ", CameraScale " + BoardLayout.CameraScale.ToString("0.000"));
+            Geometry("hex37");
+            CapitalCells();
+            BoardViewTiles();
+            CameraFraming();
+            CameraSnapChecks.Run(); Check(true, "camera snap suite passes on the hexagon preview");
         } finally { BoardConfig.UseRules(); }
         CameraSnapChecks.Run(); Check(true, "camera snap suite passes on the rules grid");
         Directory.CreateDirectory("Build");
@@ -68,10 +88,7 @@ public static class BoardSizeChecks {
 
     // Drawn cells form a clean hex board and rules adjacency equals world adjacency.
     static void Geometry(string label) {
-        var drawn = new List<Vector3>();
-        for (int dx = 0; dx < BoardConfig.Width; dx++) for (int dy = 0; dy < BoardConfig.Height; dy++) {
-            var r = BoardLayout.FromDrawn(dx, dy); drawn.Add(BoardLayout.CellCenter(r.x, r.y));
-        }
+        var drawn = BoardConfig.DrawnCells.Select(r => BoardLayout.CellCenter(r.x, r.y)).ToList();
         float min = float.MaxValue;
         for (int i = 0; i < drawn.Count; i++) for (int j = i + 1; j < drawn.Count; j++) min = Mathf.Min(min, Vector3.Distance(drawn[i], drawn[j]));
         Check(Mathf.Abs(min - BoardLayout.Spacing) < .01f, label + " no overlapping tiles (closest centres one hex apart)");
@@ -88,7 +105,9 @@ public static class BoardSizeChecks {
         Check(pairs > 0, label + " engine adjacency equals on-screen adjacency for all " + pairs / 2 + " neighbour pairs");
         var rc = Enumerable.Range(0, BoardConfig.RulesWidth * BoardConfig.RulesHeight)
             .Select(i => BoardLayout.CellCenter(i % BoardConfig.RulesWidth, i / BoardConfig.RulesWidth)).Aggregate(Vector3.zero, (a, b) => a + b) / (BoardConfig.RulesWidth * BoardConfig.RulesHeight);
-        Check(Mathf.Abs(rc.z) < .01f && Mathf.Abs(rc.x) < BoardLayout.Spacing * .5f, label + " rules grid centred in the drawn board");
+        if (BoardConfig.Shape == BoardShape.Rectangle)
+            Check(Mathf.Abs(rc.z) < .01f && Mathf.Abs(rc.x) < BoardLayout.Spacing * .5f, label + " rules grid centred in the drawn board");
+        else Check(rc.magnitude < BoardLayout.Spacing, label + " rules grid within one hex of the hexagon centre");
     }
 
     static void CapitalCells() {
@@ -106,40 +125,82 @@ public static class BoardSizeChecks {
         var go = new GameObject("Board size check"); var board = go.AddComponent<BoardView>();
         try {
             board.Build(factory);
+            string l = BoardConfig.Label; int all = BoardConfig.CellCount;
             var cells = go.GetComponentsInChildren<ProofCell>(true);
-            Check(cells.Length == 24 && cells.All(c => BoardConfig.InRules(c.X, c.Y)), "6x8 preview: 24 input cells, all on the rules grid");
-            Check(board.PreviewTileCount == 24, "6x8 preview: 24 inert preview tiles");
-            Check(go.GetComponentsInChildren<MeshCollider>(true).Length == 48, "6x8 preview: 48 tiles drawn");
-            var plinth = go.transform.Find("Board plinth").GetComponent<MeshFilter>().sharedMesh.bounds;
-            Info("6x8 plinth extents " + plinth.extents.ToString("0.00"));
-            Check(plinth.extents.x > 5f, "plinth grew with the board");
+            Check(cells.Length == 24 && cells.All(c => BoardConfig.InRules(c.X, c.Y)), l + " preview: 24 input cells, all on the rules grid");
+            Check(board.PreviewTileCount == all - 24, l + " preview: " + (all - 24) + " inert preview tiles");
+            Check(go.GetComponentsInChildren<MeshCollider>(true).Length == all, l + " preview: " + all + " tiles drawn");
+            var plinthMesh = go.transform.Find("Board plinth").GetComponent<MeshFilter>().sharedMesh;
+            Info(l + " plinth extents " + plinthMesh.bounds.extents.ToString("0.00"));
+            Check(plinthMesh.bounds.extents.x > 4.5f, l + " plinth grew with the board");
+            if (BoardConfig.Shape == BoardShape.Hexagon) {
+                // Flat-topped hexagonal plinth: every tile corner must sit inside it.
+                float rin = plinthMesh.bounds.extents.z, rt = BoardLayout.TileSize / Mathf.Sqrt(3f); bool inside = true;
+                foreach (var c in BoardConfig.DrawnCells) for (int i = 0; i < 6; i++) {
+                    float a = Mathf.Deg2Rad * (60 * i + 30); var q = BoardLayout.CellCenter(c.x, c.y) + new Vector3(rt * Mathf.Cos(a), 0, rt * Mathf.Sin(a));
+                    if (Mathf.Abs(q.z) > rin || .8660254f * Mathf.Abs(q.x) + .5f * Mathf.Abs(q.z) > rin) inside = false;
+                }
+                Check(inside, "hexagon plinth follows the board outline (every tile corner on it)");
+            }
         } finally { UnityEngine.Object.DestroyImmediate(go); }
     }
 
     // At 1280x720 the live viewport is the top 76% of the screen (the hand and End turn sit below it).
     // Overview and top-down must show all 48 drawn cells; both seats' home views must show every rules cell.
+    // HUD rects that sit over the live viewport at 1280x720 (GUI coordinates, y down).
+    static readonly (string name, Rect rect)[] HudPanels = {
+        ("log panel", PlaytestGame.LiveLogRect(1280, 720)),
+        ("open Abilities panel", new Rect(10, 222, 312, 474 - 222)),
+        ("top bar", new Rect(0, 0, 1280, 62)),
+        ("Zeus panel", new Rect(10, 70, 250, 144)),
+        ("Poseidon panel", new Rect(1020, 70, 250, 144)),
+    };
+    // Every capital placement the engine allows (12 home cells a seat) changes where "behind you" and
+    // "opponent" look from, so each view is checked for every own/enemy capital pair, worst case reported.
     static void CameraFraming() {
         var go = new GameObject("Board size camera"); var cam = go.AddComponent<Camera>(); var rig = go.AddComponent<CameraRig>(); rig.InputEnabled = false;
         try {
             cam.fieldOfView = 38; cam.aspect = 1280f / (720f * .76f);
-            var zeusCap = BoardLayout.CellCenter(1, 0); var poseidonCap = BoardLayout.CellCenter(2, 5);
+            float shift = PlaytestGame.BoardShiftPx(1280);
+            float tr = BoardLayout.TileSize / Mathf.Sqrt(3f);
+            int all = BoardConfig.CellCount; string l = BoardConfig.Label;
+            List<Vector3> Home(int seat) {
+                var list = new List<Vector3>();
+                for (int x = 0; x < BoardConfig.RulesWidth; x++) for (int y = 0; y < BoardConfig.RulesHeight; y++)
+                    if (PlaytestGame.ValidCapitalCell(seat, new Vector2Int(x, y))) list.Add(BoardLayout.CellCenter(x, y));
+                return list;
+            }
             foreach (int seat in new[] { 0, 1 }) {
                 string s = seat == 0 ? "Zeus" : "Poseidon";
-                rig.SetHome(new Vector3(0, 0, .2f), -24, 50, 11.5f * BoardLayout.CameraScale, true);
-                rig.FaceFrom(seat == 0 ? zeusCap : poseidonCap, Vector3.zero, true); rig.FaceOpponentFrom(seat == 0 ? poseidonCap : zeusCap, Vector3.zero);
+                var own = Home(seat); var enemy = Home(1 - seat);
                 foreach (CameraRig.View v in Enum.GetValues(typeof(CameraRig.View))) {
-                    rig.SnapTo(v); rig.Snap();
-                    int drawnIn = 0, rulesIn = 0;
-                    for (int dx = 0; dx < BoardConfig.Width; dx++) for (int dy = 0; dy < BoardConfig.Height; dy++) {
-                        var r = BoardLayout.FromDrawn(dx, dy);
-                        var vp = cam.WorldToViewportPoint(BoardLayout.CellCenter(r.x, r.y) + Vector3.up * BoardLayout.TileTop);
-                        bool inside = vp.z > 0 && vp.x > .02f && vp.x < .98f && vp.y > .02f && vp.y < .98f;
-                        if (inside) { drawnIn++; if (BoardConfig.InRules(r.x, r.y)) rulesIn++; }
+                    var hits = new HashSet<string>(); float minX = 1e9f, maxX = -1e9f, minY = 1e9f; int poses = 0, worstDrawn = all, worstRules = 24; float dist = 0;
+                    foreach (var oc in own) foreach (var ec in enemy) {
+                        rig.SetHome(new Vector3(0, 0, .2f), -24, 50, 11.5f * BoardLayout.CameraScale, true);
+                        rig.FaceFrom(oc, Vector3.zero, true); rig.FaceOpponentFrom(ec, Vector3.zero);
+                        rig.SnapTo(v); rig.Snap(); poses++; dist = rig.Distance;
+                        cam.ResetProjectionMatrix(); cam.projectionMatrix = CameraRig.ShiftedProjection(cam.projectionMatrix, shift, 1280);
+                        int drawnIn = 0, rulesIn = 0;
+                        foreach (var rc in BoardConfig.DrawnCells) {
+                            var c = BoardLayout.CellCenter(rc.x, rc.y) + Vector3.up * BoardLayout.TileTop;
+                            var cv = cam.WorldToViewportPoint(c);
+                            if (cv.z > 0 && cv.x > .02f && cv.x < .98f && cv.y > .02f && cv.y < .98f) { drawnIn++; if (BoardConfig.InRules(rc.x, rc.y)) rulesIn++; }
+                            for (int i = 0; i < 6; i++) {
+                                float a = Mathf.Deg2Rad * (60 * i + 30);
+                                var vp = cam.WorldToViewportPoint(c + new Vector3(tr * Mathf.Cos(a), 0, tr * Mathf.Sin(a)));
+                                var g = new Vector2(vp.x * 1280, 720 - (720 * .24f + vp.y * 720 * .76f));
+                                minX = Mathf.Min(minX, g.x); maxX = Mathf.Max(maxX, g.x); minY = Mathf.Min(minY, g.y);
+                                foreach (var pnl in HudPanels) if (pnl.rect.Contains(g)) hits.Add(pnl.name);
+                            }
+                        }
+                        worstDrawn = Mathf.Min(worstDrawn, drawnIn); worstRules = Mathf.Min(worstRules, rulesIn);
                     }
-                    Info($"{s} {v}: {drawnIn}/48 drawn, {rulesIn}/24 rules cells in view, distance {rig.Distance:0.0}");
-                    Check(rulesIn == 24, s + " " + v + " shows every rules cell at 1280x720");
-                    if (v == CameraRig.View.TopDown || v == CameraRig.View.Overview) Check(drawnIn == 48, s + " " + v + " shows the whole 6x8 board at 1280x720");
-                    else Check(drawnIn >= 40, s + " " + v + " shows at least 40 of 48 cells at 1280x720");
+                    Info($"{l} {s} {v}: {poses} capital pairs, board x {minX:0}-{maxX:0} px, top {minY:0} px, shift {shift:0} px, distance {dist:0.0}, worst {worstDrawn}/{all} cells in view, HUD overlaps: " + (hits.Count == 0 ? "none" : string.Join(", ", hits)));
+                    // Previews must clear every HUD panel for every capital placement. The 4 x 6 default keeps the
+                    // framing Matt played (some placements tuck a corner under the log panel or top bar); reported only.
+                    if (BoardConfig.IsPreview) Check(hits.Count == 0, l + " " + s + " " + v + ": no board cell under the log, Abilities, top or player panels, any capital placement, 1280x720");
+                    Check(worstRules == 24, l + " " + s + " " + v + " shows every rules cell at 1280x720");
+                    Check(worstDrawn == all, l + " " + s + " " + v + " shows the whole drawn board at 1280x720");
                 }
             }
         } finally { UnityEngine.Object.DestroyImmediate(go); }

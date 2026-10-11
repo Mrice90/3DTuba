@@ -4,7 +4,7 @@ namespace InfiniteConquest.Proof {
     // Single source for board geometry. The alpha plays on BoardGeometry.HEX: pointy-top hexes in
     // odd-row offset coordinates (odd rows shifted half a hex right). Everything that places tiles or
     // tokens in world space goes through here. Width/Height is the rules grid; the drawn board can be
-    // larger (BoardConfig preview), with the rules grid centred inside it.
+    // larger or another shape (BoardConfig preview), with the rules grid inside it.
     public static class BoardLayout {
         public const int Width = BoardConfig.RulesWidth, Height = BoardConfig.RulesHeight;
         public const float Spacing = 1.3f;                   // centre-to-centre within a row
@@ -16,21 +16,29 @@ namespace InfiniteConquest.Proof {
         // x, y are rules coordinates. Cells outside the rules grid (negative or past the edge) are the
         // drawn-only preview ring. Row parity stays tied to the rules row, so engine adjacency is unchanged
         // wherever the rules grid sits inside the drawn board.
+        // The drawn board's centroid sits on the origin (for a 4 x 6 rectangle that is exactly the old formula:
+        // the mean odd-row shift is a quarter hex).
         public static Vector3 CellCenter(int x, int y) {
-            var o = BoardConfig.Offset;
-            // The mean odd-row shift is a quarter hex, so subtract it to keep the board centred.
-            float column = x + o.x + .5f * (y & 1) - (BoardConfig.Width - 1) / 2f - .25f;
-            return new Vector3(column * Spacing, 0, (y + o.y - (BoardConfig.Height - 1) / 2f) * RowSpacing);
+            var c = BoardConfig.RawCentroid;
+            return new Vector3((x + .5f * (y & 1) - c.x) * Spacing, 0, (y - c.y) * RowSpacing);
         }
-        // Rules cell of a drawn cell.
-        public static Vector2Int FromDrawn(int drawnX, int drawnY) => new Vector2Int(drawnX - BoardConfig.Offset.x, drawnY - BoardConfig.Offset.y);
 
-        // Camera / plinth multiplier: drawn-board half-diagonal over the 4 x 6 board the framing was tuned on.
-        public static float ViewScale => HalfDiagonal(BoardConfig.Width, BoardConfig.Height) / HalfDiagonal(4, 6);
-        // Camera distances grow a little faster than the board, so a larger board still clears the side panels.
-        public static float CameraScale => 1 + (ViewScale - 1) * 1.3f;
+        // Camera / plinth multiplier: drawn-board half-diagonal (centre extents plus one tile) over the 4 x 6
+        // board the framing was tuned on.
+        public static float ViewScale => HalfDiagonal() / HalfDiagonal(4, 6);
+        // Camera distances grow faster than the board, so a larger board clears the side panels and top bar.
+        public static float CameraScale => 1 + (ViewScale - 1) * 1.7f;
         static float HalfDiagonal(int w, int h) {
             float x = (w - .5f) * Spacing + TileSize, z = (h - 1) * RowSpacing + TileSize * 2f / Mathf.Sqrt(3f);
+            return Mathf.Sqrt(x * x + z * z) / 2f;
+        }
+        static float HalfDiagonal() {
+            float minX = float.MaxValue, maxX = float.MinValue, minZ = float.MaxValue, maxZ = float.MinValue;
+            foreach (var c in BoardConfig.DrawnCells) {
+                var p = CellCenter(c.x, c.y);
+                minX = Mathf.Min(minX, p.x); maxX = Mathf.Max(maxX, p.x); minZ = Mathf.Min(minZ, p.z); maxZ = Mathf.Max(maxZ, p.z);
+            }
+            float x = maxX - minX + TileSize, z = maxZ - minZ + TileSize * 2f / Mathf.Sqrt(3f);
             return Mathf.Sqrt(x * x + z * z) / 2f;
         }
 

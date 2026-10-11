@@ -612,6 +612,10 @@ namespace InfiniteConquest.Playtest {
 
         // ------------------------------------------------------------------ HUD
         Rect topBar, leftPanel, rightPanel, bottomBar, logPanel;
+        // AI-110: live HUD panels that sit over the board. A board larger than 4 x 6 is centred in the gap
+        // between the open Abilities panel (x 10-322) and the log panel instead of on the screen centre.
+        public static Rect LiveLogRect(float W, float H) => new Rect(W - 380, 222, 370, 190);
+        public static float BoardShiftPx(float W) => BoardLayout.ViewScale > 1.001f ? W / 2 - (322 + (W - 380)) / 2 : 0;
         bool OverHud(Vector2 mp) {
             var g = new Vector2(mp.x, Screen.height - mp.y);
             return topBar.Contains(g) || leftPanel.Contains(g) || rightPanel.Contains(g) || bottomBar.Contains(g) || handRect.Contains(g) || viewRect.Contains(g) || logPanel.Contains(g)
@@ -678,10 +682,11 @@ namespace InfiniteConquest.Playtest {
             // One button cycles the snap views (same as V); 1-4 jump straight to one, Home resets.
             if (GUI.Button(new Rect(x, y, 170, 32), "View: " + CameraRig.ViewNames[(int)rig.CurrentView] + " (V)", buttonStyle)) rig.NextView();
 
+            if (rig != null) rig.ScreenShiftPx = mode == Mode.Live ? BoardShiftPx(W) : 0;
             // Event log
             if (mode != Mode.Gallery) {
                 // Live: the log sits under the opponent panel so the hand can use the bottom of the screen.
-                logPanel = mode == Mode.Live ? new Rect(W - 380, 222, 370, 190) : new Rect(W - 380, H - 250, 370, 190);
+                logPanel = mode == Mode.Live ? LiveLogRect(W, H) : new Rect(W - 380, H - 250, 370, 190);
                 GUI.Box(logPanel, "", panelStyle);
                 var tail = model.Log.Skip(Mathf.Max(0, model.Log.Count - 10));
                 if (!DrawLiveActionPanel()) GUI.Label(new Rect(logPanel.x + 8, logPanel.y + 4, logPanel.width - 16, logPanel.height - 8), string.Join("\n", tail), smallStyle);
