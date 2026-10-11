@@ -24,3 +24,4 @@
 # Python test caches
 __pycache__/
 *.pyc
+assets/audio/takes/
