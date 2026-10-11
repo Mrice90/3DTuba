@@ -1,0 +1,15 @@
+﻿setup exit 0
+installed exe: True; shortcuts: Infinite Conquest (6x8 board preview).lnk | Infinite Conquest (hexagon board preview).lnk | Infinite Conquest 3D Playtest.lnk | Uninstall Infinite Conquest 3D Playtest.lnk
+desktop shortcut: True
+test Apps entry: Infinite Conquest 3D Playtest (test install)
+java files in install: 0
+Assembly-CSharp.dll equals package: True (6766c75b6ec7)
+InfiniteConquest.RulesCore.dll equals package: True (1a985fdcf0b9)
+InfiniteConquest.Native.dll equals package: True (d20045d797a4)
+java on PATH: False; JAVA_HOME set: False
+Infinite Conquest 3D Playtest.lnk: window 1296 x 688, responding=True, printwindow=True, new java processes=0, command line: "C:\Users\mattj\AppData\Local\Temp\ic-board-installer-test\Infinite Conquest 3D\InfiniteConquestPlaytest.exe" 
+Infinite Conquest (6x8 board preview).lnk: window 1296 x 688, responding=True, printwindow=True, new java processes=0, command line: "C:\Users\mattj\AppData\Local\Temp\ic-board-installer-test\Infinite Conquest 3D\InfiniteConquestPlaytest.exe" -board 6x8
+Infinite Conquest (hexagon board preview).lnk: window 1296 x 688, responding=True, printwindow=True, new java processes=0, command line: "C:\Users\mattj\AppData\Local\Temp\ic-board-installer-test\Infinite Conquest 3D\InfiniteConquestPlaytest.exe" -board hex
+after uninstall: files=False startmenu=False desktop=False testAppsEntry=False
+real install untouched: Apps version 2026.10.11-native -> 2026.10.11-native, exe hash same: True
+ALL_LAUNCHES_OK=True
