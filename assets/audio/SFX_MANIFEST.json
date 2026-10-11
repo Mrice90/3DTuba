@@ -1,17 +1,7 @@
 {
- "count": 221,
+ "count": 231,
  "needed": 729,
  "missing": [
-  "core_victory",
-  "core_defeat",
-  "core_ui_click",
-  "core_ui_back",
-  "core_ui_open_panel",
-  "core_ui_close_panel",
-  "core_ui_notification",
-  "core_matchmaking_found",
-  "core_ambience_zeus_board",
-  "core_ambience_poseidon_board",
   "zeus_ability_stormfront_ability",
   "zeus_ability_stormfront_deploy",
   "zeus_ability_stormfront_destroy",
@@ -5296,6 +5286,205 @@
    "flow_id": null,
    "node_id": null,
    "generation_ids": null
+  },
+  {
+   "key": "core_ui_click",
+   "scope": "core",
+   "prompt": "Clean sci-fi menu button click, sci-fi game sound effect, no music, no voice",
+   "seconds": 0.2,
+   "file": "sfx/core_ui_click.mp3",
+   "pick": 1,
+   "pick_reason": "closest_length",
+   "pick_generation_id": "1791751022314",
+   "pick_seconds": 0.6,
+   "takes": 3,
+   "flow_id": null,
+   "node_id": null,
+   "generation_ids": [
+    "1791751022314",
+    "1791751166525",
+    "1791751022316"
+   ]
+  },
+  {
+   "key": "core_defeat",
+   "scope": "core",
+   "prompt": "Defeat sting, power failing, descending drone and shutdown, sci-fi game sound effect, no music, no voice",
+   "seconds": 3.0,
+   "file": "sfx/core_defeat.mp3",
+   "pick": 1,
+   "pick_reason": "closest_length",
+   "pick_generation_id": "1791751361558",
+   "pick_seconds": 3.0,
+   "takes": 4,
+   "flow_id": null,
+   "node_id": null,
+   "generation_ids": [
+    "1791751361558",
+    "1791751361318",
+    "1791751361425",
+    "1791751361497"
+   ]
+  },
+  {
+   "key": "core_ui_back",
+   "scope": "core",
+   "prompt": "Sci-fi menu back button, soft lower click, sci-fi game sound effect, no music, no voice",
+   "seconds": 0.2,
+   "file": "sfx/core_ui_back.mp3",
+   "pick": 1,
+   "pick_reason": "closest_length",
+   "pick_generation_id": "1791751567453",
+   "pick_seconds": 0.6,
+   "takes": 4,
+   "flow_id": null,
+   "node_id": null,
+   "generation_ids": [
+    "1791751567453",
+    "1791751604934",
+    "1791751604934",
+    "1791751604935"
+   ]
+  },
+  {
+   "key": "core_ui_open_panel",
+   "scope": "core",
+   "prompt": "Holographic panel opening, quick digital slide, sci-fi game sound effect, no music, no voice",
+   "seconds": 0.4,
+   "file": "sfx/core_ui_open_panel.mp3",
+   "pick": 1,
+   "pick_reason": "closest_length",
+   "pick_generation_id": "1791751792338",
+   "pick_seconds": 0.6,
+   "takes": 4,
+   "flow_id": null,
+   "node_id": null,
+   "generation_ids": [
+    "1791751792338",
+    "1791751792720",
+    "1791751792713",
+    "1791751792699"
+   ]
+  },
+  {
+   "key": "core_ui_close_panel",
+   "scope": "core",
+   "prompt": "Holographic panel closing, quick digital slide down, sci-fi game sound effect, no music, no voice",
+   "seconds": 0.4,
+   "file": "sfx/core_ui_close_panel.mp3",
+   "pick": 1,
+   "pick_reason": "closest_length",
+   "pick_generation_id": "1791751892348",
+   "pick_seconds": 0.6,
+   "takes": 4,
+   "flow_id": null,
+   "node_id": null,
+   "generation_ids": [
+    "1791751892348",
+    "1791751928334",
+    "1791751928335",
+    "1791751928336"
+   ]
+  },
+  {
+   "key": "core_ui_notification",
+   "scope": "core",
+   "prompt": "Futuristic notification ping, two soft tones, sci-fi game sound effect, no music, no voice",
+   "seconds": 0.5,
+   "file": "sfx/core_ui_notification.mp3",
+   "pick": 1,
+   "pick_reason": "closest_length",
+   "pick_generation_id": "1791752046561",
+   "pick_seconds": 0.6,
+   "takes": 4,
+   "flow_id": null,
+   "node_id": null,
+   "generation_ids": [
+    "1791752046561",
+    "1791752046688",
+    "1791752046638",
+    "1791752046694"
+   ]
+  },
+  {
+   "key": "core_matchmaking_found",
+   "scope": "core",
+   "prompt": "Match found, energetic sci-fi alert chime, sci-fi game sound effect, no music, no voice",
+   "seconds": 1.0,
+   "file": "sfx/core_matchmaking_found.mp3",
+   "pick": 1,
+   "pick_reason": "closest_length",
+   "pick_generation_id": "1791751476287",
+   "pick_seconds": 1.0,
+   "takes": 4,
+   "flow_id": null,
+   "node_id": null,
+   "generation_ids": [
+    "1791751476287",
+    "1791751426052",
+    "1791751426052",
+    "1791751426053"
+   ]
+  },
+  {
+   "key": "core_victory",
+   "scope": "core",
+   "prompt": "Victory sting, triumphant futuristic energy swell and thunder, no music, sci-fi game sound effect, no music, no voice",
+   "seconds": 3.0,
+   "file": "sfx/core_victory.mp3",
+   "pick": 1,
+   "pick_reason": "closest_length",
+   "pick_generation_id": "1791751638272",
+   "pick_seconds": 3.0,
+   "takes": 4,
+   "flow_id": null,
+   "node_id": null,
+   "generation_ids": [
+    "1791751638272",
+    "1791751638273",
+    "1791751638273",
+    "1791751638274"
+   ]
+  },
+  {
+   "key": "core_ambience_zeus_board",
+   "scope": "core",
+   "prompt": "Ambient sky city above the clouds, wind, distant thunder, electric hum, sci-fi game sound effect, no music, no voice",
+   "seconds": 6.0,
+   "file": "sfx/core_ambience_zeus_board.mp3",
+   "pick": 1,
+   "pick_reason": "closest_length",
+   "pick_generation_id": "1791751784692",
+   "pick_seconds": 6.0,
+   "takes": 4,
+   "flow_id": null,
+   "node_id": null,
+   "generation_ids": [
+    "1791751784692",
+    "1791751784830",
+    "1791751784949",
+    "1791751787224"
+   ]
+  },
+  {
+   "key": "core_ambience_poseidon_board",
+   "scope": "core",
+   "prompt": "Ambient deep sea city, muffled water, distant whale calls, sonar pings, sci-fi game sound effect, no music, no voice",
+   "seconds": 6.0,
+   "file": "sfx/core_ambience_poseidon_board.mp3",
+   "pick": 1,
+   "pick_reason": "closest_length",
+   "pick_generation_id": "1791751856163",
+   "pick_seconds": 6.0,
+   "takes": 4,
+   "flow_id": null,
+   "node_id": null,
+   "generation_ids": [
+    "1791751856163",
+    "1791751855279",
+    "1791751856123",
+    "1791751856195"
+   ]
   }
  ]
 }
