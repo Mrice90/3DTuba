@@ -1,0 +1,4 @@
+<linker>
+  <assembly fullname="InfiniteConquest.RulesCore" preserve="all" />
+  <assembly fullname="InfiniteConquest.Native" preserve="all" />
+</linker>
