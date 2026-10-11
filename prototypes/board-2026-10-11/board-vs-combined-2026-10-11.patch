@@ -1,0 +1,509 @@
+diff --git b/Assets/Playtest/Editor/BoardSizeChecks.cs b/Assets/Playtest/Editor/BoardSizeChecks.cs
+new file mode 100644
+index 0000000..131d657
+--- /dev/null
++++ b/Assets/Playtest/Editor/BoardSizeChecks.cs
+@@ -0,0 +1,153 @@
++using System;
++using System.Collections.Generic;
++using System.IO;
++using System.Linq;
++using UnityEngine;
++using InfiniteConquest.Playtest;
++using InfiniteConquest.Proof;
++
++// AI-110-BOARD-6x8-CLIENT: editor checks for the one board-size setting (BoardConfig).
++// The rules grid must follow the engine and keep its exact old layout; the 6 x 8 preview must be a clean hex
++// board with the rules grid centred inside it, engine adjacency intact, and the camera framing it at 1280x720.
++// Unity -batchmode -quit -projectPath <board>/UnityProof -executeMethod BoardSizeChecks.Run
++public static class BoardSizeChecks {
++    static readonly List<string> checks = new List<string>();
++    static readonly List<string> info = new List<string>();
++    static void Check(bool ok, string name) { if (!ok) throw new Exception("BOARD_SIZE FAIL " + name); checks.Add(name); Debug.Log("BOARD_SIZE PASS " + name); }
++    static void Info(string s) { info.Add(s); Debug.Log("BOARD_SIZE INFO " + s); }
++
++    public static void Run() {
++        checks.Clear(); info.Clear();
++        try {
++            Check(BoardConfig.RulesWidth == InfiniteConquest.RulesCore.Core.BoardPosition.Width
++                  && BoardConfig.RulesHeight == InfiniteConquest.RulesCore.Core.BoardPosition.Height
++                  && BoardConfig.RulesPlotHeight == InfiniteConquest.RulesCore.Core.BoardPosition.PlotHeight, "rules grid is read from the native engine");
++            Check(BoardConfig.RulesWidth == 4 && BoardConfig.RulesHeight == 6 && BoardConfig.RulesPlotHeight == 3, "engine still plays 4x6 with 3 home rows");
++            Check(MovementState.Width == BoardConfig.RulesWidth && MovementState.Height == BoardConfig.RulesHeight
++                  && BoardLayout.Width == BoardConfig.RulesWidth && BoardLayout.Height == BoardConfig.RulesHeight
++                  && BoardView.W == BoardConfig.RulesWidth && BoardView.H == BoardConfig.RulesHeight, "MovementState, BoardLayout and BoardView read the one setting");
++
++            BoardConfig.ApplyCommandLine(new string[0]);
++            Check(!BoardConfig.IsPreview && BoardConfig.Label == "4x6", "default (no -board) draws the rules grid");
++            // The default layout is the exact pre-AI-110 formula, so the shipped board does not move.
++            for (int x = 0; x < 4; x++) for (int y = 0; y < 6; y++) {
++                float column = x + .5f * (y & 1) - 1.5f - .25f;
++                var old = new Vector3(column * BoardLayout.Spacing, 0, (y - 2.5f) * BoardLayout.RowSpacing);
++                if (Vector3.Distance(old, BoardLayout.CellCenter(x, y)) > 1e-5f) Check(false, $"default cell {x},{y} unchanged");
++            }
++            Check(true, "default 4x6 cell centres identical to the combined build (24 cells)");
++            Check(Mathf.Abs(BoardLayout.ViewScale - 1) < 1e-5f && Mathf.Abs(BoardLayout.CameraScale - 1) < 1e-5f, "default camera/plinth scale is 1");
++            Geometry("4x6");
++            CapitalCells();
++
++            foreach (var arg in new[] { "6x8", "planned", "PLANNED" }) {
++                BoardConfig.ApplyCommandLine(new[] { "game.exe", "-board", arg });
++                Check(BoardConfig.Width == 6 && BoardConfig.Height == 8 && BoardConfig.PlotHeight == 4, "-board " + arg + " draws 6x8 with 4 home rows");
++            }
++            BoardConfig.ApplyCommandLine(new[] { "game.exe", "-board", "3x3" });
++            Check(!BoardConfig.IsPreview, "-board smaller than the rules grid falls back to the rules grid");
++            BoardConfig.UsePlanned();
++            Check(BoardConfig.CellCount == 48 && BoardConfig.Offset == new Vector2Int(1, 1), "6x8 preview: 48 cells, rules grid at drawn (1,1)");
++            Info("ViewScale 6x8 = " + BoardLayout.ViewScale.ToString("0.000") + ", CameraScale " + BoardLayout.CameraScale.ToString("0.000"));
++            Check(BoardLayout.ViewScale > 1.2f && BoardLayout.ViewScale < 1.6f, "6x8 camera/plinth scale is between 1.2 and 1.6");
++            for (int y = 0; y < BoardConfig.RulesHeight; y++) {
++                bool zeus = y < BoardConfig.RulesPlotHeight;
++                if (BoardConfig.HomeOfSeat0(y + BoardConfig.Offset.y) != zeus) Check(false, "rules row " + y + " keeps its home side in the preview");
++            }
++            Check(true, "every rules row keeps its faction home side inside the 6x8 home halves");
++            Geometry("6x8");
++            CapitalCells();
++            BoardViewTiles();
++            CameraFraming();
++            CameraSnapChecks.Run(); Check(true, "camera snap suite passes on the 6x8 preview");
++        } finally { BoardConfig.UseRules(); }
++        CameraSnapChecks.Run(); Check(true, "camera snap suite passes on the rules grid");
++        Directory.CreateDirectory("Build");
++        File.WriteAllText("Build/board-size-validation.json", "{\"passed\":true,\"checks\":" + checks.Count + ",\"info\":[" + string.Join(",", info.Select(s => "\"" + s.Replace("\"", "'") + "\"")) + "]}");
++    }
++
++    // Drawn cells form a clean hex board and rules adjacency equals world adjacency.
++    static void Geometry(string label) {
++        var drawn = new List<Vector3>();
++        for (int dx = 0; dx < BoardConfig.Width; dx++) for (int dy = 0; dy < BoardConfig.Height; dy++) {
++            var r = BoardLayout.FromDrawn(dx, dy); drawn.Add(BoardLayout.CellCenter(r.x, r.y));
++        }
++        float min = float.MaxValue;
++        for (int i = 0; i < drawn.Count; i++) for (int j = i + 1; j < drawn.Count; j++) min = Mathf.Min(min, Vector3.Distance(drawn[i], drawn[j]));
++        Check(Mathf.Abs(min - BoardLayout.Spacing) < .01f, label + " no overlapping tiles (closest centres one hex apart)");
++        var c = drawn.Aggregate(Vector3.zero, (a, b) => a + b) / drawn.Count;
++        Check(c.magnitude < .01f, label + " drawn board centred on the origin");
++        int pairs = 0;
++        for (int ax = 0; ax < BoardConfig.RulesWidth; ax++) for (int ay = 0; ay < BoardConfig.RulesHeight; ay++)
++            for (int bx = 0; bx < BoardConfig.RulesWidth; bx++) for (int by = 0; by < BoardConfig.RulesHeight; by++) {
++                bool engine = MovementState.HexDistance(ax, ay, bx, by) == 1;
++                bool world = Mathf.Abs(Vector3.Distance(BoardLayout.CellCenter(ax, ay), BoardLayout.CellCenter(bx, by)) - BoardLayout.Spacing) < .01f;
++                if (engine != world) Check(false, $"{label} adjacency {ax},{ay}-{bx},{by} engine={engine} world={world}");
++                if (engine) pairs++;
++            }
++        Check(pairs > 0, label + " engine adjacency equals on-screen adjacency for all " + pairs / 2 + " neighbour pairs");
++        var rc = Enumerable.Range(0, BoardConfig.RulesWidth * BoardConfig.RulesHeight)
++            .Select(i => BoardLayout.CellCenter(i % BoardConfig.RulesWidth, i / BoardConfig.RulesWidth)).Aggregate(Vector3.zero, (a, b) => a + b) / (BoardConfig.RulesWidth * BoardConfig.RulesHeight);
++        Check(Mathf.Abs(rc.z) < .01f && Mathf.Abs(rc.x) < BoardLayout.Spacing * .5f, label + " rules grid centred in the drawn board");
++    }
++
++    static void CapitalCells() {
++        int z = 0, p = 0;
++        for (int x = -1; x <= BoardConfig.Width; x++) for (int y = -1; y <= BoardConfig.Height; y++) {
++            if (PlaytestGame.ValidCapitalCell(0, new Vector2Int(x, y))) z++;
++            if (PlaytestGame.ValidCapitalCell(1, new Vector2Int(x, y))) p++;
++        }
++        Check(z == 12 && p == 12, BoardConfig.Label + " capital placement stays on the engine's 12 + 12 home cells");
++    }
++
++    static void BoardViewTiles() {
++        var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
++        var factory = new TokenFactory(Shader.Find("Universal Render Pipeline/Lit"), Shader.Find("Universal Render Pipeline/Unlit"), font);
++        var go = new GameObject("Board size check"); var board = go.AddComponent<BoardView>();
++        try {
++            board.Build(factory);
++            var cells = go.GetComponentsInChildren<ProofCell>(true);
++            Check(cells.Length == 24 && cells.All(c => BoardConfig.InRules(c.X, c.Y)), "6x8 preview: 24 input cells, all on the rules grid");
++            Check(board.PreviewTileCount == 24, "6x8 preview: 24 inert preview tiles");
++            Check(go.GetComponentsInChildren<MeshCollider>(true).Length == 48, "6x8 preview: 48 tiles drawn");
++            var plinth = go.transform.Find("Board plinth").GetComponent<MeshFilter>().sharedMesh.bounds;
++            Info("6x8 plinth extents " + plinth.extents.ToString("0.00"));
++            Check(plinth.extents.x > 5f, "plinth grew with the board");
++        } finally { UnityEngine.Object.DestroyImmediate(go); }
++    }
++
++    // At 1280x720 the live viewport is the top 76% of the screen (the hand and End turn sit below it).
++    // Overview and top-down must show all 48 drawn cells; both seats' home views must show every rules cell.
++    static void CameraFraming() {
++        var go = new GameObject("Board size camera"); var cam = go.AddComponent<Camera>(); var rig = go.AddComponent<CameraRig>(); rig.InputEnabled = false;
++        try {
++            cam.fieldOfView = 38; cam.aspect = 1280f / (720f * .76f);
++            var zeusCap = BoardLayout.CellCenter(1, 0); var poseidonCap = BoardLayout.CellCenter(2, 5);
++            foreach (int seat in new[] { 0, 1 }) {
++                string s = seat == 0 ? "Zeus" : "Poseidon";
++                rig.SetHome(new Vector3(0, 0, .2f), -24, 50, 11.5f * BoardLayout.CameraScale, true);
++                rig.FaceFrom(seat == 0 ? zeusCap : poseidonCap, Vector3.zero, true); rig.FaceOpponentFrom(seat == 0 ? poseidonCap : zeusCap, Vector3.zero);
++                foreach (CameraRig.View v in Enum.GetValues(typeof(CameraRig.View))) {
++                    rig.SnapTo(v); rig.Snap();
++                    int drawnIn = 0, rulesIn = 0;
++                    for (int dx = 0; dx < BoardConfig.Width; dx++) for (int dy = 0; dy < BoardConfig.Height; dy++) {
++                        var r = BoardLayout.FromDrawn(dx, dy);
++                        var vp = cam.WorldToViewportPoint(BoardLayout.CellCenter(r.x, r.y) + Vector3.up * BoardLayout.TileTop);
++                        bool inside = vp.z > 0 && vp.x > .02f && vp.x < .98f && vp.y > .02f && vp.y < .98f;
++                        if (inside) { drawnIn++; if (BoardConfig.InRules(r.x, r.y)) rulesIn++; }
++                    }
++                    Info($"{s} {v}: {drawnIn}/48 drawn, {rulesIn}/24 rules cells in view, distance {rig.Distance:0.0}");
++                    Check(rulesIn == 24, s + " " + v + " shows every rules cell at 1280x720");
++                    if (v == CameraRig.View.TopDown || v == CameraRig.View.Overview) Check(drawnIn == 48, s + " " + v + " shows the whole 6x8 board at 1280x720");
++                    else Check(drawnIn >= 40, s + " " + v + " shows at least 40 of 48 cells at 1280x720");
++                }
++            }
++        } finally { UnityEngine.Object.DestroyImmediate(go); }
++    }
++}
++
++public static class BoardBuild {
++    // Board-size checks, then the combined chain (cue, native, R3, camera, coin, restoration, gameplay, audio, player build).
++    // Unity -batchmode -quit -projectPath <board>/UnityProof -executeMethod BoardBuild.Build -buildPath <exe>
++    public static void Build() { BoardSizeChecks.Run(); CombinedBuild.Build(); }
++}
+diff --git b/Assets/Playtest/Editor/BoardSizeChecks.cs.meta b/Assets/Playtest/Editor/BoardSizeChecks.cs.meta
+new file mode 100644
+index 0000000..174fcd2
+--- /dev/null
++++ b/Assets/Playtest/Editor/BoardSizeChecks.cs.meta
+@@ -0,0 +1,2 @@
++fileFormatVersion: 2
++guid: 9aacab2eb07db6c49bcb5eb6ffd1daa8
+\ No newline at end of file
+diff --git a/Assets/Playtest/Scripts/BoardView.cs b/Assets/Playtest/Scripts/BoardView.cs
+index 0fa63f1..f22cf9d 100644
+--- a/Assets/Playtest/Scripts/BoardView.cs
++++ b/Assets/Playtest/Scripts/BoardView.cs
+@@ -5,8 +5,11 @@ using InfiniteConquest.Proof;
+ namespace InfiniteConquest.Playtest {
+     // The polished hex board: tiles (from BoardLayout), rim outlines, a plinth, hover highlight,
+     // legal-target markers and per-hex stacks (land at the base, structures/characters on top of it).
++    // W x H is the rules grid; every array and stack is indexed in rules coordinates. When BoardConfig draws
++    // a larger board, the extra cells are inert preview tiles (no ProofCell, so they never take input).
+     public sealed class BoardView : MonoBehaviour {
+         public const int W = BoardLayout.Width, H = BoardLayout.Height;
++        public int PreviewTileCount { get; private set; }
+         TokenFactory factory;
+         readonly Renderer[,] tiles = new Renderer[W, H];
+         readonly GameObject[,] markers = new GameObject[W, H];
+@@ -21,19 +24,30 @@ namespace InfiniteConquest.Playtest {
+ 
+         public void Build(TokenFactory f) {
+             factory = f;
+-            var plinth = PlaytestMeshes.Make("Board plinth", PlaytestMeshes.Prism(6, 4.25f, 4.0f, .35f, 30), f.Lit(new Color(.06f, .08f, .12f), .6f, .7f), transform, new Vector3(0, -BoardLayout.TileThickness / 2 - .36f, 0));
+-            PlaytestMeshes.Make("Plinth glow", PlaytestMeshes.Prism(6, 4.28f, 4.28f, .03f, 30), f.Glow(new Color(.2f, .5f, .7f)), transform, new Vector3(0, -BoardLayout.TileThickness / 2 - .05f, 0));
++            float k = BoardLayout.ViewScale;
++            var plinth = PlaytestMeshes.Make("Board plinth", PlaytestMeshes.Prism(6, 4.25f * k, 4.0f * k, .35f, 30), f.Lit(new Color(.06f, .08f, .12f), .6f, .7f), transform, new Vector3(0, -BoardLayout.TileThickness / 2 - .36f, 0));
++            PlaytestMeshes.Make("Plinth glow", PlaytestMeshes.Prism(6, 4.25f * k + .03f, 4.25f * k + .03f, .03f, 30), f.Glow(new Color(.2f, .5f, .7f)), transform, new Vector3(0, -BoardLayout.TileThickness / 2 - .05f, 0));
+             hoverMat = f.Lit(new Color(.28f, .42f, .58f), .6f, .3f);
+             selectMat = f.Lit(new Color(.55f, .45f, .18f), .6f, .3f);
+             markerMat = f.Glow(new Color(.25f, 1f, .85f));
+             markerAttackMat = f.Glow(new Color(1f, .3f, .3f));
+             rimMat = f.Glow(new Color(.16f, .26f, .36f));
+             rimHoverMat = f.Glow(new Color(.9f, .95f, 1f));
+-            for (int x = 0; x < W; x++) for (int y = 0; y < H; y++) {
+-                // Home rows carry a faint faction tint: Zeus rows 0-2 (near side), Poseidon rows 3-5.
+-                var home = y < H / 2 ? PlaytestCatalog.FactionColor("ZEUS") : PlaytestCatalog.FactionColor("POSEIDON");
++            var previewRim = f.Glow(new Color(.10f, .16f, .22f));
++            for (int dx = 0; dx < BoardConfig.Width; dx++) for (int dy = 0; dy < BoardConfig.Height; dy++) {
++                var r = BoardLayout.FromDrawn(dx, dy); int x = r.x, y = r.y;
++                // Home rows carry a faint faction tint: Zeus on the near PlotHeight rows, Poseidon on the rest.
++                var home = BoardConfig.HomeOfSeat0(dy) ? PlaytestCatalog.FactionColor("ZEUS") : PlaytestCatalog.FactionColor("POSEIDON");
+                 float checker = ((x + y) & 1) == 0 ? .0f : .025f;
+                 var c = Color.Lerp(new Color(.10f + checker, .15f + checker, .21f + checker), home, .09f);
++                if (!InBounds(x, y)) {
++                    // Preview ring: drawn a shade darker, no ProofCell, no markers, no stacks.
++                    var ghost = BoardLayout.CreateTile(x, y, f.Lit(c * .72f, .55f, .25f));
++                    ghost.name = $"Preview tile {dx},{dy}"; ghost.transform.SetParent(transform, true);
++                    PlaytestMeshes.Make("Rim", PlaytestMeshes.HexRing(BoardLayout.TileSize, BoardLayout.TileSize - .07f), previewRim, ghost.transform, new Vector3(0, BoardLayout.TileTop + .002f, 0));
++                    PreviewTileCount++;
++                    continue;
++                }
+                 baseMats[x, y] = f.Lit(c, .55f, .25f);
+                 var tile = BoardLayout.CreateTile(x, y, baseMats[x, y]);
+                 tile.transform.SetParent(transform, true);
+diff --git a/Assets/Playtest/Scripts/CameraRig.cs b/Assets/Playtest/Scripts/CameraRig.cs
+index 9c78dda..f699d72 100644
+--- a/Assets/Playtest/Scripts/CameraRig.cs
++++ b/Assets/Playtest/Scripts/CameraRig.cs
+@@ -26,6 +26,8 @@ namespace InfiniteConquest.Playtest {
+         // instead (Zeus rows at the bottom, Poseidon rows at the top) regardless of where the capital was placed.
+         public static bool FixedFactionSides = false;
+         Vector3 curTarget; float curYaw, curPitch, curDist;
++        // The snap distances were tuned on the 4 x 6 board; a larger drawn board pulls them out to match.
++        static float BoardScale => InfiniteConquest.Proof.BoardLayout.CameraScale;
+         Vector2 rightStart; bool rightDragged;
+ 
+         // True on the frame the right button is released after a press that never moved past a few pixels.
+@@ -59,8 +61,8 @@ namespace InfiniteConquest.Playtest {
+                 case View.Own: ResetView(); break;
+                 case View.Opponent: Look(BoardCenter, hasOpponentYaw ? OpponentYaw : HomeYaw + 180, HomePitch, HomeDistance, false); break;
+                 // Top-down and overview keep your own side at the bottom of the screen.
+-                case View.TopDown: Look(BoardCenter, HomeYaw, TopDownPitch, TopDownDistance, false); break;
+-                case View.Overview: Look(BoardCenter, HomeYaw, OverviewPitch, OverviewDistance, false); break;
++                case View.TopDown: Look(BoardCenter, HomeYaw, TopDownPitch, TopDownDistance * BoardScale, false); break;
++                case View.Overview: Look(BoardCenter, HomeYaw, OverviewPitch, OverviewDistance * BoardScale, false); break;
+             }
+         }
+         public void NextView() => SnapTo((View)(((int)CurrentView + 1) % ViewNames.Length));
+@@ -99,7 +101,7 @@ namespace InfiniteConquest.Playtest {
+                 if (mouse.rightButton.isPressed && rightDragged) { Yaw += d.x * .25f; Pitch = Mathf.Clamp(Pitch - d.y * .2f, 12, 88); }
+                 if (mouse.middleButton.isPressed) Pan(-d.x * Distance * .0015f, -d.y * Distance * .0015f);
+                 float wheel = mouse.scroll.ReadValue().y;
+-                if (!PointerOverHud && Mathf.Abs(wheel) > .01f) Distance = Mathf.Clamp(Distance * (wheel > 0 ? .9f : 1.1f), MinDistance, MaxDistance);
++                if (!PointerOverHud && Mathf.Abs(wheel) > .01f) Distance = Mathf.Clamp(Distance * (wheel > 0 ? .9f : 1.1f), MinDistance, MaxDistance * BoardScale);
+             }
+             if (kb != null) {
+                 if (kb.qKey.isPressed) Yaw += 70 * dt;
+@@ -108,8 +110,8 @@ namespace InfiniteConquest.Playtest {
+                 if (kb.downArrowKey.isPressed) Pitch = Mathf.Clamp(Pitch - 45 * dt, 12, 88);
+                 float px = (kb.dKey.isPressed ? 1 : 0) - (kb.aKey.isPressed ? 1 : 0), pz = (kb.wKey.isPressed ? 1 : 0) - (kb.sKey.isPressed ? 1 : 0);
+                 if (px != 0 || pz != 0) Pan(px * Distance * .6f * dt, pz * Distance * .6f * dt);
+-                if (kb.rKey.isPressed) Distance = Mathf.Clamp(Distance * (1 - dt), MinDistance, MaxDistance);
+-                if (kb.fKey.isPressed) Distance = Mathf.Clamp(Distance * (1 + dt), MinDistance, MaxDistance);
++                if (kb.rKey.isPressed) Distance = Mathf.Clamp(Distance * (1 - dt), MinDistance, MaxDistance * BoardScale);
++                if (kb.fKey.isPressed) Distance = Mathf.Clamp(Distance * (1 + dt), MinDistance, MaxDistance * BoardScale);
+                 if (kb.homeKey.wasPressedThisFrame || kb.digit1Key.wasPressedThisFrame || kb.numpad1Key.wasPressedThisFrame) ResetView();
+                 if (kb.digit2Key.wasPressedThisFrame || kb.numpad2Key.wasPressedThisFrame) SnapTo(View.Opponent);
+                 if (kb.digit3Key.wasPressedThisFrame || kb.numpad3Key.wasPressedThisFrame) SnapTo(View.TopDown);
+diff --git a/Assets/Playtest/Scripts/LiveMatchValidation.cs b/Assets/Playtest/Scripts/LiveMatchValidation.cs
+index fe7aa4d..b92afdd 100644
+--- a/Assets/Playtest/Scripts/LiveMatchValidation.cs
++++ b/Assets/Playtest/Scripts/LiveMatchValidation.cs
+@@ -4,6 +4,7 @@ using System.Collections.Generic;
+ using System.IO;
+ using System.Linq;
+ using UnityEngine;
++using InfiniteConquest.Proof;
+ 
+ namespace InfiniteConquest.Playtest {
+     public sealed partial class PlaytestGame {
+@@ -15,6 +16,8 @@ namespace InfiniteConquest.Playtest {
+             public bool rejectionShown;
+             // AI-080-REACTION-VISUAL-CUE: decisions taken inside a reaction window, each with the cue up.
+             public int reactionWindows, reactionCueChecks;
++            // AI-110: which board was drawn (rules grid vs 6 x 8 preview) while the engine played.
++            public string boardDrawn, boardRules; public int boardDrawnCells, boardPreviewTiles;
+             public string error; public string[] checks;
+         }
+         static int ValidationPriority(BridgeAction action) {
+@@ -30,7 +33,7 @@ namespace InfiniteConquest.Playtest {
+             float deadline = Time.realtimeSinceStartup + 180;
+             var shots = Arg("-gameplayLiveShots");
+             if (shots != null) Directory.CreateDirectory(shots);
+-            bool openingShot = false, abilityShot = false, spellShot = false, rejectionTried = false, reactionShot = false;
++            bool boardShots = false, openingShot = false, abilityShot = false, spellShot = false, rejectionTried = false, reactionShot = false;
+             int pendingHpSeat = -1, pendingHpBefore = 0, pendingHpDirection = 0; string pendingHpWhat = null, pendingHpCard = null;
+             while (Time.realtimeSinceStartup < deadline && result.actions < 1500) {
+                 if (mode != Mode.Live || bridge == null || !bridge.Alive) { result.error = "Live bridge unavailable: " + liveStatus; break; }
+@@ -60,6 +63,19 @@ namespace InfiniteConquest.Playtest {
+                 result.abilityListChecks++;
+                 result.losBlockedSeen += Abilities.Count(a => a.reason != null && a.reason.StartsWith("No line of sight"));
+                 result.buriedSourcesSeen += Abilities.Count(a => a.buried);
++                if (shots != null && !boardShots && !liveState.reaction_pending) {
++                    // AI-110: the whole board from both seats' snap views (1 = behind you, 2 = opponent), then back home.
++                    // Taken before the stale-action probe so its rejection banner is not in the picture.
++                    boardShots = true; var savedSpeed = speed; speed = 1;
++                    string me = Faction(humanSeat), them = Faction(1 - humanSeat);
++                    board.Selected = board.Hover = new Vector2Int(-1, -1); board.Refresh();
++                    rig.SnapTo(CameraRig.View.Own); rig.Snap(); yield return null;
++                    yield return Shot(shots, "00-board-" + BoardConfig.Label + "-" + me.ToLowerInvariant() + "-view.png");
++                    rig.SnapTo(CameraRig.View.Opponent); rig.Snap(); yield return null;
++                    yield return Shot(shots, "00-board-" + BoardConfig.Label + "-" + them.ToLowerInvariant() + "-view.png");
++                    rig.ResetView(); rig.Snap(); speed = savedSpeed;
++                    continue;
++                }
+                 if (!rejectionTried && liveActions.Length > 0 && !liveState.reaction_pending) {
+                     rejectionTried = true;
+                     bridge.Act("r-stale-validation"); waiting = true;
+@@ -142,6 +158,8 @@ namespace InfiniteConquest.Playtest {
+                 checks.Add("Live Unity match reached GAME_OVER");
+                 if (shots != null) { speed = 1; yield return Shot(shots, "04-live-game-over.png"); }
+             }
++            result.boardDrawn = BoardConfig.Label; result.boardRules = BoardConfig.RulesWidth + "x" + BoardConfig.RulesHeight;
++            result.boardDrawnCells = BoardConfig.CellCount; result.boardPreviewTiles = board.PreviewTileCount;
+             result.checks = checks.ToArray();
+             var path = Arg("-playtestResult"); if (path != null) File.WriteAllText(path, JsonUtility.ToJson(result, true));
+             Debug.Log("GAMEPLAY_LIVE_SMOKE " + (result.passed ? "PASS" : "FAIL " + result.error));
+diff --git a/Assets/Playtest/Scripts/MatchRestoration.cs b/Assets/Playtest/Scripts/MatchRestoration.cs
+index 7ba7f9a..8a702f5 100644
+--- a/Assets/Playtest/Scripts/MatchRestoration.cs
++++ b/Assets/Playtest/Scripts/MatchRestoration.cs
+@@ -22,8 +22,8 @@ namespace InfiniteConquest.Playtest {
+             ClearMatch(); mode = Mode.Setup; paused = false; FitViewport();
+             placementSeed = seed; placementSeat = setupSeat; humanSeat = setupSeat;
+             placement = new Vector2Int(-1, -1);
+-            rig.SetHome(new Vector3(0, 0, .2f), setupSeat == 1 ? 156 : -24, 50, 11.5f, true);
+-            board.SetLegal(from x in Enumerable.Range(0, 4) from y in Enumerable.Range(setupSeat == 0 ? 0 : 3, 3) select new Vector2Int(x, y));
++            rig.SetHome(new Vector3(0, 0, .2f), setupSeat == 1 ? 156 : -24, 50, 11.5f * BoardLayout.CameraScale, true);
++            board.SetLegal(from x in Enumerable.Range(0, BoardConfig.RulesWidth) from y in Enumerable.Range(0, BoardConfig.RulesHeight) where ValidCapitalCell(setupSeat, new Vector2Int(x, y)) select new Vector2Int(x, y));
+         }
+         void UpdateCapitalPlacement() {
+             var mouse = Mouse.current; if (mouse == null) return;
+@@ -38,7 +38,7 @@ namespace InfiniteConquest.Playtest {
+             }
+         }
+         public static bool ValidCapitalCell(int seat, Vector2Int at) =>
+-            (seat == 0 || seat == 1) && at.x >= 0 && at.x < 4 && at.y >= 0 && at.y < 6 && (seat == 0 ? at.y < 3 : at.y >= 3);
++            (seat == 0 || seat == 1) && BoardConfig.InRules(at.x, at.y) && (seat == 0 ? at.y < BoardConfig.RulesPlotHeight : at.y >= BoardConfig.RulesPlotHeight);
+         void DrawCapitalPlacement() {
+             Styles();
+             GUI.Box(new Rect(0, 0, Screen.width, 94), "", panelStyle);
+diff --git a/Assets/Playtest/Scripts/PlaytestGame.cs b/Assets/Playtest/Scripts/PlaytestGame.cs
+index a3a4d31..e050cbb 100644
+--- a/Assets/Playtest/Scripts/PlaytestGame.cs
++++ b/Assets/Playtest/Scripts/PlaytestGame.cs
+@@ -90,6 +90,7 @@ namespace InfiniteConquest.Playtest {
+             vfx = new Vfx(ParticleMaterial != null ? ParticleMaterial : factory.Glow(Color.white), factory, font);
+             sfx = new GameObject("SFX").AddComponent<SfxBank>();
+             anim = new GameObject("Animation host").AddComponent<AnimHost>();
++            BoardConfig.ApplyCommandLine(Environment.GetCommandLineArgs());
+             SetupScene();
+             board = new GameObject("Board").AddComponent<BoardView>();
+             board.Build(factory);
+@@ -141,7 +142,7 @@ namespace InfiniteConquest.Playtest {
+             cam.clearFlags = CameraClearFlags.SolidColor; cam.backgroundColor = new Color(.02f, .035f, .06f);
+             cam.fieldOfView = 38; cam.nearClipPlane = .1f; cam.farClipPlane = 300;
+             rig = cam.gameObject.GetComponent<CameraRig>() ?? cam.gameObject.AddComponent<CameraRig>();
+-            rig.SetHome(new Vector3(0, 0, .2f), -24, 50, 11.5f, true);
++            rig.SetHome(new Vector3(0, 0, .2f), -24, 50, 11.5f * BoardLayout.CameraScale, true);
+             var key = new GameObject("Key light").AddComponent<Light>();
+             key.type = LightType.Directional; key.intensity = 1.9f; key.shadows = LightShadows.Soft; key.color = new Color(1f, .96f, .9f);
+             key.transform.rotation = Quaternion.Euler(52, -38, 0);
+@@ -865,7 +866,7 @@ namespace InfiniteConquest.Playtest {
+             var ch = pieces.Values.Where(p => p != null && p.Card.type == "CHARACTER").OrderByDescending(p => p.IsRealModel).FirstOrDefault();
+             if (ch != null) {
+                 Click(new Vector2Int(ch.X, ch.Y), ch);
+-                board.Hover = new Vector2Int(ch.X, Mathf.Clamp(ch.Y + 1, 0, 5)); board.Refresh();
++                board.Hover = new Vector2Int(ch.X, Mathf.Clamp(ch.Y + 1, 0, BoardView.H - 1)); board.Refresh();
+                 hoverInfo = HoverText(new Vector2Int(ch.X, ch.Y), ch);
+                 rig.Look(ch.transform.position, -20, 42, 6.5f, true); yield return new WaitForSeconds(.6f);
+                 yield return Shot(dir, "02-board-selection-markers.png");
+diff --git b/Assets/Proof/BoardConfig.cs b/Assets/Proof/BoardConfig.cs
+new file mode 100644
+index 0000000..cbd414a
+--- /dev/null
++++ b/Assets/Proof/BoardConfig.cs
+@@ -0,0 +1,57 @@
++using System;
++using UnityEngine;
++using EngineBoard = InfiniteConquest.RulesCore.Core.BoardPosition;
++
++namespace InfiniteConquest.Proof {
++    // AI-110: the one place the client's board size lives.
++    //
++    // Rules* is the grid the rules engine plays on. It comes straight from the native RulesCore
++    // (BoardPosition.Width / Height / PlotHeight), so when the engine changes size the client follows on
++    // the next build with no other edits. Planned* is the next board Matt picked on 2026-10-11:
++    // 6 x 8 with four home rows per side (ENGINE-HANDOFF-6x8.md lists the engine side of that change).
++    //
++    // The drawn board (Width / Height / PlotHeight) defaults to the rules grid. "-board 6x8" (or
++    // "-board planned") draws the planned board as a preview: the engine's grid sits centred inside it and
++    // stays the only playable area; the outer ring is drawn but inert until the engine plays 6 x 8.
++    public static class BoardConfig {
++        public const int RulesWidth = EngineBoard.Width, RulesHeight = EngineBoard.Height, RulesPlotHeight = EngineBoard.PlotHeight;
++        public const int PlannedWidth = 6, PlannedHeight = 8, PlannedPlotHeight = 4;
++
++        public static int Width { get; private set; } = RulesWidth;
++        public static int Height { get; private set; } = RulesHeight;
++        public static int PlotHeight { get; private set; } = RulesPlotHeight;
++        // Drawn cell of rules cell (0,0).
++        public static Vector2Int Offset { get; private set; }
++        public static bool IsPreview => Width != RulesWidth || Height != RulesHeight;
++        public static int CellCount => Width * Height;
++        public static string Label => Width + "x" + Height;
++
++        public static void Use(int width, int height, int plotHeight) {
++            if (width < RulesWidth || height < RulesHeight)
++                throw new ArgumentException($"The drawn board {width}x{height} must contain the rules grid {RulesWidth}x{RulesHeight}");
++            Width = width; Height = height; PlotHeight = Mathf.Clamp(plotHeight, 1, height - 1);
++            Offset = new Vector2Int((width - RulesWidth) / 2, (height - RulesHeight) / 2);
++        }
++        public static void UseRules() => Use(RulesWidth, RulesHeight, RulesPlotHeight);
++        public static void UsePlanned() => Use(PlannedWidth, PlannedHeight, PlannedPlotHeight);
++
++        // "-board 6x8", "-board planned" or "-board rules". Anything else keeps the rules grid.
++        public static void ApplyCommandLine(string[] args) {
++            int i = Array.IndexOf(args, "-board");
++            string v = i >= 0 && i + 1 < args.Length ? args[i + 1].Trim().ToLowerInvariant() : null;
++            if (v == null || v == "rules") { UseRules(); return; }
++            if (v == "planned") { UsePlanned(); return; }
++            var p = v.Split('x');
++            if (p.Length == 2 && int.TryParse(p[0], out var w) && int.TryParse(p[1], out var h) && w >= RulesWidth && h >= RulesHeight) {
++                Use(w, h, w == PlannedWidth && h == PlannedHeight ? PlannedPlotHeight : h / 2);
++                return;
++            }
++            Debug.LogWarning("BOARD ignoring -board " + v + "; using the rules grid " + RulesWidth + "x" + RulesHeight);
++            UseRules();
++        }
++
++        public static bool InRules(int x, int y) => x >= 0 && y >= 0 && x < RulesWidth && y < RulesHeight;
++        // Home half of a drawn row: seat 0 (Zeus) owns the near PlotHeight rows.
++        public static bool HomeOfSeat0(int drawnRow) => drawnRow < PlotHeight;
++    }
++}
+diff --git b/Assets/Proof/BoardConfig.cs.meta b/Assets/Proof/BoardConfig.cs.meta
+new file mode 100644
+index 0000000..631ec98
+--- /dev/null
++++ b/Assets/Proof/BoardConfig.cs.meta
+@@ -0,0 +1,2 @@
++fileFormatVersion: 2
++guid: 0c5ad121e86de1a4b9585a00534fc4e4
+\ No newline at end of file
+diff --git a/Assets/Proof/BoardLayout.cs b/Assets/Proof/BoardLayout.cs
+index 6b99b98..f71bb40 100644
+--- a/Assets/Proof/BoardLayout.cs
++++ b/Assets/Proof/BoardLayout.cs
+@@ -1,21 +1,37 @@
+ using UnityEngine;
+ 
+ namespace InfiniteConquest.Proof {
+-    // Single source for board geometry. The alpha plays on BoardGeometry.HEX: 4 x 6 pointy-top hexes in
++    // Single source for board geometry. The alpha plays on BoardGeometry.HEX: pointy-top hexes in
+     // odd-row offset coordinates (odd rows shifted half a hex right). Everything that places tiles or
+-    // tokens in world space goes through here; the grid size comes from the rules model (MovementState).
++    // tokens in world space goes through here. Width/Height is the rules grid; the drawn board can be
++    // larger (BoardConfig preview), with the rules grid centred inside it.
+     public static class BoardLayout {
+-        public const int Width = MovementState.Width, Height = MovementState.Height;
++        public const int Width = BoardConfig.RulesWidth, Height = BoardConfig.RulesHeight;
+         public const float Spacing = 1.3f;                   // centre-to-centre within a row
+         public const float RowSpacing = Spacing * 0.8660254f; // sqrt(3)/2: rows of touching hexes
+         public const float TileSize = 1.18f;                 // across the flats, leaving a small gap
+         public const float TileThickness = .18f;
+         public static float TileTop => TileThickness / 2f;
+ 
++        // x, y are rules coordinates. Cells outside the rules grid (negative or past the edge) are the
++        // drawn-only preview ring. Row parity stays tied to the rules row, so engine adjacency is unchanged
++        // wherever the rules grid sits inside the drawn board.
+         public static Vector3 CellCenter(int x, int y) {
++            var o = BoardConfig.Offset;
+             // The mean odd-row shift is a quarter hex, so subtract it to keep the board centred.
+-            float column = x + .5f * (y & 1) - (Width - 1) / 2f - .25f;
+-            return new Vector3(column * Spacing, 0, (y - (Height - 1) / 2f) * RowSpacing);
++            float column = x + o.x + .5f * (y & 1) - (BoardConfig.Width - 1) / 2f - .25f;
++            return new Vector3(column * Spacing, 0, (y + o.y - (BoardConfig.Height - 1) / 2f) * RowSpacing);
++        }
++        // Rules cell of a drawn cell.
++        public static Vector2Int FromDrawn(int drawnX, int drawnY) => new Vector2Int(drawnX - BoardConfig.Offset.x, drawnY - BoardConfig.Offset.y);
++
++        // Camera / plinth multiplier: drawn-board half-diagonal over the 4 x 6 board the framing was tuned on.
++        public static float ViewScale => HalfDiagonal(BoardConfig.Width, BoardConfig.Height) / HalfDiagonal(4, 6);
++        // Camera distances grow a little faster than the board, so a larger board still clears the side panels.
++        public static float CameraScale => 1 + (ViewScale - 1) * 1.3f;
++        static float HalfDiagonal(int w, int h) {
++            float x = (w - .5f) * Spacing + TileSize, z = (h - 1) * RowSpacing + TileSize * 2f / Mathf.Sqrt(3f);
++            return Mathf.Sqrt(x * x + z * z) / 2f;
+         }
+ 
+         static Mesh tileMesh;
+diff --git a/Assets/Proof/MovementState.cs b/Assets/Proof/MovementState.cs
+index 408a434..b2b87f1 100644
+--- a/Assets/Proof/MovementState.cs
++++ b/Assets/Proof/MovementState.cs
+@@ -4,7 +4,7 @@ namespace InfiniteConquest.Proof {
+     // (MatchRules.hex(): odd-row offset coordinates, six neighbours). The AI-036 fixture's own note that
+     // diagonals cost one comes from the engine's SQUARE test default and does not apply to real matches.
+     public sealed class MovementState {
+-        public const int Width = 4, Height = 6;
++        public const int Width = BoardConfig.RulesWidth, Height = BoardConfig.RulesHeight;
+         public int X { get; private set; }
+         public int Y { get; private set; }
+         public int Spent { get; private set; }
