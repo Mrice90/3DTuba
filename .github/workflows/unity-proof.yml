@@ -1,0 +1,72 @@
+name: Unity proof build (manual)
+# QA proposal, Mathew-approved 2026-10-11 — SCAFFOLD, not yet active.
+#
+# Goal: a headless CI smoke test for the Unity 3D build, so dead builds fail
+# here instead of on Mathew's laptop. The project already has an editor entry
+# point: ProofBuild.Build() (UnityProof/Assets/Proof/Editor/ProofBuild.cs),
+# which validates the movement fixture and builds the StandaloneWindows64
+# player, writing UnityProof/Build/validation.json.
+#
+# ACTIVATION (needs a human with a Unity account — Codex lane):
+#   1. Generate a Unity license file (.ulf). Easiest path:
+#      https://game.ci/docs/github/activation (manual activation).
+#   2. Add it as the UNITY_LICENSE repository secret
+#      (repo Settings -> Secrets and variables -> Actions).
+#      UNITY_EMAIL / UNITY_PASSWORD are the fallback activation method.
+#   3. Run this workflow manually (Actions tab -> "Unity proof build (manual)").
+#   4. On green, add push/PR triggers (paths: UnityProof/**) and wire the
+#      SMOKE_OK contract into the QA evidence flow.
+#
+# Until then this workflow is INERT: workflow_dispatch only, and the license
+# check below fails fast with a clear message instead of burning runner minutes.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: write # validation.json artifact upload
+jobs:
+  unity-proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - name: License check (fail fast without UNITY_LICENSE)
+        shell: bash
+        run: |
+          if [ -z "${{ secrets.UNITY_LICENSE }}" ]; then
+            echo "::error::UNITY_LICENSE secret is not set. See the comments at the top of this workflow for activation steps."
+            exit 1
+          fi
+          echo "UNITY_LICENSE present; proceeding."
+      # GameCI builder: https://game.ci/docs/github/builder
+      - name: Build movement proof player (Unity 6000.6.3f1, Windows64)
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 6000.6.3f1
+          targetPlatform: StandaloneWindows64
+          projectPath: UnityProof
+          buildMethod: ProofBuild.Build
+          versioning: None
+      # Smoke contract: the editor build writes Build/validation.json with
+      # {"passed": true, ...}. The workflow fails unless it says passed.
+      - name: Verify smoke contract (SMOKE_OK)
+        shell: bash
+        run: |
+          f="UnityProof/Build/validation.json"
+          [ -f "$f" ] || { echo "::error::missing $f — the editor build did not write its validation output"; exit 1; }
+          cat "$f"
+          python3 -c "import json,sys; d=json.load(open('$f')); sys.exit(0 if d.get('passed') else 1)" \
+            || { echo "::error::validation.json passed != true"; exit 1; }
+          echo "SMOKE_OK unity-proof player built and fixture validation passed"
+      - name: Upload validation artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: unity-proof-validation
+          path: UnityProof/Build/validation.json
+          if-no-files-found: warn
+          retention-days: 30
