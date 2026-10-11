@@ -38,5 +38,15 @@ The source is `3DTuba-combined-2026-10-11/UnityProof`, a new isolated copy of th
 
 - I did not run a packaged two-PC or relay online match: Node.js and the relay aren't set up on this machine. R3b's two-human bridge suites and Codex's native two-human protocol comparisons were run in their own deliveries, not again here.
 - Human hands-on play of the combined native build.
-- The installer/launch kit still describes the Java bridge. Per Codex's handoff, the recipe should drop the Bridge, Java and JAVA_HOME steps for the native build. I didn't change the installer.
 - On short screens, the opponent's card popup can briefly cover the hand as a reaction window opens.
+
+## Installer update (2026-10-11 13:15 EDT, AI-080-COMBINED-INSTALLER)
+
+Mathew chose this in the project thread. `Tools/installer/build_installer.ps1` (in `overlay/Tools/installer/` in the repo) now requires the native rules DLLs and `StreamingAssets/NativeRules`. It refuses any build with a `Bridge/`, `.jar`, `.class`, `java*.exe` or `jvm.dll`, and it leaves the `.cmd`, README, hashes and `checks/` out of the payload. `install.ps1`, `install.cmd` and `uninstall.ps1` never referred to Java, so they are unchanged.
+
+- New installer: `playtest/installer-combined-2026-10-11/InfiniteConquest-Setup.exe` (364 MB, sha256 `7379171c…`), built from `playtest/unity-build-combined-2026-10-11/`. The 2026-10-02 Java installer in `playtest/installer/` is unchanged.
+- Pointing the script at the `-java` fallback build is refused.
+- Double-click install exits 0 and creates the files, shortcuts and Apps entry (`2026.10.11-native`). The installed copy has 0 Java files, and its RulesCore, Native and Assembly-CSharp DLLs equal the package's.
+- `launch_installed.ps1`: the Start menu shortcut, with Java off PATH and JAVA_HOME unset, reaches the main menu (1296×688, responding) and starts no Java process (`launch-menu-installed.png`).
+- Installed copy: smoke plus seeds 42 and 713 in both seats, with Java off PATH: 5/5 PASS (`installed-results.json`). All four matches reached game over, and their transcripts are identical after parsing to both the folder native build and the Java build.
+- Not checked: uninstall, and IExpress quiet mode (`/Q`). An unattended `/Q` run returned 0x80070002 and installed nothing, while the normal double-click run works. Online play between two PCs is still untested.
