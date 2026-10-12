@@ -2,6 +2,16 @@
 
 **Version 2 — 2026-09-28 18:30 EDT.** Maintained by Claude (covering Astra's lane until Astra returns on 2026-10-04). This is the single shared backlog for every worker. A copy is kept in `C:\Users\mattj\OneDrive\Documents\AI Dev\Infinite Conquest\PRODUCT_BACKLOG.md`, and this repository copy wins if the two ever differ. Evidence and run logs go in `SPRINT_LOG.md`, not here.
 
+## Follow-ups from the deck shop + board merge — October 11, 2026
+
+Matt asked (2026-10-12) for the open items from the deck shop r2 + board-size client merge to go on the backlog. Source: draft PR #19 (on top of #16), prototypes/deck-shop-board-2026-10-11/DELIVERY.md, board-fit findings 3, 7 and 8. Suggested owners are not execution claims; root SPRINT_LOG.md stays the ownership board.
+
+| ID | Priority / status | Suggested owner | Outcome |
+|---|---|---|---|
+| AI-110-HAND-HIT-AREA | P1 READY | Claude Code (client) | On the 6x8 and hexagon boards the hand's click area (HandMotion.handRect, from y about 450 at 720p to the right edge) covers the lower part of the nearest home-row hexes once 4 or more cards are in hand. Add the hand rect to BoardSizeChecks.HudPanels and tighten it or shift the board framing so every hex stays clickable; re-check at 1280x720 and 960x640 from both views. |
+| AI-110-PRESET-BALANCE-BIG-BOARD | P1 BLOCKED on the hexagon engine change | ChatGPT (rules/decks), Matt approves | The 40-card Zeus and Poseidon starter presets (land income 22, structure slots 20, character curve) were tuned on the 24-cell 4x6 board. Once the engine plays the hexagon (ENGINE-HANDOFF-6x8.md section 7), run a balance and pacing pass for travel time, capital distance and economy. |
+| AI-110-SHOP-ROW-TEXT-CLIP | P2 READY | ChatGPT (card/shop look) | The third line of each shop row ("Ready to buy" / "Category purchased this turn") loses its descenders at 1280x720. Inherited from deck shop r2; give the row more height or a smaller line. |
+
 ## October 8, 2026 — assigned work (Codex, Claude Code, Muse/Thalia)
 
 Mathew approved public publication of the previously reviewed updates and explicitly requested tasks for all three workers. Backlog reconciliation published in commit `19c55faa`; verification report in `031ddd7e`. The earlier public-write rejection is resolved by this direct approval.
