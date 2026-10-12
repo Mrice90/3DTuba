@@ -1149,3 +1149,16 @@ Delivered: commit `eb606c1` on `claude/camera-restore`, draft PR https://github.
 - Line-number citation checks out (`LiveLoop` is at `PlaytestGame.cs:357` as stated).
 - Verdict: **ACCEPT** — the note's two findings are real, honestly scoped (static review, no Unity build/playthrough claimed), and relayed-evidence labeling holds.
 - Nothing new in `releases/`, `.github/workflows/`, or `prototypes/lobby-lab/` since the 14:00 entry; CI green on all six new heads (38074465202, 38074462609, 38074388662, 38071183045, 38068909061, 38065691214). No unowned gaps in my lane; Mathew authored all six post-watermark commits himself in the last ~2.5h — nothing to ping.
+
+## Lane watch: independent review of QA evidence bundle + PR template (2026-10-11 ~21:24 EDT)
+
+- Head moved `8a6aca44` -> `7ea7d930` on `muse/sprint-01-content-audit`: 14 commits, all authored by Mathew. Claude's AI-081 structures pilots (`b7adac5d`, `ab9a0245`) merged via PR #9 (`02c02d7c`); QA evidence bundle merged via PR #17 (`77aecd4a`, evidence-checklist PR template) and PR #18 (`0f9a1f0b`, CI scripts + workflow changes); SFX batch 2 + completion-run milestone 1 merged via PR #20 (`dff6499b`) and PR #21 (`7ea7d930`).
+- Independent review of the lane changes (my lane: `.github/workflows/`, `docs/muse/ci/`, PR template):
+  - `.github/workflows/verify.yml`: all 12 existing checks retained with identical commands, each now wrapped in `docs/muse/ci/run-and-record.sh`; pass/fail semantics unchanged (wrapper exits with the check's own code via PIPESTATUS). Added the `qa-evidence` artifact upload + `actions: write` permission — the CI-evidence-artifacts piece of the 2026-10-11 standing QA agreement (Thalia proposal, Mathew-approved).
+  - `run-and-record.sh`: check-slug validated `^[a-z0-9-]+$`, Windows backslash normalization for Git Bash, exit code propagated faithfully — sound.
+  - `assemble-evidence.sh`: exits 0 always (a broken bundle never masks the checks), tolerates malformed JSON lines, `passed` requires at least one check and all exit 0 — sound.
+  - `.github/workflows/unity-proof.yml`: INERT by design — `workflow_dispatch` only, fails fast with a clear error when `UNITY_LICENSE` is unset; no secret values committed (only `secrets.*` references). Headless-Unity-smoke scaffold; license activation is Codex's lane per the file's own comments.
+  - `.github/pull_request_template.md`: evidence checklist (CI run link, script-verified counts, no-secrets check, manual verification) — matches the standing PR-evidence-checklist agreement.
+- Verdict: **ACCEPT**. Nits: none blocking — the scripts are small, the wiring is honest, and the head's CI run proves the wrapper works on both ubuntu-24.04 and windows-latest.
+- CI green on all five merge/new heads: 38180352363 @ `7ea7d930` success, 38174472532, 38172523736, 38172454884, 38172452391 all completed success. No failures anywhere repo-wide in this window (claude/project-thread-fz00fa PR #19 run 38190344393 also success — Claude's lane).
+- Nothing in my lane needs Mathew's decision; other-lane merges (structures PR #9, SFX PRs #20/#21) are Mathew-authored and CI-green — observations only, no competing edits. No unowned gaps closed (none existed). AI-080-SP2-HUMAN still WAITING on his live match; team-table staleness (Astra/Claude) remains the backlog maintainer's to reconcile (flagged 2026-10-04).
