@@ -1,0 +1,94 @@
+{
+    "passed": true,
+    "cases": 8,
+    "results": [
+        {
+            "skin": "Default",
+            "winner": 0,
+            "startFace": 0,
+            "faceUp": 0,
+            "crossings": 10,
+            "axisTilt": 0.0878145843744278,
+            "faceTexture": true,
+            "rimTexture": true,
+            "passed": true
+        },
+        {
+            "skin": "Default",
+            "winner": 0,
+            "startFace": 1,
+            "faceUp": 0,
+            "crossings": 11,
+            "axisTilt": 0.08781642466783524,
+            "faceTexture": true,
+            "rimTexture": true,
+            "passed": true
+        },
+        {
+            "skin": "Default",
+            "winner": 1,
+            "startFace": 0,
+            "faceUp": 1,
+            "crossings": 11,
+            "axisTilt": 0.08781643211841583,
+            "faceTexture": true,
+            "rimTexture": true,
+            "passed": true
+        },
+        {
+            "skin": "Default",
+            "winner": 1,
+            "startFace": 1,
+            "faceUp": 1,
+            "crossings": 10,
+            "axisTilt": 0.08781648427248001,
+            "faceTexture": true,
+            "rimTexture": true,
+            "passed": true
+        },
+        {
+            "skin": "CapitalArtTest",
+            "winner": 0,
+            "startFace": 0,
+            "faceUp": 0,
+            "crossings": 10,
+            "axisTilt": 0.08782005310058594,
+            "faceTexture": true,
+            "rimTexture": true,
+            "passed": true
+        },
+        {
+            "skin": "CapitalArtTest",
+            "winner": 0,
+            "startFace": 1,
+            "faceUp": 0,
+            "crossings": 11,
+            "axisTilt": 0.08781643211841583,
+            "faceTexture": true,
+            "rimTexture": true,
+            "passed": true
+        },
+        {
+            "skin": "CapitalArtTest",
+            "winner": 1,
+            "startFace": 0,
+            "faceUp": 1,
+            "crossings": 11,
+            "axisTilt": 0.08781643956899643,
+            "faceTexture": true,
+            "rimTexture": true,
+            "passed": true
+        },
+        {
+            "skin": "CapitalArtTest",
+            "winner": 1,
+            "startFace": 1,
+            "faceUp": 1,
+            "crossings": 10,
+            "axisTilt": 0.08781644701957703,
+            "faceTexture": true,
+            "rimTexture": true,
+            "passed": true
+        }
+    ]
+}

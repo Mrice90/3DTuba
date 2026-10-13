@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c6b9387e5310b649a6e6529a2c9e5fb, type: 3}
+  m_Name: Default
+  m_EditorClassIdentifier: Assembly-CSharp::InfiniteConquest.Playtest.CoinSkin
+  displayName: Default (placeholder emblems)
+  front: {fileID: 2800000, guid: 66258489ab69aa94ab86250c0d294b65, type: 3}
+  back: {fileID: 2800000, guid: c578b97d97b87ca4d8e886af61384769, type: 3}
+  faceTint: {r: 1, g: 1, b: 1, a: 1}
+  faceMetallic: 0.35
+  faceSmoothness: 0.6
+  rimMaterial: {fileID: 0}
+  rimTexture: {fileID: 2800000, guid: 647c3b18688df264394f96350f4638d8, type: 3}
+  rimColor: {r: 0.85, g: 0.72, b: 0.32, a: 1}
+  rimMetallic: 0.85
+  rimSmoothness: 0.7
+  emission: {r: 0.35, g: 0.28, b: 0.06, a: 1}

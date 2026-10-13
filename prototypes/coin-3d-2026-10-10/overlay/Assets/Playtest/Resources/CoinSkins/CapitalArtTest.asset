@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c6b9387e5310b649a6e6529a2c9e5fb, type: 3}
+  m_Name: CapitalArtTest
+  m_EditorClassIdentifier: Assembly-CSharp::InfiniteConquest.Playtest.CoinSkin
+  displayName: Capital art (skin swap test)
+  front: {fileID: 2800000, guid: 01f2fed28d6d2014a84c5805dfa0cf28, type: 3}
+  back: {fileID: 2800000, guid: 9db511e46284b734295be0a227036ffb, type: 3}
+  faceTint: {r: 1, g: 1, b: 1, a: 1}
+  faceMetallic: 0.35
+  faceSmoothness: 0.6
+  rimMaterial: {fileID: 0}
+  rimTexture: {fileID: 2800000, guid: 3c2e873196b487c4b834eda204afc6f1, type: 3}
+  rimColor: {r: 0.75, g: 0.9, b: 1, a: 1}
+  rimMetallic: 0.85
+  rimSmoothness: 0.7
+  emission: {r: 0.05, g: 0.3, b: 0.4, a: 1}
