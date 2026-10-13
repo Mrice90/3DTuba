@@ -16,6 +16,9 @@ Builds RulesBridge against the pinned alpha JAR and proves:
      same seed report the identical hash,
  11. AI-097: same seed + same intents -> identical hash sequence;
      a divergent intent -> divergent hash.
+ 12. AI-108-OPENING: optional "tips" field — the opening "keep a Land and a
+     Structure" tip fires only for a hand missing one, is read-only, and
+     is gone after the first action.
 
 Also writes the golden transcript fixture (fixtures/golden-seed-42.jsonl).
 
@@ -335,7 +338,41 @@ def main():
           and seq_c[2] != seq_a[2],
           "divergent intent -> divergent hash (shared prefix identical)")
 
-    print("test_bridge: PASS (11/11 properties)")
+    # Property 12: AI-108-OPENING opening tip — advice only. A hand missing
+    # a Land or Structure gets OPENING_KEEP_LAND_STRUCTURE at the human's
+    # first decision; it never appears for a hand holding both, disappears
+    # after the human's first action, and does not change state or legal.
+    def opening(seed, human_player):
+        bb = Bridge()
+        try:
+            r = bb.call("new", seed=seed, human_player=human_player,
+                        human_faction="ZEUS", bot_faction="POSEIDON",
+                        difficulty="HERO")
+            legal = bb.call("legal")
+            pick = next(a for a in r["legal"] if a["type"] != "end_turn")
+            after = bb.call("act", action_id=pick["id"])
+            return r, legal, after
+        finally:
+            bb.close()
+
+    r, legal, after = opening(2, 0)
+    tips = r.get("tips", [])
+    check(len(tips) == 1 and tips[0]["code"] == "OPENING_KEEP_LAND_STRUCTURE"
+          and tips[0]["trigger"] == "mulligan"
+          and tips[0]["missing"] == ["STRUCTURE"]
+          and "Keep a Land and a Structure" in tips[0]["text"],
+          "opening tip fires on a hand with no Structure")
+    check(legal.get("tips") == tips and legal["revision"] == r["revision"]
+          and legal["state"] == r["state"] and legal["legal"] == r["legal"],
+          "opening tip repeats on legal and mutates nothing")
+    check("tips" not in after, "opening tip gone after the first action")
+    r, _, _ = opening(12, 1)
+    check(r.get("tips", [{}])[0].get("missing") == ["LAND", "STRUCTURE"],
+          "opening tip names both missing types (human second)")
+    r, _, _ = opening(4, 0)
+    check("tips" not in r, "no opening tip for a hand with a Land and a Structure")
+
+    print("test_bridge: PASS (12/12 properties)")
 
 
 if __name__ == "__main__":

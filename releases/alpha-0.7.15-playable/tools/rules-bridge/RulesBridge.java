@@ -335,6 +335,10 @@ public final class RulesBridge {
         m.put("events", events);
         m.put("state", session.snapshot());
         m.put("legal", session.currentLegal());
+        List<Map<String, Object>> tips = session.tips();
+        if (!tips.isEmpty()) {
+            m.put("tips", tips);
+        }
         return m;
     }
 
@@ -360,6 +364,7 @@ public final class RulesBridge {
         private final Adapter adapter;
         private int revision;
         private int decisions;
+        private boolean humanActed;
         private Map<String, String> actionCommands = new HashMap<>();
         private List<Map<String, Object>> legalCache = new ArrayList<>();
 
@@ -431,6 +436,46 @@ public final class RulesBridge {
             return legalCache;
         }
 
+        /**
+         * AI-108-OPENING: HUD tips for the human. At the opening-hand
+         * decision (the human's first turn, before their first action), a
+         * hand missing a Land or a Structure gets OPENING_KEEP_LAND_STRUCTURE.
+         * Advice only: no rule, slot or legality change.
+         */
+        List<Map<String, Object>> tips() {
+            List<Map<String, Object>> tips = new ArrayList<>();
+            if (humanActed || !isHumanTurn()
+                    || state.personalTurnNumber(humanPlayer) != 1) {
+                return tips;
+            }
+            boolean land = false;
+            boolean structure = false;
+            for (UUID id : state.player(humanPlayer).hand()) {
+                CardType type = state.card(id).orElseThrow().definition().type();
+                land |= type == CardType.LAND;
+                structure |= type == CardType.STRUCTURE;
+            }
+            if (land && structure) {
+                return tips;
+            }
+            List<String> missing = new ArrayList<>();
+            if (!land) {
+                missing.add("LAND");
+            }
+            if (!structure) {
+                missing.add("STRUCTURE");
+            }
+            Map<String, Object> tip = new LinkedHashMap<>();
+            tip.put("code", "OPENING_KEEP_LAND_STRUCTURE");
+            tip.put("trigger", "mulligan");
+            tip.put("missing", missing);
+            tip.put("text", "Keep a Land and a Structure. You can't summon"
+                    + " units until a Structure is down, and a Structure"
+                    + " needs a Land to stand on.");
+            tips.add(tip);
+            return tips;
+        }
+
         ActResolution resolveAction(String actionId) {
             if (isGameOver()) {
                 return ActResolution.invalid("match is over");
@@ -450,6 +495,7 @@ public final class RulesBridge {
         String executeHuman(String command,
                            List<Map<String, Object>> events) {
             int p = state.activePlayer();
+            humanActed = true;
             adapter.snapshotDamage();
             String result = commands.execute(command);
             adapter.drainInto(events);
