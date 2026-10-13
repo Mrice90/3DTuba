@@ -1,0 +1,407 @@
+--- a/Assets/Playtest/Scripts/PlaytestGame.cs
++++ b/Assets/Playtest/Scripts/PlaytestGame.cs
+@@ -255,9 +255,9 @@
+                     Banner("Match start — " + e.detail, 2.5f); m.AddLog(e.detail); yield return Wait(.6f); break;
+                 case "TURN_STARTED":
+                     m.Turn = e.turn; m.Active = pl;
+-                    Banner($"Turn {e.turn} — {Faction(pl)}", 1.4f); sfx.PlayUi("turn"); m.AddLog($"T{e.turn} {Faction(pl)} turn"); yield return Wait(.45f); break;
++                    Banner($"Turn {e.turn} — {Faction(pl)}", 1.4f); PlayTurnCue(pl); m.AddLog($"T{e.turn} {Faction(pl)} turn"); yield return Wait(.45f); break;
+                 case "PHASE_CHANGED": m.Phase = e.detail; m.Active = pl; yield return Wait(.06f); break;
+-                case "TURN_ENDED": sfx.PlayUi("turn_end"); yield return Wait(.15f); break;
++                case "TURN_ENDED": yield return Wait(.15f); break;   // AI-082: no turn-end sound (one calm chime on turn start)
+                 case "CARD_DRAWN": m.Hand[pl]++; yield return Wait(.04f); break;
+                 case "GP_GENERATED": m.Gp[pl] += e.amount; yield return Wait(.05f); break;
+                 case "GP_SPENT": m.Gp[pl] = Mathf.Max(0, m.Gp[pl] - e.amount); yield return Wait(.05f); break;
+@@ -631,7 +631,7 @@
+         bool OverHud(Vector2 mp) {
+             var g = new Vector2(mp.x, Screen.height - mp.y);
+             return topBar.Contains(g) || leftPanel.Contains(g) || rightPanel.Contains(g) || bottomBar.Contains(g) || handRect.Contains(g) || viewRect.Contains(g) || logPanel.Contains(g)
+-                || commandRect.Contains(g);
++                || commandRect.Contains(g) || reactionRect.Contains(g);
+         }
+         void Styles() {
+             if (titleStyle != null) return;
+@@ -715,6 +715,7 @@
+                 var r = new Rect(W / 2 - 330, 76, 660, 50);
+                 GUI.Box(r, "", panelStyle); GUI.Label(r, banner, bannerStyle);
+             }
++            DrawReactionCue(W, H);
+             if (paused) DrawPause(); else if (MatchOver) DrawGameOver();
+         }
+         void PlayerPanel(Rect r, int p) {
+--- a/Assets/Playtest/Scripts/PlaytestMenus.cs
++++ b/Assets/Playtest/Scripts/PlaytestMenus.cs
+@@ -156,6 +156,11 @@
+             GUI.Label(new Rect(x, y, w * .4f, line), "Sound effects", menuBody);
+             sfxVolume = GUI.HorizontalSlider(new Rect(x + w * .42f, y + 10, w * .58f, line), sfxVolume, 0, 1); y += line;
+             AudioListener.volume = masterVolume; sfx.Volume = sfxVolume;
++            // AI-082: turn chime on/off, independent of Mute and combat sounds (saved immediately).
++            GUI.Label(new Rect(x, y, w * .4f, line), "Turn chime", menuBody);
++            if (GUI.Button(new Rect(x + w * .42f, y, w * .28f, line - 8), TurnChime ? "Calm ✓" : "Calm", buttonStyle)) TurnChime = true;
++            if (GUI.Button(new Rect(x + w * .72f, y, w * .28f, line - 8), TurnChime ? "Off" : "Off ✓", buttonStyle)) TurnChime = false;
++            y += line;
+             GUI.Label(new Rect(x, y, w * .4f, line), "Display", menuBody);
+             bool full = Screen.fullScreenMode == FullScreenMode.FullScreenWindow || Screen.fullScreenMode == FullScreenMode.ExclusiveFullScreen;
+             if (GUI.Button(new Rect(x + w * .42f, y, w * .28f, line - 8), full ? "Fullscreen ✓" : "Fullscreen", buttonStyle) && !full) {
+--- a/Assets/Playtest/Scripts/SfxBank.cs
++++ b/Assets/Playtest/Scripts/SfxBank.cs
+@@ -78,6 +78,15 @@
+             var v = voices[next++ % voices.Length]; v.pitch = Random.Range(.98f, 1.02f);
+             v.PlayOneShot(clip, Volume * .6f);
+         }
++        // Calm UI cue (turn chime, reaction window): fixed pitch, no random variation, quieter than PlayUi.
++        public void PlayUiSoft(string cue, float gain, float pitch = 1f) {
++            if (Muted || voices == null) return;
++            var list = UiClips(cue);
++            var clip = list.Count > 0 ? list[0] : Generic(cue, "ZEUS");
++            LastCue = (list.Count > 0 ? "ui_" : "generic_") + cue;
++            var v = voices[next++ % voices.Length]; v.pitch = pitch;
++            v.PlayOneShot(clip, Volume * .6f * Mathf.Clamp01(gain));
++        }
+         // Inspector overrides first, then Resources/Sfx/ui_<cue>.wav and ui_<cue>_2.._4 variants.
+         List<AudioClip> UiClips(string cue) {
+             if (ui.TryGetValue(cue, out var list)) return list;
+@@ -104,8 +113,10 @@
+                 case "hit": len = .25f; f = t => (Noise() * .7f + Mathf.Sin(2 * Mathf.PI * 70 * t) * .5f) * Env(t, .001f, .25f); break;
+                 case "destroy": len = .7f; f = t => (Noise() * .6f * Env(t, .002f, .7f) + Mathf.Sin(2 * Mathf.PI * (120 - 80 * t) * t) * .5f * Env(t, .01f, .7f)); break;
+                 case "ability": case "signature": len = .6f; f = t => (Mathf.Sin(2 * Mathf.PI * baseHz * 2 * t) + Mathf.Sin(2 * Mathf.PI * baseHz * 3.01f * t)) * .3f * Env(t, .05f, .6f); break;
+-                case "turn": len = .3f; f = t => Mathf.Sin(2 * Mathf.PI * (t < .12f ? 660 : 880) * t) * Env(t, .005f, .3f) * .35f; break;
+-                case "turn_end": len = .25f; f = t => Mathf.Sin(2 * Mathf.PI * (t < .1f ? 880 : 587) * t) * Env(t, .005f, .25f) * .28f; break;
++                // Turn cues (AI-082): the old rising/falling two-step beeps read like a charger plugging in and out.
++                // Now one low, soft chime with a slow fade-in and a long fade-out; no pitch step.
++                case "turn": len = 1.2f; f = t => (Mathf.Sin(2 * Mathf.PI * 220 * t) * .6f + Mathf.Sin(2 * Mathf.PI * 330 * t) * .28f + Mathf.Sin(2 * Mathf.PI * 440 * t) * .12f) * SoftEnv(t, .09f, 1.2f) * .2f; break;
++                case "turn_end": len = 1f; f = t => (Mathf.Sin(2 * Mathf.PI * 196 * t) * .7f + Mathf.Sin(2 * Mathf.PI * 294 * t) * .3f) * SoftEnv(t, .1f, 1f) * .14f; break;
+                 case "card": len = .2f; f = t => (Noise() * .35f * Mathf.Sin(Mathf.PI * t / .2f) + Mathf.Sin(2 * Mathf.PI * (300 + 1500 * t) * t) * .15f) * Env(t, .01f, .2f); break;
+                 case "victory": len = 1.1f; f = t => (Mathf.Sin(2 * Mathf.PI * (t < .25f ? 523 : t < .5f ? 659 : 784) * t) + Mathf.Sin(2 * Mathf.PI * 261.6f * t) * .5f) * Env(t, .01f, 1.1f) * .3f; break;
+                 case "defeat": len = 1.1f; f = t => (Mathf.Sin(2 * Mathf.PI * (t < .3f ? 392 : t < .6f ? 311 : 262) * t) + Mathf.Sin(2 * Mathf.PI * 98 * t) * .5f) * Env(t, .01f, 1.1f) * .3f; break;
+@@ -120,6 +131,12 @@
+             c.SetData(data, 0);
+             generic[key] = c; return c;
+         }
++        // Eased fade-in, then a smooth exponential-style fade-out that reaches silence at the end.
++        static float SoftEnv(float t, float attack, float length) {
++            if (t < attack) return Mathf.Sin(.5f * Mathf.PI * t / attack);
++            float u = Mathf.Clamp01((t - attack) / (length - attack));
++            return Mathf.Exp(-3.5f * u) * (1 - u);
++        }
+         static float Env(float t, float attack, float length) {
+             if (t < attack) return t / attack;
+             return Mathf.Clamp01(1 - (t - attack) / (length - attack));
+--- a/Assets/Playtest/Scripts/LiveMatchValidation.cs
++++ b/Assets/Playtest/Scripts/LiveMatchValidation.cs
+@@ -13,6 +13,8 @@
+             public int abilityListChecks, commandCenterActivations,
+                 capitalDamageChecks, stormRelayChecks, healChecks, losBlockedSeen, buriedSourcesSeen, hpSnapshotChecks;
+             public bool rejectionShown;
++            // AI-080-REACTION-VISUAL-CUE: decisions taken inside a reaction window, each with the cue up.
++            public int reactionWindows, reactionCueChecks;
+             public string error; public string[] checks;
+         }
+         static int ValidationPriority(BridgeAction action) {
+@@ -28,7 +30,7 @@
+             float deadline = Time.realtimeSinceStartup + 180;
+             var shots = Arg("-gameplayLiveShots");
+             if (shots != null) Directory.CreateDirectory(shots);
+-            bool openingShot = false, abilityShot = false, spellShot = false, rejectionTried = false;
++            bool openingShot = false, abilityShot = false, spellShot = false, rejectionTried = false, reactionShot = false;
+             int pendingHpSeat = -1, pendingHpBefore = 0, pendingHpDirection = 0; string pendingHpWhat = null, pendingHpCard = null;
+             while (Time.realtimeSinceStartup < deadline && result.actions < 1500) {
+                 if (mode != Mode.Live || bridge == null || !bridge.Alive) { result.error = "Live bridge unavailable: " + liveStatus; break; }
+@@ -43,6 +45,12 @@
+                     pendingHpSeat = -1;
+                 }
+                 if (liveState.GameOver) { result.passed = true; break; }
++                if (liveState.reaction_pending) {
++                    TrackReactionWindow();
++                    if (!ReactionCueActive || !liveActions.Any(a => a.type == "pass_reaction")) { result.error = "Reaction window open without the React-now cue or a Pass choice."; break; }
++                    result.reactionCueChecks++;
++                    if (shots != null && !reactionShot) { var savedSpeed = speed; speed = 1; yield return Shot(shots, "05-reaction-window.png"); speed = savedSpeed; reactionShot = true; }
++                }
+                 if (!liveState.HasCapitals) { result.error = "Bridge client_metadata (capitals) missing."; break; }
+                 if (model.CapitalHp[0] != liveState.capitals[0].hp || model.CapitalHp[1] != liveState.capitals[1].hp) { result.error = "HUD capital HP differs from snapshot."; break; }
+                 result.hpSnapshotChecks++;
+@@ -125,7 +133,7 @@
+                 }
+                 result.actions++; yield return null;
+             }
+-            result.winner = model.Winner; result.turn = model.Turn;
++            result.winner = model.Winner; result.turn = model.Turn; result.reactionWindows = ReactionWindowsOpened;
+             if (!result.passed && result.error == null) result.error = "Live-match deadline/action limit exceeded.";
+             if (result.passed) {
+                 checks.Add("Packaged rules bridge started with slot policy enabled");
+--- /dev/null
++++ b/Assets/Playtest/Scripts/ReactionCue.cs
+@@ -0,0 +1,150 @@
++using System.Linq;
++using System.Text.RegularExpressions;
++using UnityEngine;
++
++namespace InfiniteConquest.Playtest {
++    // AI-080-REACTION-VISUAL-CUE / AI-082-TURN-SOUND-REVIEW (2026-10-11):
++    //  - while the bridge holds a reaction window (reaction_pending), a pulsing screen-edge glow, a
++    //    "REACT NOW" banner under the top bar (what the opponent just did, how long the turn has been
++    //    paused, Cast/Pass guidance and a Pass button) and outlines on the spells that can be cast now;
++    //    online, an opponent's window shows a quieter "opponent may react" banner instead;
++    //  - calmer turn sounds: one soft chime when your own turn starts, nothing on turn end or on the
++    //    opponent's turn start (playback: a quieter chime per turn), and a "Turn chime" Calm/Off setting (Esc > Settings)
++    //    that is independent of Mute and of combat sounds.
++    // The engine has no reaction timeout, so the banner counts up how long the turn has been paused
++    // instead of counting down. Sizes come from the screen height so the cue stays readable on short windows.
++    public sealed partial class PlaytestGame {
++        Rect reactionRect;
++        bool reactionWasOpen;
++        float reactionOpenedAt;
++        string reactionTrigger = "";
++        public int ReactionWindowsOpened { get; private set; }
++        static Texture2D cueTexture;
++        GUIStyle cueTitleStyle, cueTextStyle;
++        int cueStyleHeight = -1;
++        const string TurnChimePref = "ic.turnChime";
++        bool? turnChime;
++        public bool TurnChime {
++            get {
++                if (!turnChime.HasValue) turnChime = PlayerPrefs.GetInt(TurnChimePref, 1) != 0;
++                return turnChime.Value;
++            }
++            set { turnChime = value; PlayerPrefs.SetInt(TurnChimePref, value ? 1 : 0); }
++        }
++
++        // A reaction window is open and it is this client's choice (solo: always the human; online: acting seat).
++        public bool ReactionCueActive => mode == Mode.Live && liveState != null && liveState.reaction_pending && !liveState.GameOver
++            && (!liveState.multiplayer || liveState.acting_player == humanSeat);
++        // Online only: the opponent is deciding whether to react to this client's action.
++        public bool OpponentReactionCueActive => mode == Mode.Live && liveState != null && liveState.reaction_pending && !liveState.GameOver
++            && liveState.multiplayer && liveState.acting_player != humanSeat;
++
++        // Layout used by DrawReactionCue, scaled from the screen size and anchored under the 62 px top bar.
++        public struct ReactionCueLayout { public Rect banner, pass; public float glow; public int titleSize, textSize; }
++        public static ReactionCueLayout CueLayout(float W, float H) {
++            var l = new ReactionCueLayout();
++            l.glow = GlowFor(H);
++            l.titleSize = Mathf.RoundToInt(Mathf.Clamp(H / 30f, 17, 28));
++            l.textSize = Mathf.RoundToInt(Mathf.Clamp(H / 58f, 11, 15));
++            // Title + two text lines (each textSize + 7 with zero padding) + margins.
++            float bh = l.titleSize + 12 + 2 * (l.textSize + 7) + 8;
++            float bw = Mathf.Min(W - 24, Mathf.Clamp(W * .5f, 420, 680));
++            l.banner = new Rect(W / 2 - bw / 2, 66, bw, bh);
++            float pw = Mathf.Clamp(bw * .2f, 84, 120), ph = Mathf.Clamp(bh * .5f, 28, 38);
++            l.pass = new Rect(l.banner.xMax - pw - 10, l.banner.y + bh / 2 - ph / 2, pw, ph);
++            return l;
++        }
++
++        // Tracks the window opening/closing; called every frame from OnGUI and by the packaged validation.
++        void TrackReactionWindow() {
++            bool open = ReactionCueActive;
++            if (open && !reactionWasOpen) {
++                ReactionWindowsOpened++;
++                reactionOpenedAt = Time.unscaledTime;
++                reactionTrigger = model != null && model.Log.Count > 0 ? Regex.Replace(model.Log[model.Log.Count - 1], @" \((CHARACTER|SPELL|LAND|STRUCTURE)\)", "") : "";
++                if (TurnChime && !sfx.Muted) sfx.PlayUiSoft("turn", .5f, 1.25f);
++            }
++            reactionWasOpen = open;
++        }
++
++        void DrawReactionCue(float W, float H) {
++            TrackReactionWindow();
++            reactionRect = Rect.zero;
++            bool mine = ReactionCueActive, theirs = OpponentReactionCueActive;
++            if ((!mine && !theirs) || MatchOver) return;
++            var l = CueLayout(W, H);
++            if (cueTexture == null) { cueTexture = new Texture2D(1, 1); cueTexture.SetPixel(0, 0, Color.white); cueTexture.Apply(); }
++            if (cueStyleHeight != (int)H) {
++                cueStyleHeight = (int)H;
++                cueTitleStyle = new GUIStyle(GUI.skin.label) { fontSize = l.titleSize, fontStyle = FontStyle.Bold, alignment = TextAnchor.UpperLeft, clipping = TextClipping.Clip, padding = new RectOffset(0, 0, 0, 0) };
++                cueTextStyle = new GUIStyle(GUI.skin.label) { fontSize = l.textSize, richText = true, wordWrap = false, alignment = TextAnchor.UpperLeft, clipping = TextClipping.Clip, padding = new RectOffset(0, 0, 0, 0) };
++                cueTextStyle.normal.textColor = new Color(.95f, .95f, .98f);
++            }
++            var prev = GUI.color;
++            float pulse = .5f + .5f * Mathf.Sin(Time.unscaledTime * 4.2f);
++            var accent = mine ? new Color(1f, .72f, .18f) : new Color(.45f, .7f, 1f);
++            if (mine) {
++                // Screen-edge glow: three nested strips per edge, brightest at the edge.
++                for (int i = 0; i < 3; i++) {
++                    float t = l.glow * (3 - i) / 3f;
++                    GUI.color = new Color(accent.r, accent.g, accent.b, (.3f + .45f * pulse) * (i + 1) / 3f);
++                    GUI.DrawTexture(new Rect(0, 0, W, t), cueTexture); GUI.DrawTexture(new Rect(0, H - t, W, t), cueTexture);
++                    GUI.DrawTexture(new Rect(0, 0, t, H), cueTexture); GUI.DrawTexture(new Rect(W - t, 0, t, H), cueTexture);
++                }
++                OutlineReactionSpells(W, H, accent, pulse);
++            }
++            // Banner with an accent frame.
++            var b = l.banner; reactionRect = b;
++            GUI.color = new Color(accent.r, accent.g, accent.b, mine ? .55f + .45f * pulse : .6f);
++            GUI.DrawTexture(new Rect(b.x - 3, b.y - 3, b.width + 6, b.height + 6), cueTexture);
++            GUI.color = new Color(.04f, .05f, .09f, .94f); GUI.DrawTexture(b, cueTexture);
++            GUI.color = prev;
++            float textW = b.width - 24 - (mine ? l.pass.width + 10 : 0);
++            cueTitleStyle.normal.textColor = accent;
++            int secs = Mathf.Max(0, Mathf.FloorToInt(Time.unscaledTime - reactionOpenedAt));
++            string title = mine ? "REACT NOW — enemy turn paused" : "Opponent may react — waiting";
++            GUI.Label(new Rect(b.x + 12, b.y + 6, textW, l.titleSize + 6), title, cueTitleStyle);
++            // Two single lines: what the opponent just did, then what to do (and how long the turn has waited).
++            string line1, line2;
++            if (mine) {
++                line1 = string.IsNullOrEmpty(reactionTrigger) ? "The opponent acted." : "Just now: <b>" + reactionTrigger + "</b>";
++                line2 = (liveSelected != null ? "Click a glowing target hex, or Pass" : "Cast a glowing spell from your hand, or Pass") + $"  <color=#a8b3c4>· {secs / 60}:{secs % 60:00}</color>";
++            } else { line1 = "Your action is paused while they decide"; line2 = "whether to cast a reaction spell."; }
++            float lineH = l.textSize + 7, ty = b.y + l.titleSize + 12;
++            GUI.Label(new Rect(b.x + 12, ty, textW, lineH), line1, cueTextStyle);
++            GUI.Label(new Rect(b.x + 12, ty + lineH, textW, lineH), line2, cueTextStyle);
++            if (mine) {
++                var pass = liveActions.FirstOrDefault(a => a.type == "pass_reaction");
++                GUI.enabled = pass != null && !waiting && !paused;
++                if (GUI.Button(l.pass, "Pass", buttonStyle)) ActLive(pass);
++                GUI.enabled = true;
++            }
++        }
++
++        // Same layout as DrawHand: outline every hand card that has a legal action (the castable reactions).
++        void OutlineReactionSpells(float W, float H, Color accent, float pulse) {
++            var hand = liveState?.players != null && liveState.players.Length > humanSeat ? liveState.players[humanSeat].hand : null;
++            if (hand == null || hand.Length == 0) return;
++            float cw = Mathf.Clamp(H * .15f, 96, 132), ch = cw * 1.39f, gap = 8, lift = cw * .2f;
++            float total = hand.Length * cw + (hand.Length - 1) * gap;
++            float x0 = Mathf.Max(270, W / 2 - total / 2), y0 = H - 52 - ch - 10;
++            float t = Mathf.Max(3, GlowFor(H) * .6f);
++            GUI.color = new Color(accent.r, accent.g, accent.b, .45f + .5f * pulse);
++            for (int i = 0; i < hand.Length; i++) {
++                if (!ActionsFor(hand[i].instance_id).Any()) continue;
++                var r = new Rect(x0 + i * (cw + gap) - t, y0 - lift - t, cw + 2 * t, ch + lift + 2 * t);
++                GUI.DrawTexture(new Rect(r.x, r.y, r.width, t), cueTexture); GUI.DrawTexture(new Rect(r.x, r.yMax - t, r.width, t), cueTexture);
++                GUI.DrawTexture(new Rect(r.x, r.y, t, r.height), cueTexture); GUI.DrawTexture(new Rect(r.xMax - t, r.y, t, r.height), cueTexture);
++            }
++            GUI.color = Color.white;
++        }
++        static float GlowFor(float H) => Mathf.Clamp(H * .018f, 8, 16);
++
++        // ------------------------------------------------------------------ calmer turn sounds
++        void PlayTurnCue(int player) {
++            if (!TurnChime || sfx == null) return;
++            if (mode == Mode.Live) { if (player == humanSeat) sfx.PlayUiSoft("turn", .55f); }
++            else sfx.PlayUiSoft("turn", .3f);
++        }
++    }
++}
+--- /dev/null
++++ b/Assets/Playtest/Editor/InterruptCueChecks.cs
+@@ -0,0 +1,120 @@
++using System;
++using System.Collections;
++using System.Collections.Generic;
++using System.IO;
++using System.Linq;
++using System.Reflection;
++using UnityEditor;
++using UnityEngine;
++using InfiniteConquest.Playtest;
++
++// AI-080-REACTION-VISUAL-CUE / AI-082-TURN-SOUND-REVIEW editor checks: reaction-window cue state and its
++// layout on tall and short screens, and the calmer turn sounds (one soft chime on your own turn start,
++// nothing on turn end, Calm/Off setting). Then runs the unchanged R3 chain and the player build.
++// Full chain: Unity -batchmode -quit -projectPath <copy>/UnityProof -executeMethod InterruptCueBuild.Build -buildPath <exe>
++public static class InterruptCueBuild {
++    static readonly List<string> checks = new List<string>();
++    static void Check(bool ok, string label) {
++        if (!ok) throw new Exception("INTERRUPT_VALIDATE FAIL " + label);
++        checks.Add(label); Debug.Log("INTERRUPT_VALIDATE PASS " + label);
++    }
++    static readonly BindingFlags Private = BindingFlags.NonPublic | BindingFlags.Instance;
++    static void Set(object obj, string field, object value) => obj.GetType().GetField(field, Private).SetValue(obj, value);
++    static object Call(object obj, string method, params object[] args) => obj.GetType().GetMethod(method, Private).Invoke(obj, args);
++    static void Drain(IEnumerator e, int depth = 0) {
++        int guard = 0;
++        while (guard++ < 10000 && e.MoveNext()) {
++            var c = e.Current;
++            if (c is CustomYieldInstruction) continue;
++            if (c is IEnumerator inner && depth < 8) Drain(inner, depth + 1);
++        }
++    }
++
++    [MenuItem("Infinite Conquest/Validate reaction cue + turn sounds")]
++    public static void Validate() {
++        checks.Clear();
++        // ---- layout: under the 62 px top bar, above the hand, inside the screen, readable text
++        foreach (var size in new[] { new Vector2(1920, 1080), new Vector2(1296, 688), new Vector2(1280, 600), new Vector2(1024, 540), new Vector2(800, 480) }) {
++            float W = size.x, H = size.y;
++            var l = PlaytestGame.CueLayout(W, H);
++            float cw = Mathf.Clamp(H * .15f, 96, 132), handTop = H - 52 - cw * 1.39f - 10 - cw * .2f;
++            string at = W + "x" + H;
++            Check(l.banner.y >= 62 && l.banner.yMax < handTop, at + ": banner sits between the top bar and the raised hand");
++            Check(l.banner.x >= 0 && l.banner.xMax <= W && l.banner.width >= Mathf.Min(W - 24, 420), at + ": banner fits the screen width");
++            Check(l.pass.x > l.banner.x && l.pass.xMax <= l.banner.xMax && l.pass.y >= l.banner.y && l.pass.yMax <= l.banner.yMax && l.pass.height >= 28, at + ": Pass button inside the banner, at least 28 px tall");
++            Check(l.titleSize >= 17 && l.textSize >= 11 && l.titleSize + 12 + 2 * (l.textSize + 7) <= l.banner.height, at + ": title/text sizes readable and fit the banner");
++            Check(l.glow >= 8, at + ": edge glow at least 8 px");
++        }
++
++        var host = new GameObject("Interrupt validation host"); host.SetActive(false);
++        var game = host.AddComponent<PlaytestGame>();
++        var soundObject = new GameObject("Interrupt validation sound"); var sound = soundObject.AddComponent<SfxBank>();
++        bool chimeBefore = game.TurnChime;
++        try {
++            typeof(SfxBank).GetMethod("Awake", Private).Invoke(sound, null);
++            Set(game, "sfx", sound); Set(game, "speed", 200f);
++            var mode = typeof(PlaytestGame).GetField("mode", Private);
++            mode.SetValue(game, Enum.Parse(mode.FieldType, "Live"));
++            Set(game, "humanSeat", 0);
++            var model = (MatchModel)typeof(PlaytestGame).GetField("model", Private).GetValue(game);
++
++            // ---- reaction cue state
++            BridgeState State(bool pending, bool multiplayer, int acting, string phase = "MAIN") =>
++                new BridgeState { reaction_pending = pending, multiplayer = multiplayer, acting_player = acting, active_player = 1, phase = phase, players = new BridgePlayer[0] };
++            Set(game, "liveState", State(false, false, 0));
++            Check(!game.ReactionCueActive && !game.OpponentReactionCueActive, "no cue outside a reaction window");
++            model.AddLog("Poseidon plays Riptide Lancer (CHARACTER) at 2,3");
++            Set(game, "liveState", State(true, false, 0));
++            Check(game.ReactionCueActive && !game.OpponentReactionCueActive, "solo: React-now cue while the bot's turn is paused");
++            int opened = game.ReactionWindowsOpened;
++            Call(game, "TrackReactionWindow"); Call(game, "TrackReactionWindow");
++            Check(game.ReactionWindowsOpened == opened + 1, "one window counted once while it stays open");
++            Check(((string)typeof(PlaytestGame).GetField("reactionTrigger", Private).GetValue(game)).Contains("Riptide Lancer at 2,3"), "banner names what the opponent just did (card type tag dropped to fit)");
++            Set(game, "liveState", State(false, false, 0)); Call(game, "TrackReactionWindow");
++            Set(game, "liveState", State(true, false, 0)); Call(game, "TrackReactionWindow");
++            Check(game.ReactionWindowsOpened == opened + 2, "a new window after the previous one closed is counted again");
++            Set(game, "liveState", State(true, true, 0));
++            Check(game.ReactionCueActive, "online: cue when this seat is the one reacting");
++            Set(game, "liveState", State(true, true, 1));
++            Check(!game.ReactionCueActive && game.OpponentReactionCueActive, "online: opponent's reaction shows the quieter waiting banner instead");
++            Set(game, "liveState", State(true, false, 0, "GAME_OVER"));
++            Check(!game.ReactionCueActive && !game.OpponentReactionCueActive, "no cue after game over");
++            Set(game, "reactionRect", new Rect(100, 66, 400, 70));
++            Check((bool)Call(game, "OverHud", new Vector2(200, Screen.height - 90)), "banner area is excluded from board clicks");
++
++            // ---- calmer turn sounds
++            var clip = (AudioClip)typeof(SfxBank).GetMethod("Generic", Private).Invoke(sound, new object[] { "turn", "ZEUS" });
++            var data = new float[clip.samples]; clip.GetData(data, 0);
++            float peak = data.Max(Mathf.Abs);
++            int n = data.Length, tail = n / 20;
++            float headRms = Mathf.Sqrt(data.Take(n / 200).Average(v => v * v)), tailRms = Mathf.Sqrt(data.Skip(n - tail).Average(v => v * v));
++            float bodyRms = Mathf.Sqrt(data.Skip(n / 20).Take(n / 5).Average(v => v * v));
++            Check(clip.length >= 1f && peak <= .22f, $"turn chime is one soft cue (length {clip.length:0.00}s, peak {peak:0.000} vs old .35)");
++            Check(headRms < bodyRms * .5f && tailRms < bodyRms * .05f, "turn chime fades in and fades out to silence");
++            int Crossings(IEnumerable<float> s) { int c = 0; float last = 0; foreach (var v in s) { if (last < 0 && v >= 0) c++; last = v; } return c; }
++            int early = Crossings(data.Take(n / 4)), late = Crossings(data.Skip(n / 4).Take(n / 4));
++            Check(Mathf.Abs(early - late) <= early * .05f + 2, "turn chime has no rising/falling pitch step");
++
++            sound.Muted = false; game.TurnChime = true;
++            sound.LastCue = "";
++            Drain((IEnumerator)Call(game, "Apply", new WireEvent { @event = "TURN_ENDED", player = 0, turn = 3 }));
++            Check(sound.LastCue == "", "turn end makes no sound");
++            Drain((IEnumerator)Call(game, "Apply", new WireEvent { @event = "TURN_STARTED", player = 1, turn = 3 }));
++            Check(sound.LastCue == "", "live: opponent's turn start makes no sound (banner only)");
++            Drain((IEnumerator)Call(game, "Apply", new WireEvent { @event = "TURN_STARTED", player = 0, turn = 4 }));
++            Check(sound.LastCue == "generic_turn", "live: your own turn start plays the calm chime");
++            game.TurnChime = false; sound.LastCue = "";
++            Drain((IEnumerator)Call(game, "Apply", new WireEvent { @event = "TURN_STARTED", player = 0, turn = 5 }));
++            Check(sound.LastCue == "", "Turn chime Off silences turn cues");
++            sound.Play("zeus_storm_relay_pylon", "ability");
++            Check(sound.LastCue != "", "Turn chime Off leaves combat/card sounds playing");
++        } finally {
++            game.TurnChime = chimeBefore;
++            UnityEngine.Object.DestroyImmediate(host); UnityEngine.Object.DestroyImmediate(soundObject);
++        }
++        Directory.CreateDirectory("Build");
++        File.WriteAllText("Build/interrupt-cue-validation.json", "{\"passed\":true,\"checks\":" + checks.Count + ",\"names\":[" + string.Join(",", checks.Select(c => "\"" + c.Replace("\"", "'") + "\"")) + "]}");
++    }
++
++    public static void Build() { Validate(); R3Build.Build(); }
++}
