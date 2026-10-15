@@ -1,0 +1,32 @@
+{
+ "card": "poseidon_triton_waveguard",
+ "source": "poseidon_triton_waveguard.glb",
+ "source_sha256": "fc356a52d2f561b740daca471739acf5f03c998426bfdfe78cf75479d544be3a",
+ "tris_before": 289702,
+ "tris_after": 30000,
+ "ratio": 0.10355,
+ "dims_m": [
+  1.272,
+  1.271,
+  1.897
+ ],
+ "silhouette_iou": {
+  "front": 0.9861,
+  "front34": 0.992,
+  "side": 0.9867,
+  "top": 0.9978,
+  "detail": 0.9842
+ },
+ "uv_layers": 1,
+ "materials": 1,
+ "outputs": {
+  "poseidon_triton_waveguard_30k.glb": {
+   "bytes": 8599524,
+   "sha256": "39926d8c7a4c8ea86a14e6df6f484f3552222099a26271f17e3d97e1cdfa602d"
+  },
+  "poseidon_triton_waveguard_30k.fbx": {
+   "bytes": 6922604,
+   "sha256": "12d1b669789768c3ba8d0f9a9123076c84cd5a76ade0e530c6d0b743171fb78d"
+  }
+ }
+}

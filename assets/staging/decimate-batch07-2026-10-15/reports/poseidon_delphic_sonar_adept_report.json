@@ -1,0 +1,32 @@
+{
+ "card": "poseidon_delphic_sonar_adept",
+ "source": "poseidon_delphic_sonar_adept.glb",
+ "source_sha256": "ed8e78c39173cdeffa44cd5ff93089a83d1b7d32637ffda1cdb3b586fb94df7b",
+ "tris_before": 567766,
+ "tris_after": 29999,
+ "ratio": 0.05284,
+ "dims_m": [
+  1.665,
+  1.212,
+  1.896
+ ],
+ "silhouette_iou": {
+  "front": 0.979,
+  "front34": 0.9759,
+  "side": 0.9814,
+  "top": 0.9872,
+  "detail": 0.9805
+ },
+ "uv_layers": 1,
+ "materials": 1,
+ "outputs": {
+  "poseidon_delphic_sonar_adept_30k.glb": {
+   "bytes": 8656024,
+   "sha256": "f8f77467c84a850d0dd41a5647e8a7e28fe530bf6ca243e885ff4faf568b08be"
+  },
+  "poseidon_delphic_sonar_adept_30k.fbx": {
+   "bytes": 7006092,
+   "sha256": "0c731f25193381bf8857676aec325819366bca3c08c8f88e4b14f2219445a1e0"
+  }
+ }
+}

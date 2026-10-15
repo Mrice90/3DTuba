@@ -1,0 +1,32 @@
+{
+ "card": "poseidon_nereid_current_rider",
+ "source": "poseidon_nereid_current_rider.glb",
+ "source_sha256": "8c3a5b920b26ee79cad9de4433105c7451650625c4bc67fb939353815c795ce1",
+ "tris_before": 116424,
+ "tris_after": 29999,
+ "ratio": 0.25768,
+ "dims_m": [
+  0.683,
+  1.026,
+  1.901
+ ],
+ "silhouette_iou": {
+  "front": 0.9955,
+  "front34": 0.9959,
+  "side": 0.9957,
+  "top": 0.9952,
+  "detail": 0.9951
+ },
+ "uv_layers": 1,
+ "materials": 1,
+ "outputs": {
+  "poseidon_nereid_current_rider_30k.glb": {
+   "bytes": 7181828,
+   "sha256": "30b9c4f6d061b8b202196d5065763960fe91b7e84620af5db921bf80b1bb6428"
+  },
+  "poseidon_nereid_current_rider_30k.fbx": {
+   "bytes": 5986348,
+   "sha256": "85285f3f26a6d9fb6bd72cefd78affa820e63d6b21deeccaf4655b5eac4443be"
+  }
+ }
+}

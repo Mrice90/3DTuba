@@ -1,0 +1,32 @@
+{
+ "card": "poseidon_tidepool_surveyor",
+ "source": "poseidon_tidepool_surveyor.glb",
+ "source_sha256": "9a72c54d633ff14df3f5bd7699021ba097016436c2f26c066a4a10a22cd7e63a",
+ "tris_before": 233314,
+ "tris_after": 29999,
+ "ratio": 0.12858,
+ "dims_m": [
+  1.9,
+  1.6,
+  1.042
+ ],
+ "silhouette_iou": {
+  "front": 0.9966,
+  "front34": 0.997,
+  "side": 0.9976,
+  "top": 0.9969,
+  "detail": 0.9978
+ },
+ "uv_layers": 1,
+ "materials": 1,
+ "outputs": {
+  "poseidon_tidepool_surveyor_30k.glb": {
+   "bytes": 8994188,
+   "sha256": "f131044b25468304426cbd54a62bead74afa47de96835e9bc0f8c085df95df51"
+  },
+  "poseidon_tidepool_surveyor_30k.fbx": {
+   "bytes": 7020060,
+   "sha256": "196aec4ce047f6bb0c638114275001238c538a6434eda8378436c6843097bbe7"
+  }
+ }
+}

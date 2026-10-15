@@ -1,0 +1,32 @@
+{
+ "card": "poseidon_reefline_defender",
+ "source": "poseidon_reefline_defender.glb",
+ "source_sha256": "e9694ee96e454a2386d4ac633e6d4c87c8490d4f8e483de5d78c8fbab0f5c10d",
+ "tris_before": 499164,
+ "tris_after": 29999,
+ "ratio": 0.0601,
+ "dims_m": [
+  1.748,
+  1.2,
+  1.899
+ ],
+ "silhouette_iou": {
+  "front": 0.9825,
+  "front34": 0.9878,
+  "side": 0.9866,
+  "top": 0.9853,
+  "detail": 0.9886
+ },
+ "uv_layers": 1,
+ "materials": 1,
+ "outputs": {
+  "poseidon_reefline_defender_30k.glb": {
+   "bytes": 10250772,
+   "sha256": "2efad7f75527f8aee6d32e2b13af041d685af585917027b6af0c3881fa49b7ca"
+  },
+  "poseidon_reefline_defender_30k.fbx": {
+   "bytes": 8307244,
+   "sha256": "84a62013bc980cc7835a21f7cb683f8a838dd55d7f5e6a0061c8287c326985e7"
+  }
+ }
+}

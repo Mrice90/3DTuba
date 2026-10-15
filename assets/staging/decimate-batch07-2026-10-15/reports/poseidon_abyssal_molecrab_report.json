@@ -1,0 +1,32 @@
+{
+ "card": "poseidon_abyssal_molecrab",
+ "source": "poseidon_abyssal_molecrab.glb",
+ "source_sha256": "3d549302195bb50d7562f00e5fc5f9584f6fddc1ba6181c1a31edc4258a2197d",
+ "tris_before": 457248,
+ "tris_after": 30000,
+ "ratio": 0.06561,
+ "dims_m": [
+  1.709,
+  1.897,
+  1.037
+ ],
+ "silhouette_iou": {
+  "front": 0.9904,
+  "front34": 0.9887,
+  "side": 0.9888,
+  "top": 0.9914,
+  "detail": 0.9967
+ },
+ "uv_layers": 1,
+ "materials": 1,
+ "outputs": {
+  "poseidon_abyssal_molecrab_30k.glb": {
+   "bytes": 10717788,
+   "sha256": "0b7f20c9ea8e332d6066bd5d8af9820579f0fa445a4d95d594b424ecb277c45c"
+  },
+  "poseidon_abyssal_molecrab_30k.fbx": {
+   "bytes": 8389196,
+   "sha256": "7f7198594c50ffc3a2a350418a4ed2701d90255c38967dccc2b64c5f69b4e668"
+  }
+ }
+}

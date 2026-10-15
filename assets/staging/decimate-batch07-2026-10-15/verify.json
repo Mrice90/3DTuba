@@ -1,0 +1,350 @@
+{
+ "poseidon_abyssal_molecrab": {
+  "glb": {
+   "meshes": 1,
+   "tris": 30000,
+   "materials": 1,
+   "images": [
+    "poseidon_abyssal_molecrab_BaseColor",
+    "poseidon_abyssal_molecrab_MetallicRoughness",
+    "poseidon_abyssal_molecrab_Normal"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.04
+  },
+  "fbx": {
+   "meshes": 1,
+   "tris": 30000,
+   "materials": 1,
+   "images": [
+    "poseidon_abyssal_molecrab_BaseColor.jpg",
+    "poseidon_abyssal_molecrab_Normal.jpg"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.04
+  }
+ },
+ "poseidon_delphic_sonar_adept": {
+  "glb": {
+   "meshes": 1,
+   "tris": 29999,
+   "materials": 1,
+   "images": [
+    "poseidon_delphic_sonar_adept_BaseColor",
+    "poseidon_delphic_sonar_adept_MetallicRoughness",
+    "poseidon_delphic_sonar_adept_Normal"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.895
+  },
+  "fbx": {
+   "meshes": 1,
+   "tris": 29999,
+   "materials": 1,
+   "images": [
+    "poseidon_delphic_sonar_adept_BaseColor.jpg",
+    "poseidon_delphic_sonar_adept_Normal.jpg"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.895
+  }
+ },
+ "poseidon_fast_razorfin_lancer": {
+  "glb": {
+   "meshes": 1,
+   "tris": 30000,
+   "materials": 1,
+   "images": [
+    "poseidon_fast_razorfin_lancer_BaseColor",
+    "poseidon_fast_razorfin_lancer_MetallicRoughness",
+    "poseidon_fast_razorfin_lancer_Normal"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.375
+  },
+  "fbx": {
+   "meshes": 1,
+   "tris": 30000,
+   "materials": 1,
+   "images": [
+    "poseidon_fast_razorfin_lancer_BaseColor.jpg",
+    "poseidon_fast_razorfin_lancer_Normal.jpg"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.375
+  }
+ },
+ "poseidon_keyword_breakwater_hoplite": {
+  "glb": {
+   "meshes": 1,
+   "tris": 30000,
+   "materials": 1,
+   "images": [
+    "poseidon_keyword_breakwater_hoplite_BaseColor",
+    "poseidon_keyword_breakwater_hoplite_MetallicRoughness",
+    "poseidon_keyword_breakwater_hoplite_Normal"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.398
+  },
+  "fbx": {
+   "meshes": 1,
+   "tris": 30000,
+   "materials": 1,
+   "images": [
+    "poseidon_keyword_breakwater_hoplite_BaseColor.jpg",
+    "poseidon_keyword_breakwater_hoplite_Normal.jpg"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.398
+  }
+ },
+ "poseidon_kraken_tendril_drone": {
+  "glb": {
+   "meshes": 1,
+   "tris": 30000,
+   "materials": 1,
+   "images": [
+    "poseidon_kraken_tendril_drone_BaseColor",
+    "poseidon_kraken_tendril_drone_MetallicRoughness",
+    "poseidon_kraken_tendril_drone_Normal"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.179
+  },
+  "fbx": {
+   "meshes": 1,
+   "tris": 30000,
+   "materials": 1,
+   "images": [
+    "poseidon_kraken_tendril_drone_BaseColor.jpg",
+    "poseidon_kraken_tendril_drone_Normal.jpg"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.179
+  }
+ },
+ "poseidon_naiad_flowshaper": {
+  "glb": {
+   "meshes": 1,
+   "tris": 29999,
+   "materials": 1,
+   "images": [
+    "poseidon_naiad_flowshaper_BaseColor",
+    "poseidon_naiad_flowshaper_MetallicRoughness",
+    "poseidon_naiad_flowshaper_Normal"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.831
+  },
+  "fbx": {
+   "meshes": 1,
+   "tris": 29999,
+   "materials": 1,
+   "images": [
+    "poseidon_naiad_flowshaper_BaseColor.jpg",
+    "poseidon_naiad_flowshaper_Normal.jpg"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.831
+  }
+ },
+ "poseidon_nereid_current_rider": {
+  "glb": {
+   "meshes": 1,
+   "tris": 29999,
+   "materials": 1,
+   "images": [
+    "poseidon_nereid_current_rider_BaseColor",
+    "poseidon_nereid_current_rider_MetallicRoughness",
+    "poseidon_nereid_current_rider_Normal"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.901
+  },
+  "fbx": {
+   "meshes": 1,
+   "tris": 29999,
+   "materials": 1,
+   "images": [
+    "poseidon_nereid_current_rider_BaseColor.jpg",
+    "poseidon_nereid_current_rider_Normal.jpg"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.901
+  }
+ },
+ "poseidon_oceanid_pressure_mage": {
+  "glb": {
+   "meshes": 1,
+   "tris": 29999,
+   "materials": 1,
+   "images": [
+    "poseidon_oceanid_pressure_mage_BaseColor",
+    "poseidon_oceanid_pressure_mage_MetallicRoughness",
+    "poseidon_oceanid_pressure_mage_Normal"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.895
+  },
+  "fbx": {
+   "meshes": 1,
+   "tris": 29999,
+   "materials": 1,
+   "images": [
+    "poseidon_oceanid_pressure_mage_BaseColor.jpg",
+    "poseidon_oceanid_pressure_mage_Normal.jpg"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.895
+  }
+ },
+ "poseidon_reefline_defender": {
+  "glb": {
+   "meshes": 1,
+   "tris": 29999,
+   "materials": 1,
+   "images": [
+    "poseidon_reefline_defender_BaseColor",
+    "poseidon_reefline_defender_MetallicRoughness",
+    "poseidon_reefline_defender_Normal"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.9
+  },
+  "fbx": {
+   "meshes": 1,
+   "tris": 29999,
+   "materials": 1,
+   "images": [
+    "poseidon_reefline_defender_BaseColor.jpg",
+    "poseidon_reefline_defender_Normal.jpg"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.9
+  }
+ },
+ "poseidon_tidepool_surveyor": {
+  "glb": {
+   "meshes": 1,
+   "tris": 29999,
+   "materials": 1,
+   "images": [
+    "poseidon_tidepool_surveyor_BaseColor",
+    "poseidon_tidepool_surveyor_MetallicRoughness",
+    "poseidon_tidepool_surveyor_Normal"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.043
+  },
+  "fbx": {
+   "meshes": 1,
+   "tris": 29999,
+   "materials": 1,
+   "images": [
+    "poseidon_tidepool_surveyor_BaseColor.jpg",
+    "poseidon_tidepool_surveyor_Normal.jpg"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.043
+  }
+ },
+ "poseidon_triton_waveguard": {
+  "glb": {
+   "meshes": 1,
+   "tris": 30000,
+   "materials": 1,
+   "images": [
+    "poseidon_triton_waveguard_BaseColor",
+    "poseidon_triton_waveguard_MetallicRoughness",
+    "poseidon_triton_waveguard_Normal"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.896
+  },
+  "fbx": {
+   "meshes": 1,
+   "tris": 30000,
+   "materials": 1,
+   "images": [
+    "poseidon_triton_waveguard_BaseColor.jpg",
+    "poseidon_triton_waveguard_Normal.jpg"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.896
+  }
+ },
+ "poseidon_undertow_stalker": {
+  "glb": {
+   "meshes": 1,
+   "tris": 30000,
+   "materials": 1,
+   "images": [
+    "poseidon_undertow_stalker_BaseColor",
+    "poseidon_undertow_stalker_MetallicRoughness",
+    "poseidon_undertow_stalker_Normal"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.03
+  },
+  "fbx": {
+   "meshes": 1,
+   "tris": 30000,
+   "materials": 1,
+   "images": [
+    "poseidon_undertow_stalker_BaseColor.jpg",
+    "poseidon_undertow_stalker_Normal.jpg"
+   ],
+   "uv_layers": [
+    1
+   ],
+   "height_m": 1.03
+  }
+ }
+}

@@ -1,0 +1,32 @@
+{
+ "card": "poseidon_undertow_stalker",
+ "source": "poseidon_undertow_stalker.glb",
+ "source_sha256": "189cf8ff4e6eba2d4a3fadddf97ff86e417c3dbfaaf17ad84316075894c9a92f",
+ "tris_before": 146630,
+ "tris_after": 30000,
+ "ratio": 0.2046,
+ "dims_m": [
+  1.622,
+  1.891,
+  1.03
+ ],
+ "silhouette_iou": {
+  "front": 0.9951,
+  "front34": 0.9947,
+  "side": 0.9981,
+  "top": 0.9951,
+  "detail": 0.9985
+ },
+ "uv_layers": 1,
+ "materials": 1,
+ "outputs": {
+  "poseidon_undertow_stalker_30k.glb": {
+   "bytes": 7501192,
+   "sha256": "716463804835402e18152e70588836abc018f13b42ca4592727ca5eba5bae20e"
+  },
+  "poseidon_undertow_stalker_30k.fbx": {
+   "bytes": 6071196,
+   "sha256": "ca615f8e81fcbcdc0c2f77dfaf35ce828af5b94373bac302d902fbcd64333094"
+  }
+ }
+}
