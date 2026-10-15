@@ -33,6 +33,8 @@ export const RELAY_PROTOCOL = "relay-1";
 export const INTENT_LOG_CAP = 10_000;
 export const MAX_FRAME_BYTES = 8 * 1024;
 const SEED_PHASE_TIMEOUT_MS = 120_000;
+/** After one seat reports a result, how long the other seat has to report. */
+export const RESULT_GRACE_MS = 60_000;
 
 function isUuid(value) {
     return typeof value === "string" && /^[0-9a-fA-F-]{1,64}$/.test(value);
@@ -60,6 +62,8 @@ function textEncode(s) {
  * @param {(entry:object) => void} [opts.persist] called with each appended intent.
  * @param {(reason:string, detail:object) => void} [opts.onFlag] hash mismatch etc.
  * @param {() => void} [opts.onEnd] session is over; the driver may reap it.
+ * @param {(transcript:object) => void} [opts.onTranscript] called once when the
+ *   session ends, with the relay-attested match transcript (ranked, AI-010).
  */
 export function createRelaySession({
     room,
@@ -70,6 +74,7 @@ export function createRelaySession({
     persist = () => {},
     onFlag = () => {},
     onEnd = () => {},
+    onTranscript = () => {},
 }) {
     if (!room || !isUuid(room.seatA) || !isUuid(room.seatB) || room.seatA === room.seatB) {
         throw new Error("createRelaySession: room with two distinct seat UUIDs is required");
@@ -99,6 +104,13 @@ export function createRelaySession({
         pendingHashes: {}, // turn -> {seat: hash}
         ended: false,
         endReason: null,
+        // Ranked additions (AI-010): what the transcript records besides intents.
+        forfeitSeat: null,
+        hashOk: [], // turns whose hashes matched
+        flags: [], // {reason, detail}
+        results: {}, // seat -> {winnerSeat, finalHash}
+        resultDeadline: null,
+        endedAt: null,
     };
 
     const err = (seat, reason) => send(seat, { type: "error", reason: String(reason).slice(0, 200) });
@@ -108,9 +120,12 @@ export function createRelaySession({
         state.ended = true;
         state.phase = "ended";
         state.endReason = reason;
+        state.forfeitSeat = forfeitedSeat;
+        state.endedAt = now();
         broadcast(forfeitedSeat
             ? { type: "forfeit", seat: forfeitedSeat, reason }
             : { type: "bye", reason });
+        try { onTranscript(transcript()); } catch { /* the driver's problem, not the match's */ }
         onEnd();
     }
 
@@ -133,6 +148,10 @@ export function createRelaySession({
     function tick() {
         if (state.ended) return;
         if (checkSeedTimeout()) return;
+        if (state.resultDeadline != null && now() >= state.resultDeadline) {
+            end("result-single");
+            return;
+        }
         if (state.phase !== "play" || state.turnDeadline == null) return;
         const remaining = state.turnDeadline - now();
         if (remaining <= 0) {
@@ -238,13 +257,56 @@ export function createRelaySession({
             delete state.pendingHashes[turn];
             const [h1, h2] = seats.map((s) => pending[s]);
             if (h1 === h2) {
+                state.hashOk.push(turn);
                 broadcast({ type: "hash-ok", turn });
             } else {
                 const detail = { turn, hashes: { [seats[0]]: h1, [seats[1]]: h2 } };
+                state.flags.push({ reason: "hash-mismatch", detail });
                 onFlag("hash-mismatch", detail);
                 broadcast({ type: "hash-mismatch", ...detail });
             }
         }
+    }
+
+    /**
+     * Ranked (AI-010): each seat states the winner it saw and its final state
+     * hash. Claims only end the session and go into the transcript; the
+     * ranked service rates a match from the referee's replay, never from
+     * these claims.
+     */
+    function handleResult(seat, msg) {
+        if (state.phase !== "play") return err(seat, "match has not started (seed phase)");
+        const { winnerSeat, finalHash } = msg;
+        if (!isSeat(winnerSeat) || typeof finalHash !== "string" || !/^[0-9a-fA-F]{64}$/.test(finalHash)) {
+            return err(seat, "result needs winnerSeat (a room seat) and a 64-hex finalHash");
+        }
+        if (state.results[seat]) return err(seat, "result already submitted");
+        state.results[seat] = { winnerSeat, finalHash: finalHash.toLowerCase() };
+        const [a, b] = seats.map((s) => state.results[s]);
+        if (a && b) {
+            const agree = a.winnerSeat === b.winnerSeat && a.finalHash === b.finalHash;
+            end(agree ? "game-over" : "result-disputed");
+        } else if (state.resultDeadline == null) {
+            state.resultDeadline = now() + RESULT_GRACE_MS;
+        }
+    }
+
+    /** Relay-attested record of the match: the input to ranked verification. */
+    function transcript() {
+        return {
+            protocol: RELAY_PROTOCOL,
+            roomId: state.roomId,
+            seats: [...seats],
+            seed: state.seed,
+            intents: state.log.map((e) => ({ seq: e.seq, seat: e.seat, actionId: e.actionId })),
+            turn: state.turn,
+            hashOk: [...state.hashOk],
+            flags: state.flags.map((f) => ({ reason: f.reason, detail: f.detail })),
+            results: { ...state.results },
+            endReason: state.endReason,
+            forfeitSeat: state.forfeitSeat,
+            endedAt: state.endedAt,
+        };
     }
 
     function handleHello(seat, msg) {
@@ -286,6 +348,7 @@ export function createRelaySession({
             case "intent": return handleIntent(seatUuid, msg);
             case "turn": return handleTurn(seatUuid, msg);
             case "hash": return handleHash(seatUuid, msg);
+            case "result": return handleResult(seatUuid, msg);
             default: return err(seatUuid, `unknown message type "${msg.type.slice(0, 32)}"`);
         }
     }
@@ -309,6 +372,7 @@ export function createRelaySession({
         handleDisconnect,
         tick,
         end,
+        transcript,
         snapshot() {
             return {
                 roomId: state.roomId,

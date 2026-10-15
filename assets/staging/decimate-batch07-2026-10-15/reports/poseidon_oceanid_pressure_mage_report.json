@@ -1,0 +1,32 @@
+{
+ "card": "poseidon_oceanid_pressure_mage",
+ "source": "poseidon_oceanid_pressure_mage.glb",
+ "source_sha256": "2165f3ab1d780b94148e2dba76b8dd4dab6c665045c03031280ccf1cd6f5d2da",
+ "tris_before": 293460,
+ "tris_after": 29999,
+ "ratio": 0.10223,
+ "dims_m": [
+  1.366,
+  1.585,
+  1.898
+ ],
+ "silhouette_iou": {
+  "front": 0.9868,
+  "front34": 0.9873,
+  "side": 0.9871,
+  "top": 0.9898,
+  "detail": 0.9869
+ },
+ "uv_layers": 1,
+ "materials": 1,
+ "outputs": {
+  "poseidon_oceanid_pressure_mage_30k.glb": {
+   "bytes": 8714920,
+   "sha256": "84498cd630a0a6ff518e662b56b8b70e739d6d7b4a24fb3f99d539c1334eeef7"
+  },
+  "poseidon_oceanid_pressure_mage_30k.fbx": {
+   "bytes": 7098796,
+   "sha256": "f41d95e81d4d329bcaa00bdcb6a238b5ea7a5f96ed8f38e18371df8fe5a16c63"
+  }
+ }
+}

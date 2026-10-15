@@ -27,6 +27,9 @@ import { createV2Router } from "./worker-v2.js";
 import { createRelaySession } from "./relay.js";
 import { handleUpgrade as handleWsUpgrade } from "./ws-shim.js";
 import { createKv } from "./kv.js";
+import { createFileKv } from "./kv-file.js";
+import { createRankedService } from "./ranked.js";
+import { randomBytes } from "node:crypto";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC = path.join(here, "public");
@@ -39,7 +42,7 @@ const MIME = {
     ".md": "text/markdown; charset=utf-8",
 };
 
-const API_PREFIXES = ["/lobbies", "/queue", "/pair", "/report", "/leaderboard", "/rating", "/v2", "/rooms"];
+const API_PREFIXES = ["/lobbies", "/queue", "/pair", "/report", "/leaderboard", "/rating", "/v2", "/rooms", "/v3"];
 
 const RELAY_WS_PATH = /^\/rooms\/([^/]+)\/ws$/;
 
@@ -169,7 +172,7 @@ async function serveStatic(req, res) {
  * (ephemeral per process when unset); the dataVersion gate minimum from
  * LAB_V2_DATAVERSION_MIN (default "lab-2").
  */
-export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes = 1_000_000, allowReports = false } = {}) {
+export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes = 1_000_000, allowReports = false, rankedKvFile, refereeSecret, relaySecret } = {}) {
     if (!isLoopbackHost(host)) {
         throw new Error(`refusing to bind non-loopback host "${host}": lobby-lab is local-development-only`);
     }
@@ -183,6 +186,18 @@ export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes
         now: kv.now,
         dataVersionMin: process.env.LAB_V2_DATAVERSION_MIN || "lab-2",
         secret: process.env.LAB_V2_SECRET || undefined,
+    });
+    // AI-010/011 ranked foundation (/v3/*, docs/ranked-design.md). Its state
+    // persists to a file when LAB_RANKED_KV is set; rooms it creates go into
+    // the shared kv so the relay upgrade path finds them.
+    const rankedFile = rankedKvFile || process.env.LAB_RANKED_KV;
+    const ranked = createRankedService({
+        kv: rankedFile ? createFileKv(rankedFile, { now: kv.now }) : kv,
+        roomKv: kv,
+        now: kv.now,
+        refereeSecret: refereeSecret || process.env.LAB_REFEREE_SECRET || randomBytes(32).toString("hex"),
+        relaySecret: relaySecret || process.env.LAB_RELAY_SECRET || randomBytes(32).toString("hex"),
+        dataVersion: process.env.LAB_V2_DATAVERSION_MIN || "lab-2",
     });
 
     const server = http.createServer(async (req, res) => {
@@ -241,7 +256,7 @@ export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes
                 headers: req.headers,
                 body: req.method === "GET" || req.method === "HEAD" ? undefined : body,
             });
-            const wRes = await v2.fetch(wReq, env);
+            const wRes = url.pathname.startsWith("/v3/") ? await ranked.fetch(wReq) : await v2.fetch(wReq, env);
             const buf = Buffer.from(await wRes.arrayBuffer());
             const headers = {};
             wRes.headers.forEach((v, k) => { headers[k] = v; });
@@ -284,6 +299,9 @@ export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes
                         const ws = sockets.get(seat);
                         if (ws && !ws.closed) ws.send(JSON.stringify(msg));
                     }
+                },
+                onTranscript: (t) => {
+                    ranked.recordTranscript(t).catch((e) => console.error("ranked transcript failed:", e.message));
                 },
                 onEnd: () => relaySessions.delete(room.roomId),
             });
@@ -345,6 +363,7 @@ export async function start({ port = 8787, host = "127.0.0.1", now, maxBodyBytes
         kv,
         host: addr.address,
         port: addr.port,
+        ranked,
         relaySessions,
         close: () => new Promise((resolve, reject) => {
             clearInterval(relayTick);

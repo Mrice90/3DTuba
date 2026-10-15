@@ -1,0 +1,32 @@
+{
+ "card": "poseidon_naiad_flowshaper",
+ "source": "poseidon_naiad_flowshaper.glb",
+ "source_sha256": "c7357bce0023a1c6665277522e59ea15c53e7ce8ec346c42415cea50447aa729",
+ "tris_before": 476536,
+ "tris_after": 29999,
+ "ratio": 0.06295,
+ "dims_m": [
+  1.737,
+  1.796,
+  1.831
+ ],
+ "silhouette_iou": {
+  "front": 0.9804,
+  "front34": 0.9822,
+  "side": 0.9721,
+  "top": 0.9764,
+  "detail": 0.9891
+ },
+ "uv_layers": 1,
+ "materials": 1,
+ "outputs": {
+  "poseidon_naiad_flowshaper_30k.glb": {
+   "bytes": 9387844,
+   "sha256": "1c8c3ec0887883234246959805685c162e07b52d2ef73097c334ab99b5a356ed"
+  },
+  "poseidon_naiad_flowshaper_30k.fbx": {
+   "bytes": 7763116,
+   "sha256": "bc0d8efa1a47235146edfc0a6abe7e6c2116fce82d29a942dfb9dc533fd23f75"
+  }
+ }
+}

@@ -1,0 +1,32 @@
+{
+ "card": "poseidon_keyword_breakwater_hoplite",
+ "source": "poseidon_keyword_breakwater_hoplite.glb",
+ "source_sha256": "abcc3ad156d8f9bc6797a334e699ba3c95a056f21897c955c07e8b54345e734b",
+ "tris_before": 246636,
+ "tris_after": 30000,
+ "ratio": 0.12164,
+ "dims_m": [
+  1.896,
+  1.602,
+  1.397
+ ],
+ "silhouette_iou": {
+  "front": 0.9951,
+  "front34": 0.9975,
+  "side": 0.9956,
+  "top": 0.9942,
+  "detail": 0.9971
+ },
+ "uv_layers": 1,
+ "materials": 1,
+ "outputs": {
+  "poseidon_keyword_breakwater_hoplite_30k.glb": {
+   "bytes": 8108616,
+   "sha256": "f4b1bc4b2b6030c919d753f21fe2465d754514f1c2a36ba2743d714a4ef5fa53"
+  },
+  "poseidon_keyword_breakwater_hoplite_30k.fbx": {
+   "bytes": 6427948,
+   "sha256": "98219a33ee1faaa1216acde7c3c068ef8ffa1b0fff97c4aa4bfdccf66532bbe9"
+  }
+ }
+}

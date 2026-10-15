@@ -19,7 +19,7 @@ the unsafe match-reporting contract locally; `LAB_MAX_BODY` overrides the
 1 MB body cap. Worker v2 (AI-096): `LAB_V2_SECRET` sets the result-receipt
 HMAC secret (unset → ephemeral per-process secret); `LAB_V2_DATAVERSION_MIN`
 sets the v2 dataVersion gate minimum (default `lab-2`). See
-`docs/v2-design.md`.
+`docs/v2-design.md`. Ranked (AI-010/011, `/v3/*`): `LAB_RANKED_KV` persists ranked state to a JSON file; `LAB_REFEREE_SECRET` / `LAB_RELAY_SECRET` set the referee and relay HMAC secrets (unset → ephemeral). See `docs/ranked-design.md`.
 
 ```sh
 npm test    # all suites: HTTP routes + two-client contract tests (node:test)

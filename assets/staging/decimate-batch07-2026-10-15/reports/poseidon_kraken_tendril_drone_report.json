@@ -1,0 +1,32 @@
+{
+ "card": "poseidon_kraken_tendril_drone",
+ "source": "poseidon_kraken_tendril_drone.glb",
+ "source_sha256": "0c21930a573c036ad4fe9d8e0dc28db4ff870ba1309c6752e247cf0abb3b0559",
+ "tris_before": 305236,
+ "tris_after": 30000,
+ "ratio": 0.09828,
+ "dims_m": [
+  1.895,
+  1.28,
+  1.177
+ ],
+ "silhouette_iou": {
+  "front": 0.9927,
+  "front34": 0.9939,
+  "side": 0.9928,
+  "top": 0.9944,
+  "detail": 0.9934
+ },
+ "uv_layers": 1,
+ "materials": 1,
+ "outputs": {
+  "poseidon_kraken_tendril_drone_30k.glb": {
+   "bytes": 9212276,
+   "sha256": "95350abf5a68be257994d492a1d7ec8c8e891c886c25890b3a5fff45528d5e01"
+  },
+  "poseidon_kraken_tendril_drone_30k.fbx": {
+   "bytes": 7413372,
+   "sha256": "f9137eda5d88e7daedaba47493119cc222252dbc62b9dff49fa064147e6d7b90"
+  }
+ }
+}

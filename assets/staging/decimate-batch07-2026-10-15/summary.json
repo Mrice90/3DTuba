@@ -1,0 +1,386 @@
+{
+ "poseidon_abyssal_molecrab": {
+  "card": "poseidon_abyssal_molecrab",
+  "source": "poseidon_abyssal_molecrab.glb",
+  "source_sha256": "3d549302195bb50d7562f00e5fc5f9584f6fddc1ba6181c1a31edc4258a2197d",
+  "tris_before": 457248,
+  "tris_after": 30000,
+  "ratio": 0.06561,
+  "dims_m": [
+   1.709,
+   1.897,
+   1.037
+  ],
+  "silhouette_iou": {
+   "front": 0.9904,
+   "front34": 0.9887,
+   "side": 0.9888,
+   "top": 0.9914,
+   "detail": 0.9967
+  },
+  "uv_layers": 1,
+  "materials": 1,
+  "outputs": {
+   "poseidon_abyssal_molecrab_30k.glb": {
+    "bytes": 10717788,
+    "sha256": "0b7f20c9ea8e332d6066bd5d8af9820579f0fa445a4d95d594b424ecb277c45c"
+   },
+   "poseidon_abyssal_molecrab_30k.fbx": {
+    "bytes": 8389196,
+    "sha256": "7f7198594c50ffc3a2a350418a4ed2701d90255c38967dccc2b64c5f69b4e668"
+   }
+  }
+ },
+ "poseidon_delphic_sonar_adept": {
+  "card": "poseidon_delphic_sonar_adept",
+  "source": "poseidon_delphic_sonar_adept.glb",
+  "source_sha256": "ed8e78c39173cdeffa44cd5ff93089a83d1b7d32637ffda1cdb3b586fb94df7b",
+  "tris_before": 567766,
+  "tris_after": 29999,
+  "ratio": 0.05284,
+  "dims_m": [
+   1.665,
+   1.212,
+   1.896
+  ],
+  "silhouette_iou": {
+   "front": 0.979,
+   "front34": 0.9759,
+   "side": 0.9814,
+   "top": 0.9872,
+   "detail": 0.9805
+  },
+  "uv_layers": 1,
+  "materials": 1,
+  "outputs": {
+   "poseidon_delphic_sonar_adept_30k.glb": {
+    "bytes": 8656024,
+    "sha256": "f8f77467c84a850d0dd41a5647e8a7e28fe530bf6ca243e885ff4faf568b08be"
+   },
+   "poseidon_delphic_sonar_adept_30k.fbx": {
+    "bytes": 7006092,
+    "sha256": "0c731f25193381bf8857676aec325819366bca3c08c8f88e4b14f2219445a1e0"
+   }
+  }
+ },
+ "poseidon_fast_razorfin_lancer": {
+  "card": "poseidon_fast_razorfin_lancer",
+  "source": "poseidon_fast_razorfin_lancer.glb",
+  "source_sha256": "a8b562308a878a94d5a5f3e779560864a71cefb722a218eaf5be2e2ea65e6f77",
+  "tris_before": 189382,
+  "tris_after": 30000,
+  "ratio": 0.15841,
+  "dims_m": [
+   1.896,
+   1.461,
+   1.375
+  ],
+  "silhouette_iou": {
+   "front": 0.9921,
+   "front34": 0.9924,
+   "side": 0.9921,
+   "top": 0.9951,
+   "detail": 0.994
+  },
+  "uv_layers": 1,
+  "materials": 1,
+  "outputs": {
+   "poseidon_fast_razorfin_lancer_30k.glb": {
+    "bytes": 8912148,
+    "sha256": "120ecbfeae0068be206860f0838c4dc2e7b1097467097aa9c2d1f6e370fec8a6"
+   },
+   "poseidon_fast_razorfin_lancer_30k.fbx": {
+    "bytes": 7309644,
+    "sha256": "44edf55e7860096f36d5bc74a5235b07e9489f12821685f4e175c734239a6b41"
+   }
+  }
+ },
+ "poseidon_keyword_breakwater_hoplite": {
+  "card": "poseidon_keyword_breakwater_hoplite",
+  "source": "poseidon_keyword_breakwater_hoplite.glb",
+  "source_sha256": "abcc3ad156d8f9bc6797a334e699ba3c95a056f21897c955c07e8b54345e734b",
+  "tris_before": 246636,
+  "tris_after": 30000,
+  "ratio": 0.12164,
+  "dims_m": [
+   1.896,
+   1.602,
+   1.397
+  ],
+  "silhouette_iou": {
+   "front": 0.9951,
+   "front34": 0.9975,
+   "side": 0.9956,
+   "top": 0.9942,
+   "detail": 0.9971
+  },
+  "uv_layers": 1,
+  "materials": 1,
+  "outputs": {
+   "poseidon_keyword_breakwater_hoplite_30k.glb": {
+    "bytes": 8108616,
+    "sha256": "f4b1bc4b2b6030c919d753f21fe2465d754514f1c2a36ba2743d714a4ef5fa53"
+   },
+   "poseidon_keyword_breakwater_hoplite_30k.fbx": {
+    "bytes": 6427948,
+    "sha256": "98219a33ee1faaa1216acde7c3c068ef8ffa1b0fff97c4aa4bfdccf66532bbe9"
+   }
+  }
+ },
+ "poseidon_kraken_tendril_drone": {
+  "card": "poseidon_kraken_tendril_drone",
+  "source": "poseidon_kraken_tendril_drone.glb",
+  "source_sha256": "0c21930a573c036ad4fe9d8e0dc28db4ff870ba1309c6752e247cf0abb3b0559",
+  "tris_before": 305236,
+  "tris_after": 30000,
+  "ratio": 0.09828,
+  "dims_m": [
+   1.895,
+   1.28,
+   1.177
+  ],
+  "silhouette_iou": {
+   "front": 0.9927,
+   "front34": 0.9939,
+   "side": 0.9928,
+   "top": 0.9944,
+   "detail": 0.9934
+  },
+  "uv_layers": 1,
+  "materials": 1,
+  "outputs": {
+   "poseidon_kraken_tendril_drone_30k.glb": {
+    "bytes": 9212276,
+    "sha256": "95350abf5a68be257994d492a1d7ec8c8e891c886c25890b3a5fff45528d5e01"
+   },
+   "poseidon_kraken_tendril_drone_30k.fbx": {
+    "bytes": 7413372,
+    "sha256": "f9137eda5d88e7daedaba47493119cc222252dbc62b9dff49fa064147e6d7b90"
+   }
+  }
+ },
+ "poseidon_naiad_flowshaper": {
+  "card": "poseidon_naiad_flowshaper",
+  "source": "poseidon_naiad_flowshaper.glb",
+  "source_sha256": "c7357bce0023a1c6665277522e59ea15c53e7ce8ec346c42415cea50447aa729",
+  "tris_before": 476536,
+  "tris_after": 29999,
+  "ratio": 0.06295,
+  "dims_m": [
+   1.737,
+   1.796,
+   1.831
+  ],
+  "silhouette_iou": {
+   "front": 0.9804,
+   "front34": 0.9822,
+   "side": 0.9721,
+   "top": 0.9764,
+   "detail": 0.9891
+  },
+  "uv_layers": 1,
+  "materials": 1,
+  "outputs": {
+   "poseidon_naiad_flowshaper_30k.glb": {
+    "bytes": 9387844,
+    "sha256": "1c8c3ec0887883234246959805685c162e07b52d2ef73097c334ab99b5a356ed"
+   },
+   "poseidon_naiad_flowshaper_30k.fbx": {
+    "bytes": 7763116,
+    "sha256": "bc0d8efa1a47235146edfc0a6abe7e6c2116fce82d29a942dfb9dc533fd23f75"
+   }
+  }
+ },
+ "poseidon_nereid_current_rider": {
+  "card": "poseidon_nereid_current_rider",
+  "source": "poseidon_nereid_current_rider.glb",
+  "source_sha256": "8c3a5b920b26ee79cad9de4433105c7451650625c4bc67fb939353815c795ce1",
+  "tris_before": 116424,
+  "tris_after": 29999,
+  "ratio": 0.25768,
+  "dims_m": [
+   0.683,
+   1.026,
+   1.901
+  ],
+  "silhouette_iou": {
+   "front": 0.9955,
+   "front34": 0.9959,
+   "side": 0.9957,
+   "top": 0.9952,
+   "detail": 0.9951
+  },
+  "uv_layers": 1,
+  "materials": 1,
+  "outputs": {
+   "poseidon_nereid_current_rider_30k.glb": {
+    "bytes": 7181828,
+    "sha256": "30b9c4f6d061b8b202196d5065763960fe91b7e84620af5db921bf80b1bb6428"
+   },
+   "poseidon_nereid_current_rider_30k.fbx": {
+    "bytes": 5986348,
+    "sha256": "85285f3f26a6d9fb6bd72cefd78affa820e63d6b21deeccaf4655b5eac4443be"
+   }
+  }
+ },
+ "poseidon_oceanid_pressure_mage": {
+  "card": "poseidon_oceanid_pressure_mage",
+  "source": "poseidon_oceanid_pressure_mage.glb",
+  "source_sha256": "2165f3ab1d780b94148e2dba76b8dd4dab6c665045c03031280ccf1cd6f5d2da",
+  "tris_before": 293460,
+  "tris_after": 29999,
+  "ratio": 0.10223,
+  "dims_m": [
+   1.366,
+   1.585,
+   1.898
+  ],
+  "silhouette_iou": {
+   "front": 0.9868,
+   "front34": 0.9873,
+   "side": 0.9871,
+   "top": 0.9898,
+   "detail": 0.9869
+  },
+  "uv_layers": 1,
+  "materials": 1,
+  "outputs": {
+   "poseidon_oceanid_pressure_mage_30k.glb": {
+    "bytes": 8714920,
+    "sha256": "84498cd630a0a6ff518e662b56b8b70e739d6d7b4a24fb3f99d539c1334eeef7"
+   },
+   "poseidon_oceanid_pressure_mage_30k.fbx": {
+    "bytes": 7098796,
+    "sha256": "f41d95e81d4d329bcaa00bdcb6a238b5ea7a5f96ed8f38e18371df8fe5a16c63"
+   }
+  }
+ },
+ "poseidon_reefline_defender": {
+  "card": "poseidon_reefline_defender",
+  "source": "poseidon_reefline_defender.glb",
+  "source_sha256": "e9694ee96e454a2386d4ac633e6d4c87c8490d4f8e483de5d78c8fbab0f5c10d",
+  "tris_before": 499164,
+  "tris_after": 29999,
+  "ratio": 0.0601,
+  "dims_m": [
+   1.748,
+   1.2,
+   1.899
+  ],
+  "silhouette_iou": {
+   "front": 0.9825,
+   "front34": 0.9878,
+   "side": 0.9866,
+   "top": 0.9853,
+   "detail": 0.9886
+  },
+  "uv_layers": 1,
+  "materials": 1,
+  "outputs": {
+   "poseidon_reefline_defender_30k.glb": {
+    "bytes": 10250772,
+    "sha256": "2efad7f75527f8aee6d32e2b13af041d685af585917027b6af0c3881fa49b7ca"
+   },
+   "poseidon_reefline_defender_30k.fbx": {
+    "bytes": 8307244,
+    "sha256": "84a62013bc980cc7835a21f7cb683f8a838dd55d7f5e6a0061c8287c326985e7"
+   }
+  }
+ },
+ "poseidon_tidepool_surveyor": {
+  "card": "poseidon_tidepool_surveyor",
+  "source": "poseidon_tidepool_surveyor.glb",
+  "source_sha256": "9a72c54d633ff14df3f5bd7699021ba097016436c2f26c066a4a10a22cd7e63a",
+  "tris_before": 233314,
+  "tris_after": 29999,
+  "ratio": 0.12858,
+  "dims_m": [
+   1.9,
+   1.6,
+   1.042
+  ],
+  "silhouette_iou": {
+   "front": 0.9966,
+   "front34": 0.997,
+   "side": 0.9976,
+   "top": 0.9969,
+   "detail": 0.9978
+  },
+  "uv_layers": 1,
+  "materials": 1,
+  "outputs": {
+   "poseidon_tidepool_surveyor_30k.glb": {
+    "bytes": 8994188,
+    "sha256": "f131044b25468304426cbd54a62bead74afa47de96835e9bc0f8c085df95df51"
+   },
+   "poseidon_tidepool_surveyor_30k.fbx": {
+    "bytes": 7020060,
+    "sha256": "196aec4ce047f6bb0c638114275001238c538a6434eda8378436c6843097bbe7"
+   }
+  }
+ },
+ "poseidon_triton_waveguard": {
+  "card": "poseidon_triton_waveguard",
+  "source": "poseidon_triton_waveguard.glb",
+  "source_sha256": "fc356a52d2f561b740daca471739acf5f03c998426bfdfe78cf75479d544be3a",
+  "tris_before": 289702,
+  "tris_after": 30000,
+  "ratio": 0.10355,
+  "dims_m": [
+   1.272,
+   1.271,
+   1.897
+  ],
+  "silhouette_iou": {
+   "front": 0.9861,
+   "front34": 0.992,
+   "side": 0.9867,
+   "top": 0.9978,
+   "detail": 0.9842
+  },
+  "uv_layers": 1,
+  "materials": 1,
+  "outputs": {
+   "poseidon_triton_waveguard_30k.glb": {
+    "bytes": 8599524,
+    "sha256": "39926d8c7a4c8ea86a14e6df6f484f3552222099a26271f17e3d97e1cdfa602d"
+   },
+   "poseidon_triton_waveguard_30k.fbx": {
+    "bytes": 6922604,
+    "sha256": "12d1b669789768c3ba8d0f9a9123076c84cd5a76ade0e530c6d0b743171fb78d"
+   }
+  }
+ },
+ "poseidon_undertow_stalker": {
+  "card": "poseidon_undertow_stalker",
+  "source": "poseidon_undertow_stalker.glb",
+  "source_sha256": "189cf8ff4e6eba2d4a3fadddf97ff86e417c3dbfaaf17ad84316075894c9a92f",
+  "tris_before": 146630,
+  "tris_after": 30000,
+  "ratio": 0.2046,
+  "dims_m": [
+   1.622,
+   1.891,
+   1.03
+  ],
+  "silhouette_iou": {
+   "front": 0.9951,
+   "front34": 0.9947,
+   "side": 0.9981,
+   "top": 0.9951,
+   "detail": 0.9985
+  },
+  "uv_layers": 1,
+  "materials": 1,
+  "outputs": {
+   "poseidon_undertow_stalker_30k.glb": {
+    "bytes": 7501192,
+    "sha256": "716463804835402e18152e70588836abc018f13b42ca4592727ca5eba5bae20e"
+   },
+   "poseidon_undertow_stalker_30k.fbx": {
+    "bytes": 6071196,
+    "sha256": "ca615f8e81fcbcdc0c2f77dfaf35ce828af5b94373bac302d902fbcd64333094"
+   }
+  }
+ }
+}

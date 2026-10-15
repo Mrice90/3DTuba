@@ -1,0 +1,32 @@
+{
+ "card": "poseidon_fast_razorfin_lancer",
+ "source": "poseidon_fast_razorfin_lancer.glb",
+ "source_sha256": "a8b562308a878a94d5a5f3e779560864a71cefb722a218eaf5be2e2ea65e6f77",
+ "tris_before": 189382,
+ "tris_after": 30000,
+ "ratio": 0.15841,
+ "dims_m": [
+  1.896,
+  1.461,
+  1.375
+ ],
+ "silhouette_iou": {
+  "front": 0.9921,
+  "front34": 0.9924,
+  "side": 0.9921,
+  "top": 0.9951,
+  "detail": 0.994
+ },
+ "uv_layers": 1,
+ "materials": 1,
+ "outputs": {
+  "poseidon_fast_razorfin_lancer_30k.glb": {
+   "bytes": 8912148,
+   "sha256": "120ecbfeae0068be206860f0838c4dc2e7b1097467097aa9c2d1f6e370fec8a6"
+  },
+  "poseidon_fast_razorfin_lancer_30k.fbx": {
+   "bytes": 7309644,
+   "sha256": "44edf55e7860096f36d5bc74a5235b07e9489f12821685f4e175c734239a6b41"
+  }
+ }
+}
