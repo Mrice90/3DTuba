@@ -62,6 +62,9 @@ jobs:
       - name: Jar entry diff tool (AI-100 rework)
         working-directory: releases/alpha-0.7.15-playable/tools
         run: bash "$GITHUB_WORKSPACE/docs/muse/ci/run-and-record.sh" diff-jar-entries "python -m unittest test_diff_jar_entries"
+      - name: SteamPipe build scripts (launch kit)
+        working-directory: releases/steam
+        run: bash "$GITHUB_WORKSPACE/docs/muse/ci/run-and-record.sh" steampipe "python -m unittest test_steampipe"
       - name: Client integration example
         working-directory: prototypes/lobby-lab
         run: bash "$GITHUB_WORKSPACE/docs/muse/ci/run-and-record.sh" client-demo "node examples/client-demo.js"
