@@ -1,0 +1,45 @@
+# Infinite Conquest ranked beta (AI-010 / AI-011): relay + ranked ledger.
+# READY TO DEPLOY, NOT DEPLOYED. Deploying needs Matt's go-ahead; steps in README.md.
+# A separate Worker from the live alpha lobby (infinite-conquest-lobby), so the
+# 2D alpha keeps running untouched.
+
+name = "infinite-conquest-ranked-beta"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+[vars]
+IC_DATAVERSION = "lab-2"
+
+# Casual v1/v2 lobby state (queue tickets, casual rooms). Create it with
+#   npx wrangler kv namespace create IC_KV
+# and paste the id it prints here.
+[[kv_namespaces]]
+binding = "IC_KV"
+id = "REPLACE_WITH_IC_KV_NAMESPACE_ID"
+
+# One MatchRoom per room (lockstep relay), one global RankedLedger
+# (identities, nonces, ranked queue, transcripts, verdicts, ratings).
+[[durable_objects.bindings]]
+name = "MATCH_ROOM"
+class_name = "MatchRoom"
+
+[[durable_objects.bindings]]
+name = "RANKED_LEDGER"
+class_name = "RankedLedger"
+
+# The Workers Free plan only offers SQLite-backed Durable Objects.
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["MatchRoom", "RankedLedger"]
+
+# Per-player (or per-IP when unsigned) limit on /v3/* calls.
+[[ratelimits]]
+name = "RANKED_RATE_LIMIT"
+namespace_id = "1001"
+simple = { limit = 60, period = 60 }
+
+# Secrets (never in this file). Set each with `npx wrangler secret put NAME`:
+#   LAB_REFEREE_SECRET  shared with the referee runner (HMAC)
+#   LAB_RELAY_SECRET    MatchRoom -> RankedLedger transcript hand-off (HMAC)
+#   LAB_V2_SECRET       casual v2 result receipts (HMAC)

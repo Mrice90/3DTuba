@@ -236,6 +236,7 @@ export function createRankedService({ kv, refereeSecret, relaySecret, now = () =
         const oppPlayer = await getJson(k.player(room.players[opp]));
         return {
             status: "matched", roomId: rid, dataVersion: room.dataVersion,
+            side, // "A" is engine player 0, "B" is player 1 (the referee replays in that order)
             seat: side === "A" ? room.seatA : room.seatB, // only ever returned to its signed owner
             faction: room.factions[side],
             opponent: { playerId: room.players[opp], displayName: oppPlayer?.displayName, rating: oppRating.rating, faction: room.factions[opp] },
@@ -300,14 +301,24 @@ export function createRankedService({ kv, refereeSecret, relaySecret, now = () =
             const rec = await getJson(k.match(data.roomId));
             if (!rec) return bad("unknown match", 404);
             if (rec.transcriptHash !== data.transcriptHash) return bad("transcriptHash does not match the recorded transcript", 409);
-            if (rec.status === "rated" || rec.status === "rejected") {
+            if (rec.status === "rated" || rec.status === "rejected" || rec.status === "void") {
                 // Exactly once: the same verdict again is a harmless no-op; a different one is refused.
-                const same = rec.verdict?.source === "referee" && rec.verdict.winnerSeat === data.winnerSeat && rec.verdict.legal === (data.legal !== false);
+                const same = rec.verdict?.source === "referee" && rec.verdict.legal === (data.legal !== false)
+                    && (rec.status === "void" ? data.unfinished === true : rec.verdict.winnerSeat === data.winnerSeat);
                 return same ? json({ status: rec.status, duplicate: true }) : bad("match already settled", 409);
             }
             if (rec.status === "flagged") return bad("flagged matches are never rated", 409);
             const room = await getJson(k.room(data.roomId));
             const v = { source: "referee", winnerSeat: data.winnerSeat, legal: data.legal !== false, finalStateHash: data.finalStateHash, engine: String(data.engine || "").slice(0, 80) };
+            if (v.legal && data.unfinished === true) {
+                // The replay ended without a winner (draw, or abandoned with no
+                // concession and no relay forfeit): settled, never rated.
+                rec.status = "void";
+                rec.verdict = { ...v, winnerSeat: null, unfinished: true, draw: data.draw === true, ratedAt: now() };
+                await putJson(k.match(rec.roomId), rec);
+                await kv.delete(k.pending(rec.roomId));
+                return json({ status: rec.status });
+            }
             let winnerSide;
             if (v.legal) {
                 if (data.winnerSeat !== room.seatA && data.winnerSeat !== room.seatB) return bad("winnerSeat must be a room seat");

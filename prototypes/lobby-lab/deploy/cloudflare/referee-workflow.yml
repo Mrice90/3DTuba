@@ -1,0 +1,30 @@
+# Template, not active: copy to .github/workflows/ranked-referee.yml once the
+# ranked Worker is deployed and the C# referee host (ic-engine-1) exists.
+# Runs the referee every 10 minutes on GitHub's free runners ($0 hosting).
+name: ranked-referee
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
+concurrency: ranked-referee
+jobs:
+  referee:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Build the referee host
+        run: dotnet build -c Release tools/referee-host   # path to fill in with the C# host
+      - name: Referee pending matches
+        working-directory: prototypes/lobby-lab
+        env:
+          LAB_REFEREE_SECRET: ${{ secrets.LAB_REFEREE_SECRET }}
+          RANKED_BASE: ${{ vars.RANKED_BASE }}
+          REFEREE_ENGINE_CMD: dotnet ../../tools/referee-host/bin/Release/net8.0/IC.RefereeHost.dll
+        run: node referee-runner.js --base "$RANKED_BASE" --engine-cmd "$REFEREE_ENGINE_CMD"
