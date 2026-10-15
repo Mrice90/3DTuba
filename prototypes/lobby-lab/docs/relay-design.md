@@ -52,6 +52,7 @@ Client → server:
 | `hash` | `seat`, `turn`, `hash` | state hash for `turn` (bridge `op:hash`) |
 | `seed-commit` | `seat`, `commit` | `SHA-256(seed \|\| salt)` — neither player picks the shuffle |
 | `seed-reveal` | `seat`, `seed`, `salt` | reveal; relay verifies against the commit |
+| `result` | `winnerSeat`, `finalHash` | ranked (AI-010): the winner this seat saw; both agree → session ends `game-over`, disagree → `result-disputed`, one only → ends `result-single` after 60 s. Claims are recorded, never trusted; see `ranked-design.md` |
 
 Server → client:
 
