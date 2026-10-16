@@ -206,8 +206,14 @@ arm.animation_data_create(); report = {"clips": {}}
 for cname, fn, n, loop, ground, ev in (C.creature_clip_set(cfg) if CREATURE else C.clip_set(cfg)):
     frames = list(range(0, n + 1)) if loop else list(range(0, n))
     keys = []
+    # Earlier clips' NLA tracks would otherwise be evaluated on every depsgraph update and leak into the ground solve
+    for tr_ in arm.animation_data.nla_tracks: tr_.mute = True
+    arm.animation_data.action = None
     for t in frames:
         pose, hd = fn(t, n, cfg)
+        if cfg.get("arm_down"):  # A-pose statues: lower the arms toward the body in every clip (applied before the clip)
+            for s_, sg_ in (("Left", 1), ("Right", -1)):
+                pose[s_ + "Arm"] = [("Y", sg_ * cfg["arm_down"])] + list(pose.get(s_ + "Arm", []))
         for pb in arm.pose.bones: pb.rotation_mode = 'QUATERNION'; pb.matrix_basis = Matrix.Identity(4)
         qs = {}
         for bone, lst in pose.items():
@@ -253,6 +259,7 @@ for cname, fn, n, loop, ground, ev in (C.creature_clip_set(cfg) if CREATURE else
                               "events": {k: v + 1 for k, v in ev.items()}}
     tr = arm.animation_data.nla_tracks.new(); tr.name = cname; st = tr.strips.new(cname, 1, act); st.action_slot = act.slots[0]
     arm.animation_data.action = None
+for tr_ in arm.animation_data.nla_tracks: tr_.mute = False
 for pb in arm.pose.bones: pb.matrix_basis = Matrix.Identity(4)
 report.update({"card": name, "H": H, "bones": len(ad.bones), "tris": sum(len(p.vertices) - 2 for p in mesh.data.polygons),
                "forced_rigid_verts": len(forced), "cut_bridge_faces": len(cut), "nearest_fixed": len(unw), "proxy_unweighted": proxy_unw,
