@@ -302,10 +302,11 @@ static class Soak
                     counts[kind] = counts.GetValueOrDefault(kind) + 1;
                     string digest = Digest(res.Hashes);
                     summary.WriteLine($"{seed}\t{mu[0]}-{mu[1]}\t{cfg}\t{kind}\t{res.Step}\t{res.Winner}\t{res.Turns}\t{res.Actions}\t{t.ElapsedMilliseconds}\t{res.FinalHash}\t{digest}\t{Trim(res.Detail)}");
-                    if (res.Kind != null && c != null)
+                    if (c != null && (res.Kind != null || o.S("save-clean") == "true"))
                     {
-                        c.name = $"{mode}-{res.Kind}-s{seed}-{mu[0]}-{mu[1]}-{cfg}";
-                        c.expect_kind = res.Kind; c.expect_step = res.Step; c.detail = res.Detail;
+                        c.name = $"{mode}-{res.Kind ?? "CLEAN"}-s{seed}-{mu[0]}-{mu[1]}-{cfg}";
+                        c.expect_kind = res.Kind; c.expect_step = res.Kind == null ? -1 : res.Step; c.detail = res.Detail;
+                        if (res.Kind == null) c.note = $"clean {mode} game, winner {res.Winner}, {res.Turns} turns: replay must reproduce every recorded state hash";
                         File.WriteAllText(Path.Combine(outDir, "cases", c.name + ".json"), JsonSerializer.Serialize(c, Json.Opt));
                     }
                 }

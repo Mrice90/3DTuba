@@ -1,0 +1,201 @@
+{
+  "name": "bots-CLEAN-s2-POSEIDON-ZEUS-HERO",
+  "note": "clean bots game, winner 0, 7 turns: replay must reproduce every recorded state hash",
+  "new": {
+    "op": "new",
+    "seed": 2,
+    "multiplayer": true,
+    "human_player": 0,
+    "human_faction": "POSEIDON",
+    "bot_faction": "ZEUS"
+  },
+  "intents": [
+    {
+      "seat": 0,
+      "action_id": "r0-a29",
+      "command": "buy f3f7170d-0de4-33fe-a60e-1edc0db54b8e"
+    },
+    {
+      "seat": 0,
+      "action_id": "r1-a17",
+      "command": "play 0 4 0"
+    },
+    {
+      "seat": 0,
+      "action_id": "r2-a12",
+      "command": "buy d8a21663-ca02-35cc-a9e7-6c2d17976211"
+    },
+    {
+      "seat": 0,
+      "action_id": "r3-a0",
+      "command": "play 0 4 0"
+    },
+    {
+      "seat": 0,
+      "action_id": "r4-a0",
+      "command": "end"
+    },
+    {
+      "seat": 1,
+      "action_id": "r5-a27",
+      "command": "buy e469976a-4150-3363-8f18-2f1a2607d1c3"
+    },
+    {
+      "seat": 1,
+      "action_id": "r6-a25",
+      "command": "play 0 4 6"
+    },
+    {
+      "seat": 1,
+      "action_id": "r7-a22",
+      "command": "activate 4 6"
+    },
+    {
+      "seat": 1,
+      "action_id": "r8-a0",
+      "command": "end"
+    },
+    {
+      "seat": 0,
+      "action_id": "r9-a15",
+      "command": "buy ef8fd7a3-9dae-3a87-b69f-375dba129358"
+    },
+    {
+      "seat": 0,
+      "action_id": "r10-a30",
+      "command": "play 0 5 0"
+    },
+    {
+      "seat": 0,
+      "action_id": "r11-a20",
+      "command": "buy dff1e119-8b65-3349-9e40-27230c04a69f"
+    },
+    {
+      "seat": 0,
+      "action_id": "r12-a7",
+      "command": "play 0 5 1"
+    },
+    {
+      "seat": 0,
+      "action_id": "r13-a9",
+      "command": "move 5 1 4 3"
+    },
+    {
+      "seat": 0,
+      "action_id": "r14-a0",
+      "command": "end"
+    },
+    {
+      "seat": 1,
+      "action_id": "r15-a0",
+      "command": "buy cdf1e81c-4b7e-3921-9fd2-cb694b479922"
+    },
+    {
+      "seat": 1,
+      "action_id": "r16-a6",
+      "command": "play 0 5 6"
+    },
+    {
+      "seat": 1,
+      "action_id": "r17-a0",
+      "command": "buy 8db21ddf-0163-3969-bf8e-1971fb0b5be5"
+    },
+    {
+      "seat": 1,
+      "action_id": "r18-a0",
+      "command": "end"
+    },
+    {
+      "seat": 0,
+      "action_id": "r19-a3",
+      "command": "buy d274662a-a117-349d-9332-df27d88be338"
+    },
+    {
+      "seat": 0,
+      "action_id": "r20-a32",
+      "command": "play 0 5 1"
+    },
+    {
+      "seat": 0,
+      "action_id": "r21-a34",
+      "command": "move 4 3 3 5"
+    },
+    {
+      "seat": 0,
+      "action_id": "r22-a28",
+      "command": "attack 3 5 3 6"
+    },
+    {
+      "seat": 0,
+      "action_id": "r23-a16",
+      "command": "buy 5309c9b3-cb86-399a-8643-8c87bd4551e8"
+    },
+    {
+      "seat": 0,
+      "action_id": "r24-a9",
+      "command": "play 0 6 2"
+    },
+    {
+      "seat": 0,
+      "action_id": "r25-a9",
+      "command": "move 6 2 5 4"
+    },
+    {
+      "seat": 0,
+      "action_id": "r26-a0",
+      "command": "end"
+    },
+    {
+      "seat": 1,
+      "action_id": "r27-a28",
+      "command": "activate 4 6"
+    },
+    {
+      "seat": 1,
+      "action_id": "r28-a0",
+      "command": "end"
+    },
+    {
+      "seat": 0,
+      "action_id": "r29-a45",
+      "command": "attack 3 5 3 6"
+    }
+  ],
+  "hashes": [
+    "4028cdca6baf121ef4de0f6bffe43b43a6ea6a0eadc45452b6cacc15cc608ae1",
+    "a61dfa045698013e87f2f7198d54cad695b208cb4c894df2fc521fb2f2ca564c",
+    "9811c3f5db8a30d79871d17c744edf2ac847341219ce858067860258749ef865",
+    "ea08614dd451888d1b8caee866e9e0aebcdc7b9269b57c45ed338b93e1bf5938",
+    "216c2dce43c745062a34e5337449a6bbf0ca7a81aa8f57a31abfe393220bc93f",
+    "7fa29416715f29e45e9961601f78a3a0a6d176b32856b38d1081e30708b44599",
+    "916b5e02f6c423c69796d6b07b9bbd51df0e6052466988b9af14c869c360e3fd",
+    "054ae59018365e814a764e5c66bd35fe205324f10d963b1c560d0b79e2ca907e",
+    "d43058f22d2b7c8bb817c2d84dee59750f1b9735259a6f7abe0e1d48ab7d199a",
+    "54885e9431ad7f79bb1188d87ad321ac7fcfc5f1ae09d01d6e22c450a3b1c9e9",
+    "1e0d9418f8f83293b10817602c90be89e38c4884455aed4e03351b798138fe42",
+    "954658639d3ab7d3f9ef33a2613899e391beea5931a2ef6a3bbd0244705d4592",
+    "76001aaf3e02170eacc210ce76c759d53b8b609c739761f7fafbb40551b51149",
+    "6af27acba9515d11bd8cc58423aeee953003c212aabccb717e1ace8ba806d9ff",
+    "bda4c90d8e4c6b7d92962f981779796e8b018fbf6c49b86c31f683b8bc1df921",
+    "109910208839f817fa6e3b71c91cb216f90ca86a66cdaef755c22faee8a97a89",
+    "1fd813670910850d013516dd413c00fc1686c554d8073a4187bb1a32d7441469",
+    "6fbc986bb1caaa1479c02fc8ba6377967b6130ab4badadf6bbcd72fced6e790c",
+    "4b357e67a4cd7eaea195f6a55e91689ae15ad3c6f4805240e12f0792ffce3647",
+    "a34a6ffaf2fa4420e7875a4697135152e62de2b115ff8736a02b1e2c1f893a69",
+    "d3aa77c20a1de38b73b191d7ff0e5f2f9dbfd0d7c294f41303ae661cd53ac365",
+    "dd5f43f705c0b22edaf3403f8e499300a356704961886f53f4b473e546e9e683",
+    "2310894ee8f73fa3623688ff91744606dd1455966af37248b7bfacffd79d36f1",
+    "8d2e6e883d97c67c141c7e1a01b1d237f4b7f9dc6f566e0ffbdf00e4cb2ab91f",
+    "8a464bd522280314e35485a2869e960e5fae8b899bc35e885ce566fe0e4f4425",
+    "8ea1c7f3c6eb1f07a8496b0134a1a6609acab22dcb66f206503825e024148951",
+    "6be70f35b9e70ae22435653745edfc095bd89e1e88565b5561845f6b84535b4d",
+    "b6af9c519d98bc16906ce4eb168201eb59da501d60595fd885d988fdf37abff2",
+    "60b9a14ca1bced7913b1b1ea9a1e204ddd5f8a06e0771edbc96a810fd8fcd83a",
+    "8d4a3591a18427f8b3dbb08cbe008d61f3939e31417ba88eac08058aff2aab75",
+    "5e8fbe6c6ca47fc4856660308632359240a6353e49d11e1b77db9df3733a95f3"
+  ],
+  "final_hash": "5e8fbe6c6ca47fc4856660308632359240a6353e49d11e1b77db9df3733a95f3",
+  "expect_kind": null,
+  "expect_step": -1,
+  "detail": null
+}

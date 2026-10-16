@@ -1,0 +1,213 @@
+{
+  "name": "mp-SLOT_OVERFLOW-s20-ZEUS-POSEIDON-random-vs-aggro-min",
+  "note": "shrunk from 45 to 32 intents",
+  "new": {
+    "op": "new",
+    "seed": 20,
+    "multiplayer": true,
+    "human_player": 0,
+    "human_faction": "ZEUS",
+    "bot_faction": "POSEIDON"
+  },
+  "intents": [
+    {
+      "seat": 0,
+      "action_id": "r0-a12",
+      "command": "buy c676cf08-a70e-3daf-bdcc-c5b43d2f756b"
+    },
+    {
+      "seat": 0,
+      "action_id": "r1-a0",
+      "command": "buy 823f68ee-ed2b-3c7a-a22f-2bdda7d0106d"
+    },
+    {
+      "seat": 0,
+      "action_id": "r2-a0",
+      "command": "play 0 2 0"
+    },
+    {
+      "seat": 0,
+      "action_id": "r3-a0",
+      "command": "play 0 2 0"
+    },
+    {
+      "seat": 0,
+      "action_id": "r4-a0",
+      "command": "end"
+    },
+    {
+      "seat": 1,
+      "action_id": "r5-a16",
+      "command": "buy 88424ee1-e6bb-3acc-a1b6-c8d0f0f293dc"
+    },
+    {
+      "seat": 1,
+      "action_id": "r6-a22",
+      "command": "cast 0 3 6"
+    },
+    {
+      "seat": 1,
+      "action_id": "r7-a6",
+      "command": "buy 54658738-703c-35fb-ba90-0679cb89b82d"
+    },
+    {
+      "seat": 1,
+      "action_id": "r8-a0",
+      "command": "end"
+    },
+    {
+      "seat": 0,
+      "action_id": "r9-a30",
+      "command": "buy 36988525-4c3c-31ee-8272-f0a6a7b9332c"
+    },
+    {
+      "seat": 0,
+      "action_id": "r10-a0",
+      "command": "buy 4a75c4d6-892c-3f9e-86c2-be974d200e88"
+    },
+    {
+      "seat": 0,
+      "action_id": "r11-a1",
+      "command": "play 0 3 0"
+    },
+    {
+      "seat": 0,
+      "action_id": "r12-a9",
+      "command": "move 3 0 2 0"
+    },
+    {
+      "seat": 0,
+      "action_id": "r13-a0",
+      "command": "play 0 4 0"
+    },
+    {
+      "seat": 0,
+      "action_id": "r14-a1",
+      "command": "move 2 0 3 0"
+    },
+    {
+      "seat": 0,
+      "action_id": "r15-a0",
+      "command": "end"
+    },
+    {
+      "seat": 1,
+      "action_id": "r16-a11",
+      "command": "buy 22885685-0ea3-3890-9785-9e7804fd3e41"
+    },
+    {
+      "seat": 1,
+      "action_id": "r17-a1",
+      "command": "play 1 3 5"
+    },
+    {
+      "seat": 1,
+      "action_id": "r18-a0",
+      "command": "play 0 3 5"
+    },
+    {
+      "seat": 1,
+      "action_id": "r19-a0",
+      "command": "end"
+    },
+    {
+      "seat": 0,
+      "action_id": "r20-a29",
+      "command": "buy 0074178d-db9e-3a09-93b6-02c3c6089beb"
+    },
+    {
+      "seat": 0,
+      "action_id": "r21-a39",
+      "command": "move 3 0 2 1"
+    },
+    {
+      "seat": 0,
+      "action_id": "r22-a12",
+      "command": "buy 3aa5c6f3-a28b-391b-b17a-601269839734"
+    },
+    {
+      "seat": 0,
+      "action_id": "r23-a51",
+      "command": "cast 1 2 1 4 5"
+    },
+    {
+      "seat": 0,
+      "action_id": "r24-a30",
+      "command": "move 4 5 5 4"
+    },
+    {
+      "seat": 0,
+      "action_id": "r25-a26",
+      "command": "attack 5 4 3 5"
+    },
+    {
+      "seat": 0,
+      "action_id": "r26-a27",
+      "command": "end"
+    },
+    {
+      "seat": 1,
+      "action_id": "r27-a8",
+      "command": "buy 4ae0b24c-ff61-3c11-a3a7-eecfa36e216c"
+    },
+    {
+      "seat": 1,
+      "action_id": "r28-a25",
+      "command": "buy 8f915c9b-bfd4-3c95-94c9-a75b3ce90303"
+    },
+    {
+      "seat": 1,
+      "action_id": "r29-a13",
+      "command": "play 1 4 5"
+    },
+    {
+      "seat": 1,
+      "action_id": "r30-a20",
+      "command": "end"
+    },
+    {
+      "seat": 0,
+      "action_id": "r31-a48",
+      "command": "attack 5 4 3 5"
+    }
+  ],
+  "hashes": [
+    "3dc953fc4b37c8a2789065307312e95036fe0ae9058390b8421fd061b4157865",
+    "dd668ad9e315ea7a283dfa2d942a20721cc9cb29b9209fcd6d548705d7dded4d",
+    "16c6356903ae8051b39207f0a259ac8786e46a2b225e46f1ee2079e45a23371d",
+    "f7311e85ef957bc785da5ec4cf0b981bce95cdf6e66977f3cb8d17da1085c81d",
+    "a3a23a123c20cd700bd47917ad96f8deae83b94e8dd6844599a78a24f0980345",
+    "f60788f4652d3295903a2b99d52215f0aef4b2bc34b30172029ed5ea7cb05e4b",
+    "d1a50c9b88c58201490d02ed8f53c360be8aacf94cfc5895a055e2484433508f",
+    "d27b97e9783b819dd83f4f2746c47607c3c4ea20ab223ddd1ee25fc8e913e678",
+    "0fd76ec21f4aa8fa15a5c5d2194f360464f03cc8621e43b6921a4fb97aa9bacc",
+    "b742fd84c30b606b463c3758b835301004725876ae58e8cef8794d6f870fb9d5",
+    "e49ce77b5e95e789f03f5e4638a187b26e1b24d97d0b1b8f6477c56c9c55403d",
+    "aeb74eb1ee16ae07d65318f94131d08e4ef47cab6c58d738fbbd66c2b6e49be1",
+    "3eb1c02c49912af63c2ae93462fa475efaed485777054080ab6fce6d9fad9400",
+    "4358f4fe28a01803cea3d66cd9b1a5d1efce558bb5cf2bf9070d405e8a1c3da5",
+    "77242ccb552593bfbb4e5dcee6bf35621c81b7d1e06132f86549ee4bf1d76737",
+    "b69b4d4291b1cb9ffb1745a9e14f0720f363e657b99cb684bd9e9ffc7d282d0c",
+    "a10bb347959827a70c1011032a855381299162046e962fb4e0d77a524a0b9bab",
+    "32d948d25e7351a9133559bd1a11d323541c440a4e4149e70edf11caad2cfe18",
+    "7e718b0a5f2aa1bdb7244c4a4461a3f9d20afd920e85bf0d16227f1d92338293",
+    "8bdf3963a2244dbcd99e3a2addd691e29e8ad58bfbc7733c9cd5770e790cbc9a",
+    "35b55ac87cb9d477df923eb6f72e9e1caf42cc17973c825f9d46584a2c96eaab",
+    "0cae1be5d5bdbcfb9487676c2aebc21d8396e7da736faadaed600aa45f34afba",
+    "5e8ed57ea94e026cfa49ff10cd86d803eb6aad037586f2b6459a858afdd90331",
+    "33b16379ad958179e5f1f45c981f82380dacd05911d995414bf2c21d41cc99f1",
+    "e326c0417d864c8b557b3212226d6334c41ff21e48d09f4f0ecba18bf5319258",
+    "bd196da234fdce81ffda6aa932e9bddcd25fbeb436d45398a59af3aedd6f5ed2",
+    "37ad67356880b6534250d33f2d33bf52f9e7f274c5c0f9a88e13f1d0f9d88f1b",
+    "dba60ba6efdbb62bc8b6c6fcc56e2a6ed636e919801811ddff38b8402883bcb2",
+    "9c65e3507d3d6662f2dae16d37e207bd77cd42238c61b35d6cabcaa6773e0442",
+    "c82ec4b27f4a924c96b8fd1197a0efe8ed110e705274dc1e378f43162f28065d",
+    "8a1952b8a8fb68809842903dd6818a8e7714b0a8532d62e7eed7a9d2afaee5f5",
+    "811cf297e15cd62c80b877a87badea91ea0b305b4016bbe2fadebb140e308483",
+    "4e179c0ff28ac8084a7b3b1220deba4631cd240b4d0c19690f28900c5d97122c"
+  ],
+  "final_hash": "4e179c0ff28ac8084a7b3b1220deba4631cd240b4d0c19690f28900c5d97122c",
+  "expect_kind": "SLOT_OVERFLOW",
+  "expect_step": 31,
+  "detail": "SLOT_OVERFLOW: seat 1 slots 1/0"
+}
