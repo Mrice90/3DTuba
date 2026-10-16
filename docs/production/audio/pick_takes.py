@@ -7,7 +7,8 @@ For each key in SFX_NEEDS.json with downloaded takes (assets/audio/takes/<key>/)
   - trim leading silence, peak-normalize to -6 dBFS, add a 15 ms fade-out
   - write assets/audio/sfx/<key>.mp3 (the layout coverage.py resolves as sfx/<key>.mp3)
 A pick listed in picks_override.json ({"<key>": <take number 1-4>}) wins over the heuristic.
-Writes assets/audio/SFX_MANIFEST.json and prints coverage. Requires ffmpeg/ffprobe.
+Cues with no local takes keep their existing pick and file. Writes assets/audio/SFX_MANIFEST.json and prints
+coverage. Requires ffmpeg/ffprobe. Run normalize_loudness.py afterwards.
 """
 import glob
 import json
@@ -50,12 +51,21 @@ def main():
     override = json.load(open(override_path)) if os.path.exists(override_path) else {}
     led = ledger()
     os.makedirs(OUT, exist_ok=True)
+    # Takes are gitignored, so a fresh checkout only has the takes of the current run. Keep earlier picks
+    # whose file is already in assets/audio/sfx instead of reporting them missing.
+    previous = {}
+    if os.path.exists(MANIFEST):
+        previous = {r["key"]: r for r in json.load(open(MANIFEST)).get("picks", [])}
     rows, missing = [], []
     for need in needs:
         key = need["key"]
         takes = sorted(glob.glob(os.path.join(TAKES, key, "*.mp3")))
         if not takes:
-            missing.append(key)
+            old = previous.get(key)
+            if old and os.path.exists(os.path.join(OUT, f"{key}.mp3")):
+                rows.append(old)
+            else:
+                missing.append(key)
             continue
         info = []
         for t in takes:

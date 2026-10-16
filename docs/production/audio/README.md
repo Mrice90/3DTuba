@@ -8,10 +8,12 @@ The complete sound effect set for Infinite Conquest 3D: every card cue in the pr
 | --- | --- |
 | `card_voices.json` | One sound identity per card (materials and mechanisms in the neo-futuristic style). Edit this to change how a card sounds. |
 | `build_sfx_needs.py` | Builds `SFX_NEEDS.json` from the presentation manifest and `card_voices.json`. |
-| `SFX_NEEDS.json` | The needed-SFX list: 729 cues (39 core + 690 card), each with its prompt and target length. |
+| `SFX_NEEDS.json` | The needed-SFX list: 740 cues (50 core + 690 card), each with its prompt and target length. |
 | `fetch_takes.py` | Downloads one cue's ElevenLabs takes and appends a line to `sfx_ledger.jsonl`. |
 | `sfx_ledger.jsonl` | Provider record per cue: flow ID, node ID, all four generation IDs, credits. |
-| `pick_takes.py` | Picks one take per cue, trims leading silence, peak-normalizes to -6 dBFS, adds a 15 ms fade, writes `assets/audio/sfx/<key>.mp3` and `assets/audio/SFX_MANIFEST.json`. |
+| `pick_takes.py` | Picks one take per cue, trims leading silence, peak-normalizes to -6 dBFS, adds a 15 ms fade, writes `assets/audio/sfx/<key>.mp3` and `assets/audio/SFX_MANIFEST.json`. Cues whose takes aren't on disk keep their existing pick. |
+| `normalize_loudness.py` | Loudness-matches every file (EBU R128): UI -24, idle/ambience -26, events -18, signature/victory -16 LUFS, peak capped at -1 dBFS. Tags each manifest row with `loudness`; re-runs skip tagged rows. |
+| `SFX_COVERAGE.md` | Card-by-event coverage table built from the manifest. |
 | `picks_override.json` | Optional `{ "<key>": <take 1-4> }` to replace an auto-pick after listening. |
 
 ## Naming and layout
@@ -33,6 +35,10 @@ Core cues use the `core_` prefix and map to board events like this:
 | Match end | `core_victory` / `core_defeat` |
 | Hex hover / select / legal moves / invalid | `core_hex_hover`, `core_hex_select`, `core_legal_move_show`, `core_invalid_action` |
 | Hand and menus | `core_card_*`, `core_ui_*`, `core_end_turn_button`, `core_turn_timer_warning` |
+| Turn change (calm, preferred after tester feedback) | `core_turn_start_player_calm`, `core_turn_start_opponent_calm`, `core_turn_timer_warning_calm`, `core_capital_warning_calm` |
+| Coin flip / mulligan | `core_coin_flip_toss`, `core_coin_flip_land`, `core_mulligan_swap` |
+| Interrupt (reaction) window | `core_reaction_prompt` when it opens, `core_reaction_cast` when a reaction is played |
+| Ability command center | `core_command_center_open`, `core_ability_ready` when a structure ability becomes usable |
 
 ## Regenerating
 
@@ -41,6 +47,7 @@ Each cue is one ElevenLabs `eleven_text_to_sound_v2` generation with 4 takes (ab
 ```
 python3 docs/production/audio/build_sfx_needs.py
 python3 docs/production/audio/pick_takes.py
+python3 docs/production/audio/normalize_loudness.py
 ```
 
 ## Review

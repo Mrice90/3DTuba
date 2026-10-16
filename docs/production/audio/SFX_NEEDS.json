@@ -3,7 +3,7 @@
   "presentation-manifest.json",
   "card_voices.json"
  ],
- "count": 729,
+ "count": 740,
  "needs": [
   {
    "key": "core_match_start",
@@ -238,6 +238,72 @@
    "scope": "core",
    "prompt": "Ambient deep sea city, muffled water, distant whale calls, sonar pings, sci-fi game sound effect, no music, no voice",
    "seconds": 6.0
+  },
+  {
+   "key": "core_turn_start_player_calm",
+   "scope": "core",
+   "prompt": "Your turn begins, warm soft futuristic chime, gentle airy swell, calm and inviting, sci-fi game sound effect, no music, no voice",
+   "seconds": 1.2
+  },
+  {
+   "key": "core_turn_start_opponent_calm",
+   "scope": "core",
+   "prompt": "Opponent turn begins, soft low mellow futuristic tone, calm, unhurried, sci-fi game sound effect, no music, no voice",
+   "seconds": 1.2
+  },
+  {
+   "key": "core_turn_timer_warning_calm",
+   "scope": "core",
+   "prompt": "Gentle futuristic reminder pulse, two soft low tones, calm, not urgent, sci-fi game sound effect, no music, no voice",
+   "seconds": 1.2
+  },
+  {
+   "key": "core_capital_warning_calm",
+   "scope": "core",
+   "prompt": "Capital under threat, deep resonant warning swell, serious but not shrill, sci-fi game sound effect, no music, no voice",
+   "seconds": 1.5
+  },
+  {
+   "key": "core_coin_flip_toss",
+   "scope": "core",
+   "prompt": "Heavy metal coin flicked into the air, bright ring and spinning whir end over end, sci-fi game sound effect, no music, no voice",
+   "seconds": 1.0
+  },
+  {
+   "key": "core_coin_flip_land",
+   "scope": "core",
+   "prompt": "Heavy metal coin landing on a hard board, solid clink and settling wobble, soft energy shimmer, sci-fi game sound effect, no music, no voice",
+   "seconds": 1.0
+  },
+  {
+   "key": "core_mulligan_swap",
+   "scope": "core",
+   "prompt": "Holographic cards swept away and replaced, quick reverse whoosh into soft shimmer, sci-fi game sound effect, no music, no voice",
+   "seconds": 0.8
+  },
+  {
+   "key": "core_reaction_prompt",
+   "scope": "core",
+   "prompt": "Interrupt window opening, quick tense time-slow whoosh, soft rising shimmer, sci-fi game sound effect, no music, no voice",
+   "seconds": 0.8
+  },
+  {
+   "key": "core_reaction_cast",
+   "scope": "core",
+   "prompt": "Interrupt spell fired, sharp energy snap and time-freeze shimmer, punchy, sci-fi game sound effect, no music, no voice",
+   "seconds": 0.8
+  },
+  {
+   "key": "core_command_center_open",
+   "scope": "core",
+   "prompt": "Holographic command console sliding open, layered soft digital panels unfolding, sci-fi game sound effect, no music, no voice",
+   "seconds": 0.6
+  },
+  {
+   "key": "core_ability_ready",
+   "scope": "core",
+   "prompt": "Ability charged and ready, soft clean energy ping with gentle glow, sci-fi game sound effect, no music, no voice",
+   "seconds": 0.5
   },
   {
    "key": "zeus_ability_stormfront_ability",
@@ -2381,7 +2447,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "ability",
-   "prompt": "unit activating a special power, rising charge; hovering shield drone, energy shield hum, small rotor buzz, sci-fi game sound effect, no music, no voice",
+   "prompt": "unit activating a special power, rising charge; hovering shield drone, energy shield hum, soft rotor whir, sci-fi game sound effect, no music, no voice",
    "seconds": 1.0
   },
   {
@@ -2392,7 +2458,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "attack",
-   "prompt": "melee energy weapon strike with impact; hovering shield drone, energy shield hum, small rotor buzz, sci-fi game sound effect, no music, no voice",
+   "prompt": "melee energy weapon strike with impact; hovering shield drone, energy shield hum, soft rotor whir, sci-fi game sound effect, no music, no voice",
    "seconds": 0.8
   },
   {
@@ -2403,7 +2469,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "deploy",
-   "prompt": "unit materializing onto the battlefield with a landing impact; hovering shield drone, energy shield hum, small rotor buzz, sci-fi game sound effect, no music, no voice",
+   "prompt": "unit materializing onto the battlefield with a landing impact; hovering shield drone, energy shield hum, soft rotor whir, sci-fi game sound effect, no music, no voice",
    "seconds": 1.0
   },
   {
@@ -2414,7 +2480,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "destroy",
-   "prompt": "unit destroyed, breaking apart and powering down; hovering shield drone, energy shield hum, small rotor buzz, sci-fi game sound effect, no music, no voice",
+   "prompt": "unit destroyed, breaking apart and powering down; hovering shield drone, energy shield hum, soft rotor whir, sci-fi game sound effect, no music, no voice",
    "seconds": 1.2
   },
   {
@@ -2425,7 +2491,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "hit",
-   "prompt": "unit taking a hit, armor impact and damage sparks; hovering shield drone, energy shield hum, small rotor buzz, sci-fi game sound effect, no music, no voice",
+   "prompt": "unit taking a hit, armor impact and damage sparks; hovering shield drone, energy shield hum, soft rotor whir, sci-fi game sound effect, no music, no voice",
    "seconds": 0.5
   },
   {
@@ -2436,7 +2502,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "idle",
-   "prompt": "unit idle, quiet subtle ambient hum, soft; hovering shield drone, energy shield hum, small rotor buzz, sci-fi game sound effect, no music, no voice",
+   "prompt": "unit idle, quiet subtle ambient hum, soft; hovering shield drone, energy shield hum, soft rotor whir, sci-fi game sound effect, no music, no voice",
    "seconds": 1.5
   },
   {
@@ -2447,7 +2513,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "move",
-   "prompt": "unit moving a short distance; hovering shield drone, energy shield hum, small rotor buzz, sci-fi game sound effect, no music, no voice",
+   "prompt": "unit moving a short distance; hovering shield drone, energy shield hum, soft rotor whir, sci-fi game sound effect, no music, no voice",
    "seconds": 0.8
   },
   {
@@ -2843,7 +2909,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "ability",
-   "prompt": "unit activating a special power, rising charge; cybernetic eagle, metallic screech, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
+   "prompt": "unit activating a special power, rising charge; cybernetic eagle, clear metallic raptor cry, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
    "seconds": 1.0
   },
   {
@@ -2854,7 +2920,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "attack",
-   "prompt": "melee energy weapon strike with impact; cybernetic eagle, metallic screech, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
+   "prompt": "melee energy weapon strike with impact; cybernetic eagle, clear metallic raptor cry, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
    "seconds": 0.8
   },
   {
@@ -2865,7 +2931,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "deploy",
-   "prompt": "unit materializing onto the battlefield with a landing impact; cybernetic eagle, metallic screech, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
+   "prompt": "unit materializing onto the battlefield with a landing impact; cybernetic eagle, clear metallic raptor cry, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
    "seconds": 1.0
   },
   {
@@ -2876,7 +2942,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "destroy",
-   "prompt": "unit destroyed, breaking apart and powering down; cybernetic eagle, metallic screech, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
+   "prompt": "unit destroyed, breaking apart and powering down; cybernetic eagle, clear metallic raptor cry, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
    "seconds": 1.2
   },
   {
@@ -2887,7 +2953,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "hit",
-   "prompt": "unit taking a hit, armor impact and damage sparks; cybernetic eagle, metallic screech, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
+   "prompt": "unit taking a hit, armor impact and damage sparks; cybernetic eagle, clear metallic raptor cry, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
    "seconds": 0.5
   },
   {
@@ -2898,7 +2964,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "idle",
-   "prompt": "unit idle, quiet subtle ambient hum, soft; cybernetic eagle, metallic screech, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
+   "prompt": "unit idle, quiet subtle ambient hum, soft; cybernetic eagle, clear metallic raptor cry, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
    "seconds": 1.5
   },
   {
@@ -2909,7 +2975,7 @@
    "faction": "ZEUS",
    "type": "CHARACTER",
    "cue": "move",
-   "prompt": "unit moving a short distance; cybernetic eagle, metallic screech, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
+   "prompt": "unit moving a short distance; cybernetic eagle, clear metallic raptor cry, mechanical wing flaps, sci-fi game sound effect, no music, no voice",
    "seconds": 0.8
   },
   {
@@ -3173,7 +3239,7 @@
    "faction": "ZEUS",
    "type": "STRUCTURE",
    "cue": "ability",
-   "prompt": "structure activating, compact conductor pylon, small arcing sparks, transformer buzz, power surge, sci-fi game sound effect, no music, no voice",
+   "prompt": "structure activating, compact conductor pylon, small arcing sparks, low transformer hum, power surge, sci-fi game sound effect, no music, no voice",
    "seconds": 1.0
   },
   {
@@ -3184,7 +3250,7 @@
    "faction": "ZEUS",
    "type": "STRUCTURE",
    "cue": "deploy",
-   "prompt": "mechanical structure unfolding and locking into place, compact conductor pylon, small arcing sparks, transformer buzz, sci-fi game sound effect, no music, no voice",
+   "prompt": "mechanical structure unfolding and locking into place, compact conductor pylon, small arcing sparks, low transformer hum, sci-fi game sound effect, no music, no voice",
    "seconds": 1.2
   },
   {
@@ -3195,7 +3261,7 @@
    "faction": "ZEUS",
    "type": "STRUCTURE",
    "cue": "destroy",
-   "prompt": "structure exploding and collapsing, metal debris, compact conductor pylon, small arcing sparks, transformer buzz, sci-fi game sound effect, no music, no voice",
+   "prompt": "structure exploding and collapsing, metal debris, compact conductor pylon, small arcing sparks, low transformer hum, sci-fi game sound effect, no music, no voice",
    "seconds": 1.5
   },
   {
@@ -3206,7 +3272,7 @@
    "faction": "ZEUS",
    "type": "STRUCTURE",
    "cue": "idle",
-   "prompt": "compact conductor pylon, small arcing sparks, transformer buzz, quiet machine ambience, soft and short, sci-fi game sound effect, no music, no voice",
+   "prompt": "compact conductor pylon, small arcing sparks, low transformer hum, quiet machine ambience, soft and short, sci-fi game sound effect, no music, no voice",
    "seconds": 1.5
   },
   {

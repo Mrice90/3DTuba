@@ -106,6 +106,19 @@ CORE = [
     ("core_matchmaking_found", "Match found, energetic sci-fi alert chime", 1.0),
     ("core_ambience_zeus_board", "Ambient sky city above the clouds, wind, distant thunder, electric hum", 6.0),
     ("core_ambience_poseidon_board", "Ambient deep sea city, muffled water, distant whale calls, sonar pings", 6.0),
+    # Calm alternates (2026-10-15): testers found the turn swap sound stressful. Warm, low, unhurried.
+    ("core_turn_start_player_calm", "Your turn begins, warm soft futuristic chime, gentle airy swell, calm and inviting", 1.2),
+    ("core_turn_start_opponent_calm", "Opponent turn begins, soft low mellow futuristic tone, calm, unhurried", 1.2),
+    ("core_turn_timer_warning_calm", "Gentle futuristic reminder pulse, two soft low tones, calm, not urgent", 1.2),
+    ("core_capital_warning_calm", "Capital under threat, deep resonant warning swell, serious but not shrill", 1.5),
+    # Features from the 2026-10-10 playtest notes (coin flip, mulligan, interruption cue, ability command center).
+    ("core_coin_flip_toss", "Heavy metal coin flicked into the air, bright ring and spinning whir end over end", 1.0),
+    ("core_coin_flip_land", "Heavy metal coin landing on a hard board, solid clink and settling wobble, soft energy shimmer", 1.0),
+    ("core_mulligan_swap", "Holographic cards swept away and replaced, quick reverse whoosh into soft shimmer", 0.8),
+    ("core_reaction_prompt", "Interrupt window opening, quick tense time-slow whoosh, soft rising shimmer", 0.8),
+    ("core_reaction_cast", "Interrupt spell fired, sharp energy snap and time-freeze shimmer, punchy", 0.8),
+    ("core_command_center_open", "Holographic command console sliding open, layered soft digital panels unfolding", 0.6),
+    ("core_ability_ready", "Ability charged and ready, soft clean energy ping with gentle glow", 0.5),
 ]
 
 
