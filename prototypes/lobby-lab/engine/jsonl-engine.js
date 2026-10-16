@@ -37,7 +37,11 @@ export function createJsonlEngine({ command, args = [], cwd, timeoutMs = 30_000 
         if (!r.ok) throw new Error(`${op}: ${r.error_code || "ERROR"} ${r.error || ""}`.trim());
         return r;
     };
-    const st = (r) => ({ turn: r.turn, activeSeat: r.over ? null : r.active, winnerSeat: r.winner ?? null, over: !!r.over });
+    const st = (r) => ({
+        turn: r.turn, activeSeat: r.over ? null : r.active, winnerSeat: r.winner ?? null, over: !!r.over,
+        ...(r.revision != null ? { revision: r.revision } : {}),
+        ...(r.rules_version ? { rulesVersion: r.rules_version } : {}),
+    });
 
     return {
         async start({ seed }) { return st(await must("new", { seed, players: 2 })); },

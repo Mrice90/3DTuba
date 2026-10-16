@@ -7,7 +7,7 @@
 // request and the same relay-seed mapping, so a replay here reaches the
 // same state hash the two players' clients reported.
 //
-// Usage: dotnet IC.RefereeHost.dll <NativeRules data folder>
+// Usage: dotnet IC.RefereeHost.dll [NativeRules data folder, default rules/0.4.5/data]
 
 using System;
 using System.Text.Json.Nodes;
@@ -17,7 +17,7 @@ namespace InfiniteConquest.Referee {
     public static class Program {
         static NativeRulesSession session;
         static JsonNode state;
-        static readonly string dataDir = Environment.GetEnvironmentVariable("IC_NATIVE_RULES_DATA") ?? "native/data";
+        static readonly string dataDir = Environment.GetEnvironmentVariable("IC_NATIVE_RULES_DATA") ?? "rules/0.4.5/data";
         static int bridgeId;
 
         public static int Main(string[] args) {
@@ -98,9 +98,14 @@ namespace InfiniteConquest.Referee {
         static int Acting() => (int)state["acting_player"];
         static bool Over() => state["winner"] != null || (string)state["phase"] == "GAME_OVER";
 
+        // op:hash leaves out revision and reaction_pending (rules soak, 2026-10-16), so
+        // status reports both and the referee records them next to the hash.
         static JsonObject Status() => new JsonObject {
             ["ok"] = true,
             ["turn"] = (int)state["turn"],
+            ["revision"] = state["revision"]?.DeepClone(),
+            ["reaction_pending"] = state["reaction_pending"]?.DeepClone(),
+            ["rules_version"] = state["rules_version"]?.DeepClone(),
             ["active"] = Over() ? null : Acting(),
             ["winner"] = state["winner"]?.DeepClone(),
             ["over"] = Over(),

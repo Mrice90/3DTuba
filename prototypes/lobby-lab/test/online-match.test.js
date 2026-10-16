@@ -182,14 +182,14 @@ test("ledger: an unfinished verdict voids the match, never rates it, exactly onc
 });
 
 // ---- the real rules: native C# core through tools/referee-host ----------
-// Runs when the host is built (tools/referee-host: ./fetch-native-rules.sh &&
-// dotnet build -c Release -o out); skipped otherwise.
+// Runs when the host is built (tools/referee-host: dotnet build -c Release -o out,
+// which uses the pinned 0.4.5 rules build); skipped otherwise.
 
 import { existsSync } from "node:fs";
 
 const hostDir = path.join(lab, "..", "..", "tools", "referee-host");
 const hostDll = path.join(hostDir, "out", "IC.RefereeHost.dll");
-const nativeData = path.join(hostDir, "native", "data");
+const nativeData = path.join(hostDir, "rules", "0.4.5", "data");
 const haveNative = existsSync(hostDll) && existsSync(nativeData);
 const nativeCmd = `dotnet ${hostDll} ${nativeData}`;
 const nativeHost = () => createJsonlEngine({ command: "dotnet", args: [hostDll, nativeData] });
@@ -210,6 +210,8 @@ test("native rules: two clients play a full real match in lockstep; the native r
         const [p] = await pendingTranscripts(base);
         const v = await replayWithEngine(nativeHost, { engineName: "native" })({ ...p.transcript, transcript: p.transcript });
         assert.equal(v.legal, true);
+        assert.equal(v.rulesVersion, "purchase-v3-hex37", "the referee runs the shipped 0.4.5 rules");
+        assert.ok(Number.isInteger(v.finalRevision));
         assert.equal(v.finalStateHash, a.result.finalHash, "the referee reaches the clients' final state");
         assert.equal(v.winnerSeat, a.result.winner === "me" ? a.result.seat : b.result.seat);
 

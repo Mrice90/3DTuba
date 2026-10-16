@@ -8,10 +8,10 @@ transcripts through it, and the headless lockstep test client can play real
 matches with it.
 
 ```
-./fetch-native-rules.sh            # pinned DLLs + card data into ./native (checksummed)
-dotnet build -c Release -o out     # .NET 8 SDK
+(cd rules/0.4.5 && sha256sum -c SHA256SUMS)   # the pinned rules build
+dotnet build -c Release -o out                # .NET 8 SDK
 LAB_REFEREE_SECRET=... node ../../prototypes/lobby-lab/referee-runner.js \
-  --base https://<ranked worker> --engine-cmd "dotnet out/IC.RefereeHost.dll native/data"
+  --base https://<ranked worker> --engine-cmd "dotnet out/IC.RefereeHost.dll rules/0.4.5/data"
 ```
 
 ## How it matches the Unity client
@@ -36,19 +36,30 @@ deck or capital choice to online `new`, those choices must move into intents
 
 ## Which build it referees
 
-`fetch-native-rules.sh` pins the newest native core committed to this repo
-(2026-10-11, the deck-shop/board overlay). The 0.4.5 release candidate on the
-PC may be newer. To referee 0.4.5 matches, copy that build's
-`InfiniteConquest.Native.dll` and `InfiniteConquest.RulesCore.dll` into
-`native/lib` and its `StreamingAssets/NativeRules` into `native/data`, then
-rebuild. The referee and every client in a ranked match must run the same
-rules build, or replays will not match: the relay's `dataVersion` gate is
-where that belongs once versions are pinned per release.
+`rules/0.4.5/` holds the rules core exactly as shipped in the 0.4.5 release
+candidate (`playtest/unity-build-release-candidate-0.4.5` on the PC):
+`InfiniteConquest.Native.dll` (7f72db84...), `InfiniteConquest.RulesCore.dll`
+(cb527524...) and `StreamingAssets/NativeRules`, rules version
+`purchase-v3-hex37`. All 16 files match that build's `SHA256SUMS.txt`. The
+0.4.5 client's online `new` request and seed mapping were read from its
+compiled `Assembly-CSharp.dll` and are identical to what this host sends.
+
+The referee and both players must run the same rules build, or replays will
+not match. For a new release, add `rules/<version>/` from that build, check it
+against the build's checksums, and build with `-p:NativeRulesLib=rules/<version>/lib`.
+The relay's `dataVersion` gate is where that version pinning belongs for
+matchmaking.
+
+Notes from the rules soak thread (1,600 hex37 matches on these DLLs, zero
+hash differences in-process and across processes): `op:hash` leaves out
+`revision` and `reaction_pending`, so this host reports both in `status` and
+the referee records the final revision in its verdict; `op:new` without a
+seed uses the wall clock, so this host refuses a `new` without the relay seed.
 
 ## Checked
 
-2026-10-16, cloud container, .NET 8.0.131: two lockstep clients in separate
-processes played a full match on the native core over the lab relay (100
-turns, 622 intents, 99 per-turn hash checks, all matched). The referee
+2026-10-16, cloud container, .NET 8.0.131, 0.4.5 rules: two lockstep clients
+in separate processes played a full match on the native core over the lab
+relay (179 turns, 955 intents, 178 per-turn hash checks, all matched). The referee
 reached the clients' final state hash and rated the winner. One forged intent
 spliced into the real transcript made the referee rule against its sender.

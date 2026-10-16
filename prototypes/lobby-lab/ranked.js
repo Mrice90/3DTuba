@@ -312,7 +312,9 @@ export function createRankedService({ kv, refereeSecret, relaySecret, now = () =
             }
             if (rec.status === "flagged") return bad("flagged matches are never rated", 409);
             const room = await getJson(k.room(data.roomId));
-            const v = { source: "referee", winnerSeat: data.winnerSeat, legal: data.legal !== false, finalStateHash: data.finalStateHash, engine: String(data.engine || "").slice(0, 80) };
+            const v = { source: "referee", winnerSeat: data.winnerSeat, legal: data.legal !== false, finalStateHash: data.finalStateHash, engine: String(data.engine || "").slice(0, 80),
+                ...(Number.isInteger(data.finalRevision) ? { finalRevision: data.finalRevision } : {}),
+                ...(typeof data.rulesVersion === "string" ? { rulesVersion: data.rulesVersion.slice(0, 40) } : {}) };
             if (v.legal && data.unfinished === true) {
                 // The replay ended without a winner (draw, or abandoned with no
                 // concession and no relay forfeit): settled, never rated.

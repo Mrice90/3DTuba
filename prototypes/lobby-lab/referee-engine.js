@@ -36,7 +36,12 @@ export function replayWithEngine(makeEngine, { engineName = "engine" } = {}) {
             }
             const st = await engine.status();
             const finalStateHash = await engine.hash();
-            const base = { legal: true, finalStateHash, intentsApplied: applied, intentsIgnored: ignored, engine: engineName };
+            // The native op:hash leaves out the revision, so the verdict carries it too.
+            const base = {
+                legal: true, finalStateHash, intentsApplied: applied, intentsIgnored: ignored, engine: engineName,
+                ...(st.revision != null ? { finalRevision: st.revision } : {}),
+                ...(st.rulesVersion ? { rulesVersion: st.rulesVersion } : {}),
+            };
             if (st.over && st.winnerSeat != null) return { ...base, winnerSeat: seats[st.winnerSeat] };
             if (st.over) return { ...base, unfinished: true, draw: true };
             const conceders = Object.entries(transcript.results || {})

@@ -25,9 +25,9 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - name: Fetch the pinned native rules core (read-only, checksummed)
-        working-directory: tools/referee-host
-        run: ./fetch-native-rules.sh
+      - name: Check the pinned 0.4.5 rules build against its checksums
+        working-directory: tools/referee-host/rules/0.4.5
+        run: sha256sum -c SHA256SUMS
       - name: Build the referee host
         working-directory: tools/referee-host
         run: dotnet build -c Release -o out
