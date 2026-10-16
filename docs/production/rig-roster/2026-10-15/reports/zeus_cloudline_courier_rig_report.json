@@ -1,0 +1,59 @@
+{
+ "clips": {
+  "Idle": {
+   "frames": 49,
+   "seconds": 2.0,
+   "loop": true,
+   "events": {}
+  },
+  "Walk": {
+   "frames": 25,
+   "seconds": 1.0,
+   "loop": true,
+   "events": {}
+  },
+  "Attack": {
+   "frames": 33,
+   "seconds": 1.333,
+   "loop": false,
+   "events": {
+    "impact": 13
+   }
+  },
+  "Hit": {
+   "frames": 18,
+   "seconds": 0.708,
+   "loop": false,
+   "events": {}
+  },
+  "Death": {
+   "frames": 44,
+   "seconds": 1.792,
+   "loop": false,
+   "events": {
+    "down": 33
+   }
+  },
+  "Summon": {
+   "frames": 31,
+   "seconds": 1.25,
+   "loop": false,
+   "events": {
+    "land": 16
+   }
+  }
+ },
+ "card": "zeus_cloudline_courier",
+ "H": 1.8990312814712524,
+ "bones": 23,
+ "tris": 30864,
+ "forced_rigid_verts": 0,
+ "cut_bridge_faces": 0,
+ "nearest_fixed": 0,
+ "proxy_unweighted": 0,
+ "max_influences": 4,
+ "attack_style": "ranged",
+ "loco": "walk",
+ "facing_deg": 0,
+ "source": "zeus_cloudline_courier.glb"
+}

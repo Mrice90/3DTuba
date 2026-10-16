@@ -1,0 +1,6 @@
+{"attack":"bash","weapon_hand":"Right","facing":0,"base_z":0.13,"arm_down":8,
+ "joints":{"Hips":[0.0,0.50],"Chest":[0.0,0.71],"Neck":[0.0,0.85],"HeadTop":[0.0,0.98],
+  "RightArm":[-0.15,0.80],"RightForeArm":[-0.235,0.67],"RightHand":[-0.27,0.58],"RightHandEnd":[-0.275,0.55],
+  "LeftArm":[0.15,0.80],"LeftForeArm":[0.235,0.67],"LeftHand":[0.27,0.58],"LeftHandEnd":[0.275,0.55],
+  "RightUpLeg":[-0.07,0.48],"RightLeg":[-0.10,0.33],"RightFoot":[-0.12,0.16],
+  "LeftUpLeg":[0.07,0.48],"LeftLeg":[0.10,0.33],"LeftFoot":[0.12,0.16]}}

@@ -1,0 +1,5 @@
+{"kind":"creature","facing":0,"loco":"hover","death_roll":30,"bob":0.6,
+ "body":[0.0,0.0,0.20],"spine":[[0.0,0.0,0.40],[0.0,0.0,0.60],[0.0,0.0,0.80],[0.0,0.0,0.98]],
+ "limbs":[
+  {"name":"ProngL","pts":[[0.10,0.47],[0.22,0.62],[0.15,0.90]],"phase":0,"side":"L","role":"claw","parent":"Spine1"},
+  {"name":"ProngR","pts":[[-0.10,0.47],[-0.22,0.62],[-0.15,0.90]],"phase":0.5,"side":"R","role":"claw","parent":"Spine1"}]}

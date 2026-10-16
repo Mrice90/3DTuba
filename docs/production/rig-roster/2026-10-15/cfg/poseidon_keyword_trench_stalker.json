@@ -1,0 +1,6 @@
+{"attack":"slash","weapon_hand":"Right","facing":0,"base_z":0.095,
+ "joints":{"Hips":[0.0,0.475],"Chest":[0.0,0.65],"Neck":[0.0,0.75],"HeadTop":[0.0,0.95],
+  "RightArm":[-0.185,0.695],"RightForeArm":[-0.235,0.58],"RightHand":[-0.26,0.47],"RightHandEnd":[-0.25,0.40],
+  "LeftArm":[0.185,0.695],"LeftForeArm":[0.235,0.58],"LeftHand":[0.26,0.47],"LeftHandEnd":[0.25,0.40],
+  "RightUpLeg":[-0.09,0.47],"RightLeg":[-0.15,0.355],"RightFoot":[-0.15,0.16],
+  "LeftUpLeg":[0.09,0.47],"LeftLeg":[0.15,0.355],"LeftFoot":[0.15,0.16]}}

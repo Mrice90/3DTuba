@@ -1,0 +1,9 @@
+{"attack":"thrust","weapon_hand":"Right","shield_hand":"Left","facing":0,"attack_arm":0.7,
+ "joints":{"Hips":[0.0,0.50],"Chest":[0.0,0.67],"Neck":[0.06,0.79],"HeadTop":[0.08,0.97],
+  "RightArm":[-0.14,0.73],"RightForeArm":[-0.22,0.58],"RightHand":[-0.31,0.45],"RightHandEnd":[-0.34,0.41],
+  "LeftArm":[0.14,0.75],"LeftForeArm":[0.24,0.60],"LeftHand":[0.30,0.50],"LeftHandEnd":[0.32,0.46],
+  "RightUpLeg":[-0.08,0.47],"RightLeg":[-0.14,0.27],"RightFoot":[-0.16,0.04],
+  "LeftUpLeg":[0.08,0.47],"LeftLeg":[0.17,0.27],"LeftFoot":[0.20,0.04]},
+ "props":[{"bone":"RightHand","a":[-0.145,0.196,0.662],"b":[-0.45,-0.08,0.289],"r":0.022,"grow":1.6},
+  {"bone":"RightHand","box":[[-0.48,-0.14,0.24],[-0.33,0.06,0.43]]},
+  {"bone":"LeftHand","disc_box":[[0.08,-0.35,0.18],[0.48,0.15,0.82]],"thick":0.035}]}

@@ -1,0 +1,5 @@
+{"attack":"cast","weapon_hand":"Right","facing":0,"loco":"hover","base_z":0.07,
+ "joints":{"Hips":[0.0,0.50],"Chest":[0.0,0.67],"Neck":[0.0,0.82],"HeadTop":[0.0,0.98],
+  "RightArm":[-0.105,0.74],"RightForeArm":[-0.15,0.64],"RightHand":[-0.21,0.545],"RightHandEnd":[-0.22,0.52],
+  "LeftArm":[0.105,0.74],"LeftForeArm":[0.15,0.64],"LeftHand":[0.21,0.545],"LeftHandEnd":[0.22,0.52]},
+ "props":[{"bone":"Root","box":[[-0.30,-0.42,0.0],[0.30,-0.10,0.46]]}]}
