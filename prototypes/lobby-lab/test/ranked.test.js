@@ -240,14 +240,35 @@ test("hash-mismatch matches are flagged and never rated", async () => {
     assert.equal((await rating(h, m.a)).games, 0);
 });
 
-test("a relay-observed timeout is rated without a referee", async () => {
+test("a relay-observed timeout waits for the referee, which can see the game was already over", async () => {
     const h = harness();
     const m = await matched(h);
-    const { transcript } = await playThroughRelay(h, m, { timeoutSeat: "b" });
+    const { transcript, seatOf } = await playThroughRelay(h, m, { timeoutSeat: "b" });
     assert.equal(transcript.endReason, "timeout");
     const rec = await h.svc.recordTranscript(transcript);
+    assert.equal(rec.status, "pending", "a client that skips `result` makes the relay time out after game over");
+    assert.equal((await rating(h, m.a)).games, 0);
+    // The replay found the game finished with B winning, so B wins despite the timeout.
+    const v = await referee(h, "POST", "/v3/ranked/referee/verdicts", { roomId: m.roomId, transcriptHash: rec.transcriptHash, winnerSeat: seatOf.b, legal: true });
+    assert.equal(v.status, 200);
+    assert.equal((await rating(h, m.b)).wins, 1);
+});
+
+test("a seat that never reveals its seed forfeits at once (nothing to replay)", async () => {
+    const h = harness();
+    const m = await matched(h);
+    const raw = JSON.parse(await h.roomKv.get(`v2:room:${m.roomId}`));
+    let t = null;
+    const s = createRelaySession({ room: raw, now: () => h.clock.t, send: () => {}, broadcast: () => {}, onTranscript: (x) => { t = x; } });
+    for (const seat of [m.ma.seat, m.mb.seat]) s.handleMessage(seat, { type: "hello" });
+    await s.handleMessage(m.ma.seat, { type: "seed-commit", commit: commitOf(m.ma.seat, "x") });
+    await s.handleMessage(m.ma.seat, { type: "seed-reveal", seed: m.ma.seat, salt: "x" });
+    h.clock.t += 121_000;
+    s.tick();
+    assert.equal(t.endReason, "no-reveal");
+    const rec = await h.svc.recordTranscript(t);
     assert.equal(rec.status, "rated");
-    assert.equal((await rating(h, m.a)).wins, 1, "seat A wins when B times out");
+    assert.equal((await rating(h, m.a)).wins, 1, "seat A wins when B never reveals");
     const match = (await call(h, "GET", `/v3/ranked/matches/${m.roomId}`)).body;
     assert.equal(match.verdict.source, "relay-forfeit");
 });

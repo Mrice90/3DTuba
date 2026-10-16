@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- ic-engine-1 host over the native C# rules core (prototypes/lobby-lab/engine/README.md).
+       The rules DLLs are not in this repo; fetch-native-rules.sh puts them in ./native
+       (or point NativeRulesLib at a 0.4.5 build's Managed folder). -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <AssemblyName>IC.RefereeHost</AssemblyName>
+    <RootNamespace>InfiniteConquest.Referee</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <NativeRulesLib Condition="'$(NativeRulesLib)' == ''">$(MSBuildThisFileDirectory)native/lib</NativeRulesLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="InfiniteConquest.Native"><HintPath>$(NativeRulesLib)/InfiniteConquest.Native.dll</HintPath></Reference>
+    <Reference Include="InfiniteConquest.RulesCore"><HintPath>$(NativeRulesLib)/InfiniteConquest.RulesCore.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

@@ -264,8 +264,11 @@ export function createRankedService({ kv, refereeSecret, relaySecret, now = () =
             const flagged = transcript.flags?.length > 0 || transcript.endReason === "result-disputed";
             if (flagged) {
                 record.status = "flagged"; // never rated; kept for review (same policy as v1/v2 disputes)
-            } else if (transcript.forfeitSeat && ["timeout", "no-reveal"].includes(transcript.endReason)) {
-                // The relay observed the forfeit itself; no replay needed to know who left.
+            } else if (transcript.forfeitSeat && transcript.endReason === "no-reveal") {
+                // The relay saw a seat never reveal its seed: no game was played, so
+                // there is nothing to replay. (A turn timeout still goes to the
+                // referee: a client that never sends `result` lets the relay time
+                // out after a finished game, and the replay knows the real winner.)
                 const loserSide = transcript.forfeitSeat === room.seatA ? "A" : "B";
                 await applyRating(room, record, loserSide === "A" ? "B" : "A", { source: "relay-forfeit", reason: transcript.endReason });
             } else {

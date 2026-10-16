@@ -8,10 +8,13 @@
  * one, so that seat loses. Intents after the game is over change nothing and
  * are ignored.
  *
- * A game that is not over when the relay session ended is decided only by a
- * concession: a seat whose result claim names its opponent as the winner has
- * conceded (a claim against its own interest). Otherwise the verdict is
- * `unfinished` and the ledger voids the match without rating it.
+ * A game the engine finished is decided by the engine, however the relay
+ * session ended (including a turn timeout after game over, which is what a
+ * client that never sends `result` produces). A game that is not over is
+ * decided by a relay turn timeout (the timed-out seat loses) or a concession:
+ * a seat whose result claim names its opponent as the winner has conceded (a
+ * claim against its own interest). Otherwise the verdict is `unfinished` and
+ * the ledger voids the match without rating it.
  */
 
 export function replayWithEngine(makeEngine, { engineName = "engine" } = {}) {
@@ -39,6 +42,10 @@ export function replayWithEngine(makeEngine, { engineName = "engine" } = {}) {
             const conceders = Object.entries(transcript.results || {})
                 .filter(([seat, claim]) => seats.includes(seat) && claim.winnerSeat !== seat)
                 .map(([seat]) => seat);
+            if (transcript.endReason === "timeout" && seats.includes(transcript.forfeitSeat)) {
+                // The relay timed the seat out mid-game: abandoning is losing.
+                return { ...base, winnerSeat: seats.find((s) => s !== transcript.forfeitSeat), forfeitedBy: transcript.forfeitSeat };
+            }
             if (conceders.length === 1) {
                 return { ...base, winnerSeat: seats.find((s) => s !== conceders[0]), concededBy: conceders[0] };
             }

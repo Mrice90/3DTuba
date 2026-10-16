@@ -1,0 +1,36 @@
+name: Ranked referee on the native rules core
+on:
+  push:
+    paths:
+      - 'prototypes/lobby-lab/**'
+      - 'tools/referee-host/**'
+      - '.github/workflows/ranked-native-referee.yml'
+  pull_request:
+    paths:
+      - 'prototypes/lobby-lab/**'
+      - 'tools/referee-host/**'
+      - '.github/workflows/ranked-native-referee.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-referee:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch the pinned native rules core (read-only, checksummed)
+        working-directory: tools/referee-host
+        run: ./fetch-native-rules.sh
+      - name: Build the referee host
+        working-directory: tools/referee-host
+        run: dotnet build -c Release -o out
+      - name: Two clients play real-rules matches online; the native referee rates them
+        working-directory: prototypes/lobby-lab
+        run: node --test test/online-match.test.js

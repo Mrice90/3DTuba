@@ -144,6 +144,11 @@ test("referee: an unfinished game is a concession only when a seat conceded, oth
     const conceded = await replay({ seed: SEED, seats: [A, B], intents, transcript: { results: { [A]: { winnerSeat: B } } } });
     assert.equal(conceded.winnerSeat, B);
     assert.equal(conceded.concededBy, A);
+    const timedOut = await replay({ seed: SEED, seats: [A, B], intents, transcript: { endReason: "timeout", forfeitSeat: B } });
+    assert.equal(timedOut.winnerSeat, A, "a seat timed out mid-game loses");
+    const { intents: full, winner } = await scriptedIntents();
+    const afterOver = await replay({ seed: SEED, seats: [A, B], intents: full, transcript: { endReason: "timeout", forfeitSeat: [A, B][winner] } });
+    assert.equal(afterOver.winnerSeat, [A, B][winner], "a timeout after game over does not take the win away");
     const claimedOnly = await replay({ seed: SEED, seats: [A, B], intents, transcript: { results: { [A]: { winnerSeat: A } } } });
     assert.equal(claimedOnly.unfinished, true, "claiming your own win proves nothing");
     assert.equal(claimedOnly.winnerSeat, undefined);
@@ -171,6 +176,54 @@ test("ledger: an unfinished verdict voids the match, never rates it, exactly onc
         };
         assert.equal((await post({ legal: true, unfinished: true })).body.duplicate, true);
         assert.equal((await post({ legal: true, winnerSeat: "x" })).status, 409);
+    } finally {
+        await srv.close();
+    }
+});
+
+// ---- the real rules: native C# core through tools/referee-host ----------
+// Runs when the host is built (tools/referee-host: ./fetch-native-rules.sh &&
+// dotnet build -c Release -o out); skipped otherwise.
+
+import { existsSync } from "node:fs";
+
+const hostDir = path.join(lab, "..", "..", "tools", "referee-host");
+const hostDll = path.join(hostDir, "out", "IC.RefereeHost.dll");
+const nativeData = path.join(hostDir, "native", "data");
+const haveNative = existsSync(hostDll) && existsSync(nativeData);
+const nativeCmd = `dotnet ${hostDll} ${nativeData}`;
+const nativeHost = () => createJsonlEngine({ command: "dotnet", args: [hostDll, nativeData] });
+
+test("native rules: two clients play a full real match in lockstep; the native referee reproduces it and rates it", { skip: !haveNative && "native referee host not built", timeout: 300_000 }, async () => {
+    const srv = await start({ port: 0, refereeSecret: REF, relaySecret: RELAY });
+    try {
+        const base = `http://127.0.0.1:${srv.port}`;
+        const extra = ["--engine-cmd", nativeCmd, "--timeout-ms", "240000"];
+        const [a, b] = await Promise.all([client(base, "Alice", "zeus", extra), client(base, "Bobby", "poseidon", extra)]);
+        for (const c of [a, b]) {
+            assert.equal(c.code, 0, `${c.result.name} failed: ${JSON.stringify(c.result)}\n${c.log}`);
+            assert.equal(c.result.hashMismatch, 0);
+            assert.ok(c.result.hashOk >= 2);
+        }
+        assert.equal(a.result.finalHash, b.result.finalHash);
+        await new Promise((r) => setTimeout(r, 50));
+        const [p] = await pendingTranscripts(base);
+        const v = await replayWithEngine(nativeHost, { engineName: "native" })({ ...p.transcript, transcript: p.transcript });
+        assert.equal(v.legal, true);
+        assert.equal(v.finalStateHash, a.result.finalHash, "the referee reaches the clients' final state");
+        assert.equal(v.winnerSeat, a.result.winner === "me" ? a.result.seat : b.result.seat);
+
+        // A forged intent spliced into the real transcript loses the match for its sender.
+        const k = Math.floor(p.transcript.intents.length / 2);
+        const forged = p.transcript.intents.map((it, i) => (i === k ? { ...it, actionId: "r0-a999" } : it));
+        const cheat = await replayWithEngine(nativeHost)({ ...p.transcript, intents: forged });
+        assert.equal(cheat.legal, false);
+        assert.equal(cheat.offendingSeat, p.transcript.intents[k].seat);
+
+        const out = await runRefereeOnce({ base, secret: REF, replay: replayWithEngine(nativeHost, { engineName: "native" }) });
+        assert.equal(out[0].status, 200);
+        const lb = await (await fetch(`${base}/v3/ranked/leaderboard`)).json();
+        assert.equal(lb.rows[0].playerId, (a.result.winner === "me" ? a.result : b.result).playerId);
     } finally {
         await srv.close();
     }
