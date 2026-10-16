@@ -18,10 +18,10 @@ The sound thread is generating the remaining cues in ElevenLabs. Codex's SP1 aud
 
 1. **Card art provenance.** Matt needs to say how the Desolate-Tuba and TubaExperiment card art was made (hand-drawn, commissioned, or an image generator, and which one). The card faces are the most visible asset, so this answer decides most of the disclosure.
 2. **Meshy task IDs.** Several rows say "not recorded"; batch-07 holds only ID prefixes. Steam doesn't require task IDs, but they help prove which job made which file.
-3. **Music.** None exists yet (AI-206-MUSIC). Add it here when it lands.
+3. **Music.** Five tracks were made with ElevenLabs Music on 2026-10-16 (AI-206-MUSIC, `assets/audio/music/MUSIC_MANIFEST.json`). The disclosure below covers them.
 
 ## Draft Steam disclosure (fill in the card-art sentence once Matt answers)
 
-> **Pre-generated content.** Most 3D unit, capital and land models began as AI-generated meshes (Meshy) made from our own card art, then were cleaned up, decimated and re-textured by hand in Blender. Our sound effects were generated with ElevenLabs from written prompts and then selected, trimmed and loudness-matched by us. Structure models were built procedurally in Blender without generative AI. [Card art: to be confirmed.] All AI output was reviewed against our art direction before it went into the game.
+> **Pre-generated content.** Most 3D unit, capital and land models began as AI-generated meshes (Meshy) made from our own card art, then were cleaned up, decimated and re-textured by hand in Blender. Our sound effects and music were generated with ElevenLabs from written prompts and then selected, trimmed and loudness-matched by us. Structure models were built procedurally in Blender without generative AI. [Card art: to be confirmed.] All AI output was reviewed against our art direction before it went into the game.
 >
 > **Live-generated content.** None. The game generates no content with AI while it is running.

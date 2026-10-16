@@ -1,0 +1,110 @@
+{
+  "task": "AI-206-MUSIC",
+  "generated": "2026-10-16",
+  "tool": "ElevenLabs Music v2.5 (eleven_music_v2_5)",
+  "flow_id": "2PU4wk9ajvykClnG9kfm",
+  "credits_per_take": 899.8,
+  "takes": 20,
+  "credits_total": 17996.0,
+  "picks": {
+    "music_menu_loop": "menu_1",
+    "music_battle_zeus_loop": "zeus_4",
+    "music_battle_poseidon_loop": "poseidon_1",
+    "music_victory_stinger": "victory_4",
+    "music_defeat_stinger": "defeat_3"
+  },
+  "pick_reason": "Loops: take whose last seconds match its first (spectral similarity >= 0.92, no fade-out), so the 2 s crossfade wrap is clean. Stingers: full-length take with a natural tail. Not yet listened to by a person.",
+  "takes_by_track": {
+    "menu": [
+      {
+        "take": "menu_1",
+        "generation_id": "yZ2JFvnoL4VaRbdN45g0"
+      },
+      {
+        "take": "menu_2",
+        "generation_id": "ihm5jId2BCdcyFV10oVt"
+      },
+      {
+        "take": "menu_3",
+        "generation_id": "07n0VPARywQaTZ6pRrxL"
+      },
+      {
+        "take": "menu_4",
+        "generation_id": "GSyTYotWjs4n6BASacf8"
+      }
+    ],
+    "zeus": [
+      {
+        "take": "zeus_1",
+        "generation_id": "ym3klZ8uIxYHVEhYubsy"
+      },
+      {
+        "take": "zeus_2",
+        "generation_id": "hUwVII0FUallTR7KQxqs"
+      },
+      {
+        "take": "zeus_3",
+        "generation_id": "ZdfeIYZCp9uHy0hIgC8I"
+      },
+      {
+        "take": "zeus_4",
+        "generation_id": "U4rARHCzJatMmlGfEm0l"
+      }
+    ],
+    "poseidon": [
+      {
+        "take": "poseidon_1",
+        "generation_id": "z9muZ2MWC6OjXk6h4lbF"
+      },
+      {
+        "take": "poseidon_2",
+        "generation_id": "yiARpgpq1YZGnGXfMpGL"
+      },
+      {
+        "take": "poseidon_3",
+        "generation_id": "p83MhjhbVyz2Da1Ev7KS"
+      },
+      {
+        "take": "poseidon_4",
+        "generation_id": "QcbqJ4afvxYHItg5QKn7"
+      }
+    ],
+    "victory": [
+      {
+        "take": "victory_1",
+        "generation_id": "RjNBiaYmu0AEPJiokGhT"
+      },
+      {
+        "take": "victory_2",
+        "generation_id": "bYIDZIgINx7O6gWPl4pK"
+      },
+      {
+        "take": "victory_3",
+        "generation_id": "VVTUesSyXbOuH7FWoAYK"
+      },
+      {
+        "take": "victory_4",
+        "generation_id": "wxgBjgmFbeJl91dCXFj6"
+      }
+    ],
+    "defeat": [
+      {
+        "take": "defeat_1",
+        "generation_id": "vCoZB315XeQ4bipIiZrP"
+      },
+      {
+        "take": "defeat_2",
+        "generation_id": "Nt1GEXQlHZIF27uea699"
+      },
+      {
+        "take": "defeat_3",
+        "generation_id": "NyfM1QTY35oOOMPEits4"
+      },
+      {
+        "take": "defeat_4",
+        "generation_id": "MW7thO74NE5LTNuY1vzy"
+      }
+    ]
+  },
+  "processing": "docs/production/audio/make_music_loops.py: 2 s equal-power loop wrap, static gain to -20 LUFS (loops), -17 (victory), -19 (defeat); 48 kHz stereo Ogg Vorbis q6."
+}
