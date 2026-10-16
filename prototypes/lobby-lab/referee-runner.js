@@ -13,7 +13,10 @@
  * Tests use a deterministic fake engine.
  *
  * Usage (lab): node referee-runner.js --base http://127.0.0.1:8787 --engine <module.js>
- *   with LAB_REFEREE_SECRET set to the server's referee secret.
+ *   or          node referee-runner.js --base URL --engine-cmd "<ic-engine-1 host command>"
+ *   with LAB_REFEREE_SECRET set to the server's referee secret. --engine loads
+ *   a module exporting replay(); --engine-cmd replays through any engine
+ *   speaking ic-engine-1 (engine/README.md), such as the C# core host.
  */
 
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -50,11 +53,20 @@ if (isMain) {
     const arg = (n) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : undefined; };
     const base = arg("--base") || "http://127.0.0.1:8787";
     const engine = arg("--engine");
+    const engineCmd = arg("--engine-cmd");
     const secret = process.env.LAB_REFEREE_SECRET;
-    if (!engine || !secret) {
-        console.error("usage: LAB_REFEREE_SECRET=... node referee-runner.js --base URL --engine ./engine-adapter.js");
+    if ((!engine && !engineCmd) || !secret) {
+        console.error("usage: LAB_REFEREE_SECRET=... node referee-runner.js --base URL (--engine ./adapter.js | --engine-cmd \"cmd args\")");
         process.exit(2);
     }
-    const { replay } = await import(pathToFileURL(engine).href);
+    let replay;
+    if (engineCmd) {
+        const { createJsonlEngine } = await import("./engine/jsonl-engine.js");
+        const { replayWithEngine } = await import("./referee-engine.js");
+        const [command, ...args] = engineCmd.split(" ");
+        replay = replayWithEngine(() => createJsonlEngine({ command, args }), { engineName: command });
+    } else {
+        ({ replay } = await import(pathToFileURL(engine).href));
+    }
     console.log(JSON.stringify(await runRefereeOnce({ base, secret, replay }), null, 2));
 }

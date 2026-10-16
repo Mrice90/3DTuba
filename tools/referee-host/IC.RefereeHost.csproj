@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- ic-engine-1 host over the native C# rules core (prototypes/lobby-lab/engine/README.md).
+       It references the pinned rules build in rules/<version>/lib (default 0.4.5, the
+       shipped release candidate); override with -p:NativeRulesLib=<folder>. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <AssemblyName>IC.RefereeHost</AssemblyName>
+    <RootNamespace>InfiniteConquest.Referee</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <NativeRulesLib Condition="'$(NativeRulesLib)' == ''">$(MSBuildThisFileDirectory)rules/0.4.5/lib</NativeRulesLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="InfiniteConquest.Native"><HintPath>$(NativeRulesLib)/InfiniteConquest.Native.dll</HintPath></Reference>
+    <Reference Include="InfiniteConquest.RulesCore"><HintPath>$(NativeRulesLib)/InfiniteConquest.RulesCore.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

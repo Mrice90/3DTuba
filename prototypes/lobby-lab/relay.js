@@ -426,6 +426,7 @@ export class MatchRoom {
                     this.state.storage.put("flag", { reason, detail, at: Date.now() }).catch(() => {});
                 },
                 onEnd: () => this.sessions.delete(room.roomId),
+                onTranscript: (t) => this.onTranscript(t),
             });
             this.sessions.set(room.roomId, s);
             // Turn-timer alarms: re-arm on every intent via the session.
@@ -433,6 +434,9 @@ export class MatchRoom {
         }
         return s;
     }
+
+    /** Ranked hook (AI-010): subclasses forward the finished transcript. */
+    onTranscript(_transcript) {}
 
     sendTo(seat, msg) {
         const ws = this.sockets.get(seat);
@@ -470,7 +474,10 @@ export class MatchRoom {
         }
         const pair = new WebSocketPair();
         const [client, server] = Object.values(pair);
-        this.state.acceptWebSocket(server);
+        // accept(), not state.acceptWebSocket(): the hibernation API delivers
+        // frames to webSocketMessage() handlers, never to the listeners below,
+        // and the session lives in memory, so it must not hibernate.
+        server.accept();
         const session = this.sessionFor(room);
         server.addEventListener("message", (ev) => session.handleMessage(seat, ev.data));
         server.addEventListener("close", () => {
