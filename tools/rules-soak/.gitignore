@@ -1,0 +1,4 @@
+bin/
+obj/
+soak-out/
+engine/*/bin/*.pdb
