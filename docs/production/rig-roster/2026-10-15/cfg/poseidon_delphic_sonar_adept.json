@@ -1,0 +1,7 @@
+{"attack":"cast","weapon_hand":"Left","facing":90,"loco":"walk",
+ "joints":{"Hips":[0.0,0.0,0.52],"Chest":[0.02,0.0,0.72],"Neck":[0.0,0.0,0.82],"HeadTop":[-0.02,0.0,0.97],
+  "LeftArm":[0.02,0.06,0.78],"LeftForeArm":[0.11,0.07,0.79],"LeftHand":[0.19,0.07,0.80],"LeftHandEnd":[0.23,0.07,0.80],
+  "RightArm":[0.0,-0.06,0.78],"RightForeArm":[0.03,-0.17,0.78],"RightHand":[0.05,-0.26,0.79],"RightHandEnd":[0.06,-0.30,0.79],
+  "LeftUpLeg":[0.0,0.05,0.50],"LeftLeg":[0.08,0.06,0.25],"LeftFoot":[0.13,0.06,0.04],
+  "RightUpLeg":[-0.02,-0.05,0.50],"RightLeg":[-0.05,-0.05,0.25],"RightFoot":[-0.07,-0.05,0.04]},
+ "props":[{"bone":"LeftHand","box":[[0.15,-0.05,0.63],[0.30,0.25,0.92]]}]}
