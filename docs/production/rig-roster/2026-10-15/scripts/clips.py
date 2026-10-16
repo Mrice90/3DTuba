@@ -135,7 +135,8 @@ def death(t, n, cfg):
         add(P, s + "Arm", "Y", raise_ax(s) * (20 * rec - 10 * buck + 40 * fall)); add(P, s + "Arm", "X", 20 * buck)
         add(P, s + "ForeArm", "X", 30 * buck - 20 * fall)
     # whole-body topple backward with a twist; the rig pivots it about the heels and re-grounds every frame
-    P["_root"] = [("X", -(78 + 6 * math.sin(bounce * 20)) * fall), ("Z", 18 * fall)]
+    tp = cfg.get("death_topple", 1.0)  # < 1 for figures fixed to a throne or base
+    P["_root"] = [("X", -(78 + 6 * math.sin(bounce * 20)) * fall * tp), ("Z", 18 * fall * tp)]
     return P, (0, 0, 0)
 
 def summon(t, n, cfg):

@@ -168,7 +168,7 @@ for pr in cfg.get("props", []):
     if "zmin" in pr: m &= Vn[:, 2] >= pr["zmin"]
     for i in np.where(m)[0]: forced[int(i)] = pr["bone"]; propv[int(i)] = pr["bone"]
 for vi, bn in forced.items():
-    for g in list(mesh.data.vertices[vi].groups): mesh.vertex_groups[g.group].remove([vi])
+    for gi in [g.group for g in mesh.data.vertices[vi].groups]: mesh.vertex_groups[gi].remove([vi])  # ids first: removing invalidates the element refs
     mesh.vertex_groups[P + bn].add([vi], 1.0, 'REPLACE')
 # faces bridging the static base and a moving prop (a spear butt resting on the plinth) would stretch: cut them
 hand_pts = {bn: np.array(ad.bones[P + bn].head_local) / H for bn in set(propv.values())}
@@ -193,6 +193,11 @@ kd.balance()
 for vi in unw:
     _, i, _ = kd.find(mesh.data.vertices[vi].co)
     for g in okv[i].groups: mesh.vertex_groups[g.group].add([vi], g.weight, 'REPLACE')
+if "base_z" in cfg:  # re-pin the base by position: the passes above can leave blended weights on duplicate seam verts
+    for v in mesh.data.vertices:
+        if v.co.z < cfg["base_z"] * H and not (v.index in propv and propv[v.index] != "Root"):
+            for gi in [g.group for g in v.groups]: mesh.vertex_groups[gi].remove([v.index])
+            mesh.vertex_groups[P + "Root"].add([v.index], 1.0, 'REPLACE')
 mesh.parent = arm; mod = mesh.modifiers.new("Armature", 'ARMATURE'); mod.object = arm
 # ---------------------------------------------------------------- clips
 rest = {b.name: b.matrix_local.copy() for b in ad.bones}
@@ -228,12 +233,15 @@ for cname, fn, n, loop, ground, ev in (C.creature_clip_set(cfg) if CREATURE else
             qs[P + "Hips"] = (rest[P + "Hips"].to_3x3().inverted() @ Rr @ rest[P + "Hips"].to_3x3()).to_quaternion() @ qs.get(P + "Hips", Quaternion())
             loc = loc + (pivot + Rr @ (hipH - pivot)) - hipH
         for bn, q in qs.items(): arm.pose.bones[bn].rotation_quaternion = q
+        if cfg.get("anchored"): loc = Vector((0, 0, 0))  # seated on a fixed throne/base: rotate only, never translate the hips
         hb = arm.pose.bones[P + "Hips"]; hb.location = rest[P + "Hips"].to_3x3().inverted() @ loc
-        if ground:
-            arm.update_tag(); mesh.update_tag(); bpy.context.view_layer.update(); z = minz()
-            loc = loc - Vector((0, 0, z)); hb.location = rest[P + "Hips"].to_3x3().inverted() @ loc
+        if ground and not cfg.get("anchored"):  # iterate: verts blended with the static Root follow the hips only partly
+            for _ in range(6):
+                arm.update_tag(); mesh.update_tag(); bpy.context.view_layer.update(); z = minz()
+                if abs(z) < 1e-4 * H: break
+                loc = loc - Vector((0, 0, z)); hb.location = rest[P + "Hips"].to_3x3().inverted() @ loc
         keys.append(({bn: q.copy() for bn, q in qs.items()}, hb.location.copy()))
-    if not ground:  # constant offset so the lowest point of the clip sits at z=0
+    if not ground and not cfg.get("anchored"):  # constant offset so the lowest point of the clip sits at z=0
         zs = []
         for qs, lc in keys:
             for pb in arm.pose.bones: pb.matrix_basis = Matrix.Identity(4)

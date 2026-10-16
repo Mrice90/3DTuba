@@ -1,0 +1,59 @@
+{
+ "clips": {
+  "Idle": {
+   "frames": 49,
+   "seconds": 2.0,
+   "loop": true,
+   "events": {}
+  },
+  "Walk": {
+   "frames": 25,
+   "seconds": 1.0,
+   "loop": true,
+   "events": {}
+  },
+  "Attack": {
+   "frames": 33,
+   "seconds": 1.333,
+   "loop": false,
+   "events": {
+    "impact": 15
+   }
+  },
+  "Hit": {
+   "frames": 18,
+   "seconds": 0.708,
+   "loop": false,
+   "events": {}
+  },
+  "Death": {
+   "frames": 44,
+   "seconds": 1.792,
+   "loop": false,
+   "events": {
+    "down": 33
+   }
+  },
+  "Summon": {
+   "frames": 31,
+   "seconds": 1.25,
+   "loop": false,
+   "events": {
+    "land": 16
+   }
+  }
+ },
+ "card": "zeus_apex_keraunos_seraph",
+ "H": 1.8000000715255737,
+ "bones": 21,
+ "tris": 30377,
+ "forced_rigid_verts": 7232,
+ "cut_bridge_faces": 17,
+ "nearest_fixed": 0,
+ "proxy_unweighted": 0,
+ "max_influences": 4,
+ "attack_style": "thrust",
+ "loco": "hover",
+ "facing_deg": 0,
+ "source": "zeus_apex_keraunos_seraph.glb"
+}

@@ -4,10 +4,17 @@ from PIL import Image, ImageDraw
 probe, cfgp, out = sys.argv[1], sys.argv[2], sys.argv[3]
 pj = json.load(open(probe + "_probe.json")); cfg = json.load(open(cfgp)); H = pj["H"]
 S = 1.25 * max(1.0, pj["dims"][0] / H, pj["dims"][1] / H)
-J = cfg["joints"]
-links = [("Hips","Chest"),("Chest","Neck"),("Neck","HeadTop")]
-for s in ("Left","Right"):
-    links += [("Chest",s+"Arm"),(s+"Arm",s+"ForeArm"),(s+"ForeArm",s+"Hand"),(s+"Hand",s+"HandEnd"),("Hips",s+"UpLeg"),(s+"UpLeg",s+"Leg"),(s+"Leg",s+"Foot"),(s+"Foot",s+"Toe")]
+if cfg.get("kind") == "creature":  # body, spine, tail and limb chains
+    J = {"Hips": cfg["body"]}; links = []
+    for nm, pts, par in [("Sp", cfg["spine"], "Hips"), ("Tl", cfg.get("tail", []), "Hips")] + [(L["name"], L["pts"], None) for L in cfg.get("limbs", [])]:
+        for i, p_ in enumerate(pts): J[f"{nm}{i}"] = p_
+        for i in range(1, len(pts)): links.append((f"{nm}{i-1}", f"{nm}{i}"))
+    links.append(("Hips", "Sp0"))
+else:
+    J = cfg["joints"]
+    links = [("Hips","Chest"),("Chest","Neck"),("Neck","HeadTop")]
+    for s in ("Left","Right"):
+        links += [("Chest",s+"Arm"),(s+"Arm",s+"ForeArm"),(s+"ForeArm",s+"Hand"),(s+"Hand",s+"HandEnd"),("Hips",s+"UpLeg"),(s+"UpLeg",s+"Leg"),(s+"Leg",s+"Foot"),(s+"Foot",s+"Toe")]
 tiles = []
 for view, ax in (("front", 0), ("side", 1)):
     im = Image.open(f"{probe}_{view}_clean.png").convert("RGB"); R = im.size[0]; d = ImageDraw.Draw(im)
