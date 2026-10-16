@@ -33,6 +33,41 @@ Muse delivered `workspace/goals/infinite-conquest-desktop-alpha/files/2026-10-08
 
 Public-write authority: current user approved publication and requested assignments. In the existing Claude session, Mathew also directly stated “You have a clear yes from me Matt owner of that github to work in and push pull write in read and do anymore you see fit in the github repos under my login”; the surrounding exchange specifically concerned public 3DTuba checkpoint reviews and assignments. This historical explicit authorization was read from the user-authored message, not an assistant's inferred permission.
 
+## 1.0 launch readiness — 2026-10-16 (Claude Code, "Launch readiness plan" thread)
+
+Matt chose scope on 2026-10-16: **Zeus vs Poseidon ships as the full 1.0 game**; Ares, Athena, Hades and Hephaestus follow as post-launch expansions. There is no Early Access phase, so polish, tutorial, settings and stability must land before launch day. Assessment and roadmap (milestones M0 to M4, proposed launch February 2027): [Launch Readiness Assessment and Roadmap](https://claude.ai/code/artifact/360d9767-1dfe-4065-8821-abdbb94f3d85). IDs start at AI-200 so they cannot clash with rows only on the local board. Lanes: ChatGPT owns rules and the look of cards in hand; Codex owns integration, menus and the relay; Muse owns QA; Claude owns art, animation, audio and tooling. Owners below are suggested lanes, not claims, unless the state says IN_PROGRESS.
+
+**Open decisions (Matt):** (1) store: Steam or itch.io first (HA-018 still says itch.io); (2) free to play, faction-set price and whether cosmetics are sold (HA-019/HA-020); (3) clearance of the name "Infinite Conquest" (same-name itch.io game, "II INFINITY I CONQUEST" trademark filing); (4) provenance of the Desolate-Tuba card art for Steam's AI-content disclosure. Steam needs the fee paid at least 6 weeks before release.
+
+| ID | Pri | Owner (lane) | State | Deliverable and acceptance | Milestone |
+|---|---|---|---|---|---|
+| AI-200-SOURCE-IN-GIT | P0 | Claude; Codex reviews | READY (needs the AI Dev folder) | The whole 0.4.5 Unity project, the native rules engine's C# source and the net-lab relay pushed to a private branch, with Git LFS for models, textures and audio. Today GitHub holds only a compiled `InfiniteConquest.Native.dll`, overlays and the older `claude/unity-live-match`. Acceptance: a fresh clone opens in Unity 6000.6.3f1 and plays a match. | M0 |
+| AI-201-REPRO-BUILD | P0 | Codex | BACKLOG | Release build from a clean checkout with a version number, a changelog and a patch path (Steam depot or itch butler). Supersedes the manual-installer flow; builds on AI-080-BUILD-PROVENANCE. | M0 |
+| AI-202-MATCH-RESULT | P0 | Codex | BACKLOG | The client reports the result when a match ends (gap found by the ranked thread, draft PR #23; the ranked service already handles its absence safely). | M1 |
+| AI-203-TUTORIAL | P0 | Claude design; Codex wiring | IN_PROGRESS 2026-10-16 (Claude, design doc only) | A guided first match against a scripted bot teaching lands, structures and slots, summoning, attacking and capitals. Claude writes the step script and copy; Codex wires it. Acceptance: a new player finishes it without help. Rules text stays ChatGPT's. | M1 |
+| AI-204-SETTINGS | P0 | Codex | BACKLOG | Settings menu: quality preset, resolution, window mode, vsync, master/music/effects/UI volumes, camera sensitivity. All values persist across restarts and updates. | M1 |
+| AI-205-RELEASE-UI | P0 | Codex | BACKLOG | Remove the developer HUD and "art pending" labels from release builds; add pause, concede and a credits screen. Unblocks store screenshots. | M1 |
+| AI-206-MUSIC | P1 | Claude | IN_PROGRESS 2026-10-16 | Menu theme, a battle theme per god and victory/defeat stingers, generated with existing ElevenLabs credits, looping cleanly and loudness-matched to the SFX set. No music exists or is planned today. | M1 |
+| AI-207-SPELL-VFX | P1 | Claude | BACKLOG | Distinct cast and impact effects for all 16 spells in faction palettes (extends AI-060-SPELL-VFX). | M2 |
+| AI-208-SUMMON-DEATH-FX | P1 | Claude | BACKLOG | Per-piece summon and death moments instead of the generic faction burst for 123 board pieces; fallback stays. | M2 |
+| AI-209-PERF-BUDGET | P0 | Claude profiles; Codex fixes | BACKLOG | Minimum and recommended specs; full-board frame time, load time and memory on Matt's laptop; 60 fps target. Absorbs AI-060-LAPTOP-BUDGET. | M3 |
+| AI-210-CRASH-REPORTS | P1 | Codex | BACKLOG | Crash and log capture plus an in-game "report a bug" that bundles seed, intents and log (child of AI-089). | M3 |
+| AI-211-RELEASE-QA | P1 | Muse | BACKLOG | Launch QA checklist, a bug list with severities, and release-candidate sign-off. | M3 |
+| AI-212-RC-MATCHES | P0 | Matt; Muse records | BACKLOG | At least five full human matches on the release candidate (both gods, solo and online) with seed, result, duration and defects. | M3 |
+| AI-213-STEAMWORKS | P1 | Codex; store thread | BACKLOG | Steamworks SDK, Steam sign-in linked to the ranked identity, overlay and cloud saves (if Steam is chosen). | M2 |
+| AI-214-RANKED-LIVE | P1 | Ranked thread; Codex screens | BACKLOG | Referee and ledger deployed to Cloudflare after Matt approves, plus queue, rank and leaderboard screens. Builds on PRs #22/#23. | M2 |
+| AI-215-ACCESSIBILITY | P2 | Codex | BACKLOG | Faction markers that don't rely on colour, a UI scale option, card text readable at 1080p. | M2 |
+| AI-216-NAME-CLEARANCE | P0 | Matt | WAITING | Trademark clearance search on "Infinite Conquest" before paying the Steam fee or commissioning capsule art. | M0 |
+| AI-217-STORE-PAGE | P1 | Store thread; Matt | BACKLOG | Coming Soon page live to collect wishlists, using the launch kit copy. | M2 |
+| AI-218-TRAILER-CAPSULES | P1 | Claude; ChatGPT | BACKLOG | Capsule art in Steam's sizes and a 60 to 90 second trailer captured from a clean build (needs AI-205). | M3 |
+| AI-219-AI-DISCLOSURE | P1 | Claude | IN_PROGRESS 2026-10-16 | Ledger naming the tool and source behind every shipped asset (card art, Meshy models, Blender models, ElevenLabs audio) for Steam's AI-content disclosure. | M1 |
+| AI-220-POSEIDON-CAPITALS | P1 | Claude | BACKLOG (Meshy refill) | Remake the 3 interim Poseidon capitals and 7 off-style characters from next month's Meshy refill; promote the 4 staged replacements. | M2 |
+| AI-221-SAVE-DATA | P1 | Codex | BACKLOG | Collection, decks and cosmetics persist safely across updates, with a versioned save format and a migration test. | M1 |
+| AI-222-COMMUNITY | P2 | Matt | BACKLOG | A Discord server or Steam forum for feedback before launch. | M3 |
+| AI-223-EXPANSION-TRACK | P2 | Matt; ChatGPT | BACKLOG | Post-launch expansions for Ares, Athena, Hades and Hephaestus; 216 of their 228 cards need card art before any 3D work. Supersedes AI-024 sequencing for after 1.0. | After 1.0 |
+
+**Superseded draft PRs flagged for Matt (not closed):** #16 (board-size previews) and #19 (deck shop on the board-size client) look covered by Codex's 0.4.5, which ships the hexagon board and deck shop.
+
 ## Current reconciliation — 2026-10-07 22:50 EDT (Codex)
 
 **This section governs current picking and status for the IDs below, superseding every older snapshot, including entries labeled October 8 in the historical records.** Evidence review: `docs/reviews/2026-10-07-product-backlog-verification.md`; laptop evidence: `reviews/2026-10-07-backlog-verification.json`. Preserve all historical records and unrelated worker edits.
