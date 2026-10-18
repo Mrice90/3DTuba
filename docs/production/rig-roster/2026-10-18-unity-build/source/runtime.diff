@@ -1,0 +1,1259 @@
+--- "/c/Users/mattj/OneDrive/Documents/AI Dev/Infinite Conquest/3DTuba-poseidon30k-2026-10-15/UnityProof/Assets/Playtest/Scripts/TokenFactory.cs"	2026-10-13 18:18:51.744406300 -0400
++++ "/c/Users/mattj/OneDrive/Documents/AI Dev/Infinite Conquest/3DTuba-rig-combat-2026-10-18/UnityProof/Assets/Playtest/Scripts/TokenFactory.cs"	2026-10-18 16:24:39.265607900 -0400
+@@ -1,363 +1,395 @@
+-using System.Collections.Generic;
+-using UnityEngine;
+-using InfiniteConquest.Proof;
+-
+-namespace InfiniteConquest.Playtest {
+-    // Builds a board piece for any card: the staged Meshy model at its AI-063 budget when one exists,
+-    // otherwise a typed stand-in (LAND slab, STRUCTURE archetype by card name or prism tower, CHARACTER robot capsule + name plate,
+-    // CAPITAL spire). SPELL has no board presence; it is a VFX burst (see Vfx.SpellBurst).
+-    public sealed class TokenFactory {
+-        readonly Shader lit, unlit;
+-        readonly Font font;
+-        readonly Material fontMaterial;
+-        readonly Dictionary<string, Material> mats = new Dictionary<string, Material>();
+-        public bool ForceStandIns;
+-
+-        public TokenFactory(Shader lit, Shader unlit, Font font) {
+-            this.lit = lit; this.unlit = unlit; this.font = font;
+-            fontMaterial = font != null ? font.material : null;
+-        }
+-
+-        public Material Lit(Color c, float smooth = .35f, float metal = .2f) {
+-            string key = "L" + ColorUtility.ToHtmlStringRGBA(c) + smooth + metal;
+-            if (mats.TryGetValue(key, out var m)) return m;
+-            m = new Material(lit); m.SetColor("_BaseColor", c); m.color = c;
+-            if (m.HasProperty("_Smoothness")) m.SetFloat("_Smoothness", smooth);
+-            if (m.HasProperty("_Metallic")) m.SetFloat("_Metallic", metal);
+-            mats[key] = m; return m;
+-        }
+-        public Material Glow(Color c) {
+-            string key = "U" + ColorUtility.ToHtmlStringRGBA(c);
+-            if (mats.TryGetValue(key, out var m)) return m;
+-            m = new Material(unlit); m.SetColor("_BaseColor", c); m.color = c;
+-            mats[key] = m; return m;
+-        }
+-
+-        public GameObject Create(CardEntry card, int owner, out bool real) {
+-            var root = new GameObject(card.id);
+-            var piece = root.AddComponent<Piece>();
+-            piece.Card = card; piece.Owner = owner;
+-            real = false;
+-            if (!ForceStandIns && card.HasModel && card.type != "SPELL") real = TryModel(card, root.transform);
+-            if (card.type == "LAND") root.AddComponent<LandSurface>().Build(this, real, owner);
+-            else if (!real) StandIn(card, root.transform);
+-            piece.IsRealModel = real;
+-            if (card.type == "CHARACTER" || card.type == "STRUCTURE" || card.type == "CAPITAL") NamePlate(card, root.transform, piece);
+-            // Every piece carries a thin base ring in its owner's faction colour so ownership reads at a glance.
+-            var ring = PlaytestMeshes.Make("Owner ring", PlaytestMeshes.HexRing(.62f, .5f), Glow(PlaytestCatalog.FactionColor(card.faction) * .9f), root.transform, new Vector3(0, .006f, 0));
+-            ring.SetActive(card.type != "LAND");
+-            piece.OwnerRing = ring;
+-            // Collider for clicking pieces.
+-            if (card.type == "LAND") {
+-                var groundCollider = root.AddComponent<MeshCollider>();
+-                groundCollider.sharedMesh = PlaytestMeshes.Prism(6, LandSurface.Flats / Mathf.Sqrt(3f), LandSurface.Flats / Mathf.Sqrt(3f), LandSurface.GroundHeight);
+-                groundCollider.convex = true;
+-                piece.Height = LandSurface.GroundHeight;
+-                return root;
+-            }
+-            var col = root.AddComponent<CapsuleCollider>();
+-            var b = Bounds(root);
+-            col.center = root.transform.InverseTransformPoint(b.center); col.height = Mathf.Max(.2f, b.size.y); col.radius = Mathf.Max(.2f, Mathf.Min(b.size.x, b.size.z) * .4f);
+-            piece.Height = b.size.y;
+-            return root;
+-        }
+-
+-        bool TryModel(CardEntry card, Transform root) {
+-            var prefab = Resources.Load<GameObject>(card.model);
+-            if (prefab == null) return false;
+-            var model = Object.Instantiate(prefab, root, false);
+-            model.name = "Model";
+-            var tokenMat = Resources.Load<Material>(System.IO.Path.GetDirectoryName(card.model).Replace('\\', '/') + "/Token");
+-            var fallback = Lit(Color.Lerp(PlaytestCatalog.FactionColor(card.faction), new Color(.75f, .75f, .78f), .55f), .45f, .35f);
+-            foreach (var r in model.GetComponentsInChildren<Renderer>()) {
+-                var slots = r.sharedMaterials;
+-                for (int i = 0; i < slots.Length; i++) slots[i] = tokenMat != null ? tokenMat : fallback;
+-                r.sharedMaterials = slots;
+-            }
+-            // AI-063 budget: scale uniformly to the type's height, capped by its hex footprint.
+-            model.transform.localScale = Vector3.one;
+-            var b = Bounds(model);
+-            PlaytestCatalog.Budget(card.type, out float height, out float footprint);
+-            float s = Mathf.Min(height / Mathf.Max(.001f, b.size.y), footprint / Mathf.Max(.001f, Mathf.Max(b.size.x, b.size.z)));
+-            model.transform.localScale = Vector3.one * s;
+-            if (card.type == "LAND") {
+-                b = Bounds(model);
+-                model.transform.localScale = Vector3.Scale(model.transform.localScale, new Vector3(
+-                    LandSurface.Flats * .98f / Mathf.Max(.001f, b.size.x), 1,
+-                    LandSurface.Flats * .98f * 2 / Mathf.Sqrt(3f) / Mathf.Max(.001f, b.size.z)));
+-            }
+-            b = Bounds(model);
+-            model.transform.position += new Vector3(root.position.x - b.center.x, root.position.y - b.min.y, root.position.z - b.center.z);
+-            return true;
+-        }
+-
+-        void StandIn(CardEntry card, Transform root) {
+-            Color fc = PlaytestCatalog.FactionColor(card.faction), acc = PlaytestCatalog.FactionAccent(card.faction), dark = PlaytestCatalog.FactionDark(card.faction);
+-            float hex = BoardLayout.TileSize, cu = PlaytestCatalog.ContractUnit;
+-            int h = Mathf.Abs(card.id.GetHashCode());
+-            switch (card.type) {
+-                case "LAND": {
+-                    // Flat hex slab tinted by faction and a terrain hue guessed from the card name.
+-                    var terrain = TerrainColor(card, h);
+-                    PlaytestMeshes.Make("Slab", PlaytestMeshes.HexSlab(hex * .98f, .2f * cu), Lit(terrain, .25f, .05f), root, Vector3.zero);
+-                    PlaytestMeshes.Make("Rim", PlaytestMeshes.HexRing(hex * .98f, hex * .88f), Glow(fc * .75f), root, new Vector3(0, .2f * cu + .004f, 0));
+-                    // A few terrain studs so lands read as ground, not a flat tint.
+-                    var rng = new System.Random(h);
+-                    for (int i = 0; i < 3; i++) {
+-                        float a = (float)rng.NextDouble() * 6.28f, r = .15f + (float)rng.NextDouble() * .25f;
+-                        var stud = PlaytestMeshes.Make("Stud", PlaytestMeshes.Prism(5, .06f + (float)rng.NextDouble() * .05f, .02f, .05f + (float)rng.NextDouble() * .06f, 0), Lit(Color.Lerp(terrain, dark, .4f), .2f, 0), root, new Vector3(Mathf.Cos(a) * r, .2f * cu, Mathf.Sin(a) * r));
+-                        stud.transform.localRotation = Quaternion.Euler(0, a * 57f, 0);
+-                    }
+-                    break;
+-                }
+-                case "STRUCTURE": {
+-                    // SP2: a silhouette from the card's identity; names with no archetype keep the generic tower.
+-                    if (StructureStandIn(card, root)) break;
+-                    float H = 1.3f * cu, R = hex * .9f / 2f * .72f;
+-                    PlaytestMeshes.Make("Base", PlaytestMeshes.Prism(6, R, R * .92f, .12f), Lit(dark, .3f, .5f), root, Vector3.zero);
+-                    PlaytestMeshes.Make("Tower", PlaytestMeshes.Prism(6, R * .78f, R * .55f, H * .75f, h % 2 == 0 ? 30 : 0), Lit(Color.Lerp(fc, new Color(.6f, .62f, .68f), .55f), .5f, .6f), root, new Vector3(0, .12f, 0));
+-                    PlaytestMeshes.Make("Core band", PlaytestMeshes.Prism(6, R * .62f, R * .6f, .06f), Glow(acc), root, new Vector3(0, .12f + H * .45f, 0));
+-                    PlaytestMeshes.Make("Cap", PlaytestMeshes.Prism(6, R * .6f, 0, H * .25f), Lit(fc, .6f, .7f), root, new Vector3(0, .12f + H * .75f, 0));
+-                    break;
+-                }
+-                case "CAPITAL": {
+-                    float H = 2.1f * cu, R = hex / 2f * .9f;
+-                    PlaytestMeshes.Make("Plinth", PlaytestMeshes.Prism(6, R, R * .9f, .14f), Lit(dark, .3f, .6f), root, Vector3.zero);
+-                    PlaytestMeshes.Make("Keep", PlaytestMeshes.Prism(6, R * .7f, R * .5f, H * .45f), Lit(Color.Lerp(fc, Color.white, .35f), .55f, .6f), root, new Vector3(0, .14f, 0));
+-                    PlaytestMeshes.Make("Ring", PlaytestMeshes.Prism(6, R * .56f, R * .56f, .05f), Glow(acc), root, new Vector3(0, .14f + H * .45f, 0));
+-                    PlaytestMeshes.Make("Spire", PlaytestMeshes.Prism(6, R * .38f, .02f, H * .55f), Lit(fc, .7f, .8f), root, new Vector3(0, .19f + H * .45f, 0));
+-                    for (int i = 0; i < 3; i++) {
+-                        float a = Mathf.Deg2Rad * (120 * i + 90);
+-                        PlaytestMeshes.Make("Pylon", PlaytestMeshes.Prism(4, .07f, .02f, H * .4f, 45), Lit(fc, .6f, .8f), root, new Vector3(Mathf.Cos(a) * R * .8f, .14f, Mathf.Sin(a) * R * .8f));
+-                    }
+-                    break;
+-                }
+-                default: { // CHARACTER (and unknown): capsule robot with visor and shoulder pods
+-                    float H = 1.5f * cu;
+-                    var body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+-                    Object.Destroy(body.GetComponent<Collider>());
+-                    body.name = "Body"; body.transform.SetParent(root, false);
+-                    body.transform.localScale = new Vector3(H * .42f, H * .38f, H * .36f);
+-                    body.transform.localPosition = new Vector3(0, H * .38f, 0);
+-                    body.GetComponent<Renderer>().sharedMaterial = Lit(Color.Lerp(fc, new Color(.55f, .57f, .62f), .35f), .55f, .6f);
+-                    var head = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+-                    Object.Destroy(head.GetComponent<Collider>());
+-                    head.name = "Head"; head.transform.SetParent(root, false);
+-                    head.transform.localScale = Vector3.one * H * .3f; head.transform.localPosition = new Vector3(0, H * .9f, 0);
+-                    head.GetComponent<Renderer>().sharedMaterial = Lit(new Color(.8f, .82f, .86f), .7f, .8f);
+-                    var visor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+-                    Object.Destroy(visor.GetComponent<Collider>());
+-                    visor.name = "Visor"; visor.transform.SetParent(root, false);
+-                    visor.transform.localScale = new Vector3(H * .24f, H * .06f, H * .08f); visor.transform.localPosition = new Vector3(0, H * .92f, H * .12f);
+-                    visor.GetComponent<Renderer>().sharedMaterial = Glow(acc);
+-                    for (int s = -1; s <= 1; s += 2) {
+-                        var pod = GameObject.CreatePrimitive(PrimitiveType.Cube);
+-                        Object.Destroy(pod.GetComponent<Collider>());
+-                        pod.name = "Shoulder"; pod.transform.SetParent(root, false);
+-                        pod.transform.localScale = new Vector3(H * .12f, H * .12f, H * .2f); pod.transform.localPosition = new Vector3(s * H * .25f, H * .66f, 0);
+-                        pod.GetComponent<Renderer>().sharedMaterial = Lit(fc, .6f, .7f);
+-                    }
+-                    // energy lance (no bows: techno-myth art direction)
+-                    var lance = PlaytestMeshes.Make("Lance", PlaytestMeshes.Prism(4, .02f, .02f, H * .7f, 45), Glow(acc), root, new Vector3(H * .33f, H * .25f, H * .05f));
+-                    lance.transform.localRotation = Quaternion.Euler(12, 0, 0);
+-                    PlaytestMeshes.Make("Base disc", PlaytestMeshes.Prism(12, .2f, .19f, .04f, 0), Lit(dark, .3f, .5f), root, Vector3.zero);
+-                    break;
+-                }
+-            }
+-        }
+-
+-        // SP2-PRESENTATION: the 33 structures without a Meshy model all shared one prism tower. Their card names
+-        // name what they are, so each gets a procedural archetype plus a faction finial (Zeus bolt, Poseidon
+-        // trident). Stand-ins only: no new assets, and cards with a staged model still load it.
+-        public enum StructureShape { Tower, Spire, Bastion, Gate, Well, Oracle, Hall }
+-        public static StructureShape ShapeOf(CardEntry card) {
+-            string n = (card.name + " " + card.id).ToLowerInvariant();
+-            bool Any(params string[] keys) { foreach (var k in keys) if (n.Contains(k)) return true; return false; }
+-            if (Any("gate", "burrow")) return StructureShape.Gate;
+-            if (Any("bastion", "bulwark", "breakwater", "wall", "barracks", "guard")) return StructureShape.Bastion;
+-            if (Any("spring", "well", "pump", "infirmary", "fountain")) return StructureShape.Well;
+-            if (Any("oracle", "observatory", "sonar", "seer", "conch", "beacon")) return StructureShape.Oracle;
+-            if (Any("archive", "vault", "exchange", "nexus", "hall", "dispatch", "dock", "summons", "muster")) return StructureShape.Hall;
+-            if (Any("spire", "pylon", "mast", "relay", "conductor", "lattice", "tower")) return StructureShape.Spire;
+-            return StructureShape.Tower;
+-        }
+-
+-        bool StructureStandIn(CardEntry card, Transform root) {
+-            var shape = ShapeOf(card);
+-            if (shape == StructureShape.Tower) return false;
+-            Color fc = PlaytestCatalog.FactionColor(card.faction), acc = PlaytestCatalog.FactionAccent(card.faction), dark = PlaytestCatalog.FactionDark(card.faction);
+-            Material baseMat = Lit(dark, .3f, .5f), stone = Lit(Color.Lerp(fc, new Color(.6f, .62f, .68f), .55f), .5f, .6f), metal = Lit(fc, .6f, .7f), glow = Glow(acc);
+-            float R = BoardLayout.TileSize * .9f / 2f * .72f;   // same radius as the generic tower, inside the AI-063 footprint
+-            string n = (card.name + " " + card.id).ToLowerInvariant();
+-            switch (shape) {
+-                case StructureShape.Spire: {
+-                    PlaytestMeshes.Make("Plinth", PlaytestMeshes.Prism(6, R * .95f, R * .85f, .1f), baseMat, root, Vector3.zero);
+-                    PlaytestMeshes.Make("Shaft", PlaytestMeshes.Prism(6, R * .4f, R * .16f, .6f), stone, root, new Vector3(0, .1f, 0));
+-                    for (int i = 1; i <= 3; i++)
+-                        PlaytestMeshes.Make("Coil", PlaytestMeshes.Prism(12, R * (.72f - .1f * i), R * (.7f - .1f * i), .025f, 0), glow, root, new Vector3(0, .1f + .15f * i, 0));
+-                    Finial(card, root, .7f);
+-                    break;
+-                }
+-                case StructureShape.Bastion: {
+-                    PlaytestMeshes.Make("Plinth", PlaytestMeshes.Prism(6, R * 1.2f, R * 1.15f, .08f), baseMat, root, Vector3.zero);
+-                    PlaytestMeshes.Make("Wall", PlaytestMeshes.Prism(6, R * 1.1f, R * 1.02f, .26f), stone, root, new Vector3(0, .08f, 0));
+-                    PlaytestMeshes.Make("Wall band", PlaytestMeshes.Prism(6, R * 1.05f, R * 1.05f, .02f), glow, root, new Vector3(0, .32f, 0));
+-                    for (int i = 0; i < 6; i++) {
+-                        float a = Mathf.Deg2Rad * (60 * i + 30);
+-                        PlaytestMeshes.Make("Merlon", PlaytestMeshes.Prism(4, .055f, .05f, .08f, 45), metal, root, new Vector3(Mathf.Cos(a) * R * .98f, .34f, Mathf.Sin(a) * R * .98f));
+-                    }
+-                    PlaytestMeshes.Make("Keep", PlaytestMeshes.Prism(6, R * .5f, R * .42f, .3f), stone, root, new Vector3(0, .34f, 0));
+-                    Finial(card, root, .64f);
+-                    break;
+-                }
+-                case StructureShape.Gate: {
+-                    PlaytestMeshes.Make("Plinth", PlaytestMeshes.Prism(6, R, R * .92f, .08f), baseMat, root, Vector3.zero);
+-                    for (int s = -1; s <= 1; s += 2) {
+-                        PlaytestMeshes.Make("Pylon", PlaytestMeshes.Prism(4, .075f, .055f, .58f, 45), stone, root, new Vector3(s * R * .68f, .08f, 0));
+-                        PlaytestMeshes.Make("Pylon cap", PlaytestMeshes.Prism(4, .07f, 0, .08f, 45), metal, root, new Vector3(s * R * .68f, .66f, 0));
+-                    }
+-                    Solid("Lintel", PrimitiveType.Cube, metal, root, new Vector3(0, .62f, 0), new Vector3(R * 1.36f + .12f, .07f, .1f));
+-                    // the portal faces the root's forward, which Spawn turns toward the opponent
+-                    var portal = Solid("Portal", PrimitiveType.Cylinder, glow, root, new Vector3(0, .34f, 0), new Vector3(R * .95f, .012f, .5f));
+-                    portal.transform.localRotation = Quaternion.Euler(90, 0, 0);
+-                    Finial(card, root, .655f);
+-                    break;
+-                }
+-                case StructureShape.Well: {
+-                    PlaytestMeshes.Make("Basin", PlaytestMeshes.Prism(12, R * 1.05f, R * 1.12f, .14f, 0), baseMat, root, Vector3.zero);
+-                    PlaytestMeshes.Make("Water", PlaytestMeshes.Prism(12, R * .92f, R * .92f, .145f, 0), Lit(Color.Lerp(fc, acc, .5f), .9f, .1f), root, Vector3.zero);
+-                    PlaytestMeshes.Make("Column", PlaytestMeshes.Prism(6, R * .16f, R * .12f, .36f), stone, root, new Vector3(0, .14f, 0));
+-                    PlaytestMeshes.Make("Collar", PlaytestMeshes.Prism(12, R * .38f, R * .38f, .02f, 0), Glow(fc), root, new Vector3(0, .5f, 0));
+-                    Solid("Orb", PrimitiveType.Sphere, glow, root, new Vector3(0, .58f, 0), Vector3.one * .14f);
+-                    if (n.Contains("pump")) {
+-                        for (int s = -1; s <= 1; s += 2) Solid("Pipe", PrimitiveType.Cylinder, metal, root, new Vector3(s * R * .78f, .3f, 0), new Vector3(.07f, .2f, .07f));
+-                    } else if (n.Contains("infirmary") || n.Contains("spring")) {
+-                        for (int i = 0; i < 3; i++) {
+-                            float a = Mathf.Deg2Rad * (120 * i + 90);
+-                            PlaytestMeshes.Make("Post", PlaytestMeshes.Prism(4, .02f, .02f, .55f, 45), metal, root, new Vector3(Mathf.Cos(a) * R * .8f, .14f, Mathf.Sin(a) * R * .8f));
+-                        }
+-                        PlaytestMeshes.Make("Canopy", PlaytestMeshes.Prism(6, R * .9f, R * .2f, .1f), metal, root, new Vector3(0, .69f, 0));
+-                    }
+-                    break;
+-                }
+-                case StructureShape.Oracle: {
+-                    PlaytestMeshes.Make("Plinth", PlaytestMeshes.Prism(6, R * .8f, R * .7f, .1f), baseMat, root, Vector3.zero);
+-                    PlaytestMeshes.Make("Stem", PlaytestMeshes.Prism(6, R * .2f, R * .14f, .38f), stone, root, new Vector3(0, .1f, 0));
+-                    var dish = PlaytestMeshes.Make("Dish", PlaytestMeshes.Prism(12, R * .22f, R * .75f, .12f, 0), metal, root, new Vector3(0, .46f, 0));
+-                    dish.transform.localRotation = Quaternion.Euler(-18, 0, 0);
+-                    Solid("Eye", PrimitiveType.Sphere, glow, root, new Vector3(0, .7f, .03f), Vector3.one * .12f);
+-                    for (int i = 0; i < 3; i++) {
+-                        float a = Mathf.Deg2Rad * (120 * i + 30);
+-                        PlaytestMeshes.Make("Shard", PlaytestMeshes.Prism(4, .03f, 0, .08f, 45), Glow(fc), root, new Vector3(Mathf.Cos(a) * R * .5f, .66f, Mathf.Sin(a) * R * .5f));
+-                    }
+-                    break;
+-                }
+-                case StructureShape.Hall: {
+-                    PlaytestMeshes.Make("Platform", PlaytestMeshes.Prism(6, R * 1.15f, R * 1.1f, .08f), baseMat, root, Vector3.zero);
+-                    PlaytestMeshes.Make("Hall", PlaytestMeshes.Prism(6, R * .8f, R * .8f, .3f), stone, root, new Vector3(0, .08f, 0));
+-                    for (int i = 0; i < 6; i++) {
+-                        float a = Mathf.Deg2Rad * (60 * i + 30);
+-                        PlaytestMeshes.Make("Column", PlaytestMeshes.Prism(6, .022f, .022f, .3f), metal, root, new Vector3(Mathf.Cos(a) * R * .95f, .08f, Mathf.Sin(a) * R * .95f));
+-                    }
+-                    PlaytestMeshes.Make("Hall band", PlaytestMeshes.Prism(6, R * .82f, R * .82f, .025f), glow, root, new Vector3(0, .22f, 0));
+-                    PlaytestMeshes.Make("Roof", PlaytestMeshes.Prism(6, R * 1.02f, R * .55f, .1f), metal, root, new Vector3(0, .38f, 0));
+-                    Solid("Dome", PrimitiveType.Sphere, Lit(Color.Lerp(fc, Color.white, .3f), .6f, .6f), root, new Vector3(0, .48f, 0), new Vector3(R, R * .7f, R));
+-                    Finial(card, root, .6f);
+-                    break;
+-                }
+-            }
+-            return true;
+-        }
+-
+-        // Zeus: a glowing lightning bolt. Poseidon: a trident head. About .18 tall, standing on y.
+-        void Finial(CardEntry card, Transform root, float y) {
+-            var glow = Glow(PlaytestCatalog.FactionAccent(card.faction));
+-            if (card.faction == "POSEIDON") {
+-                PlaytestMeshes.Make("Trident shaft", PlaytestMeshes.Prism(4, .014f, .014f, .06f, 45), glow, root, new Vector3(0, y, 0));
+-                Solid("Trident bar", PrimitiveType.Cube, glow, root, new Vector3(0, y + .06f, 0), new Vector3(.14f, .018f, .02f));
+-                for (int s = -1; s <= 1; s++)
+-                    PlaytestMeshes.Make("Tine", PlaytestMeshes.Prism(4, .014f, 0, s == 0 ? .12f : .1f, 45), glow, root, new Vector3(s * .06f, y + .065f, 0));
+-            } else {
+-                PlaytestMeshes.Make("Bolt", PlaytestMeshes.Prism(4, .03f, .02f, .08f, 45), glow, root, new Vector3(0, y, 0));
+-                var tip = PlaytestMeshes.Make("Bolt tip", PlaytestMeshes.Prism(4, .035f, 0, .1f, 45), glow, root, new Vector3(.015f, y + .07f, 0));
+-                tip.transform.localRotation = Quaternion.Euler(0, 0, -20);
+-            }
+-        }
+-
+-        static GameObject Solid(string name, PrimitiveType type, Material mat, Transform root, Vector3 pos, Vector3 scale) {
+-            var go = GameObject.CreatePrimitive(type);
+-            Object.Destroy(go.GetComponent<Collider>());
+-            go.name = name; go.transform.SetParent(root, false);
+-            go.transform.localPosition = pos; go.transform.localScale = scale;
+-            go.GetComponent<Renderer>().sharedMaterial = mat;
+-            return go;
+-        }
+-
+-        static Color TerrainColor(CardEntry card, int hash) {
+-            string n = (card.name + " " + card.id).ToLowerInvariant();
+-            Color c;
+-            if (n.Contains("reef") || n.Contains("coral")) c = new Color(.85f, .45f, .5f);
+-            else if (n.Contains("trench") || n.Contains("abyss") || n.Contains("deep")) c = new Color(.1f, .18f, .38f);
+-            else if (n.Contains("tide") || n.Contains("sea") || n.Contains("shoal") || n.Contains("lagoon") || n.Contains("current") || n.Contains("wave") || n.Contains("harbor") || n.Contains("water")) c = new Color(.15f, .45f, .6f);
+-            else if (n.Contains("storm") || n.Contains("cloud") || n.Contains("sky") || n.Contains("thunder")) c = new Color(.45f, .45f, .6f);
+-            else if (n.Contains("peak") || n.Contains("mount") || n.Contains("cliff") || n.Contains("plateau") || n.Contains("ridge") || n.Contains("olymp")) c = new Color(.55f, .5f, .45f);
+-            else if (n.Contains("grove") || n.Contains("field") || n.Contains("meadow") || n.Contains("garden")) c = new Color(.35f, .55f, .3f);
+-            else c = card.faction == "POSEIDON" ? new Color(.2f, .5f, .55f) : new Color(.6f, .52f, .35f);
+-            float jitter = ((hash % 17) - 8) / 100f;
+-            return Color.Lerp(new Color(c.r + jitter, c.g + jitter, c.b + jitter), PlaytestCatalog.FactionColor(card.faction), .18f);
+-        }
+-
+-        void NamePlate(CardEntry card, Transform root, Piece piece) {
+-            if (font == null) return;
+-            var b = Bounds(root.gameObject);
+-            var plate = new GameObject("Name plate");
+-            plate.transform.SetParent(root, false);
+-            plate.transform.position = new Vector3(root.position.x, b.max.y + .12f, root.position.z);
+-            var bg = PlaytestMeshes.Make("Plate", PlaytestMeshes.Quad(), Glow(PlaytestCatalog.FactionDark(card.faction)), plate.transform, new Vector3(0, 0, .005f));
+-            var text = new GameObject("Text", typeof(MeshRenderer), typeof(TextMesh));
+-            text.transform.SetParent(plate.transform, false);
+-            var tm = text.GetComponent<TextMesh>();
+-            tm.font = font; tm.text = card.name; tm.fontSize = 48; tm.characterSize = .015f;
+-            tm.anchor = TextAnchor.MiddleCenter; tm.alignment = TextAlignment.Center;
+-            tm.color = Color.Lerp(PlaytestCatalog.FactionAccent(card.faction), Color.white, .5f);
+-            text.GetComponent<MeshRenderer>().sharedMaterial = fontMaterial;
+-            float w = Mathf.Max(.45f, card.name.Length * .064f);
+-            bg.transform.localScale = new Vector3(w, .16f, 1);
+-            // a faction stripe under the plate
+-            var stripe = PlaytestMeshes.Make("Stripe", PlaytestMeshes.Quad(), Glow(PlaytestCatalog.FactionColor(card.faction)), plate.transform, new Vector3(0, -.09f, .004f));
+-            stripe.transform.localScale = new Vector3(w, .02f, 1);
+-            plate.AddComponent<Billboard>();
+-            piece.Plate = plate;
+-        }
+-
+-        public static Bounds Bounds(GameObject go) {
+-            var rs = go.GetComponentsInChildren<Renderer>();
+-            if (rs.Length == 0) return new Bounds(go.transform.position, Vector3.one * .2f);
+-            Bounds b = default; bool first = true;
+-            foreach (var r in rs) {
+-                if (r is ParticleSystemRenderer || r.GetComponent<TextMesh>() != null) continue;
+-                if (r.transform.parent != null && r.transform.parent.name == "Name plate") continue;
+-                if (first) { b = r.bounds; first = false; } else b.Encapsulate(r.bounds);
+-            }
+-            return first ? new Bounds(go.transform.position, Vector3.one * .2f) : b;
+-        }
+-    }
+-
+-    public sealed class Piece : MonoBehaviour {
+-        public CardEntry Card;
+-        public int Owner;
+-        public string InstanceId;
+-        public int X = -1, Y = -1;
+-        public bool IsRealModel;
+-        public float Height;
+-        public GameObject Plate, OwnerRing;
+-        public int Damage;
+-    }
+-
+-    public sealed class Billboard : MonoBehaviour {
+-        void LateUpdate() {
+-            var cam = Camera.main; if (cam == null) return;
+-            transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position, cam.transform.up);
+-        }
+-    }
+-}
++using System.Collections.Generic;
++using UnityEngine;
++using InfiniteConquest.Proof;
++
++namespace InfiniteConquest.Playtest {
++    // Builds a board piece for any card: the staged Meshy model at its AI-063 budget when one exists,
++    // otherwise a typed stand-in (LAND slab, STRUCTURE archetype by card name or prism tower, CHARACTER robot capsule + name plate,
++    // CAPITAL spire). SPELL has no board presence; it is a VFX burst (see Vfx.SpellBurst).
++    public sealed class TokenFactory {
++        readonly Shader lit, unlit;
++        readonly Font font;
++        readonly Material fontMaterial;
++        readonly Dictionary<string, Material> mats = new Dictionary<string, Material>();
++        public bool ForceStandIns;
++
++        public TokenFactory(Shader lit, Shader unlit, Font font) {
++            this.lit = lit; this.unlit = unlit; this.font = font;
++            fontMaterial = font != null ? font.material : null;
++        }
++
++        public Material Lit(Color c, float smooth = .35f, float metal = .2f) {
++            string key = "L" + ColorUtility.ToHtmlStringRGBA(c) + smooth + metal;
++            if (mats.TryGetValue(key, out var m)) return m;
++            m = new Material(lit); m.SetColor("_BaseColor", c); m.color = c;
++            if (m.HasProperty("_Smoothness")) m.SetFloat("_Smoothness", smooth);
++            if (m.HasProperty("_Metallic")) m.SetFloat("_Metallic", metal);
++            mats[key] = m; return m;
++        }
++        public Material Glow(Color c) {
++            string key = "U" + ColorUtility.ToHtmlStringRGBA(c);
++            if (mats.TryGetValue(key, out var m)) return m;
++            m = new Material(unlit); m.SetColor("_BaseColor", c); m.color = c;
++            mats[key] = m; return m;
++        }
++
++        public GameObject Create(CardEntry card, int owner, out bool real) {
++            var root = new GameObject(card.id);
++            var piece = root.AddComponent<Piece>();
++            piece.Card = card; piece.Owner = owner;
++            real = false;
++            if (!ForceStandIns && card.HasModel && card.type != "SPELL") real = TryModel(card, root.transform);
++            if (card.type == "LAND") root.AddComponent<LandSurface>().Build(this, real, owner);
++            else if (!real) StandIn(card, root.transform);
++            piece.IsRealModel = real;
++            if (card.type == "CHARACTER" || card.type == "STRUCTURE" || card.type == "CAPITAL") NamePlate(card, root.transform, piece);
++            // Every piece carries a thin base ring in its owner's faction colour so ownership reads at a glance.
++            var ring = PlaytestMeshes.Make("Owner ring", PlaytestMeshes.HexRing(.62f, .5f), Glow(PlaytestCatalog.FactionColor(card.faction) * .9f), root.transform, new Vector3(0, .006f, 0));
++            ring.SetActive(card.type != "LAND");
++            piece.OwnerRing = ring;
++            // Collider for clicking pieces.
++            if (card.type == "LAND") {
++                var groundCollider = root.AddComponent<MeshCollider>();
++                groundCollider.sharedMesh = PlaytestMeshes.Prism(6, LandSurface.Flats / Mathf.Sqrt(3f), LandSurface.Flats / Mathf.Sqrt(3f), LandSurface.GroundHeight);
++                groundCollider.convex = true;
++                piece.Height = LandSurface.GroundHeight;
++                return root;
++            }
++            var col = root.AddComponent<CapsuleCollider>();
++            var b = Bounds(root);
++            col.center = root.transform.InverseTransformPoint(b.center); col.height = Mathf.Max(.2f, b.size.y); col.radius = Mathf.Max(.2f, Mathf.Min(b.size.x, b.size.z) * .4f);
++            piece.Height = b.size.y;
++            PadSkinnedBounds(root);
++            return root;
++        }
++
++        bool TryModel(CardEntry card, Transform root) {
++            var prefab = Resources.Load<GameObject>(card.model);
++            if (prefab == null) return false;
++            var model = Object.Instantiate(prefab, root, false);
++            model.name = "Model";
++            // AI-060-RIG-COMBAT: rigged tokens ship an Animator; give it the generated controller so
++            // PresentationMotion.PlayRig can fire Move/Attack/Summon/Destroy/Ability/Hit triggers.
++            var rigAnimator = model.GetComponentInChildren<Animator>();
++            if (rigAnimator != null && rigAnimator.runtimeAnimatorController == null)
++                rigAnimator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(card.model + "_Rig");
++            if (rigAnimator != null && rigAnimator.GetComponent<RigEvents>() == null) rigAnimator.gameObject.AddComponent<RigEvents>();
++            // A skinned mesh's imported bounds are loose (about 40% taller than the mesh), and the budget scale and
++            // ground offset below are taken from renderer bounds, so fit them to the posed mesh first.
++            foreach (var smr in model.GetComponentsInChildren<SkinnedMeshRenderer>()) FitSkinnedBounds(smr);
++            var tokenMat = Resources.Load<Material>(System.IO.Path.GetDirectoryName(card.model).Replace('\\', '/') + "/Token");
++            var fallback = Lit(Color.Lerp(PlaytestCatalog.FactionColor(card.faction), new Color(.75f, .75f, .78f), .55f), .45f, .35f);
++            foreach (var r in model.GetComponentsInChildren<Renderer>()) {
++                var slots = r.sharedMaterials;
++                for (int i = 0; i < slots.Length; i++) slots[i] = tokenMat != null ? tokenMat : fallback;
++                r.sharedMaterials = slots;
++            }
++            // AI-063 budget: scale uniformly to the type's height, capped by its hex footprint.
++            model.transform.localScale = Vector3.one;
++            var b = Bounds(model);
++            PlaytestCatalog.Budget(card.type, out float height, out float footprint);
++            float s = Mathf.Min(height / Mathf.Max(.001f, b.size.y), footprint / Mathf.Max(.001f, Mathf.Max(b.size.x, b.size.z)));
++            model.transform.localScale = Vector3.one * s;
++            if (card.type == "LAND") {
++                b = Bounds(model);
++                model.transform.localScale = Vector3.Scale(model.transform.localScale, new Vector3(
++                    LandSurface.Flats * .98f / Mathf.Max(.001f, b.size.x), 1,
++                    LandSurface.Flats * .98f * 2 / Mathf.Sqrt(3f) / Mathf.Max(.001f, b.size.z)));
++            }
++            b = Bounds(model);
++            model.transform.position += new Vector3(root.position.x - b.center.x, root.position.y - b.min.y, root.position.z - b.center.z);
++            return true;
++        }
++
++        static void FitSkinnedBounds(SkinnedMeshRenderer smr) {
++            if (smr.sharedMesh == null) return;
++            var baked = new Mesh();
++            smr.BakeMesh(baked, false);
++            var space = smr.rootBone != null ? smr.rootBone : smr.transform;
++            var toWorld = smr.transform.localToWorldMatrix;
++            var verts = baked.vertices;
++            if (verts.Length > 0) {
++                var b = new Bounds(space.InverseTransformPoint(toWorld.MultiplyPoint3x4(verts[0])), Vector3.zero);
++                foreach (var v in verts) b.Encapsulate(space.InverseTransformPoint(toWorld.MultiplyPoint3x4(v)));
++                smr.localBounds = b;
++            }
++            if (Application.isPlaying) Object.Destroy(baked); else Object.DestroyImmediate(baked);
++        }
++
++        // After placement, give clips some room so a raised weapon is not culled at the screen edge.
++        static void PadSkinnedBounds(GameObject root) {
++            foreach (var smr in root.GetComponentsInChildren<SkinnedMeshRenderer>()) {
++                var b = smr.localBounds; b.Expand(b.size * .25f); smr.localBounds = b;
++            }
++        }
++
++        void StandIn(CardEntry card, Transform root) {
++            Color fc = PlaytestCatalog.FactionColor(card.faction), acc = PlaytestCatalog.FactionAccent(card.faction), dark = PlaytestCatalog.FactionDark(card.faction);
++            float hex = BoardLayout.TileSize, cu = PlaytestCatalog.ContractUnit;
++            int h = Mathf.Abs(card.id.GetHashCode());
++            switch (card.type) {
++                case "LAND": {
++                    // Flat hex slab tinted by faction and a terrain hue guessed from the card name.
++                    var terrain = TerrainColor(card, h);
++                    PlaytestMeshes.Make("Slab", PlaytestMeshes.HexSlab(hex * .98f, .2f * cu), Lit(terrain, .25f, .05f), root, Vector3.zero);
++                    PlaytestMeshes.Make("Rim", PlaytestMeshes.HexRing(hex * .98f, hex * .88f), Glow(fc * .75f), root, new Vector3(0, .2f * cu + .004f, 0));
++                    // A few terrain studs so lands read as ground, not a flat tint.
++                    var rng = new System.Random(h);
++                    for (int i = 0; i < 3; i++) {
++                        float a = (float)rng.NextDouble() * 6.28f, r = .15f + (float)rng.NextDouble() * .25f;
++                        var stud = PlaytestMeshes.Make("Stud", PlaytestMeshes.Prism(5, .06f + (float)rng.NextDouble() * .05f, .02f, .05f + (float)rng.NextDouble() * .06f, 0), Lit(Color.Lerp(terrain, dark, .4f), .2f, 0), root, new Vector3(Mathf.Cos(a) * r, .2f * cu, Mathf.Sin(a) * r));
++                        stud.transform.localRotation = Quaternion.Euler(0, a * 57f, 0);
++                    }
++                    break;
++                }
++                case "STRUCTURE": {
++                    // SP2: a silhouette from the card's identity; names with no archetype keep the generic tower.
++                    if (StructureStandIn(card, root)) break;
++                    float H = 1.3f * cu, R = hex * .9f / 2f * .72f;
++                    PlaytestMeshes.Make("Base", PlaytestMeshes.Prism(6, R, R * .92f, .12f), Lit(dark, .3f, .5f), root, Vector3.zero);
++                    PlaytestMeshes.Make("Tower", PlaytestMeshes.Prism(6, R * .78f, R * .55f, H * .75f, h % 2 == 0 ? 30 : 0), Lit(Color.Lerp(fc, new Color(.6f, .62f, .68f), .55f), .5f, .6f), root, new Vector3(0, .12f, 0));
++                    PlaytestMeshes.Make("Core band", PlaytestMeshes.Prism(6, R * .62f, R * .6f, .06f), Glow(acc), root, new Vector3(0, .12f + H * .45f, 0));
++                    PlaytestMeshes.Make("Cap", PlaytestMeshes.Prism(6, R * .6f, 0, H * .25f), Lit(fc, .6f, .7f), root, new Vector3(0, .12f + H * .75f, 0));
++                    break;
++                }
++                case "CAPITAL": {
++                    float H = 2.1f * cu, R = hex / 2f * .9f;
++                    PlaytestMeshes.Make("Plinth", PlaytestMeshes.Prism(6, R, R * .9f, .14f), Lit(dark, .3f, .6f), root, Vector3.zero);
++                    PlaytestMeshes.Make("Keep", PlaytestMeshes.Prism(6, R * .7f, R * .5f, H * .45f), Lit(Color.Lerp(fc, Color.white, .35f), .55f, .6f), root, new Vector3(0, .14f, 0));
++                    PlaytestMeshes.Make("Ring", PlaytestMeshes.Prism(6, R * .56f, R * .56f, .05f), Glow(acc), root, new Vector3(0, .14f + H * .45f, 0));
++                    PlaytestMeshes.Make("Spire", PlaytestMeshes.Prism(6, R * .38f, .02f, H * .55f), Lit(fc, .7f, .8f), root, new Vector3(0, .19f + H * .45f, 0));
++                    for (int i = 0; i < 3; i++) {
++                        float a = Mathf.Deg2Rad * (120 * i + 90);
++                        PlaytestMeshes.Make("Pylon", PlaytestMeshes.Prism(4, .07f, .02f, H * .4f, 45), Lit(fc, .6f, .8f), root, new Vector3(Mathf.Cos(a) * R * .8f, .14f, Mathf.Sin(a) * R * .8f));
++                    }
++                    break;
++                }
++                default: { // CHARACTER (and unknown): capsule robot with visor and shoulder pods
++                    float H = 1.5f * cu;
++                    var body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
++                    Object.Destroy(body.GetComponent<Collider>());
++                    body.name = "Body"; body.transform.SetParent(root, false);
++                    body.transform.localScale = new Vector3(H * .42f, H * .38f, H * .36f);
++                    body.transform.localPosition = new Vector3(0, H * .38f, 0);
++                    body.GetComponent<Renderer>().sharedMaterial = Lit(Color.Lerp(fc, new Color(.55f, .57f, .62f), .35f), .55f, .6f);
++                    var head = GameObject.CreatePrimitive(PrimitiveType.Sphere);
++                    Object.Destroy(head.GetComponent<Collider>());
++                    head.name = "Head"; head.transform.SetParent(root, false);
++                    head.transform.localScale = Vector3.one * H * .3f; head.transform.localPosition = new Vector3(0, H * .9f, 0);
++                    head.GetComponent<Renderer>().sharedMaterial = Lit(new Color(.8f, .82f, .86f), .7f, .8f);
++                    var visor = GameObject.CreatePrimitive(PrimitiveType.Cube);
++                    Object.Destroy(visor.GetComponent<Collider>());
++                    visor.name = "Visor"; visor.transform.SetParent(root, false);
++                    visor.transform.localScale = new Vector3(H * .24f, H * .06f, H * .08f); visor.transform.localPosition = new Vector3(0, H * .92f, H * .12f);
++                    visor.GetComponent<Renderer>().sharedMaterial = Glow(acc);
++                    for (int s = -1; s <= 1; s += 2) {
++                        var pod = GameObject.CreatePrimitive(PrimitiveType.Cube);
++                        Object.Destroy(pod.GetComponent<Collider>());
++                        pod.name = "Shoulder"; pod.transform.SetParent(root, false);
++                        pod.transform.localScale = new Vector3(H * .12f, H * .12f, H * .2f); pod.transform.localPosition = new Vector3(s * H * .25f, H * .66f, 0);
++                        pod.GetComponent<Renderer>().sharedMaterial = Lit(fc, .6f, .7f);
++                    }
++                    // energy lance (no bows: techno-myth art direction)
++                    var lance = PlaytestMeshes.Make("Lance", PlaytestMeshes.Prism(4, .02f, .02f, H * .7f, 45), Glow(acc), root, new Vector3(H * .33f, H * .25f, H * .05f));
++                    lance.transform.localRotation = Quaternion.Euler(12, 0, 0);
++                    PlaytestMeshes.Make("Base disc", PlaytestMeshes.Prism(12, .2f, .19f, .04f, 0), Lit(dark, .3f, .5f), root, Vector3.zero);
++                    break;
++                }
++            }
++        }
++
++        // SP2-PRESENTATION: the 33 structures without a Meshy model all shared one prism tower. Their card names
++        // name what they are, so each gets a procedural archetype plus a faction finial (Zeus bolt, Poseidon
++        // trident). Stand-ins only: no new assets, and cards with a staged model still load it.
++        public enum StructureShape { Tower, Spire, Bastion, Gate, Well, Oracle, Hall }
++        public static StructureShape ShapeOf(CardEntry card) {
++            string n = (card.name + " " + card.id).ToLowerInvariant();
++            bool Any(params string[] keys) { foreach (var k in keys) if (n.Contains(k)) return true; return false; }
++            if (Any("gate", "burrow")) return StructureShape.Gate;
++            if (Any("bastion", "bulwark", "breakwater", "wall", "barracks", "guard")) return StructureShape.Bastion;
++            if (Any("spring", "well", "pump", "infirmary", "fountain")) return StructureShape.Well;
++            if (Any("oracle", "observatory", "sonar", "seer", "conch", "beacon")) return StructureShape.Oracle;
++            if (Any("archive", "vault", "exchange", "nexus", "hall", "dispatch", "dock", "summons", "muster")) return StructureShape.Hall;
++            if (Any("spire", "pylon", "mast", "relay", "conductor", "lattice", "tower")) return StructureShape.Spire;
++            return StructureShape.Tower;
++        }
++
++        bool StructureStandIn(CardEntry card, Transform root) {
++            var shape = ShapeOf(card);
++            if (shape == StructureShape.Tower) return false;
++            Color fc = PlaytestCatalog.FactionColor(card.faction), acc = PlaytestCatalog.FactionAccent(card.faction), dark = PlaytestCatalog.FactionDark(card.faction);
++            Material baseMat = Lit(dark, .3f, .5f), stone = Lit(Color.Lerp(fc, new Color(.6f, .62f, .68f), .55f), .5f, .6f), metal = Lit(fc, .6f, .7f), glow = Glow(acc);
++            float R = BoardLayout.TileSize * .9f / 2f * .72f;   // same radius as the generic tower, inside the AI-063 footprint
++            string n = (card.name + " " + card.id).ToLowerInvariant();
++            switch (shape) {
++                case StructureShape.Spire: {
++                    PlaytestMeshes.Make("Plinth", PlaytestMeshes.Prism(6, R * .95f, R * .85f, .1f), baseMat, root, Vector3.zero);
++                    PlaytestMeshes.Make("Shaft", PlaytestMeshes.Prism(6, R * .4f, R * .16f, .6f), stone, root, new Vector3(0, .1f, 0));
++                    for (int i = 1; i <= 3; i++)
++                        PlaytestMeshes.Make("Coil", PlaytestMeshes.Prism(12, R * (.72f - .1f * i), R * (.7f - .1f * i), .025f, 0), glow, root, new Vector3(0, .1f + .15f * i, 0));
++                    Finial(card, root, .7f);
++                    break;
++                }
++                case StructureShape.Bastion: {
++                    PlaytestMeshes.Make("Plinth", PlaytestMeshes.Prism(6, R * 1.2f, R * 1.15f, .08f), baseMat, root, Vector3.zero);
++                    PlaytestMeshes.Make("Wall", PlaytestMeshes.Prism(6, R * 1.1f, R * 1.02f, .26f), stone, root, new Vector3(0, .08f, 0));
++                    PlaytestMeshes.Make("Wall band", PlaytestMeshes.Prism(6, R * 1.05f, R * 1.05f, .02f), glow, root, new Vector3(0, .32f, 0));
++                    for (int i = 0; i < 6; i++) {
++                        float a = Mathf.Deg2Rad * (60 * i + 30);
++                        PlaytestMeshes.Make("Merlon", PlaytestMeshes.Prism(4, .055f, .05f, .08f, 45), metal, root, new Vector3(Mathf.Cos(a) * R * .98f, .34f, Mathf.Sin(a) * R * .98f));
++                    }
++                    PlaytestMeshes.Make("Keep", PlaytestMeshes.Prism(6, R * .5f, R * .42f, .3f), stone, root, new Vector3(0, .34f, 0));
++                    Finial(card, root, .64f);
++                    break;
++                }
++                case StructureShape.Gate: {
++                    PlaytestMeshes.Make("Plinth", PlaytestMeshes.Prism(6, R, R * .92f, .08f), baseMat, root, Vector3.zero);
++                    for (int s = -1; s <= 1; s += 2) {
++                        PlaytestMeshes.Make("Pylon", PlaytestMeshes.Prism(4, .075f, .055f, .58f, 45), stone, root, new Vector3(s * R * .68f, .08f, 0));
++                        PlaytestMeshes.Make("Pylon cap", PlaytestMeshes.Prism(4, .07f, 0, .08f, 45), metal, root, new Vector3(s * R * .68f, .66f, 0));
++                    }
++                    Solid("Lintel", PrimitiveType.Cube, metal, root, new Vector3(0, .62f, 0), new Vector3(R * 1.36f + .12f, .07f, .1f));
++                    // the portal faces the root's forward, which Spawn turns toward the opponent
++                    var portal = Solid("Portal", PrimitiveType.Cylinder, glow, root, new Vector3(0, .34f, 0), new Vector3(R * .95f, .012f, .5f));
++                    portal.transform.localRotation = Quaternion.Euler(90, 0, 0);
++                    Finial(card, root, .655f);
++                    break;
++                }
++                case StructureShape.Well: {
++                    PlaytestMeshes.Make("Basin", PlaytestMeshes.Prism(12, R * 1.05f, R * 1.12f, .14f, 0), baseMat, root, Vector3.zero);
++                    PlaytestMeshes.Make("Water", PlaytestMeshes.Prism(12, R * .92f, R * .92f, .145f, 0), Lit(Color.Lerp(fc, acc, .5f), .9f, .1f), root, Vector3.zero);
++                    PlaytestMeshes.Make("Column", PlaytestMeshes.Prism(6, R * .16f, R * .12f, .36f), stone, root, new Vector3(0, .14f, 0));
++                    PlaytestMeshes.Make("Collar", PlaytestMeshes.Prism(12, R * .38f, R * .38f, .02f, 0), Glow(fc), root, new Vector3(0, .5f, 0));
++                    Solid("Orb", PrimitiveType.Sphere, glow, root, new Vector3(0, .58f, 0), Vector3.one * .14f);
++                    if (n.Contains("pump")) {
++                        for (int s = -1; s <= 1; s += 2) Solid("Pipe", PrimitiveType.Cylinder, metal, root, new Vector3(s * R * .78f, .3f, 0), new Vector3(.07f, .2f, .07f));
++                    } else if (n.Contains("infirmary") || n.Contains("spring")) {
++                        for (int i = 0; i < 3; i++) {
++                            float a = Mathf.Deg2Rad * (120 * i + 90);
++                            PlaytestMeshes.Make("Post", PlaytestMeshes.Prism(4, .02f, .02f, .55f, 45), metal, root, new Vector3(Mathf.Cos(a) * R * .8f, .14f, Mathf.Sin(a) * R * .8f));
++                        }
++                        PlaytestMeshes.Make("Canopy", PlaytestMeshes.Prism(6, R * .9f, R * .2f, .1f), metal, root, new Vector3(0, .69f, 0));
++                    }
++                    break;
++                }
++                case StructureShape.Oracle: {
++                    PlaytestMeshes.Make("Plinth", PlaytestMeshes.Prism(6, R * .8f, R * .7f, .1f), baseMat, root, Vector3.zero);
++                    PlaytestMeshes.Make("Stem", PlaytestMeshes.Prism(6, R * .2f, R * .14f, .38f), stone, root, new Vector3(0, .1f, 0));
++                    var dish = PlaytestMeshes.Make("Dish", PlaytestMeshes.Prism(12, R * .22f, R * .75f, .12f, 0), metal, root, new Vector3(0, .46f, 0));
++                    dish.transform.localRotation = Quaternion.Euler(-18, 0, 0);
++                    Solid("Eye", PrimitiveType.Sphere, glow, root, new Vector3(0, .7f, .03f), Vector3.one * .12f);
++                    for (int i = 0; i < 3; i++) {
++                        float a = Mathf.Deg2Rad * (120 * i + 30);
++                        PlaytestMeshes.Make("Shard", PlaytestMeshes.Prism(4, .03f, 0, .08f, 45), Glow(fc), root, new Vector3(Mathf.Cos(a) * R * .5f, .66f, Mathf.Sin(a) * R * .5f));
++                    }
++                    break;
++                }
++                case StructureShape.Hall: {
++                    PlaytestMeshes.Make("Platform", PlaytestMeshes.Prism(6, R * 1.15f, R * 1.1f, .08f), baseMat, root, Vector3.zero);
++                    PlaytestMeshes.Make("Hall", PlaytestMeshes.Prism(6, R * .8f, R * .8f, .3f), stone, root, new Vector3(0, .08f, 0));
++                    for (int i = 0; i < 6; i++) {
++                        float a = Mathf.Deg2Rad * (60 * i + 30);
++                        PlaytestMeshes.Make("Column", PlaytestMeshes.Prism(6, .022f, .022f, .3f), metal, root, new Vector3(Mathf.Cos(a) * R * .95f, .08f, Mathf.Sin(a) * R * .95f));
++                    }
++                    PlaytestMeshes.Make("Hall band", PlaytestMeshes.Prism(6, R * .82f, R * .82f, .025f), glow, root, new Vector3(0, .22f, 0));
++                    PlaytestMeshes.Make("Roof", PlaytestMeshes.Prism(6, R * 1.02f, R * .55f, .1f), metal, root, new Vector3(0, .38f, 0));
++                    Solid("Dome", PrimitiveType.Sphere, Lit(Color.Lerp(fc, Color.white, .3f), .6f, .6f), root, new Vector3(0, .48f, 0), new Vector3(R, R * .7f, R));
++                    Finial(card, root, .6f);
++                    break;
++                }
++            }
++            return true;
++        }
++
++        // Zeus: a glowing lightning bolt. Poseidon: a trident head. About .18 tall, standing on y.
++        void Finial(CardEntry card, Transform root, float y) {
++            var glow = Glow(PlaytestCatalog.FactionAccent(card.faction));
++            if (card.faction == "POSEIDON") {
++                PlaytestMeshes.Make("Trident shaft", PlaytestMeshes.Prism(4, .014f, .014f, .06f, 45), glow, root, new Vector3(0, y, 0));
++                Solid("Trident bar", PrimitiveType.Cube, glow, root, new Vector3(0, y + .06f, 0), new Vector3(.14f, .018f, .02f));
++                for (int s = -1; s <= 1; s++)
++                    PlaytestMeshes.Make("Tine", PlaytestMeshes.Prism(4, .014f, 0, s == 0 ? .12f : .1f, 45), glow, root, new Vector3(s * .06f, y + .065f, 0));
++            } else {
++                PlaytestMeshes.Make("Bolt", PlaytestMeshes.Prism(4, .03f, .02f, .08f, 45), glow, root, new Vector3(0, y, 0));
++                var tip = PlaytestMeshes.Make("Bolt tip", PlaytestMeshes.Prism(4, .035f, 0, .1f, 45), glow, root, new Vector3(.015f, y + .07f, 0));
++                tip.transform.localRotation = Quaternion.Euler(0, 0, -20);
++            }
++        }
++
++        static GameObject Solid(string name, PrimitiveType type, Material mat, Transform root, Vector3 pos, Vector3 scale) {
++            var go = GameObject.CreatePrimitive(type);
++            Object.Destroy(go.GetComponent<Collider>());
++            go.name = name; go.transform.SetParent(root, false);
++            go.transform.localPosition = pos; go.transform.localScale = scale;
++            go.GetComponent<Renderer>().sharedMaterial = mat;
++            return go;
++        }
++
++        static Color TerrainColor(CardEntry card, int hash) {
++            string n = (card.name + " " + card.id).ToLowerInvariant();
++            Color c;
++            if (n.Contains("reef") || n.Contains("coral")) c = new Color(.85f, .45f, .5f);
++            else if (n.Contains("trench") || n.Contains("abyss") || n.Contains("deep")) c = new Color(.1f, .18f, .38f);
++            else if (n.Contains("tide") || n.Contains("sea") || n.Contains("shoal") || n.Contains("lagoon") || n.Contains("current") || n.Contains("wave") || n.Contains("harbor") || n.Contains("water")) c = new Color(.15f, .45f, .6f);
++            else if (n.Contains("storm") || n.Contains("cloud") || n.Contains("sky") || n.Contains("thunder")) c = new Color(.45f, .45f, .6f);
++            else if (n.Contains("peak") || n.Contains("mount") || n.Contains("cliff") || n.Contains("plateau") || n.Contains("ridge") || n.Contains("olymp")) c = new Color(.55f, .5f, .45f);
++            else if (n.Contains("grove") || n.Contains("field") || n.Contains("meadow") || n.Contains("garden")) c = new Color(.35f, .55f, .3f);
++            else c = card.faction == "POSEIDON" ? new Color(.2f, .5f, .55f) : new Color(.6f, .52f, .35f);
++            float jitter = ((hash % 17) - 8) / 100f;
++            return Color.Lerp(new Color(c.r + jitter, c.g + jitter, c.b + jitter), PlaytestCatalog.FactionColor(card.faction), .18f);
++        }
++
++        void NamePlate(CardEntry card, Transform root, Piece piece) {
++            if (font == null) return;
++            var b = Bounds(root.gameObject);
++            var plate = new GameObject("Name plate");
++            plate.transform.SetParent(root, false);
++            plate.transform.position = new Vector3(root.position.x, b.max.y + .12f, root.position.z);
++            var bg = PlaytestMeshes.Make("Plate", PlaytestMeshes.Quad(), Glow(PlaytestCatalog.FactionDark(card.faction)), plate.transform, new Vector3(0, 0, .005f));
++            var text = new GameObject("Text", typeof(MeshRenderer), typeof(TextMesh));
++            text.transform.SetParent(plate.transform, false);
++            var tm = text.GetComponent<TextMesh>();
++            tm.font = font; tm.text = card.name; tm.fontSize = 48; tm.characterSize = .015f;
++            tm.anchor = TextAnchor.MiddleCenter; tm.alignment = TextAlignment.Center;
++            tm.color = Color.Lerp(PlaytestCatalog.FactionAccent(card.faction), Color.white, .5f);
++            text.GetComponent<MeshRenderer>().sharedMaterial = fontMaterial;
++            float w = Mathf.Max(.45f, card.name.Length * .064f);
++            bg.transform.localScale = new Vector3(w, .16f, 1);
++            // a faction stripe under the plate
++            var stripe = PlaytestMeshes.Make("Stripe", PlaytestMeshes.Quad(), Glow(PlaytestCatalog.FactionColor(card.faction)), plate.transform, new Vector3(0, -.09f, .004f));
++            stripe.transform.localScale = new Vector3(w, .02f, 1);
++            plate.AddComponent<Billboard>();
++            piece.Plate = plate;
++        }
++
++        public static Bounds Bounds(GameObject go) {
++            var rs = go.GetComponentsInChildren<Renderer>();
++            if (rs.Length == 0) return new Bounds(go.transform.position, Vector3.one * .2f);
++            Bounds b = default; bool first = true;
++            foreach (var r in rs) {
++                if (r is ParticleSystemRenderer || r.GetComponent<TextMesh>() != null) continue;
++                if (r.transform.parent != null && r.transform.parent.name == "Name plate") continue;
++                if (first) { b = r.bounds; first = false; } else b.Encapsulate(r.bounds);
++            }
++            return first ? new Bounds(go.transform.position, Vector3.one * .2f) : b;
++        }
++    }
++
++    public sealed class Piece : MonoBehaviour {
++        public CardEntry Card;
++        public int Owner;
++        public string InstanceId;
++        public int X = -1, Y = -1;
++        public bool IsRealModel;
++        public float Height;
++        public GameObject Plate, OwnerRing;
++        public int Damage;
++    }
++
++    public sealed class Billboard : MonoBehaviour {
++        void LateUpdate() {
++            var cam = Camera.main; if (cam == null) return;
++            transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position, cam.transform.up);
++        }
++    }
++}
+--- "/c/Users/mattj/OneDrive/Documents/AI Dev/Infinite Conquest/3DTuba-poseidon30k-2026-10-15/UnityProof/Assets/Playtest/Scripts/PresentationMotion.cs"	2026-10-07 22:17:13.074766500 -0400
++++ "/c/Users/mattj/OneDrive/Documents/AI Dev/Infinite Conquest/3DTuba-rig-combat-2026-10-18/UnityProof/Assets/Playtest/Scripts/PresentationMotion.cs"	2026-10-18 16:14:05.051535300 -0400
+@@ -9,8 +9,9 @@
+     // from an identity baseline. BoardView keeps owning the root (slot position, stack scale, owner facing), so
+     // repeated, overlapping or interrupted motions cannot accumulate scale, rotation or position drift.
+     // This is procedural transform motion, not skeletal animation. A model that ships an Animator controller with
+-    // a trigger named after the MotionKind (or a legacy Animation clip of that name) also gets it played; none
+-    // of the 90 imported token FBXs has one today (Generic rig, importAnimation 0, no skin deformers).
++    // a trigger named after the MotionKind (or a legacy Animation clip of that name) also gets it played. Since
++    // AI-060-RIG-COMBAT the 48 Zeus/Poseidon character tokens are rigged (Idle/Walk/Attack/Hit/Death/Summon) and
++    // TokenFactory gives each a generated <card>_Rig controller.
+     public static class PresentationMotion {
+         public const string PivotName = "Motion pivot";
+         // PlaytestGame treats speed >= 50 as "apply instantly" (smoke and screenshot fast-forward); so does this.
+@@ -127,12 +128,27 @@
+             if (dur <= 0 || !isActiveAndEnabled) { Complete(); return handle; }
+             handle.UsedRigClip = PlayRig(k, speed);
+             float amp = handle.UsedRigClip ? .4f : 1f;
++            var pose = Pose(k, point, amp);
++            // AI-060-RIG-COMBAT: a rigged Death clip carries the fall itself, so the piece holds still until the
++            // clip's "down" frame and only then sinks away; the caller despawns after that instead of mid-fall.
++            if (handle.UsedRigClip && k == MotionKind.Destroy && body == Body.Character) {
++                const float sink = .35f;
++                float down = RigEventSeconds("Death", "down");
++                dur = Mathf.Max(dur, (down + sink) / Mathf.Clamp(speed, .1f, 8f));
++                pose = RigDestroyPose(down / (down + sink));
++            }
+             if (k == MotionKind.Summon || k == MotionKind.Destroy) SetDecor(false, k == MotionKind.Destroy);
+-            current = StartCoroutine(Drive(dur, Pose(k, point, amp)));
++            current = StartCoroutine(Drive(dur, pose));
+             return handle;
+         }
+ 
+-        public void Settle() { Init(); Interrupt(); collapsed = false; Baseline(); SetDecor(true, true); }
++        public void Settle() {
++            Init(); Interrupt(); collapsed = false; Baseline(); SetDecor(true, true);
++            // a rigged piece that was mid-clip (or holding its Death pose) stands back in Idle
++            var animator = pivot.GetComponentInChildren<Animator>();
++            if (animator != null && animator.isActiveAndEnabled && animator.runtimeAnimatorController != null && animator.HasState(0, Animator.StringToHash("Idle")))
++                animator.Play("Idle", 0, 0);
++        }
+ 
+         void OnDisable() { if (pivot != null) Interrupt(); }
+ 
+@@ -159,7 +175,11 @@
+                 if (moveEndScale >= 0) transform.localScale = Vector3.one * moveEndScale;
+                 moving = false;
+             }
+-            if (rigAnimator != null) { rigAnimator.speed = rigSpeed; rigAnimator = null; }
++            if (rigAnimator != null) {
++                // the Walk loop would otherwise keep stepping in place after the slide has landed
++                if (kind == MotionKind.Move) rigAnimator.CrossFade("Idle", .15f);
++                rigAnimator.speed = rigSpeed; rigAnimator = null;
++            }
+             if (kind == MotionKind.Destroy) { DestroyPose(destroyFrom)(1); SetDecor(false, true); collapsed = true; }
+             else { Baseline(); SetDecor(true, false); }
+             if (handle != null) handle.Finished = true;
+@@ -204,6 +224,18 @@
+             return false;
+         }
+ 
++        // Seconds into the rig clip where the named animation event fires (three quarters through when absent).
++        float RigEventSeconds(string clipName, string eventName) {
++            var ctrl = rigAnimator != null ? rigAnimator.runtimeAnimatorController : null;
++            if (ctrl == null) return .5f;
++            foreach (var clip in ctrl.animationClips) {
++                if (clip == null || clip.name != clipName) continue;
++                foreach (var ev in clip.events) if (ev.stringParameter == eventName) return ev.time;
++                return clip.length * .75f;
++            }
++            return .5f;
++        }
++
+         // ------------------------------------------------------------------ poses (k runs 0 -> 1)
+         static float Smooth(float k) => Mathf.SmoothStep(0, 1, k);
+         static float Bell(float k) => Mathf.Sin(Mathf.Clamp01(k) * Mathf.PI);
+@@ -325,6 +357,14 @@
+             };
+         }
+ 
++        System.Action<float> RigDestroyPose(float downAt) {
++            return k => {
++                if (k < downAt) { Baseline(); return; }
++                float v = Mathf.Clamp01((k - downAt) / Mathf.Max(.01f, 1 - downAt));
++                Set(new Vector3(0, -.25f * h * v, 0), Quaternion.identity, Vector3.one * Mathf.Lerp(1, .05f, Smooth(v)));
++            };
++        }
++
+         System.Action<float> AbilityPose(float amp) {
+             return k => {
+                 float b = Bell(k);
+--- "/c/Users/mattj/OneDrive/Documents/AI Dev/Infinite Conquest/3DTuba-poseidon30k-2026-10-15/UnityProof/Assets/Playtest/Scripts/PresentationValidation.cs"	2026-10-07 22:19:55.153731000 -0400
++++ "/c/Users/mattj/OneDrive/Documents/AI Dev/Infinite Conquest/3DTuba-rig-combat-2026-10-18/UnityProof/Assets/Playtest/Scripts/PresentationValidation.cs"	2026-10-18 16:28:34.086927600 -0400
+@@ -45,6 +45,51 @@
+                     go.SetActive(true);
+                 } finally { Destroy(go); }
+             }
++            yield return ValidateRigClips(check);
++        }
++
++        // AI-060-RIG-COMBAT: every rigged character plays its own clip for each board event and fires the
++        // land/impact/down animation events, at the speed-8 pace the checks above use.
++        IEnumerator ValidateRigClips(Action<bool, string> check) {
++            int rigged = 0, clipsOk = 0, eventsOk = 0; var failed = new System.Collections.Generic.List<string>();
++            foreach (var card in PlaytestCatalog.All.Where(c => c.type == "CHARACTER" && c.HasModel)) {
++                var go = factory.Create(card, 0, out bool real); var piece = go.GetComponent<Piece>();
++                var animator = go.GetComponentInChildren<Animator>();
++                if (!real || animator == null || animator.runtimeAnimatorController == null) { Destroy(go); continue; }
++                rigged++;
++                piece.InstanceId = "rig-check-" + card.id;
++                go.transform.position = new Vector3(70, 0, 0); go.transform.rotation = Quaternion.Euler(0, 15, 0);
++                var events = animator.GetComponent<RigEvents>();
++                var fired = new System.Collections.Generic.HashSet<string>();
++                if (events != null) events.Fired += n => fired.Add(n);
++                bool ok = true; string why = null;
++                IEnumerator Step(MotionHandle h, string state, string ev) {
++                    if (!h.UsedRigClip) { ok = false; why = why ?? h.Kind + " used no clip"; }
++                    bool seen = false; float until = Time.realtimeSinceStartup + 2f;
++                    while (Time.realtimeSinceStartup < until) {
++                        var info = animator.IsInTransition(0) ? animator.GetNextAnimatorStateInfo(0) : animator.GetCurrentAnimatorStateInfo(0);
++                        seen |= info.IsName(state);
++                        if (seen && (ev == null || fired.Contains(ev)) && h.Done) break;
++                        yield return null;
++                    }
++                    if (!seen) { ok = false; why = why ?? h.Kind + " never entered " + state; }
++                    if (ev != null && !fired.Contains(ev)) { ok = false; why = why ?? state + " never fired " + ev; }
++                }
++                try {
++                    yield return Step(PresentationMotion.Summon(piece, 8), "Summon", "land");
++                    yield return Step(PresentationMotion.Move(piece, go.transform.position + Vector3.right, 8), "Walk", null);
++                    yield return Step(PresentationMotion.Attack(piece, go.transform.position + Vector3.forward, 8), "Attack", "impact");
++                    yield return Step(PresentationMotion.Hit(piece, 8), "Hit", null);
++                    yield return Step(PresentationMotion.Ability(piece, 8), "Attack", null);
++                    yield return Step(PresentationMotion.Destroy(piece, 8), "Death", "down");
++                    if (ok) clipsOk++; else failed.Add(card.id + ": " + why);
++                    if (fired.Contains("land") && fired.Contains("impact") && fired.Contains("down")) eventsOk++;
++                } finally { Destroy(go); }
++            }
++            // 47: the Thunder Ram rig came from a different source mesh than its token texture, so it keeps the static token.
++            check(rigged == 47, "AI-060: 47 rigged characters carry a clip controller (" + rigged + ")");
++            check(clipsOk == rigged, $"AI-060: summon/move/attack/hit/ability/destroy play the rig clips ({clipsOk}/{rigged}{(failed.Count > 0 ? "; " + string.Join("; ", failed.Take(4)) : "")})");
++            check(eventsOk == rigged, $"AI-060: land/impact/down animation events fire ({eventsOk}/{rigged})");
+         }
+     }
+ }
+--- "/c/Users/mattj/OneDrive/Documents/AI Dev/Infinite Conquest/3DTuba-poseidon30k-2026-10-15/UnityProof/Assets/Playtest/Editor/PlaytestBuild.cs"	2026-09-30 11:26:05.535951700 -0400
++++ "/c/Users/mattj/OneDrive/Documents/AI Dev/Infinite Conquest/3DTuba-rig-combat-2026-10-18/UnityProof/Assets/Playtest/Editor/PlaytestBuild.cs"	2026-10-18 16:20:29.450046500 -0400
+@@ -1,144 +1,144 @@
+-using System;
+-using System.Collections.Generic;
+-using System.IO;
+-using System.Linq;
+-using UnityEditor;
+-using UnityEditor.Build.Reporting;
+-using UnityEditor.SceneManagement;
+-using UnityEngine;
+-using UnityEngine.SceneManagement;
+-using InfiniteConquest.Playtest;
+-
+-// AI-080 playtest build. Batch:
+-//   Unity -batchmode -quit -projectPath UnityProof -executeMethod PlaytestBuild.Build -buildPath <dir>\InfiniteConquestPlaytest.exe
+-// Run UnityProof/Tools/stage_playtest_assets.py first to stage models/SFX (the build works without them:
+-// every card then shows its typed stand-in and generic cues).
+-public static class PlaytestBuild {
+-    public const string ScenePath = "Assets/Scenes/Playtest.unity";
+-    const string ProofScenePath = "Assets/Scenes/MovementProof.unity";
+-    const string TokensDir = "Assets/Playtest/Resources/Tokens";
+-    const string ParticleMatPath = "Assets/Playtest/Materials/ParticleAdditive.mat";
+-    const string DumpPath = "Assets/Playtest/Data/dump-seed-42.txt";
+-    static readonly List<string> results = new List<string>();
+-    static void Check(bool ok, string name) { results.Add((ok ? "PASS " : "FAIL ") + name); Debug.Log("PLAYTEST_VALIDATE " + (ok ? "PASS " : "FAIL ") + name); if (!ok) throw new Exception("FAILED: " + name); }
+-    static string Arg(string name, string fallback) {
+-        var a = Environment.GetCommandLineArgs();
+-        for (int i = 0; i < a.Length - 1; i++) if (a[i] == name) return a[i + 1];
+-        return fallback;
+-    }
+-
+-    [MenuItem("Infinite Conquest/Prepare playtest scene")]
+-    public static void Prepare() {
+-        results.Clear();
+-        ProofBuild.Validate(); // the 14 AI-036 movement assertions stay green
+-        Check(true, "ProofBuild.Validate (AI-036 fixture + hex geometry)");
+-        AssetDatabase.Refresh();
+-        // Apply PlaytestTokenImport settings to tokens imported before the postprocessor existed.
+-        foreach (var guid in AssetDatabase.FindAssets("", new[] { TokensDir })) {
+-            var p = AssetDatabase.GUIDToAssetPath(guid);
+-            var imp = AssetImporter.GetAtPath(p);
+-            if (imp is TextureImporter ti && ti.maxTextureSize != 1024) { ti.maxTextureSize = 1024; ti.SaveAndReimport(); }
+-            else if (imp is ModelImporter mi && mi.materialImportMode != ModelImporterMaterialImportMode.None) { mi.materialImportMode = ModelImporterMaterialImportMode.None; mi.importAnimation = false; mi.SaveAndReimport(); }
+-        }
+-        int mats = 0;
+-        if (Directory.Exists(TokensDir)) foreach (var dir in Directory.GetDirectories(TokensDir)) {
+-            string d = dir.Replace('\\', '/');
+-            if (File.Exists(d + "/Token_BaseColor.png")) { TokenPreview.BuildMaterial(d); mats++; }
+-        }
+-        Debug.Log("PLAYTEST token materials built: " + mats);
+-        var particle = ParticleMaterial();
+-        var dump = AssetDatabase.LoadAssetAtPath<TextAsset>(DumpPath);
+-        Check(dump != null, "bundled AI-066 seed-42 dump present");
+-        var evs = WireEvent.ParseJsonl(dump.text);
+-        Check(evs.Count == 235 && evs.Last().@event == "GAME_OVER" && evs.Last().player == 0, "seed-42 dump = 235 events, GAME_OVER winner 0");
+-        Check(evs.Count(e => e.@event == "CARD_PLAYED" && e.hasTo) == evs.Count(e => e.@event == "CARD_PLAYED"), "every CARD_PLAYED carries a target hex");
+-        PlaytestCatalog.Load();
+-        var cat = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Playtest/Resources/Playtest/cards.json");
+-        Check(cat != null, "catalog cards.json present");
+-        var cards = JsonUtility.FromJson<CatalogProbe>(cat.text).cards;
+-        Check(cards.Length == 139, "catalog has 139 cards");
+-        foreach (var t in new[] { "LAND", "STRUCTURE", "CHARACTER", "CAPITAL", "SPELL" }) Check(cards.Any(c => c.type == t), "catalog has type " + t);
+-        int withModel = 0;
+-        foreach (var c in cards.Where(c => !string.IsNullOrEmpty(c.model))) {
+-            Check(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Playtest/Resources/" + c.model + ".fbx") != null, "model imports: " + c.id);
+-            withModel++;
+-        }
+-        Debug.Log("PLAYTEST real models: " + withModel);
+-        foreach (var e in evs.Where(e => e.card_id != null)) Check(cards.Any(c => c.id == e.card_id) || e.card_id.Contains("capital"), "dump card in catalog: " + e.card_id);
+-        BridgeSelfTest();
+-
+-        var scene = File.Exists(ScenePath) ? EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single)
+-                                           : EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+-        var game = UnityEngine.Object.FindAnyObjectByType<PlaytestGame>();
+-        if (game == null) game = new GameObject("Playtest").AddComponent<PlaytestGame>();
+-        game.LitShader = Shader.Find("Universal Render Pipeline/Lit");
+-        game.UnlitShader = Shader.Find("Universal Render Pipeline/Unlit");
+-        game.ParticleMaterial = particle;
+-        game.DefaultDump = dump;
+-        Check(game.LitShader != null && game.UnlitShader != null && particle != null, "URP shaders + particle material referenced by the scene");
+-        if (Camera.main == null) {
+-            var cam = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener)); cam.tag = "MainCamera";
+-        }
+-        EditorUtility.SetDirty(game);
+-        EditorSceneManager.SaveScene(scene, ScenePath);
+-        EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true), new EditorBuildSettingsScene(ProofScenePath, true) };
+-        // The proof scene keeps its explicit shader reference (ProofBuild contract).
+-        var proofScene = EditorSceneManager.OpenScene(ProofScenePath, OpenSceneMode.Single);
+-        var proof = UnityEngine.Object.FindAnyObjectByType<InfiniteConquest.Proof.MovementProof>();
+-        Check(proof != null && proof.ProofShader != null, "MovementProof scene keeps its shader reference for -proofSmoke");
+-        Directory.CreateDirectory("Build");
+-        File.WriteAllText("Build/playtest-validation.json", "{\"passed\":true,\"checks\":" + results.Count + ",\"realModels\":" + withModel + "}");
+-    }
+-
+-    [MenuItem("Infinite Conquest/Build playtest (Windows)")]
+-    public static void Build() {
+-        Prepare();
+-        PlayerSettings.productName = "Infinite Conquest Playtest";
+-        PlayerSettings.defaultScreenWidth = 1600; PlayerSettings.defaultScreenHeight = 900;
+-        PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
+-        PlayerSettings.resizableWindow = true;
+-        string path = Arg("-buildPath", "Build/Playtest/InfiniteConquestPlaytest.exe");
+-        var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions {
+-            scenes = new[] { ScenePath, ProofScenePath }, locationPathName = path,
+-            target = BuildTarget.StandaloneWindows64, options = BuildOptions.None
+-        });
+-        if (report.summary.result != BuildResult.Succeeded) throw new Exception("Playtest build failed: " + report.summary.result);
+-        Debug.Log("PLAYTEST_BUILD PASS " + path + " size=" + report.summary.totalSize);
+-    }
+-
+-    [Serializable] class CatalogProbe { public CardEntry[] cards; }
+-
+-    static Material ParticleMaterial() {
+-        Directory.CreateDirectory(Path.GetDirectoryName(ParticleMatPath));
+-        var mat = AssetDatabase.LoadAssetAtPath<Material>(ParticleMatPath);
+-        var shader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
+-        if (mat == null) { mat = new Material(shader); AssetDatabase.CreateAsset(mat, ParticleMatPath); }
+-        mat.shader = shader;
+-        // Transparent, additive (URP particle GUI conventions set by hand for batch mode).
+-        mat.SetFloat("_Surface", 1); mat.SetFloat("_Blend", 2);
+-        mat.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+-        mat.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.One);
+-        mat.SetFloat("_ZWrite", 0);
+-        mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+-        mat.SetOverrideTag("RenderType", "Transparent");
+-        mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+-        mat.SetColor("_BaseColor", Color.white);
+-        var soft = new Texture2D(64, 64, TextureFormat.RGBA32, false);
+-        string texPath = "Assets/Playtest/Materials/SoftDot.png";
+-        if (!File.Exists(texPath)) {
+-            for (int y = 0; y < 64; y++) for (int x = 0; x < 64; x++) {
+-                float d = Vector2.Distance(new Vector2(x, y), new Vector2(31.5f, 31.5f)) / 32f;
+-                float a = Mathf.Clamp01(1 - d); a *= a;
+-                soft.SetPixel(x, y, new Color(1, 1, 1, a));
+-            }
+-            File.WriteAllBytes(texPath, soft.EncodeToPNG()); AssetDatabase.ImportAsset(texPath);
+-            var imp = (TextureImporter)AssetImporter.GetAtPath(texPath); imp.alphaIsTransparency = true; imp.SaveAndReimport();
+-        }
+-        mat.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(texPath));
+-        EditorUtility.SetDirty(mat); AssetDatabase.SaveAssets();
+-        return mat;
+-    }
+-
++using System;
++using System.Collections.Generic;
++using System.IO;
++using System.Linq;
++using UnityEditor;
++using UnityEditor.Build.Reporting;
++using UnityEditor.SceneManagement;
++using UnityEngine;
++using UnityEngine.SceneManagement;
++using InfiniteConquest.Playtest;
++
++// AI-080 playtest build. Batch:
++//   Unity -batchmode -quit -projectPath UnityProof -executeMethod PlaytestBuild.Build -buildPath <dir>\InfiniteConquestPlaytest.exe
++// Run UnityProof/Tools/stage_playtest_assets.py first to stage models/SFX (the build works without them:
++// every card then shows its typed stand-in and generic cues).
++public static class PlaytestBuild {
++    public const string ScenePath = "Assets/Scenes/Playtest.unity";
++    const string ProofScenePath = "Assets/Scenes/MovementProof.unity";
++    const string TokensDir = "Assets/Playtest/Resources/Tokens";
++    const string ParticleMatPath = "Assets/Playtest/Materials/ParticleAdditive.mat";
++    const string DumpPath = "Assets/Playtest/Data/dump-seed-42.txt";
++    static readonly List<string> results = new List<string>();
++    static void Check(bool ok, string name) { results.Add((ok ? "PASS " : "FAIL ") + name); Debug.Log("PLAYTEST_VALIDATE " + (ok ? "PASS " : "FAIL ") + name); if (!ok) throw new Exception("FAILED: " + name); }
++    static string Arg(string name, string fallback) {
++        var a = Environment.GetCommandLineArgs();
++        for (int i = 0; i < a.Length - 1; i++) if (a[i] == name) return a[i + 1];
++        return fallback;
++    }
++
++    [MenuItem("Infinite Conquest/Prepare playtest scene")]
++    public static void Prepare() {
++        results.Clear();
++        ProofBuild.Validate(); // the 14 AI-036 movement assertions stay green
++        Check(true, "ProofBuild.Validate (AI-036 fixture + hex geometry)");
++        AssetDatabase.Refresh();
++        // Apply PlaytestTokenImport settings to tokens imported before the postprocessor existed.
++        foreach (var guid in AssetDatabase.FindAssets("", new[] { TokensDir })) {
++            var p = AssetDatabase.GUIDToAssetPath(guid);
++            var imp = AssetImporter.GetAtPath(p);
++            if (imp is TextureImporter ti && ti.maxTextureSize != 1024) { ti.maxTextureSize = 1024; ti.SaveAndReimport(); }
++            else if (imp is ModelImporter mi && mi.materialImportMode != ModelImporterMaterialImportMode.None) { mi.materialImportMode = ModelImporterMaterialImportMode.None; mi.importAnimation = PlaytestTokenImport.IsRigged(p); mi.SaveAndReimport(); }
++        }
++        int mats = 0;
++        if (Directory.Exists(TokensDir)) foreach (var dir in Directory.GetDirectories(TokensDir)) {
++            string d = dir.Replace('\\', '/');
++            if (File.Exists(d + "/Token_BaseColor.png")) { TokenPreview.BuildMaterial(d); mats++; }
++        }
++        Debug.Log("PLAYTEST token materials built: " + mats);
++        var particle = ParticleMaterial();
++        var dump = AssetDatabase.LoadAssetAtPath<TextAsset>(DumpPath);
++        Check(dump != null, "bundled AI-066 seed-42 dump present");
++        var evs = WireEvent.ParseJsonl(dump.text);
++        Check(evs.Count == 235 && evs.Last().@event == "GAME_OVER" && evs.Last().player == 0, "seed-42 dump = 235 events, GAME_OVER winner 0");
++        Check(evs.Count(e => e.@event == "CARD_PLAYED" && e.hasTo) == evs.Count(e => e.@event == "CARD_PLAYED"), "every CARD_PLAYED carries a target hex");
++        PlaytestCatalog.Load();
++        var cat = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Playtest/Resources/Playtest/cards.json");
++        Check(cat != null, "catalog cards.json present");
++        var cards = JsonUtility.FromJson<CatalogProbe>(cat.text).cards;
++        Check(cards.Length == 139, "catalog has 139 cards");
++        foreach (var t in new[] { "LAND", "STRUCTURE", "CHARACTER", "CAPITAL", "SPELL" }) Check(cards.Any(c => c.type == t), "catalog has type " + t);
++        int withModel = 0;
++        foreach (var c in cards.Where(c => !string.IsNullOrEmpty(c.model))) {
++            Check(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Playtest/Resources/" + c.model + ".fbx") != null, "model imports: " + c.id);
++            withModel++;
++        }
++        Debug.Log("PLAYTEST real models: " + withModel);
++        foreach (var e in evs.Where(e => e.card_id != null)) Check(cards.Any(c => c.id == e.card_id) || e.card_id.Contains("capital"), "dump card in catalog: " + e.card_id);
++        BridgeSelfTest();
++
++        var scene = File.Exists(ScenePath) ? EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single)
++                                           : EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
++        var game = UnityEngine.Object.FindAnyObjectByType<PlaytestGame>();
++        if (game == null) game = new GameObject("Playtest").AddComponent<PlaytestGame>();
++        game.LitShader = Shader.Find("Universal Render Pipeline/Lit");
++        game.UnlitShader = Shader.Find("Universal Render Pipeline/Unlit");
++        game.ParticleMaterial = particle;
++        game.DefaultDump = dump;
++        Check(game.LitShader != null && game.UnlitShader != null && particle != null, "URP shaders + particle material referenced by the scene");
++        if (Camera.main == null) {
++            var cam = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener)); cam.tag = "MainCamera";
++        }
++        EditorUtility.SetDirty(game);
++        EditorSceneManager.SaveScene(scene, ScenePath);
++        EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true), new EditorBuildSettingsScene(ProofScenePath, true) };
++        // The proof scene keeps its explicit shader reference (ProofBuild contract).
++        var proofScene = EditorSceneManager.OpenScene(ProofScenePath, OpenSceneMode.Single);
++        var proof = UnityEngine.Object.FindAnyObjectByType<InfiniteConquest.Proof.MovementProof>();
++        Check(proof != null && proof.ProofShader != null, "MovementProof scene keeps its shader reference for -proofSmoke");
++        Directory.CreateDirectory("Build");
++        File.WriteAllText("Build/playtest-validation.json", "{\"passed\":true,\"checks\":" + results.Count + ",\"realModels\":" + withModel + "}");
++    }
++
++    [MenuItem("Infinite Conquest/Build playtest (Windows)")]
++    public static void Build() {
++        Prepare();
++        PlayerSettings.productName = "Infinite Conquest Playtest";
++        PlayerSettings.defaultScreenWidth = 1600; PlayerSettings.defaultScreenHeight = 900;
++        PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
++        PlayerSettings.resizableWindow = true;
++        string path = Arg("-buildPath", "Build/Playtest/InfiniteConquestPlaytest.exe");
++        var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions {
++            scenes = new[] { ScenePath, ProofScenePath }, locationPathName = path,
++            target = BuildTarget.StandaloneWindows64, options = BuildOptions.None
++        });
++        if (report.summary.result != BuildResult.Succeeded) throw new Exception("Playtest build failed: " + report.summary.result);
++        Debug.Log("PLAYTEST_BUILD PASS " + path + " size=" + report.summary.totalSize);
++    }
++
++    [Serializable] class CatalogProbe { public CardEntry[] cards; }
++
++    static Material ParticleMaterial() {
++        Directory.CreateDirectory(Path.GetDirectoryName(ParticleMatPath));
++        var mat = AssetDatabase.LoadAssetAtPath<Material>(ParticleMatPath);
++        var shader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
++        if (mat == null) { mat = new Material(shader); AssetDatabase.CreateAsset(mat, ParticleMatPath); }
++        mat.shader = shader;
++        // Transparent, additive (URP particle GUI conventions set by hand for batch mode).
++        mat.SetFloat("_Surface", 1); mat.SetFloat("_Blend", 2);
++        mat.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
++        mat.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.One);
++        mat.SetFloat("_ZWrite", 0);
++        mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
++        mat.SetOverrideTag("RenderType", "Transparent");
++        mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
++        mat.SetColor("_BaseColor", Color.white);
++        var soft = new Texture2D(64, 64, TextureFormat.RGBA32, false);
++        string texPath = "Assets/Playtest/Materials/SoftDot.png";
++        if (!File.Exists(texPath)) {
++            for (int y = 0; y < 64; y++) for (int x = 0; x < 64; x++) {
++                float d = Vector2.Distance(new Vector2(x, y), new Vector2(31.5f, 31.5f)) / 32f;
++                float a = Mathf.Clamp01(1 - d); a *= a;
++                soft.SetPixel(x, y, new Color(1, 1, 1, a));
++            }
++            File.WriteAllBytes(texPath, soft.EncodeToPNG()); AssetDatabase.ImportAsset(texPath);
++            var imp = (TextureImporter)AssetImporter.GetAtPath(texPath); imp.alphaIsTransparency = true; imp.SaveAndReimport();
++        }
++        mat.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(texPath));
++        EditorUtility.SetDirty(mat); AssetDatabase.SaveAssets();
++        return mat;
++    }
++
+     // BridgeClient against canned AI-079 v1.0.0 lines.
+     static void BridgeSelfTest() {
+         var sentWriter = new StringWriter();
+@@ -147,14 +147,14 @@
+                    + "{\"id\":\"unity-2\",\"ok\":true,\"revision\":0,\"events\":[],\"legal\":[{\"id\":\"r0-a1\",\"type\":\"move\",\"instance_id\":\"i1\",\"card_id\":\"zeus_arc_relay_scout\",\"to\":{\"x\":1,\"y\":2}},{\"id\":\"r0-a2\",\"type\":\"end_turn\"}]}\n"
+                    + "{\"id\":\"unity-3\",\"ok\":false,\"revision\":0,\"error_code\":\"INVALID_ACTION\",\"error\":\"unknown or stale action id: zz\"}\n";
+         var client = new BridgeClient(null, sentWriter, new StringReader(canned), null, transcriptWriter);
+-        client.New(42, 0); client.Legal(); client.Act("zz");
+-        var got = new List<BridgeResponse>();
+-        var until = DateTime.Now.AddSeconds(5);
+-        while (got.Count < 3 && DateTime.Now < until) { if (client.TryReceive(out var r)) got.Add(r); else System.Threading.Thread.Sleep(10); }
+-        var sent = sentWriter.ToString().Split('\n').Select(s => s.Trim()).Where(s => s.Length > 0).ToArray();
++        client.New(42, 0); client.Legal(); client.Act("zz");
++        var got = new List<BridgeResponse>();
++        var until = DateTime.Now.AddSeconds(5);
++        while (got.Count < 3 && DateTime.Now < until) { if (client.TryReceive(out var r)) got.Add(r); else System.Threading.Thread.Sleep(10); }
++        var sent = sentWriter.ToString().Split('\n').Select(s => s.Trim()).Where(s => s.Length > 0).ToArray();
+         Check(sent.Length == 3 && sent[0].Contains("\"op\":\"new\"") && sent[0].Contains("\"human_player\":0") && sent[1].Contains("\"op\":\"legal\"") && sent[2].Contains("\"op\":\"act\"") && sent[2].Contains("\"action_id\":\"zz\""), "bridge client writes v1.0.0 new/legal/act lines");
+-        Check(got.Count == 3, "bridge client reads three responses");
+-        Check(got[0].ok && got[0].events.Length == 1 && got[0].events[0].hasTo && got[0].events[0].to.y == 1 && got[0].state.players[0].hand.Length == 1 && got[0].state.board[0].stack[0].owner == 0, "bridge response: events + state parsed");
++        Check(got.Count == 3, "bridge client reads three responses");
++        Check(got[0].ok && got[0].events.Length == 1 && got[0].events[0].hasTo && got[0].events[0].to.y == 1 && got[0].state.players[0].hand.Length == 1 && got[0].state.board[0].stack[0].owner == 0, "bridge response: events + state parsed");
+         Check(got[1].legal.Length == 2 && got[1].legal[0].to.y == 2 && got[1].legal[1].type == "end_turn", "bridge response: legal actions parsed");
+         Check(!got[2].ok && got[2].error_code == "INVALID_ACTION" && got[2].error.Contains("stale"), "bridge response: illegal id error surfaced");
+         var transcript = transcriptWriter.ToString().Split('\n').Select(s => s.Trim()).Where(s => s.Length > 0).ToArray();
+@@ -162,21 +162,24 @@
+               && transcript.Count(s => s.Contains("\"direction\":\"response\"")) == 3,
+               "bridge transcript records exact request/response lines without changing protocol streams");
+     }
+-}
+-
+-// Keeps staged tokens light: 1024px textures, no FBX material/animation import (materials are built from
+-// Token_*.png by TokenPreview.BuildMaterial and assigned at runtime).
+-public sealed class PlaytestTokenImport : AssetPostprocessor {
+-    static bool IsToken(string path) => path.Replace('\\', '/').StartsWith("Assets/Playtest/Resources/Tokens/");
+-    void OnPreprocessTexture() {
+-        if (!IsToken(assetPath)) return;
+-        var t = (TextureImporter)assetImporter;
+-        t.maxTextureSize = 1024;
+-    }
+-    void OnPreprocessModel() {
+-        if (!IsToken(assetPath)) return;
+-        var m = (ModelImporter)assetImporter;
+-        m.materialImportMode = ModelImporterMaterialImportMode.None;
+-        m.importAnimation = false; m.importCameras = false; m.importLights = false;
+-    }
+-}
++}
++
++// Keeps staged tokens light: 1024px textures, no FBX material/animation import (materials are built from
++// Token_*.png by TokenPreview.BuildMaterial and assigned at runtime).
++public sealed class PlaytestTokenImport : AssetPostprocessor {
++    static bool IsToken(string path) => path.Replace('\\', '/').StartsWith("Assets/Playtest/Resources/Tokens/");
++    void OnPreprocessTexture() {
++        if (!IsToken(assetPath)) return;
++        var t = (TextureImporter)assetImporter;
++        t.maxTextureSize = 1024;
++    }
++    void OnPreprocessModel() {
++        if (!IsToken(assetPath)) return;
++        var m = (ModelImporter)assetImporter;
++        m.materialImportMode = ModelImporterMaterialImportMode.None;
++        // AI-060-RIG-COMBAT: rigged character tokens (a rig report sits in Editor/RigReports) keep their combat takes.
++        m.importAnimation = IsRigged(assetPath); m.importCameras = false; m.importLights = false;
++    }
++    public static bool IsRigged(string path) =>
++        System.IO.File.Exists("Assets/Playtest/Editor/RigReports/" + System.IO.Path.GetFileNameWithoutExtension(path) + "_rig_report.json");
++}
