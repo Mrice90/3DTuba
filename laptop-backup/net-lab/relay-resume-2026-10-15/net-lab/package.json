@@ -1,0 +1,1 @@
+{"description":"Local multiplayer-lobby development slice for Infinite Conquest 3D (AI-039+). Adapter around the pinned alpha lobby worker contract; loopback only.","name":"lobby-lab","private":true,"scripts":{"demo":"node demo.js","start":"node server.js","test":"node --test \"test/**/*.test.js\""},"type":"module","version":"0.1.0"}

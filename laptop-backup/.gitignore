@@ -1,0 +1,4 @@
+# Engine, runner and adapter project files are real source here (the root ignore treats *.csproj as Unity-generated).
+!rules-engine-source-2026-10-13/**/*.csproj
+!codex-online-2026-10-18-snapshot/runner/*.csproj
+!codex-online-2026-10-18-snapshot/source/**/*.csproj

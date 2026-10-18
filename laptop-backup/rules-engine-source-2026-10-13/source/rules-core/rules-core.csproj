@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>InfiniteConquest.RulesCore</AssemblyName>
+    <RootNamespace>InfiniteConquest.RulesCore</RootNamespace>
+    <Description>Draft C# port of the Infinite Conquest 2D alpha rules engine (AI-083 prep). Not reviewed, not tested.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Text.Json">
+      <HintPath>$(UnityEditorData)/BCLExtensions/TargetingPacks/netstandard2.1/ref/System.Text.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

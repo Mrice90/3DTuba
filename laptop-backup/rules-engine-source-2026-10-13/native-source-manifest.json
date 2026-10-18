@@ -1,0 +1,242 @@
+[
+  {
+    "path": "runner/Runner.cs",
+    "sha256": "9dd83e947304535fad5383c82cd78737567ab9e77be049cabebf56806b09c741"
+  },
+  {
+    "path": "runner/Runner.csproj",
+    "sha256": "e5a039d97be9d95b7bf22ae326f1ebee094b92e677eca4fbf61fd0c6b408e35c"
+  },
+  {
+    "path": "source/adapter/NativeActionHints.cs",
+    "sha256": "85bd31c84dd8cb626374641d0b6b8aa0f626ed645a897d085d496d454989e650"
+  },
+  {
+    "path": "source/adapter/NativeRules.csproj",
+    "sha256": "fca1b3b60daef578d9ac8cad9986f0171fede54a76f23622fc28fd14fcb5b416"
+  },
+  {
+    "path": "source/adapter/NativeRulesSession.cs",
+    "sha256": "3b96cb3e959cadb69fef28d09a71234bdc0af4d7a7589d3636ac613a5beb0cb4"
+  },
+  {
+    "path": "source/adapter/PlaytestBot.cs",
+    "sha256": "de2792af7f2a982f8beef65cbbede06bc3b5f32359b714c0fcb92bfc483e5046"
+  },
+  {
+    "path": "source/rules-core/Bot/ActionHints.cs",
+    "sha256": "42a548f8bb9644ada203fb73b7b652f543f95545034031c7d51311e3c65cdeb1"
+  },
+  {
+    "path": "source/rules-core/Bot/BotDifficulty.cs",
+    "sha256": "08d9f362155a804958f58e56459cfa515e656901f4b10516da1db27bca8ad628"
+  },
+  {
+    "path": "source/rules-core/Bot/BotPlayer.cs",
+    "sha256": "19235049f633afbd5922b17e3001fe4894d00dc3e4433d32aa24745b510bafde"
+  },
+  {
+    "path": "source/rules-core/Bot/CommandProcessor.cs",
+    "sha256": "de74b1ac5b9275f88b48355e2f4751654f82972e7da4b1e1f7358960e1a47ee5"
+  },
+  {
+    "path": "source/rules-core/Compatibility.cs",
+    "sha256": "bc7ed5004782d1a91ce7293d30d33d96d9f71a137d81a3bdba820182c1b861dd"
+  },
+  {
+    "path": "source/rules-core/Core/ActionResult.cs",
+    "sha256": "21a61ba64b7c2233fd43dcd15208baad23740343d91f4abf649510265e953a6a"
+  },
+  {
+    "path": "source/rules-core/Core/BoardGeometry.cs",
+    "sha256": "863b80903d0bd9c74f7435dcb5d751cef66eab9593b5cd383f67ed2925087c61"
+  },
+  {
+    "path": "source/rules-core/Core/BoardPosition.cs",
+    "sha256": "b014fc17d254ffc1a2184aabc1b77c6355de6a1d5f690f74d8634435ed7ffe48"
+  },
+  {
+    "path": "source/rules-core/Core/BoardState.cs",
+    "sha256": "859dfd759bdd1f7efc81a107df897b0b6a49a159ee3b1e5464bf1c5c296c1694"
+  },
+  {
+    "path": "source/rules-core/Core/CapitalDeployment.cs",
+    "sha256": "c32bcaca9a594ea56f4c3fcc10904a45b7df936aab357e9ed8edafe339d739f5"
+  },
+  {
+    "path": "source/rules-core/Core/CapitalPassive.cs",
+    "sha256": "76aa305608f1b6c7d149b3a3a4b3d2ef1b3eae1d5a584ebeef868b8976a6d166"
+  },
+  {
+    "path": "source/rules-core/Core/CapitalPassiveRules.cs",
+    "sha256": "de547c28840cae2f3add5bd57c487cfb728ec47a648a7a2bbdf3d4437eb9a457"
+  },
+  {
+    "path": "source/rules-core/Core/CardAbilityRules.cs",
+    "sha256": "d8f6c10f3a54d45e07eb776c0c25db5cedc08f945c6777fdcfc4ef3d3e7fec67"
+  },
+  {
+    "path": "source/rules-core/Core/CardIdentity.cs",
+    "sha256": "ab0b9fba2f946675b2e65f4983eddcc97f04b3e2eb8f1e3b85544cf3a27d40b8"
+  },
+  {
+    "path": "source/rules-core/Core/CardInstance.cs",
+    "sha256": "3a90d9c80806bbee8a3bcbf5aa2bfd4011e56ba92ddbdf02ac28c8a2e431692d"
+  },
+  {
+    "path": "source/rules-core/Core/DeckBuild.cs",
+    "sha256": "59e731a6181e835b3229eb7bc91a4e74db38b54ee3b449c88fb5de0d1bd44276"
+  },
+  {
+    "path": "source/rules-core/Core/DeckValidator.cs",
+    "sha256": "4d8965980bef8d96a2af2291be571f39299f8f1ade87d3f1b8e6b23ee9bf9dc5"
+  },
+  {
+    "path": "source/rules-core/Core/DevelopmentRules.cs",
+    "sha256": "02a16cf154af6e033657116a46992458c27b6579a6f26ee956a8680649ec53c7"
+  },
+  {
+    "path": "source/rules-core/Core/GameAction.cs",
+    "sha256": "f27535819e008eaf09392c2d906fd1b057c37d1c80659656d06015cbd3360dfb"
+  },
+  {
+    "path": "source/rules-core/Core/GameEngine.cs",
+    "sha256": "dad4ed96eab8ead6606aad18074392b5e1763cfc01d989b316684b475fadd6d3"
+  },
+  {
+    "path": "source/rules-core/Core/GameEvent.cs",
+    "sha256": "a9650a0f17eeff1007945c75e5b5c768a4e3b1041053ea5c5c49904fa5fb9324"
+  },
+  {
+    "path": "source/rules-core/Core/GameSnapshot.cs",
+    "sha256": "a7ba300efc735fd47b61bc6139dfa38ade55d6ad0a6de989008a07ca79b190a5"
+  },
+  {
+    "path": "source/rules-core/Core/GameState.cs",
+    "sha256": "937960d676190a876a28fd8d550c663fde0eba3dec8b24d343f3041918980eb0"
+  },
+  {
+    "path": "source/rules-core/Core/LineOfSightRules.cs",
+    "sha256": "7818f1f808a1c8a0dd43cf835493483af212cdbcdc72e5532cbf398fe382cfcb"
+  },
+  {
+    "path": "source/rules-core/Core/MatchFactory.cs",
+    "sha256": "192f59357f0ce60c1088b610ee7dbc1acb35186855957b2b8636a622368b8352"
+  },
+  {
+    "path": "source/rules-core/Core/MatchRules.cs",
+    "sha256": "5e806edaf78c6e1d37eb367d05f8ae654249e8cc1f6dbba55a87930b3eb71ab9"
+  },
+  {
+    "path": "source/rules-core/Core/MovementRules.cs",
+    "sha256": "ff1cf70426ad926c0e1b131d63c0bcd76dfecc7f1dc720b89ecc8de57f0a7eb5"
+  },
+  {
+    "path": "source/rules-core/Core/PlayerState.cs",
+    "sha256": "0c77eff25e91ff4030339d0b225aae46b19b4540f521d84bc041c767c2c32696"
+  },
+  {
+    "path": "source/rules-core/Core/PurchaseRules.cs",
+    "sha256": "a99d5ac8772fe4958e11ce60902689e8a18f37f6ee2ea224393a1d24091e0561"
+  },
+  {
+    "path": "source/rules-core/Core/SeededRng.cs",
+    "sha256": "bbdedca3fe3c3d64b57e4550283a39470d0781a1bfc9ca68f702570e59807386"
+  },
+  {
+    "path": "source/rules-core/Core/SnapshotRedactor.cs",
+    "sha256": "3ae1f30a57190f79af9f8b8eecb42f209215e7807e8b44ae2c5298618fa1f7bd"
+  },
+  {
+    "path": "source/rules-core/Core/SummonCapacityPolicy.cs",
+    "sha256": "d1227c93b036e317758a81cafd47572c89ff1f82fffd2aba789257ec8593366f"
+  },
+  {
+    "path": "source/rules-core/Core/TerrainRules.cs",
+    "sha256": "e0ad58894ffdedbf8294d637bd2ba68684e160fb800d946ac1ab2acfe27aeb11"
+  },
+  {
+    "path": "source/rules-core/Core/VictoryEvaluator.cs",
+    "sha256": "1775a178bfc0a9952a5893ba2c660c69bfe2f49ef552ea27bfa4d1f032ad1336"
+  },
+  {
+    "path": "source/rules-core/Data/AbilityEffectType.cs",
+    "sha256": "cd3810f09585692bdd888a71d7fc9cf1092a1ae5c0e7199e71d26869de0b987f"
+  },
+  {
+    "path": "source/rules-core/Data/AbilityTrigger.cs",
+    "sha256": "54a52dae8f2e0c5c9356da7649162dc357436ac17449e6566836a06a521e1ed5"
+  },
+  {
+    "path": "source/rules-core/Data/CardAbility.cs",
+    "sha256": "58da7435c0469d30d57f3c13404de46b61a82330213a7a809490671d9e019273"
+  },
+  {
+    "path": "source/rules-core/Data/CardCatalog.cs",
+    "sha256": "95c09337e077159ef6b58a82766e00a5c705f46ce49914a01e956ad404056a48"
+  },
+  {
+    "path": "source/rules-core/Data/CardData.cs",
+    "sha256": "9f56a570bb413ada1be7ec5be4fad7aa2a25a656c7bfb316c925d9e469030353"
+  },
+  {
+    "path": "source/rules-core/Data/CardDefinition.cs",
+    "sha256": "c6335890089e247282c8b117a38bca52f9cfd0aebcfbbef6ab9dfc711a2cc036"
+  },
+  {
+    "path": "source/rules-core/Data/CardType.cs",
+    "sha256": "87491cb73ed58f43b4e660e280cd9ce87a048938ed9835fd1598afd29bec6246"
+  },
+  {
+    "path": "source/rules-core/Data/ContentStatus.cs",
+    "sha256": "bda85367f45bcbe393a3fe78987c135d069c140d5498caf9c2530ed7c5fb9178"
+  },
+  {
+    "path": "source/rules-core/Data/DevelopmentPassive.cs",
+    "sha256": "5e40c550a3024d23d3fa7ca3b00787917f0b34661b018485a3ce6d14a640e027"
+  },
+  {
+    "path": "source/rules-core/Data/FactionTutorExpansion.cs",
+    "sha256": "a8389d2a66dced4461f5cb0b4c940d0ab9e2855ec5d98219683670327ed443f7"
+  },
+  {
+    "path": "source/rules-core/Data/Keyword.cs",
+    "sha256": "d8a9e37dc52f02b4b564e662602915be2627fd13091f4e0a5ebfb74ad93ef7ed"
+  },
+  {
+    "path": "source/rules-core/Data/KeywordEffect.cs",
+    "sha256": "e1abfa431ad4c62ef21c187b75c929e9d214c591be565ccdd940faceefce49e3"
+  },
+  {
+    "path": "source/rules-core/Data/KeywordEffectRegistry.cs",
+    "sha256": "93ac0d6312d6c3309bc99e02ef54da86469db09e51b377e1d57da30b95840ab6"
+  },
+  {
+    "path": "source/rules-core/Data/KeywordValue.cs",
+    "sha256": "b1f2eefa43bf548e21806006faf6647ef6f1e141e1b865e6773287d6a29c31a7"
+  },
+  {
+    "path": "source/rules-core/Data/Phase.cs",
+    "sha256": "f40f65ef28af9427c7f7b72bc8f9b55f38f9397e6f51d6840dc0000cf4781e98"
+  },
+  {
+    "path": "source/rules-core/Data/SpellEffect.cs",
+    "sha256": "63ae8e1c06d0d8e2db616ca805f262ec33dc822a12af7342dddb3efbdd537e2b"
+  },
+  {
+    "path": "source/rules-core/Data/SpellEffectType.cs",
+    "sha256": "9d071c882204c3f68b6a9b6ebcc21a886df25e53a45cccb193af7b3d6b52dc16"
+  },
+  {
+    "path": "source/rules-core/Data/SpellTarget.cs",
+    "sha256": "09826150b855aa858e019cde7f88fe3b9f18c8c974e310153ebd4f2fa02bd158"
+  },
+  {
+    "path": "source/rules-core/Data/Zone.cs",
+    "sha256": "6a467a6bb2f0f08e9ef470639d7062b5a5e2dca6d7bd808436f884511b45cce8"
+  },
+  {
+    "path": "source/rules-core/rules-core.csproj",
+    "sha256": "aabbf20f915683611b1759a6d7ca6d6d274d8721ac630b02df8e525ee95e89ab"
+  }
+]

@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>netstandard2.1</TargetFramework><LangVersion>latest</LangVersion><AssemblyName>InfiniteConquest.Native</AssemblyName><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="NativeRulesSession.cs" /><Compile Include="PlaytestBot.cs" /><Compile Include="NativeActionHints.cs" />
+    <Reference Include="InfiniteConquest.RulesCore"><HintPath>$(RulesCoreDll)</HintPath></Reference>
+    <Reference Include="System.Text.Json"><HintPath>$(UnityEditorData)/BCLExtensions/TargetingPacks/netstandard2.1/ref/System.Text.Json.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="System.Text.Encodings.Web"><HintPath>$(UnityEditorData)/BCLExtensions/TargetingPacks/netstandard2.1/ref/System.Text.Encodings.Web.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>

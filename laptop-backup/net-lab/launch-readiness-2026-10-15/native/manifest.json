@@ -1,0 +1,24 @@
+{
+  "profile": "purchase-v3-hex37",
+  "files": {
+    "InfiniteConquest.Native.dll": "7f72db847da1454ac789208f7c8198b676102aa284531d052752111a43639231",
+    "InfiniteConquest.RulesCore.dll": "cb5275244a60f22519cf02060661b6b61fae41e0e36f64dcdb890aac7ef068cc",
+    "Runner.deps.json": "79a6d095f7496fc17764ed08543c89331175125b36d76df47fbc574c88dc6082",
+    "Runner.dll": "a25db84e93870c0841962a93f042762f9be5bd692517ac0ff3019ac5ae1200a0",
+    "Runner.runtimeconfig.json": "162d81f468bec570ec15e527433f4de5d5729ffe338ab79b22671f38760d34bd",
+    "data/faction-starters.json": "fabb219377a21da7936c54c4af97bc051bad8434e156b433e2ba0c6a55ccfb2f",
+    "data/previous-starters.json": "461658d98d1eb618fe76b2f30706365870aedf46146b6ada609fb538e3498e85",
+    "data/structure-slots.properties": "0aff8f5e1bef01115f405aafafc0799ceec2bbafa967d310273d5358790f3cb7",
+    "data/cards/development-cards.json": "0c2e6c269eb3a0b391894d2bb648bedfae0efce363145637bf9f7fb4e68a3e64",
+    "data/cards/faction-ability-cards.json": "5cbc219a4d142ee9d0eb3d2fae634bf1ef67bea602d7b00ab288e041609b36f8",
+    "data/cards/faction-apex-cards.json": "feadf1bf5e67135ab0f79f70d2ab6f1c6f12459d146dff766048ca1b75938622",
+    "data/cards/faction-capitals.json": "9de04e78a898b81f837c0609dd068957c5cadb6eed0836c81c5d2335dff7b4fe",
+    "data/cards/faction-cards.json": "ec5ee388103b7e22a6e1b0e6e32e1f94f8071a97e454a4bd9ad3774eccc79601",
+    "data/cards/faction-development-expansion-2.json": "c93a3f06125698b3f63137b486b7919c97ae14050ff4b23544b38ab753d540ae",
+    "data/cards/faction-development-expansion.json": "9191a5cca3a55113f75a5aef5b936b45fff9365f077ee6e9b9649d38ca1fe53a",
+    "data/cards/faction-keyword-cards.json": "ee6dc631243133a0349648699c1b333c4d969b3ec8c1425586f60c020b9c6b65",
+    "data/cards/faction-spells.json": "415b6fbb024824d4cb3ae1adf7e0fe48bf120cfdad628a14d255219ea91cb0ab",
+    "data/cards/prototype-characters.json": "73e543e37584da95bea45e11f1655e097c74c73044a03286f7a6884696a9dd80",
+    "data/cards/tactical-keyword-cards.json": "58711a93141609ce2874d7ac2632c17b1c39af4131c21428b6f47e17c4f12436"
+  }
+}

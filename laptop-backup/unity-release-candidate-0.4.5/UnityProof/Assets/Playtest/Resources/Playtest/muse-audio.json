@@ -1,0 +1,2288 @@
+{
+  "source_commit": "42cae640acf7988360c507b20a38962780ca1c55",
+  "count": 326,
+  "entries": [
+    {
+      "key": "core_match_start",
+      "card_id": "",
+      "cue": "match_start",
+      "scope": "core",
+      "sha256": "f5d4df9018dd4f723cb39e3f53c82d02a9bc3bf29dab86c4d5d6c8b9c13e6515"
+    },
+    {
+      "key": "core_board_build",
+      "card_id": "",
+      "cue": "board_build",
+      "scope": "core",
+      "sha256": "274609787e49ecd20e660bbd5d5207aab50d16a6cac45ea4f1a95c25cb906aca"
+    },
+    {
+      "key": "core_hex_tile_place",
+      "card_id": "",
+      "cue": "hex_tile_place",
+      "scope": "core",
+      "sha256": "58f857ad6d1614dd1130199819b5e668e1a2a01d4fea04dac3196ba63e3692b7"
+    },
+    {
+      "key": "core_hex_hover",
+      "card_id": "",
+      "cue": "hex_hover",
+      "scope": "core",
+      "sha256": "0906e0da65e77b1104616d92197fc334b2a7e1d4b8aff0d5b6c4b8751437a83f"
+    },
+    {
+      "key": "core_hex_select",
+      "card_id": "",
+      "cue": "hex_select",
+      "scope": "core",
+      "sha256": "afa083ab5df789404f128d59efb592957cd29eacc8127481d0b696fdbf41622d"
+    },
+    {
+      "key": "core_legal_move_show",
+      "card_id": "",
+      "cue": "legal_move_show",
+      "scope": "core",
+      "sha256": "7e3543d3c40727c92b397191fc5dc5f2a0b31288bcbb66838b49e11c7ac3a6ad"
+    },
+    {
+      "key": "core_invalid_action",
+      "card_id": "",
+      "cue": "invalid_action",
+      "scope": "core",
+      "sha256": "6daf86e1c3ce64d8ea0a9869a03cfa2b180a3b4bed3dc2121866f997825172de"
+    },
+    {
+      "key": "core_turn_start_player",
+      "card_id": "",
+      "cue": "turn_start_player",
+      "scope": "core",
+      "sha256": "b77d48996a8cf9fe3623783f5db11bbb4d643d714914c4242929791fada80cff"
+    },
+    {
+      "key": "core_turn_start_opponent",
+      "card_id": "",
+      "cue": "turn_start_opponent",
+      "scope": "core",
+      "sha256": "40b9dcfccf08c90efdbccb28853f03960bc3092a7ed39ba54e88b997bce2087d"
+    },
+    {
+      "key": "core_end_turn_button",
+      "card_id": "",
+      "cue": "end_turn_button",
+      "scope": "core",
+      "sha256": "902b1ed253c5711182cc4a46c5145df6849fe9ce358e4402e9e73dbb7e0770d8"
+    },
+    {
+      "key": "core_turn_timer_warning",
+      "card_id": "",
+      "cue": "turn_timer_warning",
+      "scope": "core",
+      "sha256": "a7455dda13d8f4ec0a5c739bdeb0377faa95ad9ad70c0783b33004f7fd22f5b5"
+    },
+    {
+      "key": "core_card_draw",
+      "card_id": "",
+      "cue": "card_draw",
+      "scope": "core",
+      "sha256": "b254a8ff781fac95b61bceec5ed3e9b4b8e7c82d665e28e8092c9a9264e4eef0"
+    },
+    {
+      "key": "core_card_hover",
+      "card_id": "",
+      "cue": "card_hover",
+      "scope": "core",
+      "sha256": "7e800ebff127ad1cad2482fb1427c5aa9e186c83e915ba6887de764e46971a45"
+    },
+    {
+      "key": "core_card_pickup",
+      "card_id": "",
+      "cue": "card_pickup",
+      "scope": "core",
+      "sha256": "3cc62e728e02a20a5944a9d02ac34866208966cb7f8ae4a76729461eddf4c0c2"
+    },
+    {
+      "key": "core_card_play",
+      "card_id": "",
+      "cue": "card_play",
+      "scope": "core",
+      "sha256": "8b38481b2614ef4808447296d82c7c94ff4380134dc8a2f9c8ea95b4a90611c0"
+    },
+    {
+      "key": "core_card_return_hand",
+      "card_id": "",
+      "cue": "card_return_hand",
+      "scope": "core",
+      "sha256": "b293a16e52b970cf6d0523fda594e2e6b57afe2e21f0892198e67be6e5735185"
+    },
+    {
+      "key": "core_deck_shuffle",
+      "card_id": "",
+      "cue": "deck_shuffle",
+      "scope": "core",
+      "sha256": "cd912b2b2e9ba992e0361f5a30d571f48d0d6712defae5c3b48280920da368c6"
+    },
+    {
+      "key": "core_tutor_draw",
+      "card_id": "",
+      "cue": "tutor_draw",
+      "scope": "core",
+      "sha256": "af119039a0debca496e3d20d05c2891867f607f16e4c8e875f95c2d01ebe72e6"
+    },
+    {
+      "key": "core_resource_gain",
+      "card_id": "",
+      "cue": "resource_gain",
+      "scope": "core",
+      "sha256": "4b8961059495cd99d68aa6067b30cb732c632ff0c8ef6eaa4fb3247e69ae6a58"
+    },
+    {
+      "key": "core_resource_spend",
+      "card_id": "",
+      "cue": "resource_spend",
+      "scope": "core",
+      "sha256": "95e882b74c1d5f8c0c2c91aaefdfefcfb3cef48eb535e6aaf0f06ceb5820bede"
+    },
+    {
+      "key": "core_damage_number",
+      "card_id": "",
+      "cue": "damage_number",
+      "scope": "core",
+      "sha256": "7b8276a9303119b6288a69e6f31311e10a2945ac39010af24e5c37766a7d5f4d"
+    },
+    {
+      "key": "core_heal",
+      "card_id": "",
+      "cue": "heal",
+      "scope": "core",
+      "sha256": "18e65b2fbf47fc67ac7e3b8a5f5c74e64c16e2e9f19f0d139859c413cd842150"
+    },
+    {
+      "key": "core_buff",
+      "card_id": "",
+      "cue": "buff",
+      "scope": "core",
+      "sha256": "04f3722ad1f889730e73dababd4db241a9eacc44c46e42b8071d7c92dc83ca44"
+    },
+    {
+      "key": "core_debuff",
+      "card_id": "",
+      "cue": "debuff",
+      "scope": "core",
+      "sha256": "3b57495c6eb9c4f9f8d77c4aff2532dc38438bef13ec64ac54a8a992bda7d938"
+    },
+    {
+      "key": "core_shield_block",
+      "card_id": "",
+      "cue": "shield_block",
+      "scope": "core",
+      "sha256": "d9a174cb5cabaee4dd819aad714c18e81006f707f823608e6cb3a8a30d1e505a"
+    },
+    {
+      "key": "core_exhaustion_damage",
+      "card_id": "",
+      "cue": "exhaustion_damage",
+      "scope": "core",
+      "sha256": "134ae5666139a8a2eba95f0d070d86469cada854ffbcf632940b69b27d5020e0"
+    },
+    {
+      "key": "core_opportunity_attack",
+      "card_id": "",
+      "cue": "opportunity_attack",
+      "scope": "core",
+      "sha256": "a1827cc877dc9dfed74b7632912549b9a01d71d3ea1ef1ef4cf96f48b1c9eb34"
+    },
+    {
+      "key": "core_capital_reveal",
+      "card_id": "",
+      "cue": "capital_reveal",
+      "scope": "core",
+      "sha256": "ce37c2fd51fe21034cf9e14e2547bfb925b1c9625a4e7c8945d072231e58e37f"
+    },
+    {
+      "key": "core_capital_warning",
+      "card_id": "",
+      "cue": "capital_warning",
+      "scope": "core",
+      "sha256": "00100985e6deac01e5e0a3eee16dd16a8d93ef803d89a2aafbccafadb27db73b"
+    },
+    {
+      "key": "poseidon_ability_reefwarden_ability",
+      "card_id": "poseidon_ability_reefwarden",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "a667ea1b1787e837bd5bbdbcd11c22765ed00afd5fe660f45bb459e61b66e291"
+    },
+    {
+      "key": "poseidon_ability_reefwarden_attack",
+      "card_id": "poseidon_ability_reefwarden",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "367e5e303cd805702e8cc7b4c0be9f094ea00a82c761abb3746af047131ee24c"
+    },
+    {
+      "key": "poseidon_ability_reefwarden_deploy",
+      "card_id": "poseidon_ability_reefwarden",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "99841f6c6e67784c14409612e3b155b352454484f91466da6a48ed2a73df828f"
+    },
+    {
+      "key": "poseidon_ability_reefwarden_destroy",
+      "card_id": "poseidon_ability_reefwarden",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "aeda502ce85af40d2bbbe804f0abdc37d089f653144ac1ef58bdf0b5f275b5c8"
+    },
+    {
+      "key": "poseidon_ability_reefwarden_hit",
+      "card_id": "poseidon_ability_reefwarden",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "2dcdf99f51dab6c6d2ecfb94fb64e17be5c3ae3d90248ad941b55cb3a4634d42"
+    },
+    {
+      "key": "poseidon_ability_reefwarden_idle",
+      "card_id": "poseidon_ability_reefwarden",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "a418f2482b0b318d37841e44e600099690475af0556dc3375c62d76deaba956c"
+    },
+    {
+      "key": "poseidon_ability_reefwarden_move",
+      "card_id": "poseidon_ability_reefwarden",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "1e75bb345418398314a9e866b513b480ff96e5c9dfb061ea03a4e4ab0b02640a"
+    },
+    {
+      "key": "zeus_apex_thunder_gods_verdict_deploy",
+      "card_id": "zeus_apex_thunder_gods_verdict",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "e98e9e2fbbeef1c75919924ee9e66e54ba915eaa2c8ce3eba24db78a92012ce0"
+    },
+    {
+      "key": "zeus_apex_thunder_gods_verdict_signature",
+      "card_id": "zeus_apex_thunder_gods_verdict",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "b418410cc14968ebaeb301fe7051b595e8ec214ba1ec850297f03189c2b5de83"
+    },
+    {
+      "key": "zeus_apex_wrath_of_olympus_deploy",
+      "card_id": "zeus_apex_wrath_of_olympus",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "5515fc7b4b76a4710946ae07880b2d76602c26a6c3171735c8acd92c9dd429a8"
+    },
+    {
+      "key": "zeus_apex_wrath_of_olympus_signature",
+      "card_id": "zeus_apex_wrath_of_olympus",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "7f69d71f39d3e833e81820400c4370bf94c32af40b2c2f8960c3b2b6b6ec490f"
+    },
+    {
+      "key": "zeus_apex_divine_tailwind_deploy",
+      "card_id": "zeus_apex_divine_tailwind",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "f34d2b6b787a38c38a65eddf305ca89ad745ca131ae3412abf9af35141b1e9ad"
+    },
+    {
+      "key": "poseidon_apex_leviathan_nursery_trench_ability",
+      "card_id": "poseidon_apex_leviathan_nursery_trench",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "ff7a3e432b3fedda4b646b56908dd1beeebc49729c0053ec647cfed472edb8a9"
+    },
+    {
+      "key": "poseidon_apex_leviathan_nursery_trench_deploy",
+      "card_id": "poseidon_apex_leviathan_nursery_trench",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "8d4101da832f195ea60c26083390c1df6bd2762d1e9f62be30b6eb5d55346707"
+    },
+    {
+      "key": "poseidon_apex_leviathan_nursery_trench_destroy",
+      "card_id": "poseidon_apex_leviathan_nursery_trench",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "6b6417d1d74044bd5b6a03de2a110849506b85dcfbb51a17b0f9b494b08721e4"
+    },
+    {
+      "key": "poseidon_apex_leviathan_nursery_trench_idle",
+      "card_id": "poseidon_apex_leviathan_nursery_trench",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "ea46156e62ebf2829853070499a5e4ffbbe920e01f1669d28a27822ea372af84"
+    },
+    {
+      "key": "poseidon_apex_leviathan_nursery_trench_signature",
+      "card_id": "poseidon_apex_leviathan_nursery_trench",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "268f87f728f5ad30d9cfb53e2d6ff54be5fc48a06d26fa3d8a1e32d9e0db38b5"
+    },
+    {
+      "key": "poseidon_apex_trident_confluence_ability",
+      "card_id": "poseidon_apex_trident_confluence",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "30f6eae42045eecf98db9f2b9ccd5854a69840491857b2fbcaae7d9e61aaa293"
+    },
+    {
+      "key": "poseidon_apex_trident_confluence_deploy",
+      "card_id": "poseidon_apex_trident_confluence",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "0857798a17cdfad9ff4e41687e0db5324892fb7c434e83b36e578054a55f089a"
+    },
+    {
+      "key": "poseidon_apex_trident_confluence_destroy",
+      "card_id": "poseidon_apex_trident_confluence",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "615ec2bb68e2e437c4eb36fa35070185d25b0e2d0ddec37ddd342e3b6e72e0ab"
+    },
+    {
+      "key": "poseidon_apex_trident_confluence_idle",
+      "card_id": "poseidon_apex_trident_confluence",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "5586e5c721fd2f2afb2615ff234c8387e6ade46cbd8cd2e584e1df464e2fc0fc"
+    },
+    {
+      "key": "poseidon_apex_trident_confluence_signature",
+      "card_id": "poseidon_apex_trident_confluence",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "0ac89a5b5294001d34ca1d0a7456188a274553a1078c1c48b568f4af5fb7b838"
+    },
+    {
+      "key": "poseidon_apex_worldsea_platform_ability",
+      "card_id": "poseidon_apex_worldsea_platform",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "0ae8b27f0dc94874d93511d35cc55c554ab5c0e9d0ec0d371c57a251118e8cee"
+    },
+    {
+      "key": "poseidon_apex_worldsea_platform_deploy",
+      "card_id": "poseidon_apex_worldsea_platform",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "782a2faf0d71fae99f906300bc93e087b3490b4fc2cfa92d2c94ccae78249ce7"
+    },
+    {
+      "key": "poseidon_apex_worldsea_platform_destroy",
+      "card_id": "poseidon_apex_worldsea_platform",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "f1d5199d77eca71589bcab3301e50ae8eacd400ec6bd2d2b862d04925fe57ddf"
+    },
+    {
+      "key": "poseidon_apex_worldsea_platform_idle",
+      "card_id": "poseidon_apex_worldsea_platform",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "b6c9775091dd34d1832a82c5618379c5a391935c5fb702d42fd86193b968c297"
+    },
+    {
+      "key": "zeus_capital_cloud_throne_hit",
+      "card_id": "zeus_capital_cloud_throne",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "dc217eb363a1bb3974214bd55b0fbca256662d6134b6e7e379f23774d6bfdf0c"
+    },
+    {
+      "key": "zeus_capital_cloud_throne_idle",
+      "card_id": "zeus_capital_cloud_throne",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "d2a7200995669bd793e98314e3ea2103b17ace03a6875fdec45e3cf76e149e42"
+    },
+    {
+      "key": "zeus_capital_cloud_throne_signature",
+      "card_id": "zeus_capital_cloud_throne",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "a0ded16035c58009ae911b4390c93e6939f5ccbffa926db2420b3924e4c3472d"
+    },
+    {
+      "key": "poseidon_capital_atlantis_nexus_ability",
+      "card_id": "poseidon_capital_atlantis_nexus",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "30c9a7341a27e2cba557e5dd8a9a9738377513a9f4f21839a9e48a3ff7c0b18e"
+    },
+    {
+      "key": "poseidon_capital_atlantis_nexus_deploy",
+      "card_id": "poseidon_capital_atlantis_nexus",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "07cd640fb394812dca2ac85fffc5978370e8e98e9c3d0da86c2bcc0c6c6d03eb"
+    },
+    {
+      "key": "poseidon_capital_atlantis_nexus_destroy",
+      "card_id": "poseidon_capital_atlantis_nexus",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "ddf0228dda2ac3bfeaa9a2c9a6714745077e6d350b5fc90096db438f9259d6dc"
+    },
+    {
+      "key": "poseidon_capital_atlantis_nexus_hit",
+      "card_id": "poseidon_capital_atlantis_nexus",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "b811a22d06e108f661900c5aba6fb519cb28c14e8101c88cf195e0579c3fffbe"
+    },
+    {
+      "key": "poseidon_capital_atlantis_nexus_idle",
+      "card_id": "poseidon_capital_atlantis_nexus",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "6ffc8569b16d33c5abca08829a50a17d1c1930b2236faa5a1ff9600d8f9b1f08"
+    },
+    {
+      "key": "poseidon_capital_atlantis_nexus_signature",
+      "card_id": "poseidon_capital_atlantis_nexus",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "2c73919043e049d6f34b21271894cee441ee1af788d9f33cd2fbd8e788ef4eef"
+    },
+    {
+      "key": "poseidon_capital_trident_bastion_ability",
+      "card_id": "poseidon_capital_trident_bastion",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "9925dd28a7c6506baed74234f8a3984ff1f9df0a440c34bbb88de8c8b05b2801"
+    },
+    {
+      "key": "poseidon_capital_trident_bastion_deploy",
+      "card_id": "poseidon_capital_trident_bastion",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "6c8204c0b6b456bf7383275952cd674861737500b24a34411d4b56ef03ba31d6"
+    },
+    {
+      "key": "poseidon_capital_trident_bastion_destroy",
+      "card_id": "poseidon_capital_trident_bastion",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "00e25d7627433baede42ca33798afa98ab0e3211943d2ef463ff67d3f793ad2d"
+    },
+    {
+      "key": "poseidon_capital_trident_bastion_hit",
+      "card_id": "poseidon_capital_trident_bastion",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "d6943182632fc0b738e2412a1bda6396c09957ead3d0c2a8a4c341d439e9f349"
+    },
+    {
+      "key": "poseidon_capital_trident_bastion_idle",
+      "card_id": "poseidon_capital_trident_bastion",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "94d2d425a5c98c85f15b68ceebac056a1fdee6e21b761afbd827d71d0d3c1b57"
+    },
+    {
+      "key": "poseidon_capital_trident_bastion_signature",
+      "card_id": "poseidon_capital_trident_bastion",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "9222198dbcec212e218ebe717ead5d98b0b6576f42316d20455524e503b398a4"
+    },
+    {
+      "key": "poseidon_capital_abyssal_court_ability",
+      "card_id": "poseidon_capital_abyssal_court",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "c618a817dea5aced1cd4c47f3e008ad24da55aead9b12c19e7d4477a636c3284"
+    },
+    {
+      "key": "poseidon_capital_abyssal_court_deploy",
+      "card_id": "poseidon_capital_abyssal_court",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "bdf74b44b1364c4d81578a8bd88accf18500b237366f1cd98721ae049ce28653"
+    },
+    {
+      "key": "poseidon_capital_abyssal_court_destroy",
+      "card_id": "poseidon_capital_abyssal_court",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "8aeeece68be0f7fb86de5cccc3454fa26deb3f8565285fc8643c8a3e6c8fdc0f"
+    },
+    {
+      "key": "poseidon_capital_abyssal_court_hit",
+      "card_id": "poseidon_capital_abyssal_court",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "d538e300b5481c47c95432a5b5b18a1819b53e4ca37d04b9e12d2b933a7ac266"
+    },
+    {
+      "key": "poseidon_capital_abyssal_court_idle",
+      "card_id": "poseidon_capital_abyssal_court",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "76d3651c575ee212238638f9f5adbed61489c3c3229b0734aa4ebb5017cbff7d"
+    },
+    {
+      "key": "poseidon_capital_abyssal_court_signature",
+      "card_id": "poseidon_capital_abyssal_court",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "a1d99e02cb5fb561f1259d613ceebf207b61c46b7d93a9c64cdfa5ec16bd86c2"
+    },
+    {
+      "key": "zeus_cloudline_courier_ability",
+      "card_id": "zeus_cloudline_courier",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "384f602f9742209c54c7077726f6672f21b480adca3797000da345424de64b6b"
+    },
+    {
+      "key": "zeus_cloudline_courier_attack",
+      "card_id": "zeus_cloudline_courier",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "cfec6f3fbe9ff4d94be65150e0c42666269b4dedc5c5e2e075916473d8d5d816"
+    },
+    {
+      "key": "zeus_cloudline_courier_deploy",
+      "card_id": "zeus_cloudline_courier",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "ab7f1cb2f18d96dd4086e6c02fac92971758bf4c6d008bbf6943af66eed50cd1"
+    },
+    {
+      "key": "zeus_cloudline_courier_destroy",
+      "card_id": "zeus_cloudline_courier",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "462ff8a8c3eb9e6dac429c012bd577bddb6ed8a89136a0290e34be270d24c40d"
+    },
+    {
+      "key": "zeus_cyclone_marksman_idle",
+      "card_id": "zeus_cyclone_marksman",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "97c3c4e3fc4590bacba5051b0bad206823b7ebeb0573367416caf689364799d5"
+    },
+    {
+      "key": "zeus_cyclone_marksman_move",
+      "card_id": "zeus_cyclone_marksman",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "1c138fc1bed1032e0efa01192d6e89fc8b3c530e424814b9c02f3000b4daf951"
+    },
+    {
+      "key": "zeus_boltwing_cavalier_ability",
+      "card_id": "zeus_boltwing_cavalier",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "127d5f9db13219908683911e8c0b701f493b578a050f3f11b0f5ee3d95258c2c"
+    },
+    {
+      "key": "zeus_boltwing_cavalier_attack",
+      "card_id": "zeus_boltwing_cavalier",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "32fb62d07b36717534c3a362904aeff9bc830c896c2352f6c7948a8b345f4091"
+    },
+    {
+      "key": "zeus_boltwing_cavalier_deploy",
+      "card_id": "zeus_boltwing_cavalier",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "d561124f4572f822a30e462db2e20bc24d712f0543f852c906d6bbb352cb78b5"
+    },
+    {
+      "key": "zeus_boltwing_cavalier_destroy",
+      "card_id": "zeus_boltwing_cavalier",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "885131e1a4af65015c91024d40d530b9367203b7cd644976ff1edc808950c3e0"
+    },
+    {
+      "key": "zeus_boltwing_cavalier_hit",
+      "card_id": "zeus_boltwing_cavalier",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "e897cd81e8295fe50473dd239fe2f2c26216eddfb3c4c93e4585f10d4ffc54dd"
+    },
+    {
+      "key": "zeus_boltwing_cavalier_idle",
+      "card_id": "zeus_boltwing_cavalier",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "5e0c01e8fc6951d627c429bc8db4d1db9772718059ff10d17e44068573e4e08a"
+    },
+    {
+      "key": "zeus_boltwing_cavalier_move",
+      "card_id": "zeus_boltwing_cavalier",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "9789e7e7646ee251b8f663a73009208fa21e5d7b89564652fa82da50d6560970"
+    },
+    {
+      "key": "zeus_tempest_oracle_ability",
+      "card_id": "zeus_tempest_oracle",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "12cb0d0b4cd75d3a03226d575627d607818e2817a9539fc3d9a4779b9f567445"
+    },
+    {
+      "key": "zeus_tempest_oracle_attack",
+      "card_id": "zeus_tempest_oracle",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "6a14467e5b92c4cfd8982fb595d8160ca348d93917066db80eabff91ec4d4a9e"
+    },
+    {
+      "key": "zeus_tempest_oracle_deploy",
+      "card_id": "zeus_tempest_oracle",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "42c8555af313ddcf7c3dafc9b1c471544ec2197a9873569b408c0f523f0329d9"
+    },
+    {
+      "key": "zeus_storm_relay_pylon_deploy",
+      "card_id": "zeus_storm_relay_pylon",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "426e84dfd8b30555e9f826b912e08230c7f50d18da0fe7b18e2aa52adcbe95b9"
+    },
+    {
+      "key": "zeus_storm_relay_pylon_destroy",
+      "card_id": "zeus_storm_relay_pylon",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "d99d16249a1e3dde2b3fe2778ffabc0e8b86996d38d74fc6276d15d446fd4457"
+    },
+    {
+      "key": "zeus_storm_relay_pylon_idle",
+      "card_id": "zeus_storm_relay_pylon",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "285f9d4f0e18d7940427c1d97dffdf851181207b92c68fed3c1dce2be4242806"
+    },
+    {
+      "key": "zeus_cloudwall_bastion_ability",
+      "card_id": "zeus_cloudwall_bastion",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "f7d535f6bbb5346d9b048f8984dd62a9b94d4f1aba46a33d0913183e46fa6c73"
+    },
+    {
+      "key": "zeus_cloudwall_bastion_deploy",
+      "card_id": "zeus_cloudwall_bastion",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "6e228c4450b250cd08530c5966813813ee45ac2dde637a412fd7aaaf1baa7eea"
+    },
+    {
+      "key": "zeus_cloudwall_bastion_destroy",
+      "card_id": "zeus_cloudwall_bastion",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "ccd0e1a680a1dcbdc8f741d10d45df0d5709ffba4ab81640708c1dde12f27c10"
+    },
+    {
+      "key": "zeus_cloudwall_bastion_idle",
+      "card_id": "zeus_cloudwall_bastion",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "79cc62198f4d587a19b1f2592eb3c9dcd3fdad4e27b0f74360ebde8a7ca5c59d"
+    },
+    {
+      "key": "zeus_keraunos_charging_spire_ability",
+      "card_id": "zeus_keraunos_charging_spire",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "ff8c64aa1259b278a64417c8bf6733bf80c1c7122dfb4633cfb27738b74c5198"
+    },
+    {
+      "key": "zeus_keraunos_charging_spire_deploy",
+      "card_id": "zeus_keraunos_charging_spire",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "16fbe861f0b81e83058fe65303d6f182ecf8ea58bc3e04272b32b5e0e1c0c64a"
+    },
+    {
+      "key": "zeus_keraunos_charging_spire_destroy",
+      "card_id": "zeus_keraunos_charging_spire",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "82571c3d00fa007937e4599948f88a05b4d80008d979fa0a2a9a5df8140a4c76"
+    },
+    {
+      "key": "zeus_keraunos_charging_spire_idle",
+      "card_id": "zeus_keraunos_charging_spire",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "1c91a9c665ae4975fa23e6a2c12e3fdafabbd51d71e0cec9e62852606a74bfbe"
+    },
+    {
+      "key": "zeus_zeus_command_nexus_ability",
+      "card_id": "zeus_zeus_command_nexus",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "ee90a6cb428e9545ed74ea36b51b44f673863afbe8ac7730caada04e6a98a5be"
+    },
+    {
+      "key": "zeus_zeus_command_nexus_deploy",
+      "card_id": "zeus_zeus_command_nexus",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "624d06e0b4604f8ab6cf1b0e15125d934ebc4c308fc028f1b3d7a4fb839f62ff"
+    },
+    {
+      "key": "zeus_zeus_command_nexus_destroy",
+      "card_id": "zeus_zeus_command_nexus",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "da10f700ac1981509e8d25fd0e95d6675e768d51ffe140ccb021fbe99fa47c8d"
+    },
+    {
+      "key": "zeus_zeus_command_nexus_idle",
+      "card_id": "zeus_zeus_command_nexus",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "0064f2dfd6ead7ff7f2db32f3cf21a393facc4a06afbf621869bfda033513107"
+    },
+    {
+      "key": "poseidon_tidepool_surveyor_ability",
+      "card_id": "poseidon_tidepool_surveyor",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "259730c75db29fe5ee68ca69a5af76e76920ee4b1383d994c1c7396e011009e7"
+    },
+    {
+      "key": "poseidon_tidepool_surveyor_attack",
+      "card_id": "poseidon_tidepool_surveyor",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "f4ec9b318158ef27c51248c93b4c94c1e2f05870e719584af6accc59b0647fdd"
+    },
+    {
+      "key": "poseidon_tidepool_surveyor_deploy",
+      "card_id": "poseidon_tidepool_surveyor",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "a41c532d528aa621b59237b2943c818c48e323971a614527f189e953a1a6a798"
+    },
+    {
+      "key": "poseidon_tidepool_surveyor_destroy",
+      "card_id": "poseidon_tidepool_surveyor",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "a3b0cea189a4fd335edea926919789745335636c0d3a3f0cc43a44c28a53a5ce"
+    },
+    {
+      "key": "poseidon_tidepool_surveyor_hit",
+      "card_id": "poseidon_tidepool_surveyor",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "bb005a8878dc2eb153240de1e47d4f4488c0c049c545c583a047c0e3be96b22b"
+    },
+    {
+      "key": "poseidon_tidepool_surveyor_idle",
+      "card_id": "poseidon_tidepool_surveyor",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "b9d862ddc8b6d43c1f6acccb0dfc1472aff31babc43c22a6ceda1249ac434416"
+    },
+    {
+      "key": "poseidon_tidepool_surveyor_move",
+      "card_id": "poseidon_tidepool_surveyor",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "082f0a85bcf785c9e45abe96ba27a47f66d3ac348768a2be229996bd4b14b2d8"
+    },
+    {
+      "key": "poseidon_nereid_current_rider_ability",
+      "card_id": "poseidon_nereid_current_rider",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "ecab13375659f180ba0741ad0bc88bd6c74a71c677023454b8532276d7472665"
+    },
+    {
+      "key": "poseidon_nereid_current_rider_attack",
+      "card_id": "poseidon_nereid_current_rider",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "4e970c78fa067fa5f4d5d319b343078474e88adcd15bd4cd3f8a4dbec67ec354"
+    },
+    {
+      "key": "poseidon_nereid_current_rider_deploy",
+      "card_id": "poseidon_nereid_current_rider",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "f585fb38e30d8b1503a3d24851a77a1ae94c073509b31f7bcbb9cbfb3b065847"
+    },
+    {
+      "key": "poseidon_kraken_tendril_drone_hit",
+      "card_id": "poseidon_kraken_tendril_drone",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "2ad11373c79fbbebb8c14cddaabc49fe09aeac4ed6ca2680cb4a9767ac0277a0"
+    },
+    {
+      "key": "poseidon_kraken_tendril_drone_idle",
+      "card_id": "poseidon_kraken_tendril_drone",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "b8fddcc539a5dc0bec8cad3a4ee20bfa7b52c7e667ec8c1879498de8682cac22"
+    },
+    {
+      "key": "poseidon_kraken_tendril_drone_move",
+      "card_id": "poseidon_kraken_tendril_drone",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "8a5ec497255ab4a0f520de73fde3cfdb283cc0fe07441c6886d8df9de23daacc"
+    },
+    {
+      "key": "poseidon_naiad_flowshaper_ability",
+      "card_id": "poseidon_naiad_flowshaper",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "c40d368adf3fc6a7879164b426d388fe459adfb2af61ca2e0c507e9e99aa892f"
+    },
+    {
+      "key": "poseidon_naiad_flowshaper_attack",
+      "card_id": "poseidon_naiad_flowshaper",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "918ecf73930aa5d042d25e59d4a7eb25e8b661846106ccaf761e5c07a2c0b3af"
+    },
+    {
+      "key": "poseidon_naiad_flowshaper_deploy",
+      "card_id": "poseidon_naiad_flowshaper",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "bad43cfe6bb8087b4616295a2045b97ea20bb09f3d4b30aa6651a74a7f61d2f7"
+    },
+    {
+      "key": "poseidon_naiad_flowshaper_destroy",
+      "card_id": "poseidon_naiad_flowshaper",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "571fbbd8cf764f455fbb44b934badd0f3ea183082eae99090dc4bba71d3bbf06"
+    },
+    {
+      "key": "poseidon_naiad_flowshaper_hit",
+      "card_id": "poseidon_naiad_flowshaper",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "5b4c0540f26910f270f555514b44fea3b7cab57cfcec1df73d4bf3f46647280a"
+    },
+    {
+      "key": "poseidon_naiad_flowshaper_idle",
+      "card_id": "poseidon_naiad_flowshaper",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "f4b213b6b86bd55e4d6590ae2dcc981f101289bd647d16275ef86c92df4b49d4"
+    },
+    {
+      "key": "poseidon_naiad_flowshaper_move",
+      "card_id": "poseidon_naiad_flowshaper",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "2bac55702e0451fc1325994b397ac797b6635affb64ac65af4c64851acf09b90"
+    },
+    {
+      "key": "poseidon_abyssal_molecrab_ability",
+      "card_id": "poseidon_abyssal_molecrab",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "3b5b617227caae3e23eacd14957d54b53b3c22beffe1d60a652bfa6f72c40dd1"
+    },
+    {
+      "key": "poseidon_abyssal_molecrab_attack",
+      "card_id": "poseidon_abyssal_molecrab",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "ac3c0a23406aeef5e0b9a45c4769325b4ba438559636b669f1b056d7280cca66"
+    },
+    {
+      "key": "poseidon_abyssal_molecrab_deploy",
+      "card_id": "poseidon_abyssal_molecrab",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "c2c2d631c30819dcc966510e9a23972760f5e9c940ecb49b53e286f321a3a4d7"
+    },
+    {
+      "key": "poseidon_abyssal_molecrab_destroy",
+      "card_id": "poseidon_abyssal_molecrab",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "4696235459674270014943f2c7373d48456d7f5bcc4b585f631b1aa549befb37"
+    },
+    {
+      "key": "poseidon_abyssal_molecrab_hit",
+      "card_id": "poseidon_abyssal_molecrab",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "668deabfbff57fb2cb0913503c7f030a494f86b7fa2aadc8d877e2c3d606f626"
+    },
+    {
+      "key": "poseidon_abyssal_molecrab_idle",
+      "card_id": "poseidon_abyssal_molecrab",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "bf407100fad4989adf95ad8831e535e1ae740085274b6561312720ba6844f610"
+    },
+    {
+      "key": "poseidon_coral_bulwark_idle",
+      "card_id": "poseidon_coral_bulwark",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "2350becc2aad0d5a77a6c073bdd79a378e551df08beaefcb193803d560a8f954"
+    },
+    {
+      "key": "poseidon_sonar_beacon_ability",
+      "card_id": "poseidon_sonar_beacon",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "50f9642a2bb47a46cbf71d1f4cbb506846b46489428b8068241e310f7183628c"
+    },
+    {
+      "key": "poseidon_sonar_beacon_deploy",
+      "card_id": "poseidon_sonar_beacon",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "7b7cf531154a3e4eeb9ffd05b6678384ba6a0c536a5dffbe2348fb75e682af00"
+    },
+    {
+      "key": "poseidon_sonar_beacon_destroy",
+      "card_id": "poseidon_sonar_beacon",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "5823174b419e46fb3e28bb4ce94908f548d4b0731da04db655f6e087886f3965"
+    },
+    {
+      "key": "poseidon_sonar_beacon_idle",
+      "card_id": "poseidon_sonar_beacon",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "535f7759a82328f31a5c3d07cdc8fd66df1a4065adbdb0137aa42ab099547539"
+    },
+    {
+      "key": "poseidon_abyss_gate_ability",
+      "card_id": "poseidon_abyss_gate",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "0e57476c17599d46f2a434d0e580cca397dce00b606960ab891e621532f60b66"
+    },
+    {
+      "key": "poseidon_abyss_gate_deploy",
+      "card_id": "poseidon_abyss_gate",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "0c5a3fde82997441b20f8e733ed23479f5004eafadae8d665548a29da2e3abc5"
+    },
+    {
+      "key": "poseidon_abyss_gate_destroy",
+      "card_id": "poseidon_abyss_gate",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "cd82545c9e00a4d7d52116b929eaa0a9e4add9fb3a021ef267b10d1b9170e54b"
+    },
+    {
+      "key": "poseidon_abyss_gate_idle",
+      "card_id": "poseidon_abyss_gate",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "bafef49df527a4fe7efb805df59b1b367042c307c0a724a8d7b810e3cb6c2a97"
+    },
+    {
+      "key": "zeus_ion_storm_lattice_ability",
+      "card_id": "zeus_ion_storm_lattice",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "a47794246ab455fe33b49ab8f7edfc0c46aaab17c1a7bc713a4dc32be27e57d6"
+    },
+    {
+      "key": "zeus_ion_storm_lattice_deploy",
+      "card_id": "zeus_ion_storm_lattice",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "0a2adf3f20ac00f579a0a9dfe2e4d4fb44ff9b040a7fdd3c644c7074e44b38af"
+    },
+    {
+      "key": "zeus_ion_storm_lattice_destroy",
+      "card_id": "zeus_ion_storm_lattice",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "9eb6d09c57035e151945914a1daded2d6322d83ab5920a2ac867831b79d090d7"
+    },
+    {
+      "key": "zeus_ion_storm_lattice_idle",
+      "card_id": "zeus_ion_storm_lattice",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "7a509139468d40f2321fceb0ae32efa375ea97e9da1b47a6547eafe0f5c183b2"
+    },
+    {
+      "key": "poseidon_structure_ambrosial_spring_idle",
+      "card_id": "poseidon_structure_ambrosial_spring",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "7ace93a08236c1150bb735e4cb8b1fd6a51c650aef09b2c67214898a80f2f532"
+    },
+    {
+      "key": "poseidon_structure_ambrosial_spring_signature",
+      "card_id": "poseidon_structure_ambrosial_spring",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "4d774d5d0666dae604aae0e27605ecf7b63b9575638b108a059040a2f3f8fb38"
+    },
+    {
+      "key": "zeus_land_thunderstep_plateau_ability",
+      "card_id": "zeus_land_thunderstep_plateau",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "f38a13ceedde4c428496a0cf26d8e527a47f8efe9244c1b6aae6ed3069fa5930"
+    },
+    {
+      "key": "zeus_land_thunderstep_plateau_deploy",
+      "card_id": "zeus_land_thunderstep_plateau",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "57ef2fc668017b721e4e82ac4f342133e735d986fc0ad31b4cb02d32bcff4f0a"
+    },
+    {
+      "key": "zeus_land_thunderstep_plateau_destroy",
+      "card_id": "zeus_land_thunderstep_plateau",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "ab84e5fc8cfb079d2b8373def331c4a5c63f502f83742c05ba6d322678fecaca"
+    },
+    {
+      "key": "zeus_land_thunderstep_plateau_idle",
+      "card_id": "zeus_land_thunderstep_plateau",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "8f8e12dab74bc5d977d2b254ae7f93c38394645000ffff2da55b85692a8abdc0"
+    },
+    {
+      "key": "zeus_land_aurora_reach_ability",
+      "card_id": "zeus_land_aurora_reach",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "1878a548a6736af8a7698062890c47aa555091d5257850a68ed617c5175d5bfc"
+    },
+    {
+      "key": "zeus_land_aurora_reach_deploy",
+      "card_id": "zeus_land_aurora_reach",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "f8f2b4c6cbcd7eee761ba1871d42fac1ef4a7e94b4fedfda21a8e0397ae822dd"
+    },
+    {
+      "key": "zeus_land_aurora_reach_destroy",
+      "card_id": "zeus_land_aurora_reach",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "2e5cae4e57a73b271e22875757dd8ddb3df5a2bb5a0cb50bb7a2deba1f1a07ef"
+    },
+    {
+      "key": "zeus_land_aurora_reach_idle",
+      "card_id": "zeus_land_aurora_reach",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "79fd5aac2f99092af98685e997a63959407b3b3173e49e9fd48fc88f279613a3"
+    },
+    {
+      "key": "zeus_structure_stormglass_relay_ability",
+      "card_id": "zeus_structure_stormglass_relay",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "d02b7f2f8d773ecf8cb81f923c4cce18c370cd1e6ac46684fdca019621f890b2"
+    },
+    {
+      "key": "zeus_structure_stormglass_relay_deploy",
+      "card_id": "zeus_structure_stormglass_relay",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "c4b5ecfb569be761b77eb98e5cef658396a92325208e7d9508ca8270a5c7534c"
+    },
+    {
+      "key": "zeus_structure_stormglass_relay_destroy",
+      "card_id": "zeus_structure_stormglass_relay",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "c3ba2aa948486a909b20f77d7e10d0d6d6f6af404339e1fed65026348ad1651e"
+    },
+    {
+      "key": "zeus_structure_stormglass_relay_idle",
+      "card_id": "zeus_structure_stormglass_relay",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "44e5b755d9d45f2fd70b3f85caa27b4f2fd4dc7c69a774b79dd45ef7509631ef"
+    },
+    {
+      "key": "zeus_structure_cloud_archive_ability",
+      "card_id": "zeus_structure_cloud_archive",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "514704b30ccb5a00a81a74803f792a1f25ed8a7b8006940e293ec6beaa2e6d99"
+    },
+    {
+      "key": "zeus_structure_cloud_archive_deploy",
+      "card_id": "zeus_structure_cloud_archive",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "ac0d3a76930826705816405f8402195ababe6d709321d2533692ade5a5690d6c"
+    },
+    {
+      "key": "zeus_structure_cloud_archive_destroy",
+      "card_id": "zeus_structure_cloud_archive",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "048bd08f77a50c38b8ddceeed7b93ed60889b690263531692c1c701894dd0890"
+    },
+    {
+      "key": "zeus_structure_cloud_archive_idle",
+      "card_id": "zeus_structure_cloud_archive",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "490749786f6a13a8c0b5a84d753618588f8c9f2d733f9076f654d12b43aa79f7"
+    },
+    {
+      "key": "zeus_structure_cloud_archive_signature",
+      "card_id": "zeus_structure_cloud_archive",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "54ab5948d66a280c4bcec1f3197e404a58b8a70ad09327f977fdac87c1aef070"
+    },
+    {
+      "key": "poseidon_land_coral_tributary_ability",
+      "card_id": "poseidon_land_coral_tributary",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "310018efcdbd575f39ae78ce62ed9dd399d06f462a4d0b1957fe6e2f6abe6280"
+    },
+    {
+      "key": "poseidon_land_coral_tributary_deploy",
+      "card_id": "poseidon_land_coral_tributary",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "e281ffcff4d891014e0eef12322eae6e1d6d21d852d0825e51e1fe2f77c269ec"
+    },
+    {
+      "key": "zeus_keyword_stormgate_sentinel_destroy",
+      "card_id": "zeus_keyword_stormgate_sentinel",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "0a369ccda22b6fd7747916ce0af29e02b450700aa12cb198b19fd97e6e1dbc8b"
+    },
+    {
+      "key": "zeus_keyword_stormgate_sentinel_hit",
+      "card_id": "zeus_keyword_stormgate_sentinel",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "1e2231c9a7a018b7fd1015516967cd506768ff5db89ce74761bd29c3e678ff00"
+    },
+    {
+      "key": "zeus_keyword_stormgate_sentinel_idle",
+      "card_id": "zeus_keyword_stormgate_sentinel",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "8b952be049de89a0fb85ddab077de751c63fd3e4d671a0b1213c60bc7cf23da0"
+    },
+    {
+      "key": "zeus_keyword_stormgate_sentinel_move",
+      "card_id": "zeus_keyword_stormgate_sentinel",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "5d7152230c21a0754a49274cf1ad6f4863a56690c7fb02c5e2e12141a54bb0d9"
+    },
+    {
+      "key": "zeus_keyword_thunderhead_guardian_ability",
+      "card_id": "zeus_keyword_thunderhead_guardian",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "7e43f15c7f321d5b2be0c7d468be7e8f040eaccd0eb01ab6259fa667595d99f5"
+    },
+    {
+      "key": "zeus_keyword_thunderhead_guardian_attack",
+      "card_id": "zeus_keyword_thunderhead_guardian",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "b95835831a065c1c26da305bd832a736204c702be3e0d89d4d0ae1136b04267a"
+    },
+    {
+      "key": "zeus_keyword_thunderhead_guardian_deploy",
+      "card_id": "zeus_keyword_thunderhead_guardian",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "676f30761cce111a4d7236f88510633c9e19c99c61066f40d1ec7ff473afcb0b"
+    },
+    {
+      "key": "zeus_keyword_thunderhead_guardian_destroy",
+      "card_id": "zeus_keyword_thunderhead_guardian",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "fd0cb7f8b4bb2e97c49f34c0a49bb669cfe6bdeef4d6ecb3d527d688c31f497d"
+    },
+    {
+      "key": "zeus_keyword_thunderhead_guardian_hit",
+      "card_id": "zeus_keyword_thunderhead_guardian",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "4c3f3e9d0581b33eb3580ee2fdef23fad66b8c1629869ca91fb7397e7c411a6e"
+    },
+    {
+      "key": "zeus_keyword_thunderhead_guardian_idle",
+      "card_id": "zeus_keyword_thunderhead_guardian",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "674d9ad1b1185460064845d68f1979ffca34eb5b5f2f2070702f1fbb93227755"
+    },
+    {
+      "key": "zeus_keyword_thunderhead_guardian_move",
+      "card_id": "zeus_keyword_thunderhead_guardian",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "2e810ae4c908d72329d3960554916171867ad2f640a940f1c0792a8d9a56653a"
+    },
+    {
+      "key": "poseidon_keyword_reef_tunneler_ability",
+      "card_id": "poseidon_keyword_reef_tunneler",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "3975272a2426b14fbcfb240866105bc280f45ca41f06a7d61bc1035298b96d56"
+    },
+    {
+      "key": "poseidon_keyword_reef_tunneler_attack",
+      "card_id": "poseidon_keyword_reef_tunneler",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "eb320d872224d0974800abfd0ff97b258223945baa4c354c91eabca106526e21"
+    },
+    {
+      "key": "poseidon_keyword_reef_tunneler_deploy",
+      "card_id": "poseidon_keyword_reef_tunneler",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "a35a9eb989a5a9beb4fd9f9d515188fc7a6860742e56e8f119b332f28a9cc402"
+    },
+    {
+      "key": "poseidon_keyword_reef_tunneler_destroy",
+      "card_id": "poseidon_keyword_reef_tunneler",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "d032d252243b5a16653d5a636b35217d6ea5a975fae1a3381ac5ff919baa2ab6"
+    },
+    {
+      "key": "poseidon_keyword_reef_tunneler_hit",
+      "card_id": "poseidon_keyword_reef_tunneler",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "6902ddeea5609f3d78f5e6102001727bb5d08305d802448c2321a107d04a994c"
+    },
+    {
+      "key": "poseidon_keyword_reef_tunneler_idle",
+      "card_id": "poseidon_keyword_reef_tunneler",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "736a2fde92dae229205ecfbefe32c52544d0ee4a4c8d63066ed728f0da9272d5"
+    },
+    {
+      "key": "poseidon_keyword_reef_tunneler_move",
+      "card_id": "poseidon_keyword_reef_tunneler",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "7b4d87fc7e538a9a8daff674f7fc46a65ed9f27ca8ed344847c96433ba0929f9"
+    },
+    {
+      "key": "poseidon_keyword_trench_stalker_ability",
+      "card_id": "poseidon_keyword_trench_stalker",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "2d1f9e4bd15b9dad81b29ffaa3735e037e34008f92d56277383b68c66f89a867"
+    },
+    {
+      "key": "poseidon_keyword_trench_stalker_attack",
+      "card_id": "poseidon_keyword_trench_stalker",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "cfb7a02a8284d40192fca7096612fa53f1406be36994f90e3507dc5d14f526ba"
+    },
+    {
+      "key": "poseidon_keyword_trench_stalker_deploy",
+      "card_id": "poseidon_keyword_trench_stalker",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "83f33defdb120da1e9bf7e529c7127b75092ae9afd5325d55c2cf420fde9929e"
+    },
+    {
+      "key": "zeus_fast_tempest_duelist_hit",
+      "card_id": "zeus_fast_tempest_duelist",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "86a00f846acc1e391303a21d679ec29d870f5374c7edeeb09d9dfe6fd2d18e16"
+    },
+    {
+      "key": "zeus_fast_tempest_duelist_idle",
+      "card_id": "zeus_fast_tempest_duelist",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "aeac43181d328d41d4d5ea51275c4f3924341a06ee1875022f63e784806b5204"
+    },
+    {
+      "key": "zeus_fast_tempest_duelist_move",
+      "card_id": "zeus_fast_tempest_duelist",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "1eb43d5820beee17928a43fd815e3e44f360ada2e550a0de07f15d5e392b4265"
+    },
+    {
+      "key": "zeus_siege_thunder_ram_ability",
+      "card_id": "zeus_siege_thunder_ram",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "5946d09a287fb24f152f308aa7f4f8b1708d69f1ae6c277ce0afaad2de15e026"
+    },
+    {
+      "key": "zeus_siege_thunder_ram_attack",
+      "card_id": "zeus_siege_thunder_ram",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "63bd3f588ab214b82d081ed554cb22868e8238babd31761c65643f0fc2550b7f"
+    },
+    {
+      "key": "zeus_siege_thunder_ram_deploy",
+      "card_id": "zeus_siege_thunder_ram",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "487376affb3c86dfc1631e94528235ff826760080c6eb67ccc78e77d11041c48"
+    },
+    {
+      "key": "zeus_siege_thunder_ram_destroy",
+      "card_id": "zeus_siege_thunder_ram",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "bd2aaa796faa033b15516158c5cc4bca66f42ce7de871b598d357a2e3891bd73"
+    },
+    {
+      "key": "zeus_siege_thunder_ram_hit",
+      "card_id": "zeus_siege_thunder_ram",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "c3beea47e5871c383a7e6b7528d300fb409f7c6d0af1084c9540220792ea8f36"
+    },
+    {
+      "key": "zeus_siege_thunder_ram_idle",
+      "card_id": "zeus_siege_thunder_ram",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "be5b7ee3204268f3b9217010602f541caced3a1577d4eff0944d56e4ea1a3ac0"
+    },
+    {
+      "key": "zeus_siege_thunder_ram_move",
+      "card_id": "zeus_siege_thunder_ram",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "abf7dc53971889d33a6838be19b374b98ee4e29090daef7f646e6f9b3bffcf2e"
+    },
+    {
+      "key": "zeus_sharp_aether_spotter_ability",
+      "card_id": "zeus_sharp_aether_spotter",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "46b90c6cb5cfc93f97d08366696853ecaaaf4e1d705019e417629e13e205b121"
+    },
+    {
+      "key": "zeus_sharp_aether_spotter_attack",
+      "card_id": "zeus_sharp_aether_spotter",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "afc551940e7836289bc5f3098472fda246ce7c75541f94086d433fa1d09215cf"
+    },
+    {
+      "key": "zeus_sharp_aether_spotter_deploy",
+      "card_id": "zeus_sharp_aether_spotter",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "e1b54bbd171f995aec553e1759105c99fa1fa728cfac6bd28dd8b61182d1649a"
+    },
+    {
+      "key": "zeus_sharp_aether_spotter_destroy",
+      "card_id": "zeus_sharp_aether_spotter",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "56841eebb239d06ace7a1ac25d52f6f2333125950d593cca994f30e518bf567c"
+    },
+    {
+      "key": "zeus_sharp_aether_spotter_hit",
+      "card_id": "zeus_sharp_aether_spotter",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "b7914bb6e6036ddb221962cc84957e56a64e9c4f37052aa82fcf86cfb2b0a9d0"
+    },
+    {
+      "key": "zeus_sharp_aether_spotter_idle",
+      "card_id": "zeus_sharp_aether_spotter",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "4dcfd7198b2b80bbacd273f275af3cb3882fbd096f99bd83474307679fcf14fa"
+    },
+    {
+      "key": "poseidon_tutor_structure_3_idle",
+      "card_id": "poseidon_tutor_structure_3",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "f9ffe0b27893d1c26bda76b3069c4b35870b8f833d9b090c43e52677f14ac9ed"
+    },
+    {
+      "key": "poseidon_tutor_land_4_ability",
+      "card_id": "poseidon_tutor_land_4",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "ab780da50d13045851060095e5b7fabcf5eacc47c4ff7e2f3d307c89a653cc2d"
+    },
+    {
+      "key": "poseidon_tutor_land_4_deploy",
+      "card_id": "poseidon_tutor_land_4",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "33a7c0f5fc2a60eb986a6b8a6199995934f65cd21dca7a1ad0a9d4c99fb3883a"
+    },
+    {
+      "key": "poseidon_tutor_land_4_destroy",
+      "card_id": "poseidon_tutor_land_4",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "411d2f56a78c49c31a95a86c26e77cbf3d1fabfd530345c9de20f8c9d1fc4d83"
+    },
+    {
+      "key": "poseidon_tutor_land_4_idle",
+      "card_id": "poseidon_tutor_land_4",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "61210e8231a8959d784df8579cb80c47897b499f9c997caf122692a0367e7d69"
+    },
+    {
+      "key": "poseidon_tutor_structure_4_ability",
+      "card_id": "poseidon_tutor_structure_4",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "431bcbfb2180e868a32c2713080566760355199100a7bc945006f13ea6eb03f6"
+    },
+    {
+      "key": "poseidon_tutor_structure_4_deploy",
+      "card_id": "poseidon_tutor_structure_4",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "13cdb1ca2763b892c238d51e0d3e030413c86e99e759faa0ab45409e0e9c6aed"
+    },
+    {
+      "key": "poseidon_tutor_structure_4_destroy",
+      "card_id": "poseidon_tutor_structure_4",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "fbec79893912f69fe687df61046a81808ecf4b04ad17c47dfa757f221892dcbe"
+    },
+    {
+      "key": "poseidon_tutor_structure_4_idle",
+      "card_id": "poseidon_tutor_structure_4",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "31b2624f7bec5a93dcd7dfeb95cda30d5e155bb4b6354be88650fc6a561f6ebf"
+    },
+    {
+      "key": "poseidon_tutor_land_5_ability",
+      "card_id": "poseidon_tutor_land_5",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "319b686ff982f256c17fc17cf45586d01536f081b44288618cff62166c1c4422"
+    },
+    {
+      "key": "poseidon_tutor_land_5_deploy",
+      "card_id": "poseidon_tutor_land_5",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "86cfbb4d6558cedc97658e615b169a9ff91496fb0883ebe1cd3d4d6c8a189dfa"
+    },
+    {
+      "key": "poseidon_tutor_land_5_destroy",
+      "card_id": "poseidon_tutor_land_5",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "fcb200211dd08b28d1b42cd4bf8aa4b8515b6772c99878f89b19b3a7a855a45a"
+    },
+    {
+      "key": "poseidon_tutor_land_5_idle",
+      "card_id": "poseidon_tutor_land_5",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "1b53d1c9901ec3070ce60ab4a2c88f878118bc27135e02328124f02d125c872f"
+    },
+    {
+      "key": "poseidon_tutor_structure_5_ability",
+      "card_id": "poseidon_tutor_structure_5",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "f341777f420ff683574d4b0c90e193119119f7865b6684c662c9c27ccbfcea96"
+    },
+    {
+      "key": "poseidon_tutor_structure_5_deploy",
+      "card_id": "poseidon_tutor_structure_5",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "b519800b4c7f4211962d687654141286bf6644dc3cc6b38893ad99a8fc479dc8"
+    },
+    {
+      "key": "poseidon_tutor_structure_5_destroy",
+      "card_id": "poseidon_tutor_structure_5",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "fc86f4bbf55d50de5fca71a8a0daf6001078e7a98ff02b9c90026530144d3642"
+    },
+    {
+      "key": "poseidon_tutor_structure_5_idle",
+      "card_id": "poseidon_tutor_structure_5",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "ea8a08d5caf2a219ebf1718cef90b275f4a3bf6af3060827819fec437385678b"
+    },
+    {
+      "key": "core_ui_click",
+      "card_id": "",
+      "cue": "ui_click",
+      "scope": "core",
+      "sha256": "d6c93ce9b2394262e82be6705ff28ba099c82188fc891a60d0fc5f68e421aa0a"
+    },
+    {
+      "key": "core_defeat",
+      "card_id": "",
+      "cue": "defeat",
+      "scope": "core",
+      "sha256": "d755b642ef550cbd45b0a92c0b07d16d471f306c858571efda63ac214cc4faf5"
+    },
+    {
+      "key": "core_ui_back",
+      "card_id": "",
+      "cue": "ui_back",
+      "scope": "core",
+      "sha256": "30cf9658c403b007a03f9d57cce4415f5b8080b555412608c21adee5ee3e5b3c"
+    },
+    {
+      "key": "core_ui_open_panel",
+      "card_id": "",
+      "cue": "ui_open_panel",
+      "scope": "core",
+      "sha256": "b7326ed649683ce5b4df3ed44de007bfeefd346c3397abd575ada99946a682a3"
+    },
+    {
+      "key": "core_ui_close_panel",
+      "card_id": "",
+      "cue": "ui_close_panel",
+      "scope": "core",
+      "sha256": "3571d3798c313b2208831714c351b16f5a394db35bfd69282d8549a8e169010a"
+    },
+    {
+      "key": "core_ui_notification",
+      "card_id": "",
+      "cue": "ui_notification",
+      "scope": "core",
+      "sha256": "3450e2987d6c00e44d618d99610008f7ff033e88f395576f3a777cc9b4fdf62e"
+    },
+    {
+      "key": "core_matchmaking_found",
+      "card_id": "",
+      "cue": "matchmaking_found",
+      "scope": "core",
+      "sha256": "b8cb1320ffbab925d4e9332fdf7445ab0b727914f952458bcfca25ca5ff4eb77"
+    },
+    {
+      "key": "core_victory",
+      "card_id": "",
+      "cue": "victory",
+      "scope": "core",
+      "sha256": "da72e0d3453124c22b5b131f8bab1c49055bf61a186b25d4ab7729469279310f"
+    },
+    {
+      "key": "core_ambience_zeus_board",
+      "card_id": "",
+      "cue": "ambience_zeus_board",
+      "scope": "core",
+      "sha256": "a297277bb28370723dbb98ceacc39ec6091d67c33c6ac42338be46163a7f6016"
+    },
+    {
+      "key": "core_ambience_poseidon_board",
+      "card_id": "",
+      "cue": "ambience_poseidon_board",
+      "scope": "core",
+      "sha256": "7e04c875e6c131774f1ea004eb5b64d685748db93f71bbd286cf6927f543015e"
+    },
+    {
+      "key": "zeus_ability_stormfront_ability",
+      "card_id": "zeus_ability_stormfront",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "3a5b8c0204a22833c0ea4a154c96e1faf9c699528f64d00bdccb0a4d1ca3f1b1"
+    },
+    {
+      "key": "zeus_ability_stormfront_deploy",
+      "card_id": "zeus_ability_stormfront",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "a65b7bc537bf696e5c8d3c151ac71d1f6829872023b63b55ceaa1e242c6f243e"
+    },
+    {
+      "key": "zeus_ability_stormfront_destroy",
+      "card_id": "zeus_ability_stormfront",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "b903437aa05b55e0fe93fe8913985ef5d0518bfc07a63f94a82c3ea04cad76c0"
+    },
+    {
+      "key": "zeus_ability_stormfront_idle",
+      "card_id": "zeus_ability_stormfront",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "becac158bf548492faf85ed00150a5a05d7f8ced93a52e0ecc7a08d01aa201dc"
+    },
+    {
+      "key": "zeus_ability_oracle_spire_ability",
+      "card_id": "zeus_ability_oracle_spire",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "ea1435ad44ea2fc4a828652ddbc3a9249ad343e5421dac5e7e631d212882991b"
+    },
+    {
+      "key": "zeus_ability_oracle_spire_deploy",
+      "card_id": "zeus_ability_oracle_spire",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "c8864cd292e48843655111d9dc0eae95f57fd24b9130da42f4b595c1218c0fb9"
+    },
+    {
+      "key": "zeus_ability_oracle_spire_destroy",
+      "card_id": "zeus_ability_oracle_spire",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "c4e5c011a59bc254ba6b43cc011cda58933e38b8349878e06262cf4e9c15c1ec"
+    },
+    {
+      "key": "zeus_ability_oracle_spire_idle",
+      "card_id": "zeus_ability_oracle_spire",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "5a4081e08c0fe014e3ca2b72907ff9240cbd42bcc515088d78c1b724b632a89c"
+    },
+    {
+      "key": "zeus_ability_skyline_seer_ability",
+      "card_id": "zeus_ability_skyline_seer",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "b3a433eb967b4b80ccd2b386e9c19f7a0cede04a26886d6958df9a9ab317c7a6"
+    },
+    {
+      "key": "zeus_ability_skyline_seer_attack",
+      "card_id": "zeus_ability_skyline_seer",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "1eccf5971e58752ad3ff6383959902ef57e2bf566e8bc171de3c315bc5c1803c"
+    },
+    {
+      "key": "poseidon_ability_tidewell_deploy",
+      "card_id": "poseidon_ability_tidewell",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "617e78ef90c89d3e19da1f67f6f1c31ff2a5b17f1d42eb52a92a250faacada21"
+    },
+    {
+      "key": "poseidon_ability_tidewell_destroy",
+      "card_id": "poseidon_ability_tidewell",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "6736906ab3cbf702f2eebccffb0d886bbabbe34c1003aab8e8e8c8aee26d684e"
+    },
+    {
+      "key": "poseidon_ability_tidewell_idle",
+      "card_id": "poseidon_ability_tidewell",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "fa41dc01ba69a80dd0c466f949db1569d62d6ed87e9ef083a5af59d581f051a2"
+    },
+    {
+      "key": "zeus_apex_divine_tailwind_signature",
+      "card_id": "zeus_apex_divine_tailwind",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "5c9daf17180db40765792b9c60effc093350617209505971f75304e76d524665"
+    },
+    {
+      "key": "zeus_apex_crownstorm_ascendance_deploy",
+      "card_id": "zeus_apex_crownstorm_ascendance",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "b9836d370dcd9b254f7c7d33df40cd432550c2c128b1aa9e5e71c1065fe3f1cf"
+    },
+    {
+      "key": "zeus_apex_crownstorm_ascendance_signature",
+      "card_id": "zeus_apex_crownstorm_ascendance",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "311170e2ebfc9169e099e5db3a526e76426caaadee8e4271e278cd148029d514"
+    },
+    {
+      "key": "zeus_apex_imperial_sky_aegis_deploy",
+      "card_id": "zeus_apex_imperial_sky_aegis",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "9fe0543e12388344d38b4e9a97e9ffeaa2da50199feb18aec92aee092ea52473"
+    },
+    {
+      "key": "zeus_apex_imperial_sky_aegis_signature",
+      "card_id": "zeus_apex_imperial_sky_aegis",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "683e537612241d5861559805a0cad38522ecc7afd7b7cf7b0e819fe64cf26555"
+    },
+    {
+      "key": "zeus_apex_skyfather_archon_ability",
+      "card_id": "zeus_apex_skyfather_archon",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "dc2bb570daf4b4cb8f5a71acf6a44de540140fdcb51e250949f78a1189f1ab89"
+    },
+    {
+      "key": "zeus_apex_skyfather_archon_attack",
+      "card_id": "zeus_apex_skyfather_archon",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "1674d5deecff497128b6a81d953602aecc8d618a9ed584c2be72edd836e5f725"
+    },
+    {
+      "key": "zeus_ability_skyline_seer_deploy",
+      "card_id": "zeus_ability_skyline_seer",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "910d0d2bd64c97e81ba9841a96d3b1ebf7e4815c10bfcb1dc20400f9362232f3"
+    },
+    {
+      "key": "zeus_ability_skyline_seer_destroy",
+      "card_id": "zeus_ability_skyline_seer",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "fb1f97c76f88095bbd81df1795f66f997d2c174090a531c5136406b5f20c5dd7"
+    },
+    {
+      "key": "zeus_ability_skyline_seer_hit",
+      "card_id": "zeus_ability_skyline_seer",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "fe01878cdf07ec2782881959f57b7ba72e3a930dfefcb55d682b972ba7ca45b8"
+    },
+    {
+      "key": "zeus_ability_skyline_seer_idle",
+      "card_id": "zeus_ability_skyline_seer",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "e9c6897a124f179c190ecfd74f59ffb0aba11d5ccfd150e35eae4c2fafedbc04"
+    },
+    {
+      "key": "zeus_ability_skyline_seer_move",
+      "card_id": "zeus_ability_skyline_seer",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "ff10841b63bb2385dcfa4dc6dd1857854a1ba9c94f8f3e13186e8530bc669ce5"
+    },
+    {
+      "key": "poseidon_ability_healing_shoal_ability",
+      "card_id": "poseidon_ability_healing_shoal",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "f228fc680eff01eb7661e5e0e337ae109dd728360cc6704e61bb6d53f334919e"
+    },
+    {
+      "key": "poseidon_ability_healing_shoal_deploy",
+      "card_id": "poseidon_ability_healing_shoal",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "a2da83bbffe5570c3924ff930ef8b890d70693951fd2ef9c979271e599ab61b9"
+    },
+    {
+      "key": "poseidon_ability_healing_shoal_destroy",
+      "card_id": "poseidon_ability_healing_shoal",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "1f95d74418ece43a64ab1569d1b50cd9cb4cfa1e4281ff7efafb0373266639b2"
+    },
+    {
+      "key": "poseidon_ability_healing_shoal_idle",
+      "card_id": "poseidon_ability_healing_shoal",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "aae9a00904e4de0be2b1b41eb5a8d89ba26eb2ebcd5002cab9c525ef64911e01"
+    },
+    {
+      "key": "poseidon_ability_tidewell_ability",
+      "card_id": "poseidon_ability_tidewell",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "09ba58d43d3e3a94443402c04039d450b0b1d37835872847064394ce7c32b135"
+    },
+    {
+      "key": "zeus_apex_keraunos_seraph_hit",
+      "card_id": "zeus_apex_keraunos_seraph",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "67de7dce81bf9179e3e902a21834a5bdffae21aa64b6bb6a10e0a5147f11b31f"
+    },
+    {
+      "key": "zeus_apex_keraunos_seraph_idle",
+      "card_id": "zeus_apex_keraunos_seraph",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "3ed15a80272dad7de628998c78ce53bd62114e4d23deb0b77de6281a31c11094"
+    },
+    {
+      "key": "zeus_apex_keraunos_seraph_move",
+      "card_id": "zeus_apex_keraunos_seraph",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "96d00db2f4acb88875ad047bea941180762018dd8d67b0a01273b2f0b2ab4559"
+    },
+    {
+      "key": "zeus_apex_keraunos_seraph_signature",
+      "card_id": "zeus_apex_keraunos_seraph",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "1315a27b872192aba1e2bb7caaa637fe9dca299c330d276342d3fb024fa573c5"
+    },
+    {
+      "key": "zeus_apex_olympian_storm_titan_ability",
+      "card_id": "zeus_apex_olympian_storm_titan",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "0f7665e0a06d37e7b5079dfbfb55be692bdd9fa770556db4dede22e84610cff2"
+    },
+    {
+      "key": "zeus_apex_olympian_storm_titan_attack",
+      "card_id": "zeus_apex_olympian_storm_titan",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "c9953b5cbc73e84c06c1ecda6b9d82abf69e2d99b200745abab07dbbd9e9cb19"
+    },
+    {
+      "key": "zeus_apex_olympian_storm_titan_deploy",
+      "card_id": "zeus_apex_olympian_storm_titan",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "63d23fe546603a307fd18e79f8f7ce7293db295b6c9137ed0ba067a01dcc0286"
+    },
+    {
+      "key": "zeus_apex_olympian_storm_titan_destroy",
+      "card_id": "zeus_apex_olympian_storm_titan",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "50b67b5279341a6600102715baf04cece517405536f64b92187b73de4864681f"
+    },
+    {
+      "key": "zeus_apex_olympian_storm_titan_hit",
+      "card_id": "zeus_apex_olympian_storm_titan",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "b3355e2a7840e660b33358096d2954c1e46b360889e38f927d1ffa81dc67e167"
+    },
+    {
+      "key": "zeus_apex_olympian_storm_titan_idle",
+      "card_id": "zeus_apex_olympian_storm_titan",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "cd129f94d72bf090cc1380be4041612b518f521ac50edff10307ee4a4df0e6a2"
+    },
+    {
+      "key": "zeus_apex_skyfather_archon_deploy",
+      "card_id": "zeus_apex_skyfather_archon",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "7cab33c0c46e4e1a860e7a1907abdfa2814236a82c707aaf494fec565188cd72"
+    },
+    {
+      "key": "zeus_apex_skyfather_archon_destroy",
+      "card_id": "zeus_apex_skyfather_archon",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "34987317326f71ee300adbc2a5570ff281000d8f2c7a39ebcaa9e7780ace147d"
+    },
+    {
+      "key": "zeus_apex_skyfather_archon_hit",
+      "card_id": "zeus_apex_skyfather_archon",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "250318f0875be0f44bd7adc52366e1772be25e55ebf0c4f07e2fb68ca95a6f4a"
+    },
+    {
+      "key": "zeus_apex_skyfather_archon_idle",
+      "card_id": "zeus_apex_skyfather_archon",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "2d7c5d1ce1b201aedb8840b9d18630e2c056fd6ae8154ec3232071e928fb9345"
+    },
+    {
+      "key": "zeus_apex_skyfather_archon_move",
+      "card_id": "zeus_apex_skyfather_archon",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "ece9eede666b8168cc8c87ee3178ac711d6489a9284579a2e59a3f55aacb5396"
+    },
+    {
+      "key": "zeus_apex_skyfather_archon_signature",
+      "card_id": "zeus_apex_skyfather_archon",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "0049b72091e68b504c98cb5a5aa45b1462704796bb6f0e070dca5a5898925fe9"
+    },
+    {
+      "key": "zeus_apex_keraunos_seraph_ability",
+      "card_id": "zeus_apex_keraunos_seraph",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "3db5efa84873317e9ac348be33cb5bcd534660b3f68b50ff6c631aedcb37051c"
+    },
+    {
+      "key": "zeus_apex_keraunos_seraph_attack",
+      "card_id": "zeus_apex_keraunos_seraph",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "23a63644767786f55d1a2920dad8c61da20713a1822b994b702227883dd9bfb2"
+    },
+    {
+      "key": "zeus_apex_keraunos_seraph_deploy",
+      "card_id": "zeus_apex_keraunos_seraph",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "874e449805e571ca8f9f681c27cf3c0c9f095fd8d6d879382868b001f7ee9b98"
+    },
+    {
+      "key": "zeus_apex_keraunos_seraph_destroy",
+      "card_id": "zeus_apex_keraunos_seraph",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "e5edd781b6646d105b08844d072fa7a7850003851cbe7a9af744be2605acbc84"
+    },
+    {
+      "key": "zeus_apex_olympian_storm_titan_move",
+      "card_id": "zeus_apex_olympian_storm_titan",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "f2129439aaf82faa48f0ea6986bd9eca98b2eaba18d1d372f4f8deba483b5054"
+    },
+    {
+      "key": "zeus_apex_olympian_storm_titan_signature",
+      "card_id": "zeus_apex_olympian_storm_titan",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "ab30a4eecce538edad96576cf2aec7d6f843a1f02fdb164e69e274205b0726cb"
+    },
+    {
+      "key": "zeus_apex_celestial_throne_grid_ability",
+      "card_id": "zeus_apex_celestial_throne_grid",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "270ecf33344fa371a3a4d806f7ef937e721d59a3d8991aab0c46e1286003a26d"
+    },
+    {
+      "key": "zeus_apex_celestial_throne_grid_deploy",
+      "card_id": "zeus_apex_celestial_throne_grid",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "26634fdf55cbdcffd0fc0dab9796381c14e2638450e18b141eff38b438a7ba64"
+    },
+    {
+      "key": "zeus_apex_celestial_throne_grid_destroy",
+      "card_id": "zeus_apex_celestial_throne_grid",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "8db682e69ea9b9daa7c1764b18d344a78b377682f0cf78df8df46e3813a6eb0b"
+    },
+    {
+      "key": "zeus_apex_celestial_throne_grid_idle",
+      "card_id": "zeus_apex_celestial_throne_grid",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "c35c61fbbe610a0619887c5d86d6a83656fa30cf64df686fcbaf9b1bd462c94c"
+    },
+    {
+      "key": "zeus_apex_celestial_throne_grid_signature",
+      "card_id": "zeus_apex_celestial_throne_grid",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "a1f9255f9cc15ad56e55f101f4eac9d5c76f2b73bc72cb3add7737f534ef9e8c"
+    },
+    {
+      "key": "zeus_apex_worldstorm_spire_ability",
+      "card_id": "zeus_apex_worldstorm_spire",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "d41bdcd12d79e935c219cd4874d25436a78765cff0168e993f85e9f930c0216d"
+    },
+    {
+      "key": "zeus_apex_worldstorm_spire_deploy",
+      "card_id": "zeus_apex_worldstorm_spire",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "e71ba5391a2be21ebf7ebf79667a92d1b9766e0d64911ccc38290cabaeee2a39"
+    },
+    {
+      "key": "zeus_apex_worldstorm_spire_destroy",
+      "card_id": "zeus_apex_worldstorm_spire",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "bb2e59ab78d5179bfc260da080c1364572b511e71303d0175d2abf0e107a3a73"
+    },
+    {
+      "key": "poseidon_apex_atlantis_tide_sovereign_deploy",
+      "card_id": "poseidon_apex_atlantis_tide_sovereign",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "272bc59c114e53615a919de6c082c1913f6b193ad8cbed6dcd49b2433483c909"
+    },
+    {
+      "key": "poseidon_apex_atlantis_tide_sovereign_destroy",
+      "card_id": "poseidon_apex_atlantis_tide_sovereign",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "422466398e145ab1f33f74e1963b001b18cb814a6ab03b23158c3d6a8aaf43e7"
+    },
+    {
+      "key": "poseidon_apex_atlantis_tide_sovereign_hit",
+      "card_id": "poseidon_apex_atlantis_tide_sovereign",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "075d56cd9ff0ad7bb033425a7da3bcc3fc04982f7f7c0e67d181b97e2d1f757e"
+    },
+    {
+      "key": "poseidon_apex_atlantis_tide_sovereign_idle",
+      "card_id": "poseidon_apex_atlantis_tide_sovereign",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "1a98bc7ad2693a20d6beb255fd737c5063dd6440bfffdc88c696fa30b179d544"
+    },
+    {
+      "key": "poseidon_apex_atlantis_tide_sovereign_move",
+      "card_id": "poseidon_apex_atlantis_tide_sovereign",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "651b847f028226b11e34b82c42982c22ebadbd7fe04ebb0bb87f9d5db35d2d12"
+    },
+    {
+      "key": "poseidon_apex_atlantis_tide_sovereign_signature",
+      "card_id": "poseidon_apex_atlantis_tide_sovereign",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "e0d97671d6636d220fd5b2acf3f33537947e10105584e6112918f164d38c108f"
+    },
+    {
+      "key": "poseidon_apex_atlantis_crown_basin_ability",
+      "card_id": "poseidon_apex_atlantis_crown_basin",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "f84643f67a9d99c4329d1666a5f20bd64988654c4750c48be58cd6c692ad7da6"
+    },
+    {
+      "key": "poseidon_apex_atlantis_crown_basin_deploy",
+      "card_id": "poseidon_apex_atlantis_crown_basin",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "f18c99e4e757e46af473f7c7fefc993acdaf42b6ecac0da678ed1fe367395df1"
+    },
+    {
+      "key": "poseidon_apex_atlantis_crown_basin_destroy",
+      "card_id": "poseidon_apex_atlantis_crown_basin",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "bdcdc0a4150b98a33e1f6a9da92b9f2748bb1d7015ea35fc05444a9602424f8c"
+    },
+    {
+      "key": "poseidon_apex_atlantis_crown_basin_idle",
+      "card_id": "poseidon_apex_atlantis_crown_basin",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "2ad748c3d7f657c45a96f888055385d364f8f54bd97057185592ece407c58225"
+    },
+    {
+      "key": "zeus_apex_worldstorm_spire_idle",
+      "card_id": "zeus_apex_worldstorm_spire",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "6063d263d129411b188355aa29b5d4f6de60e8fff01da67f528a079457ac5530"
+    },
+    {
+      "key": "zeus_apex_worldstorm_spire_signature",
+      "card_id": "zeus_apex_worldstorm_spire",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "17653614339919c513502ead6bc8567db1244a652be38c28165b6a033b219231"
+    },
+    {
+      "key": "poseidon_apex_abysswalker_nereid_ability",
+      "card_id": "poseidon_apex_abysswalker_nereid",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "dace3c6231f9558aa8192a4c0d16d9df9e8f55f4d922c93d4d8fad73489134c4"
+    },
+    {
+      "key": "poseidon_apex_abysswalker_nereid_attack",
+      "card_id": "poseidon_apex_abysswalker_nereid",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "cdb399a37289f9bf44b46d7c8027e94dd0bd4b95e827558600514d8e306ff103"
+    },
+    {
+      "key": "poseidon_apex_abysswalker_nereid_deploy",
+      "card_id": "poseidon_apex_abysswalker_nereid",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "e337c18ebe1c2db4eb77184aba870a11a00c5caf9f3474b9bda9d992ec35bbd2"
+    },
+    {
+      "key": "poseidon_apex_abysswalker_nereid_destroy",
+      "card_id": "poseidon_apex_abysswalker_nereid",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "7810bb4e1918a1eddb54a4741f9a4e0624516448ed1c463af7738b6748a435d1"
+    },
+    {
+      "key": "poseidon_apex_abysswalker_nereid_hit",
+      "card_id": "poseidon_apex_abysswalker_nereid",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "f907d447ad791f5cdc3c30217ebd4c0bc79ebacf6fbbf2cac469beb626c0c8c5"
+    },
+    {
+      "key": "poseidon_apex_abysswalker_nereid_idle",
+      "card_id": "poseidon_apex_abysswalker_nereid",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "580aa46903f93f09add125b3eca0c387456bd616d4b67adb86fedfc71cfca12e"
+    },
+    {
+      "key": "poseidon_apex_abysswalker_nereid_move",
+      "card_id": "poseidon_apex_abysswalker_nereid",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "74bafb41ff9a06cd52a511b4302dd2e871b3c8472dd93579344a6b3503ba6a58"
+    },
+    {
+      "key": "poseidon_apex_abysswalker_nereid_signature",
+      "card_id": "poseidon_apex_abysswalker_nereid",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "f2f7c6abe911a59c3c16e097c4a5d5b880046e26c8f7efde21613a4e1fd71d5d"
+    },
+    {
+      "key": "poseidon_keyword_maelstrom_bulwark_destroy",
+      "card_id": "poseidon_keyword_maelstrom_bulwark",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "5c255e2f811bf0d72e85b569e7d1111c58ac9f1afb3c35180a04c1886ec7c779"
+    },
+    {
+      "key": "poseidon_keyword_maelstrom_bulwark_hit",
+      "card_id": "poseidon_keyword_maelstrom_bulwark",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "4d7dc4db003615b4bbc17a7fa168f63e5595e68e1e32b570222e7a6bfe72c0a1"
+    },
+    {
+      "key": "poseidon_keyword_maelstrom_bulwark_idle",
+      "card_id": "poseidon_keyword_maelstrom_bulwark",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "f378332f074c0e3843b134b55b070eacf9d77ecbe808764679a75e70ceacdbf1"
+    },
+    {
+      "key": "poseidon_keyword_maelstrom_bulwark_move",
+      "card_id": "poseidon_keyword_maelstrom_bulwark",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "5d3cbbff55a8905271fc7dd8d10d253a4f3a6c17978f0016bcf71165887dbc03"
+    },
+    {
+      "key": "poseidon_apex_atlantis_crown_basin_signature",
+      "card_id": "poseidon_apex_atlantis_crown_basin",
+      "cue": "signature",
+      "scope": "card",
+      "sha256": "9055095ff1dfc055faebaa932d57e5c15791b5e63e4b68ad6fa35a1d685caa42"
+    },
+    {
+      "key": "poseidon_keyword_breakwater_hoplite_ability",
+      "card_id": "poseidon_keyword_breakwater_hoplite",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "6e1c228c9858c3cb77528bc9e72148dda3cde5f0fa8486a5846d1001971d0ab5"
+    },
+    {
+      "key": "poseidon_keyword_breakwater_hoplite_attack",
+      "card_id": "poseidon_keyword_breakwater_hoplite",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "1fad7463abe74a6958bc969d02807d450cf63cc0605dcca284a3187f96130a26"
+    },
+    {
+      "key": "poseidon_keyword_breakwater_hoplite_deploy",
+      "card_id": "poseidon_keyword_breakwater_hoplite",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "b127b8a30528f064bec55ed36afad566b1943283193f751d10908de882ec8043"
+    },
+    {
+      "key": "poseidon_keyword_breakwater_hoplite_destroy",
+      "card_id": "poseidon_keyword_breakwater_hoplite",
+      "cue": "destroy",
+      "scope": "card",
+      "sha256": "97353afebc8be3b7a433ad2d5cb3a680fc930b921235610ad7dd9d5476ff3be7"
+    },
+    {
+      "key": "poseidon_keyword_breakwater_hoplite_hit",
+      "card_id": "poseidon_keyword_breakwater_hoplite",
+      "cue": "hit",
+      "scope": "card",
+      "sha256": "e4a080eab2a6417a17941b9659d4be09dd2bb95bcecc8aa21582594f547b5133"
+    },
+    {
+      "key": "poseidon_keyword_breakwater_hoplite_idle",
+      "card_id": "poseidon_keyword_breakwater_hoplite",
+      "cue": "idle",
+      "scope": "card",
+      "sha256": "4148991d87395f230fa921e8e4aef6ce4a28453a267bb9fc286c6149cc107947"
+    },
+    {
+      "key": "poseidon_keyword_breakwater_hoplite_move",
+      "card_id": "poseidon_keyword_breakwater_hoplite",
+      "cue": "move",
+      "scope": "card",
+      "sha256": "b408247b818e6004f2afee6a1df6087eea82fc950cd9d3ed48698e6a1f3f54c0"
+    },
+    {
+      "key": "poseidon_keyword_maelstrom_bulwark_ability",
+      "card_id": "poseidon_keyword_maelstrom_bulwark",
+      "cue": "ability",
+      "scope": "card",
+      "sha256": "1335832192c6e133334cad65bd5cd024c3e348699ba6c6452590c6a0aca741a3"
+    },
+    {
+      "key": "poseidon_keyword_maelstrom_bulwark_attack",
+      "card_id": "poseidon_keyword_maelstrom_bulwark",
+      "cue": "attack",
+      "scope": "card",
+      "sha256": "db521f9f14d660984de1a13474577974be8ddfb86ac4c04f5024ef62ac70bf68"
+    },
+    {
+      "key": "poseidon_keyword_maelstrom_bulwark_deploy",
+      "card_id": "poseidon_keyword_maelstrom_bulwark",
+      "cue": "deploy",
+      "scope": "card",
+      "sha256": "91c3e53c6133c59745b064488c707c13cd83f8a03aea436d6aafa7c98ef57229"
+    }
+  ]
+}
