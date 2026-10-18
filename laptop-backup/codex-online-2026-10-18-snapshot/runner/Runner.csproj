@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework></PropertyGroup>
+<ItemGroup><ProjectReference Include="../source/adapter/NativeRules.csproj"/></ItemGroup>
+<ItemGroup><Reference Include="InfiniteConquest.RulesCore"><HintPath>../source/rules-core/bin/Debug/netstandard2.1/InfiniteConquest.RulesCore.dll</HintPath></Reference></ItemGroup>
+</Project>

@@ -1,0 +1,2074 @@
+{
+  "entries": [
+    {
+      "card_id": "poseidon_abyssal_molecrab",
+      "cue": "deploy",
+      "generation_id": "1iFTnoZv7Zn5hBORQNFL",
+      "file": "poseidon_abyssal_molecrab_deploy.wav",
+      "duration_seconds": 1.1,
+      "sha256": "3df2367d553ca8f71c718215336d08d518edcbd6e54a971eee28123fdded64e4",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_abyssal_molecrab",
+      "cue": "move",
+      "generation_id": "4vON7mziJO8yKIrIV610",
+      "file": "poseidon_abyssal_molecrab_move.wav",
+      "duration_seconds": 0.6,
+      "sha256": "a64b6bb2b3f6cbb0663927a81b00665d8317d8401fee587875e54dc6440c9c0f",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_abyssal_molecrab",
+      "cue": "attack",
+      "generation_id": "vVhVd88tpb7scwR378Yv",
+      "file": "poseidon_abyssal_molecrab_attack.wav",
+      "duration_seconds": 0.8,
+      "sha256": "eeb766f81a1e891e753242a74b8ff7bfa745f7b81107c9f9cbbecbf413ee828d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_abyssal_molecrab",
+      "cue": "hit",
+      "generation_id": "2aUTJ6ZrZ14iI90i7eJk",
+      "file": "poseidon_abyssal_molecrab_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "81c94e126460e6193e3929bcb0305fcc7b55a3969fe76ce829f44c146b36e00e",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_abyssal_molecrab",
+      "cue": "destroy",
+      "generation_id": "mJVKG6x8f7W9gFPjpM5h",
+      "file": "poseidon_abyssal_molecrab_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "17b712841a2cd8e294e8d7fc7dd3ae2e7bb1a42bd227478fa0eab1b7035b3f34",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_delphic_sonar_adept",
+      "cue": "deploy",
+      "generation_id": "9nHHco5gXjVxq7nlh0Ll",
+      "file": "poseidon_delphic_sonar_adept_deploy.wav",
+      "duration_seconds": 1.1,
+      "sha256": "83078cebfa5f12c39e7657daf2333862d212ace7dd3d51412f381524d50738f7",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_delphic_sonar_adept",
+      "cue": "move",
+      "generation_id": "NZm49HifefwD98vOkuhl",
+      "file": "poseidon_delphic_sonar_adept_move.wav",
+      "duration_seconds": 0.6,
+      "sha256": "c6178a8d6660c8e23bf124b6a3cd5f933e01793d26402b6d17a1bae631adf013",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_delphic_sonar_adept",
+      "cue": "attack",
+      "generation_id": "f5EbqvfdkUBLmjUHiXnM",
+      "file": "poseidon_delphic_sonar_adept_attack.wav",
+      "duration_seconds": 0.8,
+      "sha256": "be7fd411f69ffcd43ba29e0c0518f8fc660516ada28d807bf4c806461205f9dc",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_delphic_sonar_adept",
+      "cue": "hit",
+      "generation_id": "tNqjCgHI0h6bPv727yqk",
+      "file": "poseidon_delphic_sonar_adept_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "791d98a7176a318a5b8c42735e69ae8c227233b552a34188f6c26f9d7a3c2727",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_delphic_sonar_adept",
+      "cue": "destroy",
+      "generation_id": "upH804BrBJ6xEGy4vP6B",
+      "file": "poseidon_delphic_sonar_adept_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "f3b05f6c1c36cea6cdf3a589d0882f9cdfdff7d4446179aca8c3b7b47f5f8bab",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_fast_razorfin_lancer",
+      "cue": "deploy",
+      "generation_id": "efd1G2CTXbW8DCBLQPTF",
+      "file": "poseidon_fast_razorfin_lancer_deploy.wav",
+      "duration_seconds": 1.1,
+      "sha256": "8c0e4dd135b5873646a8cf828bd24aa493c58e6d772a2424418edadbd8b9fed4",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_fast_razorfin_lancer",
+      "cue": "move",
+      "generation_id": "5EoHxH4MlzDAflEaNNEU",
+      "file": "poseidon_fast_razorfin_lancer_move.wav",
+      "duration_seconds": 0.6,
+      "sha256": "bf1b899a46cd00b91b111cdcbdb8b8e7e4df6ca52cec1854e903045a7b331c88",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_fast_razorfin_lancer",
+      "cue": "attack",
+      "generation_id": "3UbAxmoo3rhCPnhXarUd",
+      "file": "poseidon_fast_razorfin_lancer_attack.wav",
+      "duration_seconds": 0.8,
+      "sha256": "11e987592dc69935a9b4c3993a93ed3a15c10c1f9f774047d0b2e3e156e9693d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_fast_razorfin_lancer",
+      "cue": "hit",
+      "generation_id": "zjWN6ICssCQkRTOZkAfd",
+      "file": "poseidon_fast_razorfin_lancer_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "4ba3f0292ea5d9e4f170f9041d0b9be5e452ce6ccd8b536f22a414d46942c3dd",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_fast_razorfin_lancer",
+      "cue": "destroy",
+      "generation_id": "t7GKQrjjiEYFftXsS4ga",
+      "file": "poseidon_fast_razorfin_lancer_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "3e6f0dca42b219816adf9b0d9e96cf289f8920e70c02017902b566e52a6a8ad7",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_keyword_breakwater_hoplite",
+      "cue": "deploy",
+      "generation_id": "JRXHh7RIY2rISeLMCIFw",
+      "file": "poseidon_keyword_breakwater_hoplite_deploy.wav",
+      "duration_seconds": 1.1,
+      "sha256": "9e20d8b54014aa876d4dd5141f1ac7c0a51fde0176b8be7dc76a970659ce3ffa",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_keyword_breakwater_hoplite",
+      "cue": "move",
+      "generation_id": "2PBQL0Len462pzUvDqZJ",
+      "file": "poseidon_keyword_breakwater_hoplite_move.wav",
+      "duration_seconds": 0.6,
+      "sha256": "d128d63250daaccc542606a4abc4fb6fc2adeb2d545a9e243b52ccf0b1bc5700",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_keyword_breakwater_hoplite",
+      "cue": "attack",
+      "generation_id": "5dxTWqDLdVvUwMMjJ7bB",
+      "file": "poseidon_keyword_breakwater_hoplite_attack.wav",
+      "duration_seconds": 0.8,
+      "sha256": "cca89c47cee504ae2ba41510420381023141e9460c427613c7c6c54a00863df0",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_keyword_breakwater_hoplite",
+      "cue": "hit",
+      "generation_id": "4VMMFiNQ7LHI42YCb18B",
+      "file": "poseidon_keyword_breakwater_hoplite_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "9698d87c32c7659579b56a7da6f4dcde8a20d55068fee07d66dd21e135daa153",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_keyword_breakwater_hoplite",
+      "cue": "destroy",
+      "generation_id": "RVheDkraAPTTRrfh1cjW",
+      "file": "poseidon_keyword_breakwater_hoplite_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "b3582f9c4001b2fae23e5bb27bdd8ede0fd6f8a2421eabd61e78f13c404356bf",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_keyword_reef_tunneler",
+      "cue": "deploy",
+      "generation_id": "rfNUu3j0sMCmgpEHPPS9",
+      "file": "poseidon_keyword_reef_tunneler_deploy.wav",
+      "duration_seconds": 1.1,
+      "sha256": "c296d84cf55010c95aaacbf2ee90f0766e5f7e49375a78cf7ab773b55626f953",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_keyword_reef_tunneler",
+      "cue": "move",
+      "generation_id": "jyHUfEvjKNc3IYcolsD9",
+      "file": "poseidon_keyword_reef_tunneler_move.wav",
+      "duration_seconds": 0.6,
+      "sha256": "0348af80d3f1d42951b27052ba91b8e5bdd820755c60a84bf5f6d37f39bd9a74",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_keyword_reef_tunneler",
+      "cue": "attack",
+      "generation_id": "QX53D3gSZSGBsuKmL3fH",
+      "file": "poseidon_keyword_reef_tunneler_attack.wav",
+      "duration_seconds": 0.8,
+      "sha256": "6312cffbc60d70713cff080edd272fe99eab2173adb6cd3e09687a6f7f6eb26b",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_keyword_reef_tunneler",
+      "cue": "hit",
+      "generation_id": "pTEbeRfveiRzJANHNRur",
+      "file": "poseidon_keyword_reef_tunneler_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "aba983710fb13bd701634b4fb47e86bafb2ab5963ae0dbb773a6fb1f2dcf66f1",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_keyword_reef_tunneler",
+      "cue": "destroy",
+      "generation_id": "7yKN6pYbPSDeHBsRxnT1",
+      "file": "poseidon_keyword_reef_tunneler_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "b03c476e653db5fcbeece29ed14d88cca99ba113470765337d79ff7be6c77146",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_kraken_tendril_drone",
+      "cue": "deploy",
+      "generation_id": "gRsRCMT1HlbfCIJtM0X1",
+      "file": "poseidon_kraken_tendril_drone_deploy.wav",
+      "duration_seconds": 1.1,
+      "sha256": "b6b0bb0613cdd187754277a47c796c8bfc0432353756c5163a6cef04a5403fac",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_kraken_tendril_drone",
+      "cue": "move",
+      "generation_id": "whmKFUfoMnWgilEAFP9e",
+      "file": "poseidon_kraken_tendril_drone_move.wav",
+      "duration_seconds": 0.6,
+      "sha256": "105c0ff9ce665304e56eb5525707788b0f181a6ddac0d743e266b31e660dbcce",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_kraken_tendril_drone",
+      "cue": "attack",
+      "generation_id": "9iQZ66aHzK1U734i2PWK",
+      "file": "poseidon_kraken_tendril_drone_attack.wav",
+      "duration_seconds": 0.8,
+      "sha256": "1349022cc7ad1cca204d40132fcd2ad0b7c6de162a639a3909b8f1bc9a2e3926",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_kraken_tendril_drone",
+      "cue": "hit",
+      "generation_id": "OGarii1ZzrMRYnZftV36",
+      "file": "poseidon_kraken_tendril_drone_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "fd4ddbd459641aa512f8c42b6cb15da6e27816cbf415bdd0b0361d5ed7c19a1f",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_kraken_tendril_drone",
+      "cue": "destroy",
+      "generation_id": "1NE2ClSNLX3P0ba6Eq81",
+      "file": "poseidon_kraken_tendril_drone_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "aaa38bb5d92c1b56a1733da2e7e5737caa6a0a0c8a56f60ad3b9473af8894dac",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_naiad_flowshaper",
+      "cue": "deploy",
+      "generation_id": "2nP0ebTyAgwDO2pkAljD",
+      "file": "poseidon_naiad_flowshaper_deploy.wav",
+      "duration_seconds": 1.1,
+      "sha256": "b5a1168d787014af66b9696920da8b4ad2071c2c9aa5363481e3da0233e55dc8",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_naiad_flowshaper",
+      "cue": "move",
+      "generation_id": "f7hB40wtkhvjXGF8YFgm",
+      "file": "poseidon_naiad_flowshaper_move.wav",
+      "duration_seconds": 0.6,
+      "sha256": "71d19bc30a56ebd1e58660fbf2c4dca84ba524496184a3960b7b2c21dc632e71",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_naiad_flowshaper",
+      "cue": "attack",
+      "generation_id": "FJFVceSZyYsvHl664f0l",
+      "file": "poseidon_naiad_flowshaper_attack.wav",
+      "duration_seconds": 0.8,
+      "sha256": "40b0763866d7224b040c8f6ecfb580f4368019ba40d3013c671478d484ff8b75",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_naiad_flowshaper",
+      "cue": "hit",
+      "generation_id": "qlYeBjWTjr3gMYHIrZ7E",
+      "file": "poseidon_naiad_flowshaper_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "bee90afa83df7c5961a91b0837390bd48ef842345780716ec52bda6309f4adf7",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_naiad_flowshaper",
+      "cue": "destroy",
+      "generation_id": "wNSypAUQhocdVVT0gbqO",
+      "file": "poseidon_naiad_flowshaper_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "d1738d25caa47a1042571e682a27ad8cd63966eb5db418dccd533b51a6428f48",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_oceanid_pressure_mage",
+      "cue": "deploy",
+      "generation_id": "W6Z1y0t2EJBgz9S3LowD",
+      "file": "poseidon_oceanid_pressure_mage_deploy.wav",
+      "duration_seconds": 1.1,
+      "sha256": "96af8a47ec79f6b2cd307fa1858cb0baa0a1fa016a39cdede104d8b722c6f523",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_oceanid_pressure_mage",
+      "cue": "move",
+      "generation_id": "DPWI6mXaktUmv0xJayO3",
+      "file": "poseidon_oceanid_pressure_mage_move.wav",
+      "duration_seconds": 0.6,
+      "sha256": "d8570c2efe7e8094138a09d1729b661e3c8e013becf41819f780ff7351fdfdb2",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_oceanid_pressure_mage",
+      "cue": "attack",
+      "generation_id": "ZA1Wv06GSShcO5g2LRrR",
+      "file": "poseidon_oceanid_pressure_mage_attack.wav",
+      "duration_seconds": 0.8,
+      "sha256": "5a8cb697fb1e80f991b9dbf6e79ec7daa49f0dceae109abdfe00c391f2711289",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_oceanid_pressure_mage",
+      "cue": "hit",
+      "generation_id": "pAm4Trtb742v5pimMSg2",
+      "file": "poseidon_oceanid_pressure_mage_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "67705d84f2784d42af8bbe9789d46e1f67bc82c1f4a1bd3bdba9829412fc4ce1",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_oceanid_pressure_mage",
+      "cue": "destroy",
+      "generation_id": "egqpk7fOITxbZJaH4wi3",
+      "file": "poseidon_oceanid_pressure_mage_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "61895f835c58d2591260eb285f21c88c1eabd9ed6f00da4c0a83bd6f4c3a28a7",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keyword_sparkstep_runner",
+      "cue": "deploy",
+      "generation_id": "7qAdoCPiSf888gotBoEG",
+      "file": "zeus_keyword_sparkstep_runner_deploy.wav",
+      "duration_seconds": 1.1,
+      "sha256": "d400e58dce474a1bb0edaa655711972d58a49a9479838f33292ea436ef613039",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keyword_sparkstep_runner",
+      "cue": "move",
+      "generation_id": "14QXgVvgI8pUNtfuRuX5",
+      "file": "zeus_keyword_sparkstep_runner_move.wav",
+      "duration_seconds": 0.6,
+      "sha256": "9017a7c021b2e538bf8069c53593b407649bd63696602e733b9922041286855a",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keyword_sparkstep_runner",
+      "cue": "attack",
+      "generation_id": "XAUIFmt3ZSR58hCx6NWi",
+      "file": "zeus_keyword_sparkstep_runner_attack.wav",
+      "duration_seconds": 0.8,
+      "sha256": "b27795bbc428151baec2c7694fa6f03d03db5b56a1f13555251f49df3026420d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keyword_sparkstep_runner",
+      "cue": "hit",
+      "generation_id": "TuP9RnmzOXFKxy3uSMs1",
+      "file": "zeus_keyword_sparkstep_runner_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "172b875fdea4f0dacb6b2d1ceedf98fc66043feea84c6b2dab30b07091698753",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keyword_sparkstep_runner",
+      "cue": "destroy",
+      "generation_id": "QxzCi1vJ1VowtLKY625d",
+      "file": "zeus_keyword_sparkstep_runner_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "ca48e3cf9119a37db89501ae4e0bebb61103ec47e35cb4bde8396a24c0dd65c1",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keyword_stormgate_sentinel",
+      "cue": "deploy",
+      "generation_id": "tXLmleeOPOYQ61GFXKhe",
+      "file": "zeus_keyword_stormgate_sentinel_deploy.wav",
+      "duration_seconds": 1.1,
+      "sha256": "25a9cb60f57567a750779aff727f76b7b44fe208fd35c8571a8eb9b2751eac2e",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keyword_stormgate_sentinel",
+      "cue": "move",
+      "generation_id": "pSbLCQHCzAqcrI93A2kP",
+      "file": "zeus_keyword_stormgate_sentinel_move.wav",
+      "duration_seconds": 0.6,
+      "sha256": "97afc136f291e0071af8b836d84b0f2d10bcd5a31aa6cab04bfefc9bd4d3236e",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keyword_stormgate_sentinel",
+      "cue": "attack",
+      "generation_id": "QafwwwSre6wruqeEtEiw",
+      "file": "zeus_keyword_stormgate_sentinel_attack.wav",
+      "duration_seconds": 0.8,
+      "sha256": "ac22641922bced0a48a74e1e122a3c817209f359f94bbcd44fa88481ac8b275f",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keyword_stormgate_sentinel",
+      "cue": "hit",
+      "generation_id": "wuP3ghIWAI2XqvrhGZEZ",
+      "file": "zeus_keyword_stormgate_sentinel_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "cbd9dd2f0f4eafa21b617be1954efe000480c36e200cffc5f2475431c919972b",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keyword_stormgate_sentinel",
+      "cue": "destroy",
+      "generation_id": "CSNSLDnmQdftGZTyaurr",
+      "file": "zeus_keyword_stormgate_sentinel_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "787f7504a08ab68bce418a5e183f60acf8667b440050423957e6224b0862a3a8",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_ability_tidewell",
+      "cue": "deploy",
+      "generation_id": "xVQGcQp69jufxeyG98zm",
+      "file": "poseidon_ability_tidewell_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "46486032238359e880712979715a3f0bfa03e89c48cb689307cf2fa14ed00ab1",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_ability_tidewell",
+      "cue": "hit",
+      "generation_id": "KeozSf3fjTB8ooP6xw38",
+      "file": "poseidon_ability_tidewell_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "8c8d35c162adc601c6731099d56e2d700ce59fe4f53491fe21af7d853401515e",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_ability_tidewell",
+      "cue": "destroy",
+      "generation_id": "f9JUJG7EetiuGp67wMVy",
+      "file": "poseidon_ability_tidewell_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "42d61030e2586c1f5c7f76ab542585d065f70cda72d587d69a6b860c62218e55",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_ability_tidewell",
+      "cue": "ability",
+      "generation_id": "wZ5Ug6wulWsA30RUElG8",
+      "file": "poseidon_ability_tidewell_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "527dae868f5a1b180990a3c55408fed81bb1cbfe38211bbc8b4bc317946c4109",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_apex_leviathan_gate",
+      "cue": "deploy",
+      "generation_id": "uJF1BZvmbsIbUURe5ACj",
+      "file": "poseidon_apex_leviathan_gate_deploy.wav",
+      "duration_seconds": 2.2,
+      "sha256": "ceb9a20a46d4d271bbf8ef2b10ea8a8056807e9b3b4c9328c7c4508c5ab413f1",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_apex_leviathan_gate",
+      "cue": "hit",
+      "generation_id": "t9fGSLRexnf9QnJVA7y6",
+      "file": "poseidon_apex_leviathan_gate_hit.wav",
+      "duration_seconds": 0.5,
+      "sha256": "73bcf2db84059ec30fbcd1994f4a3531ad9e3e761be4d5ca996126ee404f0eca",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_apex_leviathan_gate",
+      "cue": "destroy",
+      "generation_id": "0a0BsU5dnBGYk317NYTw",
+      "file": "poseidon_apex_leviathan_gate_destroy.wav",
+      "duration_seconds": 1.8,
+      "sha256": "1d45e639081daff57d9e500f383cfef93612382458986d06ef9b1d53bbb0941c",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_coral_bulwark",
+      "cue": "deploy",
+      "generation_id": "UmY1zjAK9iUNjGUSBlAe",
+      "file": "poseidon_coral_bulwark_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "8c7847c55c6515421b4f479cede8cf08f9ce33a0dae31d9b7ebb2998af1bb6c2",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_coral_bulwark",
+      "cue": "hit",
+      "generation_id": "7QFp474xIThBKbYcmijH",
+      "file": "poseidon_coral_bulwark_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "2e32803ca13b8bdce4e1bb1100dc59342a81badcc9b3ba6863e6491428adb1b4",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_coral_bulwark",
+      "cue": "destroy",
+      "generation_id": "NSTvaCZe563JzejxWGkJ",
+      "file": "poseidon_coral_bulwark_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "f00cc7242e340d8707fe91882c92bcdde48521495824efa885b982e1189b48e1",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_coral_bulwark",
+      "cue": "ability",
+      "generation_id": "Vgda8L4ubAX2Bq1JOKPZ",
+      "file": "poseidon_coral_bulwark_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "26beb897966bf6fc03e02fe63fb3d2098a988583310cfd4961b44153d1ef3fcf",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_driftwood_breakwater",
+      "cue": "deploy",
+      "generation_id": "GV9A9MjaNXhlA4m7pq3M",
+      "file": "poseidon_driftwood_breakwater_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "a470c951720ffad4906040fef31e01ffb7792e7f643e69bdb43a48e0807f7743",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_driftwood_breakwater",
+      "cue": "hit",
+      "generation_id": "joFCrruAvqACWpbl4yOg",
+      "file": "poseidon_driftwood_breakwater_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "9c19c1ac76dedd6d4347a16829e0d75ef629f8236f0a577449f4452e22a7219a",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_driftwood_breakwater",
+      "cue": "destroy",
+      "generation_id": "2pf1LgVCKOHSoxYzXnPz",
+      "file": "poseidon_driftwood_breakwater_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "a4984605bd92246179e1ebfd35a5290fa61d6f473bb15f70a3c38e01cdc4c085",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_moonwell_tidegate",
+      "cue": "deploy",
+      "generation_id": "bfuQYmoAQ9gNm0HfWFyo",
+      "file": "poseidon_moonwell_tidegate_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "a4e1b931328b14544561a32ccb4bc50a9eb6191835e385a42f0eaa64822e4a8d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_moonwell_tidegate",
+      "cue": "hit",
+      "generation_id": "dvlMAFhG4znDcAPcgATM",
+      "file": "poseidon_moonwell_tidegate_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "55485bd4e8384e2c0d9e2ceac0e40b93eedb6fae7e36cfe796f4093185edbe8d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_moonwell_tidegate",
+      "cue": "destroy",
+      "generation_id": "NNScAH6qTO47Ug99zhqP",
+      "file": "poseidon_moonwell_tidegate_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "a37a6179694802cce8a0cbe95e0f8d3398c075cc40ad3f8a259faa1c1a2ec8fc",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_moonwell_tidegate",
+      "cue": "ability",
+      "generation_id": "llGA9QTpjJRcYLnoRjqO",
+      "file": "poseidon_moonwell_tidegate_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "9e784eb35639699e0bcbfc4c6c6b90dd5bc5afdbc264fcb0e07586f0a3643a81",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_sonar_beacon",
+      "cue": "deploy",
+      "generation_id": "nNHsldVRq69lVDghJv3D",
+      "file": "poseidon_sonar_beacon_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "f6b410e2444bea5fc027191541288a2d2887218256140dd267d945197de3a0c9",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_sonar_beacon",
+      "cue": "hit",
+      "generation_id": "IC4sBMsx2Bnozwfb3ORN",
+      "file": "poseidon_sonar_beacon_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "ae44f61d18033562f442e6ead4c86066e248e79a6f4d3550fe2cd5ace8868447",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_sonar_beacon",
+      "cue": "destroy",
+      "generation_id": "9OF9PUq8UMMT8DmY5kQV",
+      "file": "poseidon_sonar_beacon_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "2c4e32d2f771c0b53e785420bcd15aebbdf4241656f334dee9258e5d06caf034",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_sonar_beacon",
+      "cue": "ability",
+      "generation_id": "mKMIyLNXPtM3Y6kz5FZI",
+      "file": "poseidon_sonar_beacon_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "b5933658aed1cb8e30ad7888bf1dea1debf93f67c685b13269c22902b1ac7bd1",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_structure_ambrosial_spring",
+      "cue": "deploy",
+      "generation_id": "BzEklfOtvlGE4IafQP7n",
+      "file": "poseidon_structure_ambrosial_spring_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "ff4e3bcade22518138afd39fa9fedcf0d15dadb0ec0664e628e7e27094287bfb",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_structure_ambrosial_spring",
+      "cue": "hit",
+      "generation_id": "D3qfsrhpJYe4xjbbcXoe",
+      "file": "poseidon_structure_ambrosial_spring_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "0304788b4cb6a8603ca1cc7111e3174b795f4bdb9d9ddef968252195b9fe0394",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_structure_ambrosial_spring",
+      "cue": "destroy",
+      "generation_id": "0aDq5Gungd6tbz1i4JdZ",
+      "file": "poseidon_structure_ambrosial_spring_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "d1b477efec63c79fb63f9ddaeb91911a18f6a0dc428088129e99f13ecb2c7ff6",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_structure_current_exchange",
+      "cue": "deploy",
+      "generation_id": "dQTEaJvlaqwQz7ru326X",
+      "file": "poseidon_structure_current_exchange_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "c724d80485fb648a7fa0600697a6e9fbc5f48dc0e674ff0096ad05e6dfd4321d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_structure_current_exchange",
+      "cue": "hit",
+      "generation_id": "XjtraHa2mSsgasTj8wba",
+      "file": "poseidon_structure_current_exchange_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "4d2f9ad375c2d5c8f400eb88aba8500af976868f9a0379d93e6e9180bfb1d91e",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_structure_current_exchange",
+      "cue": "destroy",
+      "generation_id": "N9Q5rXUdRyFm6aDR8AMz",
+      "file": "poseidon_structure_current_exchange_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "9ab147faa90e5b448b4ef9823cb3290f0dbd1bbf3da8c46b5179db9057baf4ff",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_structure_pearl_infirmary",
+      "cue": "deploy",
+      "generation_id": "Kyn1HBnT7o12czVRLuWu",
+      "file": "poseidon_structure_pearl_infirmary_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "6c2bfa34ccd5f9bffda93f46f055e1553ad3631feb28da10a2773cad3eafb55b",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_structure_pearl_infirmary",
+      "cue": "hit",
+      "generation_id": "pB87SMELNivY6dRs35rN",
+      "file": "poseidon_structure_pearl_infirmary_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "0558a7af14547a0040117eb8f349906e7748c3e2f1c7c6667b8bcae226085565",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_structure_pearl_infirmary",
+      "cue": "destroy",
+      "generation_id": "aBJnYhZgIF0gDUBlpKy0",
+      "file": "poseidon_structure_pearl_infirmary_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "4b94438d8001cd5c093165e4225f225ce7499df96370616a63832c492ec81594",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_structure_tidevault",
+      "cue": "deploy",
+      "generation_id": "VSGzHNBl9S8vc5aeV09e",
+      "file": "poseidon_structure_tidevault_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "2eba2deb29c0cfc1251612f8f0290bca641ba04f6200155655ce02532bb58793",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_structure_tidevault",
+      "cue": "hit",
+      "generation_id": "YNjVfgrf1MuOv8o1EjxN",
+      "file": "poseidon_structure_tidevault_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "ca705e77de82851b2967b4fecdb127d9e926a9878e6a6e8ec6b1074a8ad9fb21",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_structure_tidevault",
+      "cue": "destroy",
+      "generation_id": "ADEybmWJLJ1vZyoUQBwh",
+      "file": "poseidon_structure_tidevault_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "c2f5abb79f451e2de6543ce94579dcc1235b6e612f28fc640ae89916b001443e",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tidal_pump_station",
+      "cue": "deploy",
+      "generation_id": "a5pCeSP2qOJyorO2SBga",
+      "file": "poseidon_tidal_pump_station_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "2029f7cf6a327495e8b6768c4d734ee7fd3490a44bbe92e62f498edd20d5ae1a",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tidal_pump_station",
+      "cue": "hit",
+      "generation_id": "o8AAOvesdtMP8UBbZjj2",
+      "file": "poseidon_tidal_pump_station_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "ad673ae0bfcc639c45828f2419424077e8e171a16394d5790f7e8d19a31bd1f0",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tidal_pump_station",
+      "cue": "destroy",
+      "generation_id": "j4RqCEvqcp53puXbRwT1",
+      "file": "poseidon_tidal_pump_station_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "978d9646cb8d757dbc5414bd85194f2da18ee40fbbfe21c9abfec0a2304afa26",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tidal_pump_station",
+      "cue": "ability",
+      "generation_id": "9mJccsomcbQj0wnBWKZf",
+      "file": "poseidon_tidal_pump_station_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "aceeadcc0b3e1db2da56a23918a611828b0b282f5079e153a7cd82f94acb8069",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_ability_oracle_spire",
+      "cue": "deploy",
+      "generation_id": "EXJmTNMXxdHlW4aAvJME",
+      "file": "zeus_ability_oracle_spire_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "03095cfe2810474dc211cf6bbcef34d5c124ef2aa7b8ede3994d454c9b4330fe",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_ability_oracle_spire",
+      "cue": "hit",
+      "generation_id": "hQ9XUhhzHgHskLvblFdz",
+      "file": "zeus_ability_oracle_spire_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "4c7e73daba6624c4cbf16f23fec41057b5b1b103d3dd2dff062bfac582cff7bb",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_ability_oracle_spire",
+      "cue": "destroy",
+      "generation_id": "E6H5FCAVTc1FZHHw6yx8",
+      "file": "zeus_ability_oracle_spire_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "0d5fa5eb44165c2df7a173faa9a5d22b4e62f3314b0a986d1914a36ed1615c9f",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_ability_oracle_spire",
+      "cue": "ability",
+      "generation_id": "fU6PNGSjTBpA2sm2jkX8",
+      "file": "zeus_ability_oracle_spire_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "c000cb093761004760485aeb0b31c1193ae3faa0e924bc5d9710a91c308491e3",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_apex_worldstorm_spire",
+      "cue": "deploy",
+      "generation_id": "cW9jy62mikGfQYWCOG1i",
+      "file": "zeus_apex_worldstorm_spire_deploy.wav",
+      "duration_seconds": 2.2,
+      "sha256": "9661b7009fb1edf219c0b9c90f9741e476bf907df7776c72e6aabe0947da1a35",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_apex_worldstorm_spire",
+      "cue": "hit",
+      "generation_id": "LttvPtetwt1dM9WRnTCw",
+      "file": "zeus_apex_worldstorm_spire_hit.wav",
+      "duration_seconds": 0.5,
+      "sha256": "0a177c2910fa3272efeee7b26350c1e6d0a0c8502fc72567b1ae0cb23e280579",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_apex_worldstorm_spire",
+      "cue": "destroy",
+      "generation_id": "J6l0EIBflNSmFJSZJBxe",
+      "file": "zeus_apex_worldstorm_spire_destroy.wav",
+      "duration_seconds": 1.8,
+      "sha256": "a2c04881331fd02239eb6e9065292d500ecd709d562f70384723c454615290ed",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_cloudwall_bastion",
+      "cue": "deploy",
+      "generation_id": "oqMudWlnaJ2xAdZ3hRxc",
+      "file": "zeus_cloudwall_bastion_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "0cc51198912f0389380eb81d6104c63adcd36927e772b16ed93379df5cb56b34",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_cloudwall_bastion",
+      "cue": "hit",
+      "generation_id": "T2Bs1Lgv1hnbjeWjBL6c",
+      "file": "zeus_cloudwall_bastion_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "3d057ef18b294e2ab876d181bdd6b64c16b7f7b511f4294ffc3d8f8efdbb1cd6",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_cloudwall_bastion",
+      "cue": "destroy",
+      "generation_id": "nfw82CNjSZWBWFxP4hzl",
+      "file": "zeus_cloudwall_bastion_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "11f9883c78aad2f417cd15a531f8bdd5d0a315826e4057382a070a4eb5fe4b7f",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_cloudwall_bastion",
+      "cue": "ability",
+      "generation_id": "UJLBz7z8wwGmb5g9NLqL",
+      "file": "zeus_cloudwall_bastion_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "9dcae4161e4ad23b77c753fc0f5f6ae3dc0f32c474e08914d440309b10aef02a",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_ion_storm_lattice",
+      "cue": "deploy",
+      "generation_id": "32B1rAtv2VzFn1ea9VfG",
+      "file": "zeus_ion_storm_lattice_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "9dfda6d3ef9ee71684e5faefee81a2215c8b06982f8cdd9ebbbb344aa258fcdd",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_ion_storm_lattice",
+      "cue": "hit",
+      "generation_id": "Cby7oznXkUeJJQAZj9zf",
+      "file": "zeus_ion_storm_lattice_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "068d9575e08053baa2edae2251450108f3970903646f0945e006b6bf031c6335",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_ion_storm_lattice",
+      "cue": "destroy",
+      "generation_id": "bdf2o5Cl1Jw0UsmCIq6B",
+      "file": "zeus_ion_storm_lattice_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "3f9bbf8048c707c5fb509a08fb93869a72d8ae019c9388218ec36f0101ab95fc",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_ion_storm_lattice",
+      "cue": "ability",
+      "generation_id": "IJhDrVXFdU7ESXx3EVjZ",
+      "file": "zeus_ion_storm_lattice_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "f6c2cd77f368defec903929183372d990967cccc9a39dd86fb28af76edc4dbf4",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keraunos_charging_spire",
+      "cue": "deploy",
+      "generation_id": "8Z4RVkBDRTVMwbWtJED4",
+      "file": "zeus_keraunos_charging_spire_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "2b938e859318f54819d81a69de346946e20b8ed80555b2e0c1aa930644e367f3",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keraunos_charging_spire",
+      "cue": "hit",
+      "generation_id": "MKXvn2mUeB2BYbTuRJc0",
+      "file": "zeus_keraunos_charging_spire_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "5b2c52b7971365570bc0b0508dbf5c0b44be2d8f696e35fe89075f7a29f84b15",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keraunos_charging_spire",
+      "cue": "destroy",
+      "generation_id": "j8zy9qytXACrmAqkHagW",
+      "file": "zeus_keraunos_charging_spire_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "693a1ca49094b6b296f3d8b1df8cc42219234e9702b307c8c8a27cfa18119bcc",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_keraunos_charging_spire",
+      "cue": "ability",
+      "generation_id": "nBvuQNjx6RkwjONfm7UO",
+      "file": "zeus_keraunos_charging_spire_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "5153ca522d102a78de4cd8e899abf555da905403ebdd79d339b87a22969905f5",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_storm_relay_pylon",
+      "cue": "deploy",
+      "generation_id": "GlWB9mJPVQemIVtzki9M",
+      "file": "zeus_storm_relay_pylon_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "21feb365c15873e822baca6378676f883eab358bd58cd5cf41985ddf9993f89e",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_storm_relay_pylon",
+      "cue": "hit",
+      "generation_id": "z3fNdnCsRO567QSzhbh8",
+      "file": "zeus_storm_relay_pylon_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "ab83ffbfb079f94a4a0e471888b75eef999f1c9c0e353c48f6347729abddb7c2",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_storm_relay_pylon",
+      "cue": "destroy",
+      "generation_id": "sdeLe06OPynKOe0XRi7Q",
+      "file": "zeus_storm_relay_pylon_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "69d770b2eefda0027ce5b4732d56c500f4b5646ca9da93ecd999d225a7a68cfd",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_storm_relay_pylon",
+      "cue": "ability",
+      "generation_id": "OwVBEaJPgJeC0EQuDMiL",
+      "file": "zeus_storm_relay_pylon_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "08edc3f635343dce0e915d7d58716d6c9ac6c8d068ea961218692e2b5c45b235",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_structure_aegis_conductor",
+      "cue": "deploy",
+      "generation_id": "1ovo38fjFTh6fKW5Vvkk",
+      "file": "zeus_structure_aegis_conductor_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "9dcb2b595e40154be165592262f84c90c55d01ab7ef9b5b53fbd4483cc6bfa18",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_structure_aegis_conductor",
+      "cue": "hit",
+      "generation_id": "02XT9Vp4mG77Es4eB1Yw",
+      "file": "zeus_structure_aegis_conductor_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "873280ecb4141917a23fbd39f15e14ec3c60aa3be649bd7466350efb274839e1",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_structure_aegis_conductor",
+      "cue": "destroy",
+      "generation_id": "p2lYX35RdFr6Rni4LyrY",
+      "file": "zeus_structure_aegis_conductor_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "3f176d9866a8f141fce067e47189744bb14a600d038cb52175333a0834e41d23",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_structure_cloud_archive",
+      "cue": "deploy",
+      "generation_id": "wW0zHIkdilGIWFmkkA0g",
+      "file": "zeus_structure_cloud_archive_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "28d691de7ffb1baddf7b5314f0e27a310441f1ee52ca3550a09687272b091db1",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_structure_cloud_archive",
+      "cue": "hit",
+      "generation_id": "yDOQono3stz9JRueM69d",
+      "file": "zeus_structure_cloud_archive_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "499e02f841d007a0718026a6bc75c41372cc85203d117f71bdf3839a29ed7530",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_structure_cloud_archive",
+      "cue": "destroy",
+      "generation_id": "LF3ztjtVghMZtug0Q2tZ",
+      "file": "zeus_structure_cloud_archive_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "4ae0bd0744e00484ca051a0585893082c678e85856d14833fb36a053ee91c5fb",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_structure_oracle_of_storms",
+      "cue": "deploy",
+      "generation_id": "XuFi7z6SvJknBFmsuSIE",
+      "file": "zeus_structure_oracle_of_storms_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "8bea8ab3c796121f9843f83e3b92f24db895bec272c2c4dd52c9b8df9646061f",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_structure_oracle_of_storms",
+      "cue": "hit",
+      "generation_id": "xC9vM8MJ71AMpVYQjtet",
+      "file": "zeus_structure_oracle_of_storms_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "d8bb9484f0eafb392bc3f1f5a5e5138aa28fcc35a10171958454a311b5db0460",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_structure_oracle_of_storms",
+      "cue": "destroy",
+      "generation_id": "verVMDiFEOydtjh9cYCt",
+      "file": "zeus_structure_oracle_of_storms_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "c25eff5123e200aeda5f04494815398554e8cfa32a7e20951b38256b83645af9",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_structure_stormglass_relay",
+      "cue": "deploy",
+      "generation_id": "aUxTZaH0sDsT5uDiku0s",
+      "file": "zeus_structure_stormglass_relay_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "b7bf79efcf1f42081dc82c1b3247855a88669ab6c2cad6b4946e6910d99ee6ce",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_structure_stormglass_relay",
+      "cue": "hit",
+      "generation_id": "Ij0Kv9lIKe8KDC3TgAyE",
+      "file": "zeus_structure_stormglass_relay_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "85a97bbfc6f29d1921eda53ed3d5daf99d3a6744f6d3760b1dc3b4334583dd9d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_structure_stormglass_relay",
+      "cue": "destroy",
+      "generation_id": "jwZzr0yMFTgQ8UIt2Lpq",
+      "file": "zeus_structure_stormglass_relay_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "722058868e26ff99a21afef81dbfb58c1e76e5ebaacb104361aa65f60b452b17",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_zephyr_mooring_mast",
+      "cue": "deploy",
+      "generation_id": "1PK3JkOzfEiacKwypNeV",
+      "file": "zeus_zephyr_mooring_mast_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "500817cc5d3cc4eecaae71017c1d0d05a494d7e8bfcac2ebee47d413d7619550",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_zephyr_mooring_mast",
+      "cue": "hit",
+      "generation_id": "VUrO60OGyH6dTHiTkGon",
+      "file": "zeus_zephyr_mooring_mast_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "f3d60d912839294f1dd50b6f551fb425b9b85d60d6d83c846958c4b9daffdd49",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_zephyr_mooring_mast",
+      "cue": "destroy",
+      "generation_id": "fhAQgXPDNfkP9mVUsfcu",
+      "file": "zeus_zephyr_mooring_mast_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "10f7a751f0495e14f0441b581be4c4cb61231bbb63d65b26956d352182a34157",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_zeus_command_nexus",
+      "cue": "deploy",
+      "generation_id": "mlVmtSJJey4AnBOdW1lU",
+      "file": "zeus_zeus_command_nexus_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "f747d4b1f88b8b077f3b28679e65f9182da9610fb0b489fb42b1f6dd9929e00d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_zeus_command_nexus",
+      "cue": "hit",
+      "generation_id": "OKKSGqkANvKExuy30OAq",
+      "file": "zeus_zeus_command_nexus_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "af4c20edfda1c9ad3b2f9075ba28519c705f668dd476cc99f82bcd4ecadbe2cc",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_zeus_command_nexus",
+      "cue": "destroy",
+      "generation_id": "cchb1EEMC9WQ19gqI4UD",
+      "file": "zeus_zeus_command_nexus_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "2496cbdc8e9975e8ea7fb20148ab3982878720448e6c9bbcc7b2dd815c75f924",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_apex_maelstrom_verdict",
+      "cue": "cast",
+      "generation_id": "oxFbztxnf1dPQQsBwlrp",
+      "file": "poseidon_apex_maelstrom_verdict_cast.wav",
+      "duration_seconds": 1.2,
+      "sha256": "9ac3f07cf0197e293c85772a3f7b7be79d8149c98b1738cdac2cf79b58f1eb6f",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_apex_maelstrom_verdict",
+      "cue": "resolve_impact",
+      "generation_id": "nvnoF54y0btbJcAyS989",
+      "file": "poseidon_apex_maelstrom_verdict_resolve_impact.wav",
+      "duration_seconds": 2.2,
+      "sha256": "d49d770aa14867dde172678915f28f02e04053eac3050c10af60aa1eed7dd725",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_crushing_depths",
+      "cue": "cast",
+      "generation_id": "L86RTfgNkLFqTWyAqiwE",
+      "file": "poseidon_crushing_depths_cast.wav",
+      "duration_seconds": 0.8,
+      "sha256": "3f230d3a4a3650ff70faf00e1c88241fcdef6e0dadbca0fed2d94760f7689009",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_crushing_depths",
+      "cue": "resolve_impact",
+      "generation_id": "vogd64aUxy7gTQGSxU7r",
+      "file": "poseidon_crushing_depths_resolve_impact.wav",
+      "duration_seconds": 1.3,
+      "sha256": "3f19eb0a4bdbb12f782df0d3d0c2f7b19c2ac46fbb3404ec0c604e67a4188a73",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_erode_foundation",
+      "cue": "cast",
+      "generation_id": "x2azl7TwrkvAScXIAZL2",
+      "file": "poseidon_erode_foundation_cast.wav",
+      "duration_seconds": 0.8,
+      "sha256": "c5b35b75ac7b2bfc1cc23fbe075028cc473446b6d39e9034ebf78c78bab59068",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_erode_foundation",
+      "cue": "resolve_impact",
+      "generation_id": "Nnl8Htlkps8VCMGaT04h",
+      "file": "poseidon_erode_foundation_resolve_impact.wav",
+      "duration_seconds": 1.3,
+      "sha256": "8711efedafcb451f131ec57d3af787fa49ddf5bf9ac05a9518d7fab429ffeac3",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_restorative_tide",
+      "cue": "cast",
+      "generation_id": "2UjI4e5ea43ilBG0gJjq",
+      "file": "poseidon_restorative_tide_cast.wav",
+      "duration_seconds": 0.8,
+      "sha256": "26d0da0040018303dcf7f22754a5d763ae2554bfd7f6d3bbd17b0ccab3533046",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_restorative_tide",
+      "cue": "resolve_impact",
+      "generation_id": "waNudhbO0FlZC3wL4YTu",
+      "file": "poseidon_restorative_tide_resolve_impact.wav",
+      "duration_seconds": 1.3,
+      "sha256": "1d4ae9ac09d4596415f818fe2701261f7c3e6d325579d1d2f59a37c3e3c243a5",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tidal_armor",
+      "cue": "cast",
+      "generation_id": "nczMqbvftZf9c5V9HrI5",
+      "file": "poseidon_tidal_armor_cast.wav",
+      "duration_seconds": 0.8,
+      "sha256": "0a380401143080b36ddc02afad061405d8c9ce6ea4fcf92eac0835fc4df2e3cc",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tidal_armor",
+      "cue": "resolve_impact",
+      "generation_id": "rbCCA2ekwJyqga7BTdtf",
+      "file": "poseidon_tidal_armor_resolve_impact.wav",
+      "duration_seconds": 1.3,
+      "sha256": "1142208d3f91f55879fdb2f7a8b22c4ab9519bce118cce7873ef6e2d5056a27e",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_undertow_recall",
+      "cue": "cast",
+      "generation_id": "AhAsbmlyZso519YABdzO",
+      "file": "poseidon_undertow_recall_cast.wav",
+      "duration_seconds": 0.8,
+      "sha256": "53828dc2ee5dcac4c6a745fd314ae5ae38e0d050fd558923f9e3f45c47d06ab4",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_undertow_recall",
+      "cue": "resolve_impact",
+      "generation_id": "YjoOawILM3KC0ay45pQk",
+      "file": "poseidon_undertow_recall_resolve_impact.wav",
+      "duration_seconds": 1.3,
+      "sha256": "ee60b8704c4fc74ff1d9993a615efc60c00605a6b55825eea9d3456de87d45de",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_aegis_of_the_sky",
+      "cue": "cast",
+      "generation_id": "IqhKM99FzHCQRc7mixtk",
+      "file": "zeus_aegis_of_the_sky_cast.wav",
+      "duration_seconds": 0.8,
+      "sha256": "4299f6b97b8f976b125d3751deeb69556e392cdf6c344f7edd9082d49b22c278",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_aegis_of_the_sky",
+      "cue": "resolve_impact",
+      "generation_id": "q8JAgnQ0z3Hvx1hqRLv4",
+      "file": "zeus_aegis_of_the_sky_resolve_impact.wav",
+      "duration_seconds": 1.3,
+      "sha256": "f62a72a416d0afa5317ac54c8b773a0802f2092baa713db268b82eb89ef1307f",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_apex_crownstorm_ascendance",
+      "cue": "cast",
+      "generation_id": "I5sNYSTv9lVVAkWdkC96",
+      "file": "zeus_apex_crownstorm_ascendance_cast.wav",
+      "duration_seconds": 1.2,
+      "sha256": "b75c4685d121e20244bbd400104f014ce572acfb3923c39aa67cad68ac651456",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_apex_crownstorm_ascendance",
+      "cue": "resolve_impact",
+      "generation_id": "1tetpthGYyuctkAy8yZA",
+      "file": "zeus_apex_crownstorm_ascendance_resolve_impact.wav",
+      "duration_seconds": 2.2,
+      "sha256": "8b78e2e59983695367db37f4fc6e6576afbc0a8c3f11f12069295c499bf47a49",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_apex_divine_tailwind",
+      "cue": "cast",
+      "generation_id": "MPx10vpWHce4idYLGQJS",
+      "file": "zeus_apex_divine_tailwind_cast.wav",
+      "duration_seconds": 1.2,
+      "sha256": "b882c75667a288e0e3e73b6fc64b6d9df3779c08656cd42c1eb76de7ff194950",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_apex_divine_tailwind",
+      "cue": "resolve_impact",
+      "generation_id": "FoAWScZaTNEzZx5bhtnb",
+      "file": "zeus_apex_divine_tailwind_resolve_impact.wav",
+      "duration_seconds": 2.2,
+      "sha256": "5e1e9d42ab931f4b8ffe938fcb6561c9197d5aea1028a38e85865075d73e6385",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_apex_imperial_sky_aegis",
+      "cue": "cast",
+      "generation_id": "ZRXjyoPaBTfjO8XWtlDn",
+      "file": "zeus_apex_imperial_sky_aegis_cast.wav",
+      "duration_seconds": 1.2,
+      "sha256": "5afe23fb3342fd227dd21053bd9a814c4d78c29dacc2b39b0b7199e2dba3a5c9",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_apex_imperial_sky_aegis",
+      "cue": "resolve_impact",
+      "generation_id": "lYFoIkT8fGSgozNCFhxC",
+      "file": "zeus_apex_imperial_sky_aegis_resolve_impact.wav",
+      "duration_seconds": 2.2,
+      "sha256": "125cbf03082b29b615116e30db496ac1829c52a87346d03beafb4a418cd8a5f2",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_apex_thunder_gods_verdict",
+      "cue": "cast",
+      "generation_id": "ZZwWzHE5aW24xmb8xX1T",
+      "file": "zeus_apex_thunder_gods_verdict_cast.wav",
+      "duration_seconds": 1.2,
+      "sha256": "e23d38f7456646641b0766e89fd4791962101b8264179b8b855ec863e58b01dd",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_apex_thunder_gods_verdict",
+      "cue": "resolve_impact",
+      "generation_id": "MyM8G84JNkwxWxvV7ZkG",
+      "file": "zeus_apex_thunder_gods_verdict_resolve_impact.wav",
+      "duration_seconds": 2.2,
+      "sha256": "3f56e51dd31de899c963479cea565b2c800fe6826ef1b6377ff28a308657f058",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_apex_wrath_of_olympus",
+      "cue": "cast",
+      "generation_id": "gh5mFid44KqA95ZG5xhU",
+      "file": "zeus_apex_wrath_of_olympus_cast.wav",
+      "duration_seconds": 1.2,
+      "sha256": "887089eda3d50d9a706f7e98a5b29a73ad1ed4dbb7345e5fff9dcc8504c17053",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_apex_wrath_of_olympus",
+      "cue": "resolve_impact",
+      "generation_id": "oDvxTrJFlfEamfgtWPIC",
+      "file": "zeus_apex_wrath_of_olympus_resolve_impact.wav",
+      "duration_seconds": 2.2,
+      "sha256": "9f2765388bfb8c0aacd45191c76b3d55a63f4e07122259fd2e52c1d5e9adcfaa",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_chain_lightning",
+      "cue": "cast",
+      "generation_id": "NY9Uo8O8dYlOM1XXaO22",
+      "file": "zeus_chain_lightning_cast.wav",
+      "duration_seconds": 0.8,
+      "sha256": "fbddfad982503cd88b4d691458031c7b70064e276b331c89d7cdcbfc9238a7d9",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_chain_lightning",
+      "cue": "resolve_impact",
+      "generation_id": "wiVnvw5WrCjMwyZuumj2",
+      "file": "zeus_chain_lightning_resolve_impact.wav",
+      "duration_seconds": 1.3,
+      "sha256": "b2dac0180e52d3a41c358e802d0537c4e92c1a78d8041a49e21c6d508c6af846",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_skybreaker_bolt",
+      "cue": "cast",
+      "generation_id": "dtMUY2ARsySMV84HbzuR",
+      "file": "zeus_skybreaker_bolt_cast.wav",
+      "duration_seconds": 0.8,
+      "sha256": "ba73235f6fd31ade44c4c179e9dc76f64e179f52e88ea19d2cebe692e26e3fcb",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_skybreaker_bolt",
+      "cue": "resolve_impact",
+      "generation_id": "UwIKiljLVuJNUZAyYdrU",
+      "file": "zeus_skybreaker_bolt_resolve_impact.wav",
+      "duration_seconds": 1.3,
+      "sha256": "271dc3e8b98e545af57fbca28fb1bb5d83bbac7cad68ce61a9bafaaa3f12f957",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_stormcharge",
+      "cue": "cast",
+      "generation_id": "hwEO3X6pT70JsFXNiGsf",
+      "file": "zeus_stormcharge_cast.wav",
+      "duration_seconds": 0.8,
+      "sha256": "571e59f90a1bd5219817bdaf2031dad481f85a9357783e13ca864f2b1b3f7cae",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_stormcharge",
+      "cue": "resolve_impact",
+      "generation_id": "9rnK4tEntcuS6WMtqoj6",
+      "file": "zeus_stormcharge_resolve_impact.wav",
+      "duration_seconds": 1.3,
+      "sha256": "91a5f358f1e5271439cc172b56885b340ccc8fcb9d39f0b1573820a05e3d9c98",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_windstep_protocol",
+      "cue": "cast",
+      "generation_id": "wK7IYMZNFLatmT3cis3G",
+      "file": "zeus_windstep_protocol_cast.wav",
+      "duration_seconds": 0.8,
+      "sha256": "7de13d5069d8b7e7f7c48b8c506dc11babd09ca4097f42dc4ad62f53aeed351b",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_windstep_protocol",
+      "cue": "resolve_impact",
+      "generation_id": "oTjUJZxfcs2qenx3KQn3",
+      "file": "zeus_windstep_protocol_resolve_impact.wav",
+      "duration_seconds": 1.3,
+      "sha256": "c2ec599d078e32834c05f4b721840950c8014d945ca40ffac07dc19f9cefbc01",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_ability_healing_shoal",
+      "cue": "place",
+      "generation_id": "vnscSWXfcn0MojJWErBs",
+      "file": "poseidon_ability_healing_shoal_place.wav",
+      "duration_seconds": 1,
+      "sha256": "85dc6e93b095a303cbfff68c1f3788959389fc10305830d5a71f8acdd3177900",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_abyssal_pressure_trench",
+      "cue": "place",
+      "generation_id": "YGPg79pE2fdD48kIQCOj",
+      "file": "poseidon_abyssal_pressure_trench_place.wav",
+      "duration_seconds": 1,
+      "sha256": "9514ec2a13bc52780966453243fdd68335414301bb651a29dc8aa1bbd48ceeef",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_coral_data_reef",
+      "cue": "place",
+      "generation_id": "gw4TpynGu8FRHHVuRUMO",
+      "file": "poseidon_coral_data_reef_place.wav",
+      "duration_seconds": 1,
+      "sha256": "c5e8ff5a36ec6103585150cccb4d7c76f5919556b09e1e7b102d44f079d56334",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_drowned_archive",
+      "cue": "place",
+      "generation_id": "NuShZ6zeEws5NdTQghTr",
+      "file": "poseidon_drowned_archive_place.wav",
+      "duration_seconds": 1,
+      "sha256": "a76565e7a569ac0fa438a8c1803e856d0ee9556dd375f139375c8af16a499ec0",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_land_coral_tributary",
+      "cue": "place",
+      "generation_id": "opEE3pE4Z9cjMDHluNEM",
+      "file": "poseidon_land_coral_tributary_place.wav",
+      "duration_seconds": 1,
+      "sha256": "f4d92d61436b5834b0bb8ffbabfb48940cdb1ef19fc3bce2ef7168d00cf4f634",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_land_leviathan_shelf",
+      "cue": "place",
+      "generation_id": "qyHAhJ6yHQR0LCpiMHkf",
+      "file": "poseidon_land_leviathan_shelf_place.wav",
+      "duration_seconds": 1,
+      "sha256": "86bead73113d1f249fa632cc05dc262bdeaef50b6f9b7be774b795586e6267e1",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_land_pelagic_kingdom",
+      "cue": "place",
+      "generation_id": "78AStGiMhebCIhi3XEb0",
+      "file": "poseidon_land_pelagic_kingdom_place.wav",
+      "duration_seconds": 1,
+      "sha256": "ee90f4f6e575b26ab7d12f38ebb9b6e16717ad3d5ee747f6d2a676f781088345",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_land_saltmarsh_harbor",
+      "cue": "place",
+      "generation_id": "hGzNwUCbS4u6ITT05iuY",
+      "file": "poseidon_land_saltmarsh_harbor_place.wav",
+      "duration_seconds": 1,
+      "sha256": "e12225e7dc6998e4ad6d987c8b8e5f1b8285999e7e6d0cc09bb242a7777f8b64",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_neon_tidelands",
+      "cue": "place",
+      "generation_id": "a9rxFPI8QOp9XKayCB0R",
+      "file": "poseidon_neon_tidelands_place.wav",
+      "duration_seconds": 1,
+      "sha256": "c6bf5619d8289e9be636b53e4408f0639434ce86391da92cd47a6a4d0fc262b5",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_palace_of_tides_approach",
+      "cue": "place",
+      "generation_id": "q3nIjXPLJn09jx90dHbe",
+      "file": "poseidon_palace_of_tides_approach_place.wav",
+      "duration_seconds": 1,
+      "sha256": "bee1618623c8b1695d9225a0fa3795d90d9a8c57a385c3296f33faca345fdc8c",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_ability_stormfront",
+      "cue": "place",
+      "generation_id": "IdsytdiewvT72sBlYIGa",
+      "file": "zeus_ability_stormfront_place.wav",
+      "duration_seconds": 1,
+      "sha256": "6b5bf126f5f83eb27deac9081fe621252b1f09bc870d3aa529fb86121c8ca770",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_eagles_perch_array",
+      "cue": "place",
+      "generation_id": "ie49dMuFXWV3eJcTx4Q8",
+      "file": "zeus_eagles_perch_array_place.wav",
+      "duration_seconds": 1,
+      "sha256": "c555c2811bca34a11018c59831a7c681024fe5324d6449259e2bc3c28ade540a",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_ionized_skyway",
+      "cue": "place",
+      "generation_id": "WFGeEQczZLTy5PM0sNGt",
+      "file": "zeus_ionized_skyway_place.wav",
+      "duration_seconds": 1,
+      "sha256": "2f9f48886ff5a8e6be11d83716508259f90b35976aad3d69e6078cb83a56e65c",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_land_aurora_reach",
+      "cue": "place",
+      "generation_id": "7Jt3dCk6xCoH2UkcQA68",
+      "file": "zeus_land_aurora_reach_place.wav",
+      "duration_seconds": 1,
+      "sha256": "32578be81baebbb43c467c2626d5d921b4412834dc2366af8943a086b482084a",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_land_dawncloud_step",
+      "cue": "place",
+      "generation_id": "dVAavNzzn0UvMLzYuDHG",
+      "file": "zeus_land_dawncloud_step_place.wav",
+      "duration_seconds": 1,
+      "sha256": "d64de01e52ca2b3f2bae99b666fb02fce4e0bb55d829a47cdffb965bdea50c51",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_land_empyrean_current",
+      "cue": "place",
+      "generation_id": "CBLCZcgyXLZPT13cUbDe",
+      "file": "zeus_land_empyrean_current_place.wav",
+      "duration_seconds": 1,
+      "sha256": "1bf0dd0b4432dd4a28f120e56e665e4c645927efe4199b4eecfa0d42555055dd",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_land_thunderstep_plateau",
+      "cue": "place",
+      "generation_id": "uo8sxn2UEP0OxVWTD8dT",
+      "file": "zeus_land_thunderstep_plateau_place.wav",
+      "duration_seconds": 1,
+      "sha256": "577e794cd5f1f083feec5d0aa3225a999e2ccb18ce2e9bbeb36710dd5c7f1f80",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_olympian_cloudbank",
+      "cue": "place",
+      "generation_id": "XK05Ys2wA6HtEMRhU5tu",
+      "file": "zeus_olympian_cloudbank_place.wav",
+      "duration_seconds": 1,
+      "sha256": "c206dc6b20659f08b8ec99593c1b8295bf432415a07f70c9616d97b3ea57db0e",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_throneward_conduit",
+      "cue": "place",
+      "generation_id": "jOOK4p5ybiopuw89bCgd",
+      "file": "zeus_throneward_conduit_place.wav",
+      "duration_seconds": 1,
+      "sha256": "5418398607881814300fd93ce3875868f78efaad70f70dff66e8e187a7ec3935",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_land_1",
+      "cue": "place",
+      "generation_id": "eE4vtGoptZUcqHcicOnC",
+      "file": "poseidon_tutor_land_1_place.wav",
+      "duration_seconds": 1,
+      "sha256": "d2886c9cb0194fa1452f1306a6b6ff0d4769edb6543524cbab82d02d75fb91aa",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_land_2",
+      "cue": "place",
+      "generation_id": "eE4vtGoptZUcqHcicOnC",
+      "file": "poseidon_tutor_land_2_place.wav",
+      "duration_seconds": 1,
+      "sha256": "d2886c9cb0194fa1452f1306a6b6ff0d4769edb6543524cbab82d02d75fb91aa",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_land_3",
+      "cue": "place",
+      "generation_id": "eE4vtGoptZUcqHcicOnC",
+      "file": "poseidon_tutor_land_3_place.wav",
+      "duration_seconds": 1,
+      "sha256": "d2886c9cb0194fa1452f1306a6b6ff0d4769edb6543524cbab82d02d75fb91aa",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_land_4",
+      "cue": "place",
+      "generation_id": "eE4vtGoptZUcqHcicOnC",
+      "file": "poseidon_tutor_land_4_place.wav",
+      "duration_seconds": 1,
+      "sha256": "d2886c9cb0194fa1452f1306a6b6ff0d4769edb6543524cbab82d02d75fb91aa",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_land_5",
+      "cue": "place",
+      "generation_id": "eE4vtGoptZUcqHcicOnC",
+      "file": "poseidon_tutor_land_5_place.wav",
+      "duration_seconds": 1,
+      "sha256": "d2886c9cb0194fa1452f1306a6b6ff0d4769edb6543524cbab82d02d75fb91aa",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_1",
+      "cue": "deploy",
+      "generation_id": "55wKs4bGSunOramKtpSi",
+      "file": "poseidon_tutor_structure_1_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "5cbc238bb72d8efc42d4cfa27dcc5d6c7a1377c02f6c2f801aa8f4888daafd0f",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_1",
+      "cue": "hit",
+      "generation_id": "4BKMHnqXXAqKWYRYf8tj",
+      "file": "poseidon_tutor_structure_1_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "d4d1bfcd7feb76c5f2004f2796cfccf8d2beda1dc240833e0d0194a33dcf1d60",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_1",
+      "cue": "destroy",
+      "generation_id": "mSizlmatNREexQhFHUS4",
+      "file": "poseidon_tutor_structure_1_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "c15b2acf83281f2de03007123c974a94c83ffd9fe2e9165c8d2616b466fae09d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_1",
+      "cue": "ability",
+      "generation_id": "DtJGoXnux2KrKtQJtNVG",
+      "file": "poseidon_tutor_structure_1_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "6d61cf34331d3ac3ceb8746fd558808c12ed03ac678fd7f3c3350ddd9744abd8",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_2",
+      "cue": "deploy",
+      "generation_id": "55wKs4bGSunOramKtpSi",
+      "file": "poseidon_tutor_structure_2_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "5cbc238bb72d8efc42d4cfa27dcc5d6c7a1377c02f6c2f801aa8f4888daafd0f",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_2",
+      "cue": "hit",
+      "generation_id": "4BKMHnqXXAqKWYRYf8tj",
+      "file": "poseidon_tutor_structure_2_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "d4d1bfcd7feb76c5f2004f2796cfccf8d2beda1dc240833e0d0194a33dcf1d60",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_2",
+      "cue": "destroy",
+      "generation_id": "mSizlmatNREexQhFHUS4",
+      "file": "poseidon_tutor_structure_2_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "c15b2acf83281f2de03007123c974a94c83ffd9fe2e9165c8d2616b466fae09d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_2",
+      "cue": "ability",
+      "generation_id": "DtJGoXnux2KrKtQJtNVG",
+      "file": "poseidon_tutor_structure_2_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "6d61cf34331d3ac3ceb8746fd558808c12ed03ac678fd7f3c3350ddd9744abd8",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_3",
+      "cue": "deploy",
+      "generation_id": "55wKs4bGSunOramKtpSi",
+      "file": "poseidon_tutor_structure_3_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "5cbc238bb72d8efc42d4cfa27dcc5d6c7a1377c02f6c2f801aa8f4888daafd0f",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_3",
+      "cue": "hit",
+      "generation_id": "4BKMHnqXXAqKWYRYf8tj",
+      "file": "poseidon_tutor_structure_3_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "d4d1bfcd7feb76c5f2004f2796cfccf8d2beda1dc240833e0d0194a33dcf1d60",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_3",
+      "cue": "destroy",
+      "generation_id": "mSizlmatNREexQhFHUS4",
+      "file": "poseidon_tutor_structure_3_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "c15b2acf83281f2de03007123c974a94c83ffd9fe2e9165c8d2616b466fae09d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_3",
+      "cue": "ability",
+      "generation_id": "DtJGoXnux2KrKtQJtNVG",
+      "file": "poseidon_tutor_structure_3_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "6d61cf34331d3ac3ceb8746fd558808c12ed03ac678fd7f3c3350ddd9744abd8",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_4",
+      "cue": "deploy",
+      "generation_id": "55wKs4bGSunOramKtpSi",
+      "file": "poseidon_tutor_structure_4_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "5cbc238bb72d8efc42d4cfa27dcc5d6c7a1377c02f6c2f801aa8f4888daafd0f",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_4",
+      "cue": "hit",
+      "generation_id": "4BKMHnqXXAqKWYRYf8tj",
+      "file": "poseidon_tutor_structure_4_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "d4d1bfcd7feb76c5f2004f2796cfccf8d2beda1dc240833e0d0194a33dcf1d60",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_4",
+      "cue": "destroy",
+      "generation_id": "mSizlmatNREexQhFHUS4",
+      "file": "poseidon_tutor_structure_4_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "c15b2acf83281f2de03007123c974a94c83ffd9fe2e9165c8d2616b466fae09d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_4",
+      "cue": "ability",
+      "generation_id": "DtJGoXnux2KrKtQJtNVG",
+      "file": "poseidon_tutor_structure_4_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "6d61cf34331d3ac3ceb8746fd558808c12ed03ac678fd7f3c3350ddd9744abd8",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_5",
+      "cue": "deploy",
+      "generation_id": "55wKs4bGSunOramKtpSi",
+      "file": "poseidon_tutor_structure_5_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "5cbc238bb72d8efc42d4cfa27dcc5d6c7a1377c02f6c2f801aa8f4888daafd0f",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_5",
+      "cue": "hit",
+      "generation_id": "4BKMHnqXXAqKWYRYf8tj",
+      "file": "poseidon_tutor_structure_5_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "d4d1bfcd7feb76c5f2004f2796cfccf8d2beda1dc240833e0d0194a33dcf1d60",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_5",
+      "cue": "destroy",
+      "generation_id": "mSizlmatNREexQhFHUS4",
+      "file": "poseidon_tutor_structure_5_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "c15b2acf83281f2de03007123c974a94c83ffd9fe2e9165c8d2616b466fae09d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "poseidon_tutor_structure_5",
+      "cue": "ability",
+      "generation_id": "DtJGoXnux2KrKtQJtNVG",
+      "file": "poseidon_tutor_structure_5_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "6d61cf34331d3ac3ceb8746fd558808c12ed03ac678fd7f3c3350ddd9744abd8",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_land_1",
+      "cue": "place",
+      "generation_id": "5A8dpkYdGYsINHl7coHm",
+      "file": "zeus_tutor_land_1_place.wav",
+      "duration_seconds": 1,
+      "sha256": "bf59ab7a0a3c0822255c24bf7ad25bd04210195f19be91cdf5a3c4b914e4da12",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_land_2",
+      "cue": "place",
+      "generation_id": "5A8dpkYdGYsINHl7coHm",
+      "file": "zeus_tutor_land_2_place.wav",
+      "duration_seconds": 1,
+      "sha256": "bf59ab7a0a3c0822255c24bf7ad25bd04210195f19be91cdf5a3c4b914e4da12",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_land_3",
+      "cue": "place",
+      "generation_id": "5A8dpkYdGYsINHl7coHm",
+      "file": "zeus_tutor_land_3_place.wav",
+      "duration_seconds": 1,
+      "sha256": "bf59ab7a0a3c0822255c24bf7ad25bd04210195f19be91cdf5a3c4b914e4da12",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_land_4",
+      "cue": "place",
+      "generation_id": "5A8dpkYdGYsINHl7coHm",
+      "file": "zeus_tutor_land_4_place.wav",
+      "duration_seconds": 1,
+      "sha256": "bf59ab7a0a3c0822255c24bf7ad25bd04210195f19be91cdf5a3c4b914e4da12",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_land_5",
+      "cue": "place",
+      "generation_id": "5A8dpkYdGYsINHl7coHm",
+      "file": "zeus_tutor_land_5_place.wav",
+      "duration_seconds": 1,
+      "sha256": "bf59ab7a0a3c0822255c24bf7ad25bd04210195f19be91cdf5a3c4b914e4da12",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_1",
+      "cue": "deploy",
+      "generation_id": "hbk8rumFeDnqRsAP0IxQ",
+      "file": "zeus_tutor_structure_1_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "f5282147f178c2793f18d8df8b25588f70b74b5046b96d8163b2105b37d499e0",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_1",
+      "cue": "hit",
+      "generation_id": "IZWEbeTIbeOgObDmckgb",
+      "file": "zeus_tutor_structure_1_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "a3f901fc718ecb06684f725fd9ff13bd4bd7730f51a0496c3840d38c21e4a2b8",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_1",
+      "cue": "destroy",
+      "generation_id": "MHnIrOzX3XtSiglfyuB3",
+      "file": "zeus_tutor_structure_1_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "b22024763f17278d186cec51db9352dad052adc59fba85827159d26983bbfee9",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_1",
+      "cue": "ability",
+      "generation_id": "dxWkAuAsWXDPDszpVMpb",
+      "file": "zeus_tutor_structure_1_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "17b5726d23d3986feb811fa202d98d38ec22f350c4315e341f1785fb42408b7d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_2",
+      "cue": "deploy",
+      "generation_id": "hbk8rumFeDnqRsAP0IxQ",
+      "file": "zeus_tutor_structure_2_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "f5282147f178c2793f18d8df8b25588f70b74b5046b96d8163b2105b37d499e0",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_2",
+      "cue": "hit",
+      "generation_id": "IZWEbeTIbeOgObDmckgb",
+      "file": "zeus_tutor_structure_2_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "a3f901fc718ecb06684f725fd9ff13bd4bd7730f51a0496c3840d38c21e4a2b8",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_2",
+      "cue": "destroy",
+      "generation_id": "MHnIrOzX3XtSiglfyuB3",
+      "file": "zeus_tutor_structure_2_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "b22024763f17278d186cec51db9352dad052adc59fba85827159d26983bbfee9",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_2",
+      "cue": "ability",
+      "generation_id": "dxWkAuAsWXDPDszpVMpb",
+      "file": "zeus_tutor_structure_2_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "17b5726d23d3986feb811fa202d98d38ec22f350c4315e341f1785fb42408b7d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_3",
+      "cue": "deploy",
+      "generation_id": "hbk8rumFeDnqRsAP0IxQ",
+      "file": "zeus_tutor_structure_3_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "f5282147f178c2793f18d8df8b25588f70b74b5046b96d8163b2105b37d499e0",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_3",
+      "cue": "hit",
+      "generation_id": "IZWEbeTIbeOgObDmckgb",
+      "file": "zeus_tutor_structure_3_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "a3f901fc718ecb06684f725fd9ff13bd4bd7730f51a0496c3840d38c21e4a2b8",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_3",
+      "cue": "destroy",
+      "generation_id": "MHnIrOzX3XtSiglfyuB3",
+      "file": "zeus_tutor_structure_3_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "b22024763f17278d186cec51db9352dad052adc59fba85827159d26983bbfee9",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_3",
+      "cue": "ability",
+      "generation_id": "dxWkAuAsWXDPDszpVMpb",
+      "file": "zeus_tutor_structure_3_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "17b5726d23d3986feb811fa202d98d38ec22f350c4315e341f1785fb42408b7d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_4",
+      "cue": "deploy",
+      "generation_id": "hbk8rumFeDnqRsAP0IxQ",
+      "file": "zeus_tutor_structure_4_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "f5282147f178c2793f18d8df8b25588f70b74b5046b96d8163b2105b37d499e0",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_4",
+      "cue": "hit",
+      "generation_id": "IZWEbeTIbeOgObDmckgb",
+      "file": "zeus_tutor_structure_4_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "a3f901fc718ecb06684f725fd9ff13bd4bd7730f51a0496c3840d38c21e4a2b8",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_4",
+      "cue": "destroy",
+      "generation_id": "MHnIrOzX3XtSiglfyuB3",
+      "file": "zeus_tutor_structure_4_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "b22024763f17278d186cec51db9352dad052adc59fba85827159d26983bbfee9",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_4",
+      "cue": "ability",
+      "generation_id": "dxWkAuAsWXDPDszpVMpb",
+      "file": "zeus_tutor_structure_4_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "17b5726d23d3986feb811fa202d98d38ec22f350c4315e341f1785fb42408b7d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_5",
+      "cue": "deploy",
+      "generation_id": "hbk8rumFeDnqRsAP0IxQ",
+      "file": "zeus_tutor_structure_5_deploy.wav",
+      "duration_seconds": 1.5,
+      "sha256": "f5282147f178c2793f18d8df8b25588f70b74b5046b96d8163b2105b37d499e0",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_5",
+      "cue": "hit",
+      "generation_id": "IZWEbeTIbeOgObDmckgb",
+      "file": "zeus_tutor_structure_5_hit.wav",
+      "duration_seconds": 0.4,
+      "sha256": "a3f901fc718ecb06684f725fd9ff13bd4bd7730f51a0496c3840d38c21e4a2b8",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_5",
+      "cue": "destroy",
+      "generation_id": "MHnIrOzX3XtSiglfyuB3",
+      "file": "zeus_tutor_structure_5_destroy.wav",
+      "duration_seconds": 1.2,
+      "sha256": "b22024763f17278d186cec51db9352dad052adc59fba85827159d26983bbfee9",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    },
+    {
+      "card_id": "zeus_tutor_structure_5",
+      "cue": "ability",
+      "generation_id": "dxWkAuAsWXDPDszpVMpb",
+      "file": "zeus_tutor_structure_5_ability.wav",
+      "duration_seconds": 1,
+      "sha256": "17b5726d23d3986feb811fa202d98d38ec22f350c4315e341f1785fb42408b7d",
+      "approval": "User approved current selections and integration; no independent listening review claimed"
+    }
+  ]
+}
