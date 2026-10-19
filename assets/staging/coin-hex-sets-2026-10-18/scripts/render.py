@@ -166,8 +166,8 @@ if shot == "hero":
 elif shot == "board":
     place_tiles(tile, 3)
     coin.hide_render = True
-    scene_setup((1600, 900), (0, -15.5, 13.5), (0, 0.6, 0))
-    bpy.context.scene.camera.data.lens = 42
+    scene_setup((1600, 900), (0, -17.5, 19.0), (0, -0.4, 0))
+    bpy.context.scene.camera.data.lens = 40
     set_glow(1.0)
     bpy.context.scene.render.filepath = os.path.join(out, f"{sid}_board.png")
     bpy.ops.render.render(write_still=True)
