@@ -1,0 +1,29 @@
+--- 3DTuba-card-sfx-2026-10-18/UnityProof/Assets/Playtest/Scripts/TokenFactory.cs	2026-10-18 16:24:39.265607900 -0400
++++ 3DTuba-perf-2026-10-18/UnityProof/Assets/Playtest/Scripts/TokenFactory.cs	2026-10-18 20:41:40.499276200 -0400
+@@ -76,7 +76,14 @@
+             if (rigAnimator != null && rigAnimator.GetComponent<RigEvents>() == null) rigAnimator.gameObject.AddComponent<RigEvents>();
+             // A skinned mesh's imported bounds are loose (about 40% taller than the mesh), and the budget scale and
+             // ground offset below are taken from renderer bounds, so fit them to the posed mesh first.
+-            foreach (var smr in model.GetComponentsInChildren<SkinnedMeshRenderer>()) FitSkinnedBounds(smr);
++            // AI-209: the fit bakes and walks every vertex (about 5 ms a model on the laptop), and a fresh copy of the
++            // same prefab always fits to the same bounds, so it is done once per prefab and reused on later summons.
++            var skinned = model.GetComponentsInChildren<SkinnedMeshRenderer>();
++            for (int i = 0; i < skinned.Length; i++) {
++                var key = (prefab, i);
++                if (FittedBounds.TryGetValue(key, out var fitted) && !NoBoundsCache) skinned[i].localBounds = fitted;
++                else { FitSkinnedBounds(skinned[i]); FittedBounds[key] = skinned[i].localBounds; }
++            }
+             var tokenMat = Resources.Load<Material>(System.IO.Path.GetDirectoryName(card.model).Replace('\\', '/') + "/Token");
+             var fallback = Lit(Color.Lerp(PlaytestCatalog.FactionColor(card.faction), new Color(.75f, .75f, .78f), .55f), .45f, .35f);
+             foreach (var r in model.GetComponentsInChildren<Renderer>()) {
+@@ -101,6 +108,10 @@
+             return true;
+         }
+ 
++        static readonly Dictionary<(GameObject, int), Bounds> FittedBounds = new Dictionary<(GameObject, int), Bounds>();
++        public static bool NoBoundsCache;   // checks only: force the full fit so cached and fresh bounds can be compared
++        public static void ClearBoundsCache() => FittedBounds.Clear();
++
+         static void FitSkinnedBounds(SkinnedMeshRenderer smr) {
+             if (smr.sharedMesh == null) return;
+             var baked = new Mesh();
