@@ -36,7 +36,7 @@ def idle(t, n, cfg):
     add(P, "Head", "Z", 4.0 * math.sin(w * 1 + 0.8) * amp); add(P, "Head", "X", 1.5 * math.sin(2 * w) * amp)
     add(P, "Spine", "Z", 1.5 * math.sin(w + 0.3) * amp)
     if cfg.get("loco") == "hover":
-        return P, (0, 0, 0.012 * math.sin(w) * amp)
+        return P, (0, 0, 0.012 * (1 - math.cos(w)) * amp)  # hover lift starts at 0 so the loop begins on the tile
     for s in ("Left", "Right"):
         add(P, s + "UpLeg", "X", -1.5 * (1 - math.cos(w)) * amp); add(P, s + "Leg", "X", 3.0 * (1 - math.cos(w)) * amp)
     return P, (0, 0, 0)
@@ -49,7 +49,7 @@ def walk(t, n, cfg):
             add(P, s + "UpLeg", "X", 8 * math.sin(w + ph)); add(P, s + "Leg", "X", 6 * (1 + math.sin(w + ph + 1)))
             add(P, s + "Arm", "X", 6 * math.sin(w + ph + math.pi)); add(P, s + "Arm", "Y", raise_ax(s) * 5 * (1 + math.sin(w)))
         add(P, "Head", "X", -3 * math.sin(w))
-        return P, (0, 0, 0.03 * math.sin(w))
+        return P, (0, 0, 0.03 * (1 - math.cos(w)))
     lean = cfg.get("walk_lean", 4)
     add(P, "Spine", "X", lean)
     for s, ph in (("Left", 0), ("Right", math.pi)):
@@ -173,7 +173,7 @@ def c_idle(t, n, cfg):
     for L in _limbs(cfg):
         add(P, L["name"] + "1", "X", 2.0 * math.sin(w + 6.28 * L.get("phase", 0)))
         if L.get("role") == "claw": add(P, L["name"] + "2", "X", 4.0 * math.sin(2 * w))
-    return P, (0, 0, 0.006 * math.sin(w) * cfg.get("bob", 1.0))
+    return P, (0, 0, 0.006 * (1 - math.cos(w)) * cfg.get("bob", 1.0))
 def c_walk(t, n, cfg):
     P = {}; w = 2 * math.pi * t / n; sp = _chain(cfg, "Spine"); tl = _chain(cfg, "Tail")
     for i, b in enumerate(sp): add(P, b, "Z", 4.0 * math.sin(w + 0.5 * i) / max(1, len(sp)))
@@ -184,11 +184,12 @@ def c_walk(t, n, cfg):
             add(P, L["name"] + "1", "X", -16 * k * math.sin(ph)); add(P, L["name"] + "2", "X", 18 * k * max(0.0, math.sin(ph + 1.6)))
         else: add(P, L["name"] + "1", "X", 6 * math.sin(ph))
     hov = cfg.get("loco") == "hover"
-    return P, (0, 0, (0.03 * math.sin(w) if hov else 0.012 * abs(math.sin(w))) * cfg.get("bob", 1.0))
+    return P, (0, 0, (0.03 * (1 - math.cos(w)) if hov else 0.012 * abs(math.sin(w))) * cfg.get("bob", 1.0))
 def c_attack(t, n, cfg):
     P = {}; sp = _chain(cfg, "Spine"); tl = _chain(cfg, "Tail"); ns = max(1, len(sp))
     wind = bump(t, 0, 8, 12); hit = env(t, [(8, 0), (12, 1), (17, 1), (30, 0)])
-    for b in sp: add(P, b, "X", (-14 * wind + 20 * hit) / ns)
+    kp = cfg.get("attack_pitch", 1.0)  # < 1 for long, low bodies whose head would otherwise strike the tile
+    for b in sp: add(P, b, "X", kp * (-14 * wind + 20 * hit) / ns)
     for b in tl: add(P, b, "X", 12 * wind - 8 * hit)
     for L in _limbs(cfg):
         if L.get("role") == "claw":
@@ -208,7 +209,8 @@ def c_death(t, n, cfg):
     for b in tl: add(P, b, "Z", 15 * fall); add(P, b, "X", 8 * buck)
     for L in _limbs(cfg):
         sgn = 1 if L.get("side", "L") == "L" else -1
-        add(P, L["name"] + "1", "Y", -sgn * 35 * buck); add(P, L["name"] + "2", "X", 40 * buck)
+        sp_ = cfg.get("death_splay", 35)  # flat-bodied walkers collapse by splaying their legs, not by rolling onto an edge
+        add(P, L["name"] + "1", "Y", -sgn * (35 * buck + (sp_ - 35) * fall)); add(P, L["name"] + "2", "X", 40 * buck)
     roll = cfg.get("death_roll", 70)
     P["_root"] = [("Y", -roll * fall)]
     return P, (0, 0, 0)
