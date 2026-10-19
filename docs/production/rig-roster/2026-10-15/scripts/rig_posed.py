@@ -210,7 +210,7 @@ hipH = J["Hips"]; pivot = Vector((hipH.x, hipH.y, 0)) + RF @ Vector((0, 0.06 * H
 arm.animation_data_create(); report = {"clips": {}}
 for cname, fn, n, loop, ground, ev in (C.creature_clip_set(cfg) if CREATURE else C.clip_set(cfg)):
     frames = list(range(0, n + 1)) if loop else list(range(0, n))
-    keys = []
+    keys = []; lifts = []
     # Earlier clips' NLA tracks would otherwise be evaluated on every depsgraph update and leak into the ground solve
     for tr_ in arm.animation_data.nla_tracks: tr_.mute = True
     arm.animation_data.action = None
@@ -226,7 +226,9 @@ for cname, fn, n, loop, ground, ev in (C.creature_clip_set(cfg) if CREATURE else
             q = Quaternion()
             for ax_, dg in lst: q = q @ lq(P + bone, ax_, dg)
             qs[P + bone] = q
-        loc = RF @ Vector(hd) * H
+        # hover clips: ground every frame like the rest, then add the clip's lift on top (lift(0) = 0), so no clip
+        # starts above the tile or pops when it blends in from Idle, and none can sink
+        lifts.append(hd[2]); loc = RF @ Vector((hd[0], hd[1], hd[2] if ground else 0.0)) * H
         if "_root" in pose:
             Rr = Matrix.Identity(3)
             for ax_, dg in pose["_root"]: Rr = Rr @ Matrix.Rotation(math.radians(dg), 3, AX[ax_])
@@ -235,20 +237,15 @@ for cname, fn, n, loop, ground, ev in (C.creature_clip_set(cfg) if CREATURE else
         for bn, q in qs.items(): arm.pose.bones[bn].rotation_quaternion = q
         if cfg.get("anchored"): loc = Vector((0, 0, 0))  # seated on a fixed throne/base: rotate only, never translate the hips
         hb = arm.pose.bones[P + "Hips"]; hb.location = rest[P + "Hips"].to_3x3().inverted() @ loc
-        if ground and not cfg.get("anchored"):  # iterate: verts blended with the static Root follow the hips only partly
+        if not cfg.get("anchored"):  # iterate: verts blended with the static Root follow the hips only partly
             for _ in range(6):
                 arm.update_tag(); mesh.update_tag(); bpy.context.view_layer.update(); z = minz()
                 if abs(z) < 1e-4 * H: break
                 loc = loc - Vector((0, 0, z)); hb.location = rest[P + "Hips"].to_3x3().inverted() @ loc
         keys.append(({bn: q.copy() for bn, q in qs.items()}, hb.location.copy()))
-    if not ground and not cfg.get("anchored"):  # constant offset so the lowest point of the clip sits at z=0
-        zs = []
-        for qs, lc in keys:
-            for pb in arm.pose.bones: pb.matrix_basis = Matrix.Identity(4)
-            for bn, q in qs.items(): arm.pose.bones[bn].rotation_quaternion = q
-            arm.pose.bones[P + "Hips"].location = lc; arm.update_tag(); mesh.update_tag(); bpy.context.view_layer.update(); zs.append(minz())
-        dz = rest[P + "Hips"].to_3x3().inverted() @ Vector((0, 0, -min(zs)))
-        keys = [(qs, lc + dz) for qs, lc in keys]
+    if not ground and not cfg.get("anchored"):
+        l0 = min(lifts)
+        keys = [(qs, lc + rest[P + "Hips"].to_3x3().inverted() @ Vector((0, 0, (lz - l0) * H))) for (qs, lc), lz in zip(keys, lifts)]
     act = bpy.data.actions.new(cname); act.use_fake_user = True; arm.animation_data.action = act
     for i, (qs, lc) in enumerate(keys):
         for pb in arm.pose.bones:

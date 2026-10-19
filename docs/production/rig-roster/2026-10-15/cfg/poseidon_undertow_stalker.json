@@ -41,7 +41,7 @@
   ]
  ],
  "lunge": 1.3,
- "death_roll": 80,
+ "death_roll": 12,
  "limbs": [
   {
    "name": "ArmL",
@@ -135,5 +135,6 @@
    "side": "R",
    "role": "leg"
   }
- ]
+ ],
+ "death_splay": 60
 }

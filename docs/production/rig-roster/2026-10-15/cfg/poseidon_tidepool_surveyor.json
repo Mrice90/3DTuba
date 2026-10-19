@@ -158,6 +158,7 @@
    "role": "leg"
   }
  ],
- "death_roll": 100,
- "bob": 1.5
+ "death_roll": 12,
+ "bob": 1.5,
+ "death_splay": 70
 }
