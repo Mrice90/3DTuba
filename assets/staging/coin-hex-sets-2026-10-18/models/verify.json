@@ -1,0 +1,212 @@
+[
+ {
+  "file": "coin_abyssal.fbx",
+  "meshes": 1,
+  "materials": [
+   "Coin_Rim",
+   "Coin_Heads",
+   "Coin_Tails"
+  ],
+  "size_xyz": [
+   0.999,
+   0.084,
+   0.999
+  ],
+  "centre_z": 0.0,
+  "actions": [
+   "coin_abyssal|coin_abyssal|Flip",
+   "coin_abyssal|coin_abyssal|Idle"
+  ],
+  "ok": true
+ },
+ {
+  "file": "coin_abyssal.glb",
+  "meshes": 1,
+  "materials": [
+   "Coin_Rim",
+   "Coin_Heads",
+   "Coin_Tails"
+  ],
+  "size_xyz": [
+   0.999,
+   0.999,
+   0.084
+  ],
+  "centre_z": 0.0,
+  "actions": [
+   "Flip",
+   "Idle"
+  ],
+  "ok": true
+ },
+ {
+  "file": "coin_celestial.fbx",
+  "meshes": 1,
+  "materials": [
+   "Coin_Rim",
+   "Coin_Heads",
+   "Coin_Tails"
+  ],
+  "size_xyz": [
+   0.999,
+   0.08,
+   0.999
+  ],
+  "centre_z": 0.0,
+  "actions": [
+   "coin_celestial|coin_celestial|Flip",
+   "coin_celestial|coin_celestial|Idle"
+  ],
+  "ok": true
+ },
+ {
+  "file": "coin_celestial.glb",
+  "meshes": 1,
+  "materials": [
+   "Coin_Rim",
+   "Coin_Heads",
+   "Coin_Tails"
+  ],
+  "size_xyz": [
+   0.999,
+   0.999,
+   0.08
+  ],
+  "centre_z": 0.0,
+  "actions": [
+   "Flip",
+   "Idle"
+  ],
+  "ok": true
+ },
+ {
+  "file": "coin_obsidian.fbx",
+  "meshes": 1,
+  "materials": [
+   "Coin_Rim",
+   "Coin_Heads",
+   "Coin_Tails"
+  ],
+  "size_xyz": [
+   0.999,
+   0.081,
+   0.999
+  ],
+  "centre_z": 0.0,
+  "actions": [
+   "coin_obsidian|coin_obsidian|Flip",
+   "coin_obsidian|coin_obsidian|Idle"
+  ],
+  "ok": true
+ },
+ {
+  "file": "coin_obsidian.glb",
+  "meshes": 1,
+  "materials": [
+   "Coin_Rim",
+   "Coin_Heads",
+   "Coin_Tails"
+  ],
+  "size_xyz": [
+   0.999,
+   0.999,
+   0.081
+  ],
+  "centre_z": 0.0,
+  "actions": [
+   "Flip",
+   "Idle"
+  ],
+  "ok": true
+ },
+ {
+  "file": "hex_abyssal.fbx",
+  "meshes": 1,
+  "materials": [
+   "Tile_abyssal"
+  ],
+  "size_xyz": [
+   2.0,
+   2.309,
+   0.327
+  ],
+  "centre_z": 0.014,
+  "actions": [],
+  "ok": true
+ },
+ {
+  "file": "hex_abyssal.glb",
+  "meshes": 1,
+  "materials": [
+   "Tile_abyssal"
+  ],
+  "size_xyz": [
+   2.0,
+   2.309,
+   0.327
+  ],
+  "centre_z": 0.014,
+  "actions": [],
+  "ok": true
+ },
+ {
+  "file": "hex_celestial.fbx",
+  "meshes": 1,
+  "materials": [
+   "Tile_celestial"
+  ],
+  "size_xyz": [
+   2.0,
+   2.309,
+   0.317
+  ],
+  "centre_z": 0.008,
+  "actions": [],
+  "ok": true
+ },
+ {
+  "file": "hex_celestial.glb",
+  "meshes": 1,
+  "materials": [
+   "Tile_celestial"
+  ],
+  "size_xyz": [
+   2.0,
+   2.309,
+   0.317
+  ],
+  "centre_z": 0.008,
+  "actions": [],
+  "ok": true
+ },
+ {
+  "file": "hex_obsidian.fbx",
+  "meshes": 1,
+  "materials": [
+   "Tile_obsidian"
+  ],
+  "size_xyz": [
+   2.0,
+   2.309,
+   0.312
+  ],
+  "centre_z": 0.006,
+  "actions": [],
+  "ok": true
+ },
+ {
+  "file": "hex_obsidian.glb",
+  "meshes": 1,
+  "materials": [
+   "Tile_obsidian"
+  ],
+  "size_xyz": [
+   2.0,
+   2.309,
+   0.312
+  ],
+  "centre_z": 0.006,
+  "actions": [],
+  "ok": true
+ }
+]

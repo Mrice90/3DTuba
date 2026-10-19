@@ -1,0 +1,86 @@
+[
+ {
+  "name": "coin_celestial",
+  "tris": 27520,
+  "verts": 13762,
+  "dims_xyz": [
+   0.999,
+   0.999,
+   0.08
+  ],
+  "materials": [
+   "Coin_Rim",
+   "Coin_Heads",
+   "Coin_Tails"
+  ]
+ },
+ {
+  "name": "hex_celestial",
+  "tris": 4836,
+  "verts": 2420,
+  "dims_xyz": [
+   2.0,
+   2.309,
+   0.317
+  ],
+  "materials": [
+   "Tile_celestial"
+  ]
+ },
+ {
+  "name": "coin_abyssal",
+  "tris": 27520,
+  "verts": 13762,
+  "dims_xyz": [
+   0.999,
+   0.999,
+   0.084
+  ],
+  "materials": [
+   "Coin_Rim",
+   "Coin_Heads",
+   "Coin_Tails"
+  ]
+ },
+ {
+  "name": "hex_abyssal",
+  "tris": 4836,
+  "verts": 2420,
+  "dims_xyz": [
+   2.0,
+   2.309,
+   0.327
+  ],
+  "materials": [
+   "Tile_abyssal"
+  ]
+ },
+ {
+  "name": "coin_obsidian",
+  "tris": 27520,
+  "verts": 13762,
+  "dims_xyz": [
+   0.999,
+   0.999,
+   0.081
+  ],
+  "materials": [
+   "Coin_Rim",
+   "Coin_Heads",
+   "Coin_Tails"
+  ]
+ },
+ {
+  "name": "hex_obsidian",
+  "tris": 4836,
+  "verts": 2420,
+  "dims_xyz": [
+   2.0,
+   2.309,
+   0.312
+  ],
+  "materials": [
+   "Tile_obsidian"
+  ]
+ }
+]
