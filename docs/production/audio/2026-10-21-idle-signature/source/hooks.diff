@@ -1,0 +1,73 @@
+--- 3DTuba-perf-2026-10-18/UnityProof/Assets/Playtest/Scripts/PlaytestGame.cs	2026-10-13 19:10:19.204413600 -0400
++++ 3DTuba-idle-sig-sfx-2026-10-21/UnityProof/Assets/Playtest/Scripts/PlaytestGame.cs	2026-10-21 17:59:25.655355900 -0400
+@@ -114,6 +114,7 @@
+             // Installable build: opens on the main menu. -live / -bridgeCmd jump straight into a match,
+             // -playback into the recorded seed-42 match.
+             LoadSettings();
++            if (Arg("-idleSigProbe") != null) { StartIdleSigProbe(Arg("-idleSigProbe")); return; }
+             if (Arg("-groundPreview") != null) { StartCoroutine(CaptureGround()); return; }
+             var explicitCmd = Flag("-live") ? "native" : null;
+             resolvedBridgeCmd = string.IsNullOrEmpty(explicitCmd) ? DiscoverBridge(out bridgeHint) : explicitCmd;
+@@ -246,7 +247,7 @@
+             }
+             switch (e.@event) {
+                 case "MATCH_STARTED":
+-                    sfx.PlayCore("board_build", .15f); sfx.PlayCore("match_start", .45f); Banner("Match start - " + e.detail, 2.5f); m.AddLog(e.detail); yield return Wait(.6f); break;
++                    sfx.PlayCore("board_build", .15f); sfx.PlayCore("match_start", .45f); Banner("Match start - " + e.detail, 2.5f); m.AddLog(e.detail); PlayCapitalSignatures(); yield return Wait(.6f); break;
+                 case "TURN_STARTED":
+                     m.Turn = e.turn; m.Active = pl;
+                     Banner($"Turn {e.turn} - {Faction(pl)}", 1.4f); PlayTurnCue(pl); m.AddLog($"T{e.turn} {Faction(pl)} turn"); yield return Wait(.45f); break;
+@@ -264,7 +265,7 @@
+                     if (e.hasTo) { board.SetLegal(new[] { e.To }); }
+                     yield return Wait(.25f);
+                     if (card.type == "SPELL") {
+-                        sfx.Play(card.id, "cast");
++                        PlayArrival(card, null);
+                         yield return Wait(.2f);
+                         var at = e.hasTo ? HexPoint(e.To) : (CapitalOf(pl)?.transform.position ?? Vector3.zero);
+                         sfx.Play(card.id, "resolve_impact", at, .7f);
+@@ -272,8 +273,7 @@
+                     } else if (e.hasTo) {
+                         var summoned = Spawn(e.instance_id, e.card_id, pl, e.to.x, e.to.y, false);
+                         if (card.type == "LAND") sfx.PlayCore("hex_tile_place", .15f);
+-                        sfx.Play(card.id, card.type == "LAND" ? "place" :
+-                            card.type == "CHARACTER" && card.HasCue("signature") ? "signature" : "deploy", HexPoint(e.To));
++                        PlayArrival(card, HexPoint(e.To));
+                         vfx.Burst(BoardLayout.CellCenter(e.to.x, e.to.y) + Vector3.up * .15f, PlaytestCatalog.FactionAccent(card.faction), 40, 1.6f, .07f, .6f, true);
+                         yield return PresentationMotion.Summon(summoned, speed);
+                     }
+@@ -540,7 +540,7 @@
+ 
+         // ------------------------------------------------------------------ input
+         void Update() {
+-            PumpOnline();
++            PumpOnline(); UpdateIdleAudio();
+             if (board == null) return;
+             if (mode == Mode.Setup) { rig.InputEnabled = true; UpdateCapitalPlacement(); return; }
+             var mouse = Mouse.current; var kb = Keyboard.current;
+@@ -826,6 +826,9 @@
+                 var clip = sfx.Resolve(c.id, cue, out bool sp); if (clip == null) pass = false; if (sp) specific++;
+             }
+             Check(true, "every card resolves deploy/move/attack/hit/destroy SFX (" + specific + " card-specific, rest generic)");
++            int idleOwn = cards.Count(c => sfx.ResolveLibrary(c.id + "_idle") != null && sfx.Resolve(c.id, "idle", out bool own) != null && own);
++            int sigArrival = cards.Count(c => ArrivalCue(sfx, c) == "signature" && sfx.Resolve(c.id, "signature", out bool own) != null && own);
++            Check(idleOwn == 123 && sigArrival == 32, $"AI-215: 123 idle sounds ({idleOwn}) and 32 signature arrivals ({sigArrival}) play their own clips");
+             yield return ValidatePresentation(Check);
+             int errors = 0; string firstError = null;
+             Application.LogCallback onLog = (msg, st, type) => { if (type == LogType.Exception || type == LogType.Error) { errors++; firstError = firstError ?? msg; } };
+--- 3DTuba-perf-2026-10-18/UnityProof/Assets/Playtest/Scripts/SharedAudio.cs	2026-10-11 21:11:17.872586900 -0400
++++ 3DTuba-idle-sig-sfx-2026-10-21/UnityProof/Assets/Playtest/Scripts/SharedAudio.cs	2026-10-21 17:58:52.890293600 -0400
+@@ -12,11 +12,13 @@
+         void ResetSharedAudio() {
+             capitalsRevealed = false;
+             lowCapitalWarned[0] = lowCapitalWarned[1] = false;
++            ResetIdleSignatureAudio();
+         }
+         void RevealCapitalAudio() {
+             if (capitalsRevealed || mode != Mode.Live || CapitalOf(0) == null || CapitalOf(1) == null) return;
+             capitalsRevealed = true;
+             sfx.PlayCore("capital_reveal", .22f);
++            PlayCapitalSignatures();
+         }
+         void PlayLowCapitalWarning(int owner) {
+             if (owner < 0 || owner > 1 || lowCapitalWarned[owner]) return;
