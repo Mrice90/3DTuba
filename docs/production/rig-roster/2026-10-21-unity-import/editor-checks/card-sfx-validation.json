@@ -1,0 +1,1 @@
+{"passed":true,"checks":4468,"failed":0,"cues":740,"cardCues":690,"cardCuesPlayed":690,"normalizeTurnedOff":0,"rmsByTargetLufs":{"-16":{"n":25,"rmsDbMin":-24.4,"rmsDbMax":-13.6},"-18":{"n":590,"rmsDbMin":-34.0,"rmsDbMax":-9.4},"-24":{"n":15,"rmsDbMin":-37.4,"rmsDbMax":-23.4},"-26":{"n":110,"rmsDbMin":-37.9,"rmsDbMax":-17.9}},"failures":[]}

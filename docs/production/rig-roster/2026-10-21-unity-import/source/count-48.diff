@@ -1,0 +1,33 @@
+--- ../../3DTuba-idle-sig-sfx-2026-10-21/UnityProof/Assets/Playtest/Editor/RigCombatBuild.cs	2026-10-18 16:28:34.165798500 -0400
++++ ../../3DTuba-rig-fixes-2026-10-21/UnityProof/Assets/Playtest/Editor/RigCombatBuild.cs	2026-10-21 18:16:36.979883300 -0400
+@@ -32,7 +32,7 @@
+         PlaytestCatalog.Load();
+         var factory = Factory();
+         var ids = Ids();
+-        check(ids.Length == 47, "47 rigged cards (Thunder Ram kept static), found " + ids.Length);
++        check(ids.Length == 48, "48 rigged cards (PR #27 re-rigged Thunder Ram), found " + ids.Length);
+         var rows = new List<string>();
+         foreach (var id in ids) {
+             var c = PlaytestCatalog.All.FirstOrDefault(x => x.id == id);
+--- ../../3DTuba-idle-sig-sfx-2026-10-21/UnityProof/Assets/Playtest/Editor/PerfBuild.cs	2026-10-18 20:41:12.438087000 -0400
++++ ../../3DTuba-rig-fixes-2026-10-21/UnityProof/Assets/Playtest/Editor/PerfBuild.cs	2026-10-21 18:16:37.053314900 -0400
+@@ -38,7 +38,7 @@
+             } finally { UnityEngine.Object.DestroyImmediate(fresh); UnityEngine.Object.DestroyImmediate(cached); }
+         }
+         TokenFactory.ClearBoundsCache();
+-        check(riggedChecked == 47, "47 rigged characters compared, found " + riggedChecked);
++        check(riggedChecked == 48, "48 rigged characters compared, found " + riggedChecked);
+         if (fails.Count > 0) throw new Exception("PERF_CHECK FAIL " + fails.Count + "/" + checks + ": " + string.Join("; ", fails.Take(10)));
+         Debug.Log("PERF_CHECK PASS " + checks + " checks, " + riggedChecked + " rigged characters: cached bounds fit matches the full fit");
+     }
+--- ../../3DTuba-idle-sig-sfx-2026-10-21/UnityProof/Assets/Playtest/Scripts/PresentationValidation.cs	2026-10-18 16:28:34.086927600 -0400
++++ ../../3DTuba-rig-fixes-2026-10-21/UnityProof/Assets/Playtest/Scripts/PresentationValidation.cs	2026-10-21 18:16:37.118674200 -0400
+@@ -87,7 +87,7 @@
+                 } finally { Destroy(go); }
+             }
+             // 47: the Thunder Ram rig came from a different source mesh than its token texture, so it keeps the static token.
+-            check(rigged == 47, "AI-060: 47 rigged characters carry a clip controller (" + rigged + ")");
++            check(rigged == 48, "AI-060: 48 rigged characters carry a clip controller (" + rigged + ")");
+             check(clipsOk == rigged, $"AI-060: summon/move/attack/hit/ability/destroy play the rig clips ({clipsOk}/{rigged}{(failed.Count > 0 ? "; " + string.Join("; ", failed.Take(4)) : "")})");
+             check(eventsOk == rigged, $"AI-060: land/impact/down animation events fire ({eventsOk}/{rigged})");
+         }
